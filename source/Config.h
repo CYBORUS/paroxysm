@@ -20,9 +20,11 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <map>
+using namespace std;
 
-#define DEFAULT_VALUE "`"
+#define DEFAULT_VALUE ""
 
 class Config
 {
@@ -31,14 +33,23 @@ class Config
         static void loadFromFile(const char* inFile);
         static void outputSettings();
         static void outputSettings(std::ostream& inStream);
-        static const char* get(const char* inKey, const char* inDefault);
-        static const char* get(const char* inKey);
-        static int getInt(const char* inKey, int inDefault);
-        static int getInt(const char* inKey);
+        static const char* getRaw(const char* inKey, const char* inDefault);
+        static const char* getRaw(const char* inKey);
+        template<class T> static T get(const char* inKey, T inDefault);
 
     private:
-        static std::map<std::string, std::string> mSettings;
+        static map<string, string> mSettings;
 };
+
+template<class T>
+T Config::get(const char* inKey, T inDefault)
+{
+    T outValue = inDefault;
+    stringstream ss;
+    ss << getRaw(inKey);
+    if(ss.str().length() > 0) ss >> outValue;
+    return outValue;
+}
 
 #endif
 

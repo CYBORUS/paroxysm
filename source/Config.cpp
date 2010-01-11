@@ -19,8 +19,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
-using namespace std;
 
 map<string, string> Config::mSettings;
 
@@ -82,7 +80,7 @@ void Config::outputSettings(ostream& inStream)
         inStream << i->first << " = " << i->second << endl;
 }
 
-const char* Config::get(const char* inKey, const char* inDefault)
+const char* Config::getRaw(const char* inKey, const char* inDefault)
 {
     map<string, string>::iterator i = mSettings.find(inKey);
 
@@ -95,22 +93,7 @@ const char* Config::get(const char* inKey, const char* inDefault)
     return i->second.c_str();
 }
 
-const char* Config::get(const char* inKey)
+const char* Config::getRaw(const char* inKey)
 {
-    return get(inKey, DEFAULT_VALUE);
-}
-
-int Config::getInt(const char* inKey, int inDefault)
-{
-    int outValue = inDefault;
-    stringstream ss;
-    ss << get(inKey);
-    int c = ss.str().length() > 0 ? ss.str()[0] : 0;
-    if (c >= '0' && c <= '9') ss >> outValue;
-    return outValue;
-}
-
-int Config::getInt(const char* inKey)
-{
-    return getInt(inKey, 0);
+    return getRaw(inKey, DEFAULT_VALUE);
 }
