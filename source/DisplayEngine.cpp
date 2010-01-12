@@ -29,8 +29,8 @@
 #include <iostream>
 using namespace std;
 
-SDL_Surface* DisplayEngine::mDisplay = NULL;
-SDL_Surface* DisplayEngine::mWindowIcon = NULL;
+Surface DisplayEngine::mDisplay = NULL;
+Surface DisplayEngine::mWindowIcon = NULL;
 SDL_Rect** DisplayEngine::mModes = NULL;
 
 void DisplayEngine::start(Module* inModule)
@@ -154,10 +154,10 @@ void DisplayEngine::cleanup()
     SDL_Quit();
 }
 
-SDL_Surface* DisplayEngine::loadImage(const char* inFile)
+Surface DisplayEngine::loadImage(const char* inFile)
 {
-    SDL_Surface* t = IMG_Load(inFile);
-    SDL_Surface* outSurface = NULL;
+    Surface t = IMG_Load(inFile);
+    Surface outSurface = NULL;
 
     if (t == NULL)
     {

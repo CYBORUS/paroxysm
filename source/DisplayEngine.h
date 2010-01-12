@@ -21,6 +21,7 @@
 #include "Module.h"
 
 #include <SDL.h>
+typedef SDL_Surface* Surface;
 
 #define ENGINE_FPS 60
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
@@ -30,13 +31,13 @@ class DisplayEngine
     public:
         static void start(Module* inModule);
         static void initialize();
-        static SDL_Surface* loadImage(const char* inFile);
+        static Surface loadImage(const char* inFile);
 
     private:
         static void cleanup();
 
-        static SDL_Surface* mDisplay;
-        static SDL_Surface* mWindowIcon;
+        static Surface mDisplay;
+        static Surface mWindowIcon;
         static SDL_Rect** mModes;
         static unsigned int mNextFrame;
         static unsigned int mCurrentFrame;

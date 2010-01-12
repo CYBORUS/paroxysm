@@ -51,5 +51,7 @@ T Config::get(const char* inKey, T inDefault)
     return outValue;
 }
 
+void trim(string& inString);
+
 #endif
 

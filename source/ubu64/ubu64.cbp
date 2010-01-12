@@ -40,6 +40,8 @@
 			<Add library="GL" />
 			<Add library="GLU" />
 		</Linker>
+		<Unit filename="../BlankWindow.cpp" />
+		<Unit filename="../BlankWindow.h" />
 		<Unit filename="../Config.cpp" />
 		<Unit filename="../Config.h" />
 		<Unit filename="../DisplayEngine.cpp" />
