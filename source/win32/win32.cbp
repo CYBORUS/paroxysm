@@ -33,8 +33,22 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDLmain" />
+			<Add library="SDL_image" />
+			<Add library="SDL" />
+			<Add library="opengl32" />
+			<Add library="glu32" />
+		</Linker>
+		<Unit filename="..\BlankWindow.cpp" />
+		<Unit filename="..\BlankWindow.h" />
 		<Unit filename="..\Config.cpp" />
 		<Unit filename="..\Config.h" />
+		<Unit filename="..\DisplayEngine.cpp" />
+		<Unit filename="..\DisplayEngine.h" />
+		<Unit filename="..\Module.cpp" />
+		<Unit filename="..\Module.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>
 			<code_completion />
