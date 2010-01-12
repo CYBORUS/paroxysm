@@ -15,15 +15,31 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
-#include "DisplayEngine.h"
-#include "BlankWindow.h"
+#ifndef _DISPLAYENGINE_H_
+#define _DISPLAYENGINE_H_
 
-int main(int argc, char** argv)
+#include "Module.h"
+
+#include <SDL.h>
+
+#define ENGINE_FPS 60
+#define FRAME_LENGTH (1000 / ENGINE_FPS)
+
+class DisplayEngine
 {
-    Config::initialize(argc, argv);
-    Config::outputSettings();
-    DisplayEngine::initialize();
-    DisplayEngine::start(new BlankWindow);
-    return 0;
-}
+    public:
+        static void start(Module* inModule);
+        static void initialize();
+        static SDL_Surface* loadImage(const char* inFile);
+
+    private:
+        static void cleanup();
+
+        static SDL_Surface* mDisplay;
+        static SDL_Surface* mWindowIcon;
+        static SDL_Rect** mModes;
+        static unsigned int mNextFrame;
+        static unsigned int mCurrentFrame;
+};
+
+#endif
