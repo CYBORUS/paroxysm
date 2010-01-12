@@ -29,29 +29,29 @@ using namespace std;
 
 class SoundEngine
 {
-   public:
-      static void setupAudio();
+    public:
+        static void initialize();
 
-      static void playBackgroundMusic();
-      static void stopBackgroundMusic();
+        static void playBackgroundMusic();
+        static void stopBackgroundMusic();
 
-      static void increaseMusicVolume();
-      static void decreaseMusicVolume();
+        static void increaseMusicVolume();
+        static void decreaseMusicVolume();
 
-      static void tankFire(int inAngle, int inDistance);
+        static void tankFire(int inAngle, int inDistance);
 
-      static void cleanup();
+        static void cleanup();
 
-   private:
-      static int mAudioRate;
-      static Uint16 mAudioFormat;
-      static int mNumChannels;
-      static int mAudioBufferSize;
+    private:
+        static int mAudioRate;
+        static Uint16 mAudioFormat;
+        static int mNumChannels;
+        static int mAudioBufferSize;
 
-      static Mix_Music* mBackgroundMusic;
-      static Mix_Chunk* mTankFire;
-      static int mChannel;
-      static int mMusicVolume;
+        static Mix_Music* mBackgroundMusic;
+        static Mix_Chunk* mTankFire;
+        static int mChannel;
+        static int mMusicVolume;
 };
 
 #endif // SOUNDENGINE_H

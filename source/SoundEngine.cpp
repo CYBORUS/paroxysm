@@ -29,7 +29,7 @@ int SoundEngine::mChannel = 1;
 int SoundEngine::mMusicVolume = 100;
 
 
-void SoundEngine::setupAudio()
+void SoundEngine::initialize()
 {
    #if SDL_MIXER_PATCHLEVEL > 9
       // SDL_mixer 1.2.10 introduced Mix_Init() and Mix_Quit()
