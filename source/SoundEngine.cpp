@@ -31,146 +31,146 @@ int SoundEngine::mMusicVolume = 100;
 
 void SoundEngine::initialize()
 {
-   #if SDL_MIXER_PATCHLEVEL > 9
-      // SDL_mixer 1.2.10 introduced Mix_Init() and Mix_Quit()
-      int flags = MIX_INIT_MP3 | MIX_INIT_OGG;
+#if SDL_MIXER_PATCHLEVEL > 9
+    // SDL_mixer 1.2.10 introduced Mix_Init() and Mix_Quit()
+    int flags = MIX_INIT_MP3 | MIX_INIT_OGG;
 
-      int init = Mix_Init(flags);
+    int init = Mix_Init(flags);
 
-      if ((init & flags) != flags)
-      {
-         cerr << "something couldn't load" << endl;
-      }
-   #endif
+    if ((init & flags) != flags)
+    {
+        cerr << "something couldn't load" << endl;
+    }
+#endif
 
-   mBackgroundMusic = NULL;
+    mBackgroundMusic = NULL;
 
-   mAudioRate = Config::get("audioRate", 22050);
-   mAudioFormat = Config::get("audioFormat", AUDIO_S16SYS);
-   mNumChannels = Config::get("audioChannels", 2);
-   mAudioBufferSize = Config::get("audioBufferSize", 1024);
-
-
-
-   if (Mix_OpenAudio(mAudioRate, mAudioFormat, mNumChannels, mAudioBufferSize) == -1)
-   {
-      cerr << "Audio Initialization failed." << endl;
-      cerr << Mix_GetError() << endl;
-      exit(2);
-   }
+    mAudioRate = Config::get("audio rate", 22050);
+    mAudioFormat = Config::get("audio format", AUDIO_S16SYS);
+    mNumChannels = Config::get("audio channels", 2);
+    mAudioBufferSize = Config::get("audio bufferSize", 1024);
 
 
-   string music = "./assets/audio/";
-   music += Config::get<string>("backgroundMusic", "portal_still_alive.wav");
 
-   /* Actually loads up the music */
-	if ((mBackgroundMusic = Mix_LoadMUS(music.c_str())) == NULL)
-	{
-	   cerr << Mix_GetError()  << " " << music << endl;
-	}
+    if (Mix_OpenAudio(mAudioRate, mAudioFormat, mNumChannels, mAudioBufferSize) == -1)
+    {
+        cerr << "Audio Initialization failed." << endl;
+        cerr << Mix_GetError() << endl;
+        exit(2);
+    }
 
 
-	Mix_AllocateChannels(16);
+    string music = "./assets/audio/";
+    music += Config::get<string>("background music", "portal_still_alive.wav");
 
-	if ((mTankFire = Mix_LoadWAV("./assets/audio/tank_firing.wav")) == NULL)
-	{
-	   cerr << "something wrong: " << Mix_GetError() << endl;
-	}
+    /* Actually loads up the music */
+    if ((mBackgroundMusic = Mix_LoadMUS(music.c_str())) == NULL)
+    {
+        cerr << Mix_GetError()  << " " << music << endl;
+    }
+
+
+    Mix_AllocateChannels(16);
+
+    if ((mTankFire = Mix_LoadWAV("./assets/audio/tank_firing.wav")) == NULL)
+    {
+        cerr << "something wrong: " << Mix_GetError() << endl;
+    }
 
 }
 
 
 void SoundEngine::playBackgroundMusic()
 {
-   cerr << "playing music" << endl;
-   if (!Mix_PlayingMusic())
-   {
-      /* This begins playing the music - the first argument is a
-         pointer to Mix_Music structure, and the second is how many
-         times you want it to loop (use -1 for infinite, and 0 to
-         have it just play once) */
-      if ((Mix_PlayMusic(mBackgroundMusic, -1)) == -1)
-      {
-         cerr << Mix_GetError() << endl;
-      }
-   }
+    cerr << "playing music" << endl;
+    if (!Mix_PlayingMusic())
+    {
+        /* This begins playing the music - the first argument is a
+           pointer to Mix_Music structure, and the second is how many
+           times you want it to loop (use -1 for infinite, and 0 to
+           have it just play once) */
+        if ((Mix_PlayMusic(mBackgroundMusic, -1)) == -1)
+        {
+            cerr << Mix_GetError() << endl;
+        }
+    }
 
 
 
-	/* We want to know when our music has stopped playing so we
-	   can free it up and set 'music' back to NULL.  SDL_Mixer
-	   provides us with a callback routine we can use to do
-	   exactly that */
-	//Mix_HookMusicFinished(musicDone);
+    /* We want to know when our music has stopped playing so we
+       can free it up and set 'music' back to NULL.  SDL_Mixer
+       provides us with a callback routine we can use to do
+       exactly that */
+    //Mix_HookMusicFinished(musicDone);
 
 }
 
 void SoundEngine::stopBackgroundMusic()
 {
-   //cerr << "Music playing?: " << Mix_PlayingMusic() << endl;
+    //cerr << "Music playing?: " << Mix_PlayingMusic() << endl;
 
-   if (Mix_PlayingMusic())
-   {
-      /* Stop the music from playing */
-      Mix_HaltMusic();
-   }
+    if (Mix_PlayingMusic())
+    {
+        /* Stop the music from playing */
+        Mix_HaltMusic();
+    }
 
-   /* Unload the music from memory, since we don't need it
-      anymore */
-   //Mix_FreeMusic(mBackgroundMusic);
+    /* Unload the music from memory, since we don't need it
+       anymore */
+    //Mix_FreeMusic(mBackgroundMusic);
 
-   //mBackgroundMusic = NULL;
+    //mBackgroundMusic = NULL;
 }
 
 
 void SoundEngine::increaseMusicVolume()
 {
-   mMusicVolume += 5;
+    mMusicVolume += 5;
 
-   if (mMusicVolume > 128)
-   {
-      mMusicVolume = 128;
-   }
-   Mix_VolumeMusic(mMusicVolume);
-   cerr << "\nVolume now: " << Mix_VolumeMusic(-1) << endl;
+    if (mMusicVolume > 128)
+    {
+        mMusicVolume = 128;
+    }
+    Mix_VolumeMusic(mMusicVolume);
+    cerr << "\nVolume now: " << Mix_VolumeMusic(-1) << endl;
 }
 
 
 void SoundEngine::decreaseMusicVolume()
 {
-   mMusicVolume -= 5;
+    mMusicVolume -= 5;
 
-   if (mMusicVolume < 0)
-   {
-      mMusicVolume = 0;
-   }
-   Mix_VolumeMusic(mMusicVolume);
+    if (mMusicVolume < 0)
+    {
+        mMusicVolume = 0;
+    }
+    Mix_VolumeMusic(mMusicVolume);
 
-   cerr << "\nVolume now: " << Mix_VolumeMusic(-1) << endl;
+    cerr << "\nVolume now: " << Mix_VolumeMusic(-1) << endl;
 }
 
 
 void SoundEngine::tankFire(int inAngle, int inDistance)
 {
 
-	if (!Mix_SetPosition(mChannel, inAngle, inDistance))
-	{
-	   cerr << Mix_GetError() << endl;
-	}
-   if (Mix_PlayChannel(mChannel, mTankFire, 0) == -1)
-   {
-      cerr << Mix_GetError() << endl;
-   }
-   mChannel = (mChannel + 1) % 16;
+    if (!Mix_SetPosition(mChannel, inAngle, inDistance))
+    {
+        cerr << Mix_GetError() << endl;
+    }
+    if (Mix_PlayChannel(mChannel, mTankFire, 0) == -1)
+    {
+        cerr << Mix_GetError() << endl;
+    }
+    mChannel = (mChannel + 1) % 16;
 }
 
 
 void SoundEngine::cleanup()
 {
-   #if SDL_MIXER_PATCHLEVEL > 9
-      // SDL_mixer 1.2.10 introduced Mix_Init() and Mix_Quit()
-      Mix_Quit();
-   #endif
+#if SDL_MIXER_PATCHLEVEL > 9
+    // SDL_mixer 1.2.10 introduced Mix_Init() and Mix_Quit()
+    Mix_Quit();
+#endif
 
-   Mix_CloseAudio();
+    Mix_CloseAudio();
 }
