@@ -18,12 +18,16 @@
 #include "Config.h"
 #include "DisplayEngine.h"
 #include "BlankWindow.h"
+#include "SoundEngine.h"
 
 int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
-    Config::outputSettings();
+    SoundEngine::setupAudio();
     DisplayEngine::initialize();
+
+    Config::outputSettings();
+
     DisplayEngine::start(new BlankWindow);
     return 0;
 }

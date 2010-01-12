@@ -2,6 +2,7 @@
 #define _BLANKWINDOW_H_
 
 #include "Module.h"
+#include "SoundEngine.h"
 
 class BlankWindow : public Module
 {
@@ -9,6 +10,8 @@ class BlankWindow : public Module
         /// module operation
         virtual bool onInit();
         virtual void onCleanup();
+
+        void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
     private:
 };
 
