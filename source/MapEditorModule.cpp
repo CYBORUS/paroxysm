@@ -1,12 +1,10 @@
 #include "MapEditorModule.h"
 #include "DisplayEngine.h"
 
-#include <SDL_opengl.h>
-
 bool MapEditorModule::onInit()
 {
     mRunning = true;
-    mTerrain = Matrix<int>(DEFAULT_TERRAIN_SIZE, DEFAULT_TERRAIN_SIZE);
+    mTerrainHeight = Matrix<int>(DEFAULT_TERRAIN_SIZE, DEFAULT_TERRAIN_SIZE);
 
     int w = SDL_GetVideoSurface()->w;
     int h = SDL_GetVideoSurface()->h;

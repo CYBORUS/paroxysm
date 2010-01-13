@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Matrix.h"
 
+#include <SDL_opengl.h>
+
 #define DEFAULT_TERRAIN_SIZE 40
 
 class MapEditorModule : public Module

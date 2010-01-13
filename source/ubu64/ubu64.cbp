@@ -54,6 +54,8 @@
 		<Unit filename="../Module.h" />
 		<Unit filename="../SoundEngine.cpp" />
 		<Unit filename="../SoundEngine.h" />
+		<Unit filename="../TSphere.cpp" />
+		<Unit filename="../TSphere.h" />
 		<Unit filename="../Vector3D.h" />
 		<Unit filename="../main.cpp" />
 		<Extensions>
