@@ -16,6 +16,7 @@
  */
 
 #include "DisplayEngine.h"
+#include "Module.h"
 #include "Config.h"
 
 #include <SDL_opengl.h>

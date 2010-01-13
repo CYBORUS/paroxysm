@@ -18,13 +18,13 @@
 #ifndef _DISPLAYENGINE_H_
 #define _DISPLAYENGINE_H_
 
-#include "Module.h"
-
 #include <SDL.h>
 typedef SDL_Surface* Surface;
 
 #define ENGINE_FPS 60
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
+
+class Module;
 
 class DisplayEngine
 {
