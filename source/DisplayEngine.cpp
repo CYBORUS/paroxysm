@@ -18,6 +18,7 @@
 #include "DisplayEngine.h"
 #include "Module.h"
 #include "Config.h"
+#include "Vector3D.h"
 
 #include <SDL_opengl.h>
 #include <SDL_image.h>

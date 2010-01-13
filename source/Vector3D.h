@@ -13,7 +13,6 @@ class Vector3D
 {
     public:
         Vector3D<T>();
-        Vector3D<T>(const Matrix<T>& inMatrix);
         Vector3D<T>(const Vector3D<T>& inVector);
         Matrix<T> toMatrix() const;
         void set(T inX, T inY, T inZ);
@@ -34,21 +33,14 @@ class Vector3D
         const Vector3D<T> operator*(const T inRight) const;
         const Vector3D<T> operator^(const Vector3D<T>& inVector) const;
         T& operator[](int inIndex);
-
-        T& x;
-        T& y;
-        T& z;
-        T* array;
+        T operator[](int inIndex) const;
 
     private:
         T mVector[3];
 };
 
-#define W_MIN 0.000001
-
 template<class T>
-Vector3D<T>::Vector3D() : x(mVector[0]), y(mVector[1]), z(mVector[2]),
-    array(mVector)
+Vector3D<T>::Vector3D()
 {
     mVector[0] = 0.0;
     mVector[1] = 0.0;
@@ -56,28 +48,7 @@ Vector3D<T>::Vector3D() : x(mVector[0]), y(mVector[1]), z(mVector[2]),
 }
 
 template<class T>
-Vector3D<T>::Vector3D(const Matrix<T>& inMatrix)
-     : x(mVector[0]), y(mVector[1]), z(mVector[2]), array(mVector)
-{
-    if (inMatrix.rows() == 4 && inMatrix.cols() == 1)
-    {
-        if (abs(inMatrix[3]) < W_MIN) inMatrix[3] = W_MIN;
-
-        mVector[0] = inMatrix[0] / inMatrix[3];
-        mVector[1] = inMatrix[1] / inMatrix[3];
-        mVector[2] = inMatrix[2] / inMatrix[3];
-    }
-    else
-    {
-        mVector[0] = 0.0;
-        mVector[1] = 0.0;
-        mVector[2] = 0.0;
-    }
-}
-
-template<class T>
 Vector3D<T>::Vector3D(const Vector3D<T>& inVector)
-     : x(mVector[0]), y(mVector[1]), z(mVector[2]), array(mVector)
 {
     mVector[0] = inVector.mVector[0];
     mVector[1] = inVector.mVector[1];
@@ -231,6 +202,12 @@ T& Vector3D<T>::operator[](int inIndex)
 }
 
 template<class T>
+T Vector3D<T>::operator[](int inIndex) const
+{
+    return mVector[inIndex];
+}
+
+template<class T>
 T Vector3D<T>::get(int inIndex) const
 {
     if (inIndex < 0 || inIndex > 2) return 0.0;
@@ -258,11 +235,5 @@ ostream& operator<<(ostream& inStream, const Vector3D<T>& inVector)
         << inVector.z << ')';
     return inStream;
 }
-
-struct Vertex
-{
-    Vector3D<float> pos;
-    Vector3D<float> color;
-};
 
 #endif
