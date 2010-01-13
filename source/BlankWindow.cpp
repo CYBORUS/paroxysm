@@ -15,5 +15,6 @@ void BlankWindow::onCleanup()
 void BlankWindow::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     cerr << "keydown" << endl;
+    SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
     SoundEngine::playBackgroundMusic();
 }

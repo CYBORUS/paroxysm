@@ -23,8 +23,8 @@ Uint16 SoundEngine::mAudioFormat;
 int SoundEngine::mNumChannels;
 int SoundEngine::mAudioBufferSize;
 
-Mix_Music* SoundEngine::mBackgroundMusic;
-Mix_Chunk* SoundEngine::mTankFire;
+Music SoundEngine::mBackgroundMusic;
+SoundEffect SoundEngine::mTankFire;
 int SoundEngine::mChannel = 1;
 int SoundEngine::mMusicVolume = 100;
 
@@ -60,21 +60,23 @@ void SoundEngine::initialize()
     }
 
 
-    string music = "./assets/audio/";
-    music += Config::get<string>("background music", "portal_still_alive.wav");
-
-    /* Actually loads up the music */
-    if ((mBackgroundMusic = Mix_LoadMUS(music.c_str())) == NULL)
-    {
-        cerr << Mix_GetError()  << " " << music << endl;
-    }
-
 
     Mix_AllocateChannels(16);
 
-    if ((mTankFire = Mix_LoadWAV("./assets/audio/tank_firing.wav")) == NULL)
+}
+
+
+void SoundEngine::loadBackgroundMusic(char* inFile)
+{
+    stringstream music;
+    music << "./assets/audio/" << inFile;
+    //music << Config::get<string>("background music", inFile);
+
+
+    /* Actually loads up the music */
+    if ((mBackgroundMusic = Mix_LoadMUS(music.str().c_str())) == NULL)
     {
-        cerr << "something wrong: " << Mix_GetError() << endl;
+        cerr << Mix_GetError()  << " " << music.str() << endl;
     }
 
 }
@@ -120,6 +122,29 @@ void SoundEngine::stopBackgroundMusic()
     //Mix_FreeMusic(mBackgroundMusic);
 
     //mBackgroundMusic = NULL;
+}
+
+SoundEffect SoundEngine::loadSound(char* inFile)
+{
+    SoundEffect sound;
+    stringstream soundFile;
+    soundFile << "./assets/audio/" << inFile;
+
+    if ((sound = Mix_LoadWAV(soundFile.str().c_str())) == NULL)
+    {
+        cerr << "something wrong: " << Mix_GetError() << endl;
+    }
+
+    return sound;
+}
+
+void SoundEngine::playSound(SoundEffect inSound)
+{
+
+}
+
+void unloadSound(SoundEffect inSound)
+{
 }
 
 

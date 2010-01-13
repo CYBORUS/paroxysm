@@ -27,7 +27,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-mwindows" />
 				</Linker>
 			</Target>
 		</Build>
@@ -38,6 +37,7 @@
 			<Add library="mingw32" />
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
+			<Add library="SDL_mixer" />
 			<Add library="SDL" />
 			<Add library="opengl32" />
 			<Add library="glu32" />
@@ -50,10 +50,13 @@
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />
+		<Unit filename="..\SoundEngine.cpp" />
+		<Unit filename="..\SoundEngine.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

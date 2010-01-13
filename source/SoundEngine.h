@@ -23,20 +23,31 @@
 
 #include <SDL.h>
 #include <SDL_mixer.h>
+#include <sstream>
 
 #include <iostream>
 using namespace std;
+
+typedef Mix_Chunk* SoundEffect;
+typedef Mix_Music* Music;
 
 class SoundEngine
 {
     public:
         static void initialize();
 
+        static void loadBackgroundMusic(char* inFile);
+
         static void playBackgroundMusic();
         static void stopBackgroundMusic();
 
         static void increaseMusicVolume();
         static void decreaseMusicVolume();
+
+        static SoundEffect loadSound(char* inFile);
+        static void unloadSound(SoundEffect inSound);
+
+        static void playSound(SoundEffect inSound);
 
         static void tankFire(int inAngle, int inDistance);
 
@@ -48,8 +59,8 @@ class SoundEngine
         static int mNumChannels;
         static int mAudioBufferSize;
 
-        static Mix_Music* mBackgroundMusic;
-        static Mix_Chunk* mTankFire;
+        static Music mBackgroundMusic;
+        static SoundEffect mTankFire;
         static int mChannel;
         static int mMusicVolume;
 };
