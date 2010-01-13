@@ -44,9 +44,16 @@ class Config
 template<class T>
 T Config::get(const char* inKey, T inDefault)
 {
-    T outValue = inDefault;
+    T outValue;
+
     stringstream ss;
-    ss << getRaw(inKey);
+    ss << inDefault;
+    string s(ss.str());
+
+    ss.str(string());
+    ss.clear();
+
+    ss << getRaw(inKey, s.c_str());
     if(ss.str().length() > 0) ss >> outValue;
     return outValue;
 }
