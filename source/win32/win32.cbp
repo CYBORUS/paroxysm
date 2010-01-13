@@ -48,10 +48,12 @@
 		<Unit filename="..\Config.h" />
 		<Unit filename="..\DisplayEngine.cpp" />
 		<Unit filename="..\DisplayEngine.h" />
+		<Unit filename="..\Matrix.h" />
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />
 		<Unit filename="..\SoundEngine.cpp" />
 		<Unit filename="..\SoundEngine.h" />
+		<Unit filename="..\Vector3D.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>
 			<code_completion />

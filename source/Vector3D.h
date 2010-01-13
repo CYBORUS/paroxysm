@@ -34,7 +34,7 @@ class Vector3D
         const Vector3D<T> operator^(const Vector3D<T>& inVector) const;
         T& operator[](int inIndex);
         T operator[](int inIndex) const;
-        T* array() const;
+        T* array();
 
     private:
         T mVector[4];
@@ -219,7 +219,7 @@ T Vector3D<T>::get(int inIndex) const
 }
 
 template<class T>
-T* Vector3D<T>::array() const
+T* Vector3D<T>::array()
 {
     return mVector;
 }
