@@ -74,11 +74,11 @@ void DisplayEngine::start(Module* inModule)
             {
                 glClear(GL_COLOR_BUFFER_BIT);
                 currentModule->onFrame();
-                SDL_GL_SwapBuffers();
                 nextFrame += FRAME_LENGTH;
+                SDL_Delay(1); // prevent CPU abuse
             }
+            SDL_GL_SwapBuffers();
 
-            SDL_Delay(1); // prevent CPU abuse
         }
 
         Module* deadModule = currentModule;
