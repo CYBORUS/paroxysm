@@ -34,9 +34,10 @@ class Vector3D
         const Vector3D<T> operator^(const Vector3D<T>& inVector) const;
         T& operator[](int inIndex);
         T operator[](int inIndex) const;
+        T* array() const;
 
     private:
-        T mVector[3];
+        T mVector[4];
 };
 
 template<class T>
@@ -45,6 +46,7 @@ Vector3D<T>::Vector3D()
     mVector[0] = 0.0;
     mVector[1] = 0.0;
     mVector[2] = 0.0;
+    mVector[3] = 0.0;
 }
 
 template<class T>
@@ -53,6 +55,7 @@ Vector3D<T>::Vector3D(const Vector3D<T>& inVector)
     mVector[0] = inVector.mVector[0];
     mVector[1] = inVector.mVector[1];
     mVector[2] = inVector.mVector[2];
+    mVector[3] = inVector.mVector[3];
 }
 
 template<class T>
@@ -62,7 +65,7 @@ Matrix<T> Vector3D<T>::toMatrix() const
     outMatrix[0] = mVector[0];
     outMatrix[1] = mVector[1];
     outMatrix[2] = mVector[2];
-    outMatrix[3] = 1;
+    outMatrix[3] = mVector[3];
     return outMatrix;
 }
 
@@ -115,6 +118,7 @@ Vector3D<T>& Vector3D<T>::operator=(const Vector3D<T>& inVector)
     mVector[0] = inVector.mVector[0];
     mVector[1] = inVector.mVector[1];
     mVector[2] = inVector.mVector[2];
+    mVector[3] = inVector.mVector[3];
     return *this;
 }
 
@@ -212,6 +216,12 @@ T Vector3D<T>::get(int inIndex) const
 {
     if (inIndex < 0 || inIndex > 2) return 0.0;
     return mVector[inIndex];
+}
+
+template<class T>
+T* Vector3D<T>::array() const
+{
+    return mVector;
 }
 
 template<class T>

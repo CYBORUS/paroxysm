@@ -18,7 +18,6 @@
 #ifndef SOUNDENGINE_H
 #define SOUNDENGINE_H
 
-
 #include "Config.h"
 
 #include <SDL.h>
