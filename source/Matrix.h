@@ -110,19 +110,19 @@ Matrix<T>::~Matrix()
 }
 
 template<class T>
-int Matrix<T>::rows() const
+inline int Matrix<T>::rows() const
 {
     return mRows;
 }
 
 template<class T>
-int Matrix<T>::cols() const
+inline int Matrix<T>::cols() const
 {
     return mCols;
 }
 
 template<class T>
-int Matrix<T>::size() const
+inline int Matrix<T>::size() const
 {
     return mSize;
 }

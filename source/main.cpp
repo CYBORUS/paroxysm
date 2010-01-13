@@ -19,7 +19,6 @@
 #include "DisplayEngine.h"
 #include "BlankWindow.h"
 #include "SoundEngine.h"
-#include "Vector3D.h"
 
 int main(int argc, char** argv)
 {

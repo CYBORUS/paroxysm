@@ -57,12 +57,15 @@ void DisplayEngine::start(Module* inModule)
         while (currentModule->isRunning())
         {
             while (SDL_PollEvent(&event)) currentModule->onEvent(&event);
-            //currentModule->onLoop();
+
+            currentModule->onLoop();
+            ++framesPerSecond;
+
             unsigned int ticks = SDL_GetTicks();
 
             if (ticks > nextSecond)
             {
-                //cout << framesPerSecond << " frames per second" << endl;
+                cout << framesPerSecond << " frames per second" << endl;
                 nextSecond += 1000u;
                 framesPerSecond = 0;
             }
@@ -73,7 +76,6 @@ void DisplayEngine::start(Module* inModule)
                 currentModule->onFrame();
                 SDL_GL_SwapBuffers();
                 nextFrame += FRAME_LENGTH;
-                ++framesPerSecond;
             }
 
             SDL_Delay(1); // prevent CPU abuse

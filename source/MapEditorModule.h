@@ -16,7 +16,9 @@ class MapEditorModule : public Module
         virtual void onCleanup() = 0;
 
     private:
-        Matrix<int> mTerrain;
+        Matrix<int> mTerrainHeight;
+        GLfloat* mTerrainVertices;
+        GLubyte* mTerrainIndices;
 };
 
 #endif
