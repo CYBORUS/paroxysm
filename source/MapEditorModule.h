@@ -7,7 +7,7 @@
 
 #include <SDL_opengl.h>
 
-#define DEFAULT_TERRAIN_SIZE 40
+#define DEFAULT_TERRAIN_SIZE 10
 #define TRACKBALL_STEP 1.0f
 
 class MapEditorModule : public Module

@@ -5,6 +5,7 @@ bool MapEditorModule::onInit()
 {
     mRunning = true;
     mTerrainHeight = Matrix<int>(DEFAULT_TERRAIN_SIZE, DEFAULT_TERRAIN_SIZE);
+    mTerrainHeight(2, 2) = 3;
     mTerrainVertices = new GLfloat[mTerrainHeight.size() * 3];
 
     for (int i = 0; i < mTerrainHeight.rows(); ++i)
@@ -15,7 +16,7 @@ bool MapEditorModule::onInit()
             mTerrainVertices[k] = static_cast<GLfloat>(j);
             mTerrainVertices[k + 1] = static_cast<GLfloat>(mTerrainHeight(i, j))
                 * 0.5f;
-            mTerrainVertices[i] = static_cast<GLfloat>(i) * 0.5f;
+            mTerrainVertices[k + 2] = static_cast<GLfloat>(i) * 0.5f;
         }
     }
 
@@ -23,7 +24,6 @@ bool MapEditorModule::onInit()
         + 1;
     mTerrainIndices = new GLubyte[mNumIndices];
     mTerrainIndices[0] = 0;
-    //cerr << "number of indices: " << mNumIndices << endl;
 
     int t = 1;
     for (int i = 0; i < mTerrainHeight.rows() - 1; ++i)
@@ -50,15 +50,14 @@ bool MapEditorModule::onInit()
         mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
     }
 
-    mTrackball[0] = 45.0f;
-
-    SDL_ShowCursor(SDL_DISABLE);
+    mTrackball[2] = 10.0f;
 
     int w = SDL_GetVideoSurface()->w;
     mCenterX = w / 2;
     int h = SDL_GetVideoSurface()->h;
     mCenterY = h / 2;
 
+    SDL_ShowCursor(SDL_DISABLE);
     glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 
     glMatrixMode(GL_PROJECTION);
@@ -79,8 +78,6 @@ void MapEditorModule::onLoop()
     glTranslatef(0.0f, 0.0f, -mTrackball[2]);
     glRotatef(mTrackball[0], 1.0f, 0.0f, 0.0f);
     glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
-
-    //glTranslatef(0.0f, 0.0f, -20.0f);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);

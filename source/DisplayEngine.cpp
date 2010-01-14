@@ -66,7 +66,7 @@ void DisplayEngine::start(Module* inModule)
 
             if (ticks > nextSecond)
             {
-                cout << framesPerSecond << " frames per second" << endl;
+                //cout << framesPerSecond << " frames per second" << endl;
                 nextSecond += 1000u;
                 framesPerSecond = 0;
             }
