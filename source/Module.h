@@ -20,8 +20,7 @@
 
 #include <SDL.h>
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <SDL_opengl.h>
 
 class Module
 {
