@@ -1,12 +1,14 @@
 #include "MapEditorModule.h"
 #include "DisplayEngine.h"
+#include "Config.h"
 
 bool MapEditorModule::onInit()
 {
     mRunning = true;
     mTrackMode = false;
 
-    mTerrainHeight = Matrix<int>(DEFAULT_TERRAIN_SIZE, DEFAULT_TERRAIN_SIZE);
+    int ts = Config::get<int>("terrain size", 10);
+    mTerrainHeight = Matrix<int>(ts, ts);
     mTerrainHeight(2, 2) = 3;
     mTerrainVertices = new GLfloat[mTerrainHeight.size() * 3];
 
@@ -22,34 +24,35 @@ bool MapEditorModule::onInit()
         }
     }
 
-    mNumIndices = (mTerrainHeight.rows() - 1) * (mTerrainHeight.cols() * 2 - 1)
-        + 1;
+    mNumIndices = (mTerrainHeight.rows() - 1) * (mTerrainHeight.cols() - 1) * 6;
     mTerrainIndices = new GLubyte[mNumIndices];
-    mTerrainIndices[0] = 0;
 
-    int t = 1;
+    int t = 0;
     for (int i = 0; i < mTerrainHeight.rows() - 1; ++i)
     {
-        int j;
+        for (int j = 0; j < mTerrainHeight.cols() - 1; ++j)
+        {
+            int slant = ((i % 2) + (j % 2)) % 2;
 
-        if (i % 2)
-        {
-            for (j = mTerrainHeight.cols() - 1; j > 0; --j)
-            {
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j - 1);
-            }
-        }
-        else
-        {
-            for (j = 0; j < mTerrainHeight.cols() - 1; ++j)
+            mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j);
+
+            if (slant)
             {
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
+            }
+            else
+            {
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j);
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
             }
         }
-
-        mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
     }
 
     mTrackball[2] = 10.0f;
@@ -83,7 +86,7 @@ void MapEditorModule::onLoop()
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
-    glDrawElements(GL_TRIANGLE_STRIP, mNumIndices, GL_UNSIGNED_BYTE,
+    glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_BYTE,
         mTerrainIndices);
     glPopMatrix();
 }
