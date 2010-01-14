@@ -20,6 +20,9 @@
 
 #include <SDL.h>
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 class Module
 {
     public:

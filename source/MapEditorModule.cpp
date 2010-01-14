@@ -64,6 +64,7 @@ bool MapEditorModule::onInit()
     glMatrixMode(GL_PROJECTION);
     gluPerspective(FIELD_OF_VIEW, (GLdouble)w / (GLdouble)h, NEAR_CP, FAR_CP);
 
+
     glMatrixMode(GL_MODELVIEW);
 
     return true;
@@ -96,6 +97,7 @@ void MapEditorModule::onCleanup()
     delete [] mTerrainVertices;
     delete [] mTerrainIndices;
 }
+
 
 void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {

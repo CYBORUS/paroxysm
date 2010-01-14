@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Matrix.h"
+#include "TSphere.h"
 #include "Vector3D.h"
 
 #include <SDL_opengl.h>
@@ -17,6 +18,7 @@ class MapEditorModule : public Module
         virtual bool onInit();
         virtual void onLoop();
         virtual void onFrame();
+
         virtual void onCleanup();
 
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
@@ -29,6 +31,8 @@ class MapEditorModule : public Module
         Matrix<int> mTerrainHeight;
         GLfloat* mTerrainVertices;
         GLubyte* mTerrainIndices;
+
+        TSphere mSphere;
         GLsizei mNumIndices;
         Vector3D<GLfloat> mTrackball;
         int mCenterX;

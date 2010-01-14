@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "SoundEngine.h"
+#include "DisplayEngine.h"
 
 class BlankWindow : public Module
 {
