@@ -18,7 +18,7 @@ bool MapEditorModule::onInit()
             mTerrainVertices[k] = static_cast<GLfloat>(j);
             mTerrainVertices[k + 1] = static_cast<GLfloat>(mTerrainHeight(i, j))
                 * 0.5f;
-            mTerrainVertices[k + 2] = static_cast<GLfloat>(i) * 0.5f;
+            mTerrainVertices[k + 2] = static_cast<GLfloat>(i);
         }
     }
 
