@@ -20,6 +20,7 @@ class MapEditorModule : public Module
         virtual void onCleanup();
 
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onLButtonDown(int inX, int inY);
         virtual void onMouseWheel(bool inUp, bool inDown);
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
@@ -32,6 +33,7 @@ class MapEditorModule : public Module
         Vector3D<GLfloat> mTrackball;
         int mCenterX;
         int mCenterY;
+        bool mTrackMode;
 };
 
 #endif

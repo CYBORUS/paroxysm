@@ -4,6 +4,8 @@
 bool MapEditorModule::onInit()
 {
     mRunning = true;
+    mTrackMode = false;
+
     mTerrainHeight = Matrix<int>(DEFAULT_TERRAIN_SIZE, DEFAULT_TERRAIN_SIZE);
     mTerrainHeight(2, 2) = 3;
     mTerrainVertices = new GLfloat[mTerrainHeight.size() * 3];
@@ -57,7 +59,6 @@ bool MapEditorModule::onInit()
     int h = SDL_GetVideoSurface()->h;
     mCenterY = h / 2;
 
-    SDL_ShowCursor(SDL_DISABLE);
     glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 
     glMatrixMode(GL_PROJECTION);
@@ -92,8 +93,6 @@ void MapEditorModule::onFrame()
 
 void MapEditorModule::onCleanup()
 {
-    SDL_ShowCursor(SDL_ENABLE);
-
     delete [] mTerrainVertices;
     delete [] mTerrainIndices;
 }
@@ -120,10 +119,25 @@ void MapEditorModule::onMouseWheel(bool inUp, bool inDown)
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
-    if (inX == mCenterX && inY == mCenterY) return;
+    if (!mTrackMode || (inX == mCenterX && inY == mCenterY)) return;
 
     mTrackball[1] += static_cast<GLfloat>(inX - mCenterX) * TRACKBALL_STEP;
     mTrackball[0] += static_cast<GLfloat>(inY - mCenterY) * TRACKBALL_STEP;
 
     SDL_WarpMouse(mCenterX, mCenterY);
+}
+
+void MapEditorModule::onLButtonDown(int inX, int inY)
+{
+    if (mTrackMode)
+    {
+        SDL_ShowCursor(SDL_ENABLE);
+    }
+    else
+    {
+        SDL_WarpMouse(mCenterX, mCenterY);
+        SDL_ShowCursor(SDL_DISABLE);
+    }
+
+    mTrackMode = !mTrackMode;
 }
