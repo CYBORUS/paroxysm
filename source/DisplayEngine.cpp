@@ -59,6 +59,7 @@ void DisplayEngine::start(Module* inModule)
             while (SDL_PollEvent(&event)) currentModule->onEvent(&event);
 
             currentModule->onLoop();
+            SDL_GL_SwapBuffers();
             ++framesPerSecond;
 
             unsigned int ticks = SDL_GetTicks();
@@ -75,10 +76,9 @@ void DisplayEngine::start(Module* inModule)
                 glClear(GL_COLOR_BUFFER_BIT);
                 currentModule->onFrame();
                 nextFrame += FRAME_LENGTH;
-                SDL_Delay(1); // prevent CPU abuse
             }
-            SDL_GL_SwapBuffers();
 
+            SDL_Delay(1); // prevent CPU abuse
         }
 
         Module* deadModule = currentModule;

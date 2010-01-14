@@ -23,6 +23,7 @@ class Matrix
         bool square() const;
         T at(int inIndex) const;
         T at(int inRow, int inCol) const;
+        int toIndex(int inRow, int inCol) const;
         void set(int inRow, int inCol, T inValue);
         T determinant() const;
         Matrix<T> subMatrix(int inRow, int inCol, int inHeight, int inWidth);
@@ -164,11 +165,20 @@ T Matrix<T>::at(int inIndex) const
 template<class T>
 T Matrix<T>::at(int inRow, int inCol) const
 {
-    if (inRow < 0 || inCol < 0) return 0.0;
+    if (inRow < 0 || inCol < 0) return 0;
 
     inRow %= mRows;
     inCol %= mCols;
     return mMatrix[(inRow * mCols) + inCol];
+}
+
+template<class T>
+int Matrix<T>::toIndex(int inRow, int inCol) const
+{
+    if (inRow < 0 || inCol < 0) return 0;
+    inRow %= mRows;
+    inCol %= mCols;
+    return (inRow * mCols) + inCol;
 }
 
 template<class T>
