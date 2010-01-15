@@ -143,6 +143,7 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             mTrackball[2] = 20.0f;
             mPanning[0] = static_cast<GLfloat>(mTerrainHeight.cols()) / -2.0f;
             mPanning[2] = static_cast<GLfloat>(mTerrainHeight.rows()) / -2.0f;
+            break;
         }
 
         default:
