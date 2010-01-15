@@ -31,6 +31,8 @@ class MapEditorModule : public Module
         GLfloat* mTerrainVertices;
         GLuint* mTerrainIndices;
 
+        GLuint mList;
+
         TSphere mSphere;
         GLsizei mNumIndices;
         Vector3D<GLfloat> mTrackball;

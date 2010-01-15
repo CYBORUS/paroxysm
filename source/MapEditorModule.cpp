@@ -12,6 +12,9 @@ bool MapEditorModule::onInit()
 
     mTerrainVertices = new GLfloat[mTerrainHeight.size() * 3];
 
+    mTerrainHeight(1,1) = 3;
+    mTerrainHeight(4,1) = 3;
+
     for (int i = 0; i < mTerrainHeight.rows(); ++i)
     {
         for (int j = 0; j < mTerrainHeight.cols(); ++j)
@@ -24,6 +27,8 @@ bool MapEditorModule::onInit()
         }
     }
 
+    cerr << "rows: " << mTerrainHeight.rows() << " cols: " << mTerrainHeight.cols() << endl;
+
     mNumIndices = (mTerrainHeight.rows() - 1) * (mTerrainHeight.cols() - 1) * 6;
     mTerrainIndices = new GLuint[mNumIndices];
 
@@ -33,6 +38,7 @@ bool MapEditorModule::onInit()
         for (int j = 0; j < mTerrainHeight.cols() - 1; ++j)
         {
             int slant = ((i % 2) + (j % 2)) % 2;
+            //int slant = false;
 
             mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j);
             mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
@@ -54,7 +60,8 @@ bool MapEditorModule::onInit()
         }
     }
 
-    mTrackball[2] = 10.0f;
+
+    mTrackball[2] = 20.0f;
 
     int w = SDL_GetVideoSurface()->w;
     mCenterX = w / 2;
@@ -68,7 +75,20 @@ bool MapEditorModule::onInit()
 
 
     glMatrixMode(GL_MODELVIEW);
+/*
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
 
+    glNewList(mList, GL_COMPILE);
+    {
+
+        glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
+            mTerrainIndices);
+    }
+    glEndList();
+
+        glDisableClientState(GL_VERTEX_ARRAY);
+*/
     return true;
 }
 
@@ -83,10 +103,13 @@ void MapEditorModule::onLoop()
     glRotatef(mTrackball[0], 1.0f, 0.0f, 0.0f);
     glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
 
+    //glCallList(mList);
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
         mTerrainIndices);
+
     glPopMatrix();
 }
 
