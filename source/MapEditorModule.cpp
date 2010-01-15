@@ -9,11 +9,10 @@ bool MapEditorModule::onInit()
 
     int ts = Config::get<int>("terrain size", 10);
     mTerrainHeight = Matrix<int>(ts, ts);
+    for (int i = 0; i < mTerrainHeight.size(); ++i)
+        mTerrainHeight[i] = rand() % 3;
 
     mTerrainVertices = new GLfloat[mTerrainHeight.size() * 3];
-
-    mTerrainHeight(1,1) = 3;
-    mTerrainHeight(4,1) = 3;
 
     for (int i = 0; i < mTerrainHeight.rows(); ++i)
     {
