@@ -16,4 +16,4 @@ class BlankWindow : public Module
     private:
 };
 
-#endif // _BLANKWINDOW_H_
+#endif

@@ -66,7 +66,7 @@ void SoundEngine::initialize()
 }
 
 
-void SoundEngine::loadBackgroundMusic(char* inFile)
+void SoundEngine::loadBackgroundMusic(const char* inFile)
 {
     stringstream music;
     music << "./assets/audio/" << inFile;
@@ -124,7 +124,7 @@ void SoundEngine::stopBackgroundMusic()
     //mBackgroundMusic = NULL;
 }
 
-SoundEffect SoundEngine::loadSound(char* inFile)
+SoundEffect SoundEngine::loadSound(const char* inFile)
 {
     SoundEffect sound;
     stringstream soundFile;

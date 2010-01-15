@@ -35,7 +35,7 @@ class SoundEngine
     public:
         static void initialize();
 
-        static void loadBackgroundMusic(char* inFile);
+        static void loadBackgroundMusic(const char* inFile);
 
         static void playBackgroundMusic();
         static void stopBackgroundMusic();
@@ -43,7 +43,7 @@ class SoundEngine
         static void increaseMusicVolume();
         static void decreaseMusicVolume();
 
-        static SoundEffect loadSound(char* inFile);
+        static SoundEffect loadSound(const char* inFile);
         static void unloadSound(SoundEffect inSound);
 
         static void playSound(SoundEffect inSound);

@@ -2,8 +2,7 @@
 #define TSPHERE_H
 
 //#include "NodeReader.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <SDL_opengl.h>
 
 #include "Vector3D.h"
 

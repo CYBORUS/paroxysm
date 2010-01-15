@@ -9,7 +9,10 @@ bool MapEditorModule::onInit()
 
     int ts = Config::get<int>("terrain size", 10);
     mTerrainHeight = Matrix<int>(ts, ts);
-    mTerrainHeight(2, 2) = 3;
+
+    mTerrainHeight(2, 2) = 3; // arbitrary test
+    mTerrainHeight(2, 3) = 2; // arbitrary test
+
     mTerrainVertices = new GLfloat[mTerrainHeight.size() * 3];
 
     for (int i = 0; i < mTerrainHeight.rows(); ++i)
@@ -35,10 +38,10 @@ bool MapEditorModule::onInit()
             int slant = ((i % 2) + (j % 2)) % 2;
 
             mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j);
+            mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
 
             if (slant)
             {
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
@@ -46,7 +49,6 @@ bool MapEditorModule::onInit()
             }
             else
             {
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);

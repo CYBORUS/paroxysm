@@ -1,5 +1,7 @@
 #include "BlankWindow.h"
 
+#include <SDL_opengl.h>
+
 bool BlankWindow::onInit()
 {
     mRunning = true;
