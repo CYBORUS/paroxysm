@@ -41,8 +41,8 @@ bool MapEditorModule::onInit()
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
                 mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
+                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
             }
             else
             {
