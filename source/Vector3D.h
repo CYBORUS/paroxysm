@@ -43,10 +43,10 @@ class Vector3D
 template<class T>
 Vector3D<T>::Vector3D()
 {
-    mVector[0] = 0.0;
-    mVector[1] = 0.0;
-    mVector[2] = 0.0;
-    mVector[3] = 0.0;
+    mVector[0] = 0;
+    mVector[1] = 0;
+    mVector[2] = 0;
+    mVector[3] = 0;
 }
 
 template<class T>
