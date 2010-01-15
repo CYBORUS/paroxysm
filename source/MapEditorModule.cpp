@@ -128,10 +128,27 @@ void MapEditorModule::onCleanup()
 
 void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    if (inSym == SDLK_ESCAPE)
+    switch (inSym)
     {
-        mRunning = false;
-        return;
+        case SDLK_ESCAPE:
+        {
+            mRunning = false;
+            break;
+        }
+
+        case SDLK_SPACE:
+        {
+            mTrackball[0] = 22.0f;
+            mTrackball[1] = 0.0f;
+            mTrackball[2] = 20.0f;
+            mPanning[0] = static_cast<GLfloat>(mTerrainHeight.cols()) / -2.0f;
+            mPanning[2] = static_cast<GLfloat>(mTerrainHeight.rows()) / -2.0f;
+        }
+
+        default:
+        {
+            break;
+        }
     }
 }
 
