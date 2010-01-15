@@ -3,12 +3,15 @@
 
 #include "Module.h"
 #include "Matrix.h"
-#include "TSphere.h"
 #include "Vector3D.h"
 
 #include <SDL_opengl.h>
 
 #define TRACKBALL_STEP 1.0f
+#define PANNING_STEP 0.1f
+#define MM_DEFAULT 0
+#define MM_PANNING 1
+#define MM_ROTATING 2
 
 class MapEditorModule : public Module
 {
@@ -22,6 +25,9 @@ class MapEditorModule : public Module
 
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onLButtonDown(int inX, int inY);
+        virtual void onLButtonUp(int inX, int inY);
+        virtual void onRButtonDown(int inX, int inY);
+        virtual void onRButtonUp(int inX, int inY);
         virtual void onMouseWheel(bool inUp, bool inDown);
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
@@ -33,12 +39,14 @@ class MapEditorModule : public Module
 
         GLuint mList;
 
-        TSphere mSphere;
         GLsizei mNumIndices;
         Vector3D<GLfloat> mTrackball;
+        Vector3D<GLfloat> mPanning;
         int mCenterX;
         int mCenterY;
-        bool mTrackMode;
+        int mOldMouseX;
+        int mOldMouseY;
+        int mMouseMode;
 };
 
 #endif
