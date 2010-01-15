@@ -29,7 +29,7 @@ class MapEditorModule : public Module
     private:
         Matrix<int> mTerrainHeight;
         GLfloat* mTerrainVertices;
-        GLubyte* mTerrainIndices;
+        GLuint* mTerrainIndices;
 
         TSphere mSphere;
         GLsizei mNumIndices;

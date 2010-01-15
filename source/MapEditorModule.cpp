@@ -10,9 +10,6 @@ bool MapEditorModule::onInit()
     int ts = Config::get<int>("terrain size", 10);
     mTerrainHeight = Matrix<int>(ts, ts);
 
-    mTerrainHeight(2, 2) = 3; // arbitrary test
-    mTerrainHeight(2, 3) = 2; // arbitrary test
-
     mTerrainVertices = new GLfloat[mTerrainHeight.size() * 3];
 
     for (int i = 0; i < mTerrainHeight.rows(); ++i)
@@ -28,7 +25,7 @@ bool MapEditorModule::onInit()
     }
 
     mNumIndices = (mTerrainHeight.rows() - 1) * (mTerrainHeight.cols() - 1) * 6;
-    mTerrainIndices = new GLubyte[mNumIndices];
+    mTerrainIndices = new GLuint[mNumIndices];
 
     int t = 0;
     for (int i = 0; i < mTerrainHeight.rows() - 1; ++i)
@@ -88,7 +85,7 @@ void MapEditorModule::onLoop()
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
-    glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_BYTE,
+    glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
         mTerrainIndices);
     glPopMatrix();
 }
