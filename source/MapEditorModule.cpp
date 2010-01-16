@@ -77,8 +77,7 @@ bool MapEditorModule::onInit()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glLoadIdentity();
-
+/*
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
 
@@ -91,7 +90,7 @@ bool MapEditorModule::onInit()
     glEndList();
 
         glDisableClientState(GL_VERTEX_ARRAY);
-
+*/
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
     //glFrontFace(GL_CCW);
@@ -101,7 +100,7 @@ bool MapEditorModule::onInit()
     glEnable(GL_CULL_FACE);
     //glFrontFace(GL_CW);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glEnable(GL_DEPTH_TEST);
+
     return true;
 }
 
@@ -118,7 +117,7 @@ void MapEditorModule::onLoop()
     glTranslatef(mPanning[0], mPanning[1], mPanning[2]);
 
     //glCallList(mList);
-
+    glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
         mTerrainIndices);

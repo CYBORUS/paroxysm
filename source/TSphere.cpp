@@ -48,7 +48,7 @@ void TSphere::display()
 {
     glPushAttrib(GL_POLYGON_BIT);
     {
-        glPolygonMode(GL_FRONT, GL_FILL);
+        glPolygonMode(GL_FRONT, GL_LINE);
         if (!mFill)
         {
             glPolygonMode(GL_FRONT, GL_LINE);
