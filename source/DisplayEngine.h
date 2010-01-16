@@ -24,7 +24,7 @@ typedef SDL_Surface* Surface;
 #define ENGINE_FPS 60
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
 #define FIELD_OF_VIEW 30.0
-#define NEAR_CP 0.0
+#define NEAR_CP 1.0
 #define FAR_CP 1000.0
 
 class Module;

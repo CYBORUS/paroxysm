@@ -67,13 +67,14 @@ bool MapEditorModule::onInit()
     int h = SDL_GetVideoSurface()->h;
     mCenterY = h / 2;
 
-    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-
     glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
     gluPerspective(FIELD_OF_VIEW, (GLdouble)w / (GLdouble)h, NEAR_CP, FAR_CP);
 
 
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 /*
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
@@ -88,13 +89,17 @@ bool MapEditorModule::onInit()
 
         glDisableClientState(GL_VERTEX_ARRAY);
 */
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnable(GL_CULL_FACE);
+    //glFrontFace(GL_CW);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glEnable(GL_DEPTH_TEST);
     return true;
 }
 
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glPushMatrix();
 
@@ -106,7 +111,6 @@ void MapEditorModule::onLoop()
 
     //glCallList(mList);
 
-    glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
         mTerrainIndices);

@@ -73,7 +73,6 @@ void DisplayEngine::start(Module* inModule)
 
             if (ticks > nextFrame)
             {
-                glClear(GL_COLOR_BUFFER_BIT);
                 currentModule->onFrame();
                 nextFrame += FRAME_LENGTH;
             }
@@ -127,12 +126,18 @@ void DisplayEngine::initialize()
             cout << "  " << mModes[i]->w << " x " << mModes[i]->h << endl;
     }
 
+    cerr << "SDL_GL_ACCELERATED_VISUAL -- "
+        << SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1) << endl;
+    cerr << "SDL_GL_DOUBLEBUFFER -- "
+        << SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1) << endl;
+    cerr << "SDL_GL_DEPTH_SIZE -- "
+        << SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16) << endl;
+
     int width = Config::get<int>("display width", 800);
     int height = Config::get<int>("display height", 600);
 
     Uint32 flags = SDL_OPENGL;
     if (Config::get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     mDisplay = SDL_SetVideoMode(width, height,
         Config::get<int>("bits per pixel", 0), flags);
 
@@ -142,10 +147,10 @@ void DisplayEngine::initialize()
     //if (mWindowIcon != NULL) SDL_WM_SetIcon(mWindowIcon, NULL);
     #endif
 
-    SDL_WM_SetCaption("Paroxysm version 0.0.1","Paroxysm");
-
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    SDL_WM_SetCaption("Paroxysm version 0.0.1","Paroxysm");
 }
 
 void DisplayEngine::cleanup()
