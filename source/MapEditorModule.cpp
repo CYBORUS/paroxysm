@@ -216,40 +216,50 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
 void MapEditorModule::onLButtonDown(int inX, int inY)
 {
-    if (mMouseMode != MM_DEFAULT) return;
+    Uint8* keyState = SDL_GetKeyState(NULL);
 
-    SDL_ShowCursor(SDL_DISABLE);
-    mOldMouseX = inX;
-    mOldMouseY = inY;
-    SDL_WarpMouse(mCenterX, mCenterY);
-    mMouseMode = MM_PANNING;
+    if (keyState[SDLK_LSHIFT])
+    {
+        cerr << "left shift down" << endl;
+    }
+    else if (mMouseMode == MM_DEFAULT)
+    {
+        SDL_ShowCursor(SDL_DISABLE);
+        mOldMouseX = inX;
+        mOldMouseY = inY;
+        SDL_WarpMouse(mCenterX, mCenterY);
+        mMouseMode = MM_PANNING;
+    }
 }
 
 void MapEditorModule::onLButtonUp(int inX, int inY)
 {
-    if (mMouseMode != MM_PANNING) return;
-
-    mMouseMode = MM_DEFAULT;
-    SDL_WarpMouse(mOldMouseX, mOldMouseY);
-    SDL_ShowCursor(SDL_ENABLE);
+    if (mMouseMode == MM_PANNING)
+    {
+        mMouseMode = MM_DEFAULT;
+        SDL_WarpMouse(mOldMouseX, mOldMouseY);
+        SDL_ShowCursor(SDL_ENABLE);
+    }
 }
 
 void MapEditorModule::onRButtonDown(int inX, int inY)
 {
-    if (mMouseMode != MM_DEFAULT) return;
-
-    SDL_ShowCursor(SDL_DISABLE);
-    mOldMouseX = inX;
-    mOldMouseY = inY;
-    SDL_WarpMouse(mCenterX, mCenterY);
-    mMouseMode = MM_ROTATING;
+    if (mMouseMode == MM_DEFAULT)
+    {
+        SDL_ShowCursor(SDL_DISABLE);
+        mOldMouseX = inX;
+        mOldMouseY = inY;
+        SDL_WarpMouse(mCenterX, mCenterY);
+        mMouseMode = MM_ROTATING;
+    }
 }
 
 void MapEditorModule::onRButtonUp(int inX, int inY)
 {
-    if (mMouseMode != MM_ROTATING) return;
-
-    mMouseMode = MM_DEFAULT;
-    SDL_WarpMouse(mOldMouseX, mOldMouseY);
-    SDL_ShowCursor(SDL_ENABLE);
+    if (mMouseMode == MM_ROTATING)
+    {
+        mMouseMode = MM_DEFAULT;
+        SDL_WarpMouse(mOldMouseX, mOldMouseY);
+        SDL_ShowCursor(SDL_ENABLE);
+    }
 }
