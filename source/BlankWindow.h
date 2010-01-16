@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "SoundEngine.h"
 #include "DisplayEngine.h"
+#include "TSphere.h"
 
 class BlankWindow : public Module
 {
@@ -12,8 +13,11 @@ class BlankWindow : public Module
         virtual bool onInit();
         virtual void onCleanup();
 
+        void onLoop();
+
         void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
     private:
+        TSphere mSphere;
 };
 
 #endif

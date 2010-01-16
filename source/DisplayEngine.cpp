@@ -130,16 +130,18 @@ void DisplayEngine::initialize()
         << SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1) << endl;
     cerr << "SDL_GL_DOUBLEBUFFER -- "
         << SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1) << endl;
-    cerr << "SDL_GL_DEPTH_SIZE -- "
-        << SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16) << endl;
+    //cerr << "SDL_GL_DEPTH_SIZE -- "
+        //<< SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16) << endl;
 
     int width = Config::get<int>("display width", 800);
     int height = Config::get<int>("display height", 600);
 
     Uint32 flags = SDL_OPENGL;
+
     if (Config::get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
+
     mDisplay = SDL_SetVideoMode(width, height,
-        Config::get<int>("bits per pixel", 0), flags);
+        Config::get<int>("bits per pixel", 32), flags);
 
     #ifndef __APPLE__
     // OSX does not support window icons

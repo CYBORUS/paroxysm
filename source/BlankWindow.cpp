@@ -17,7 +17,18 @@ bool BlankWindow::onInit()
 
     glMatrixMode(GL_MODELVIEW);
 
+    mSphere.setup();
+
     return true;
+}
+
+void BlankWindow::onLoop()
+{
+    glPushMatrix();
+
+    glTranslatef(0.0f, 0.0f, -10.0f);
+    mSphere.display();
+    glPopMatrix();
 }
 
 void BlankWindow::onCleanup()

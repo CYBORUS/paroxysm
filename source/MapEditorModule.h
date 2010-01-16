@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Matrix.h"
 #include "Vector3D.h"
+#include "TSphere.h"
 
 #include <SDL_opengl.h>
 
@@ -38,6 +39,8 @@ class MapEditorModule : public Module
         GLuint* mTerrainIndices;
 
         GLuint mList;
+
+        TSphere mSphere;
 
         GLsizei mNumIndices;
         Vector3D<GLfloat> mTrackball;

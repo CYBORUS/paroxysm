@@ -7,6 +7,8 @@ bool MapEditorModule::onInit()
     mRunning = true;
     mMouseMode = MM_DEFAULT;
 
+    mSphere.setup();
+
     int ts = Config::get<int>("terrain size", 10);
     mTerrainHeight = Matrix<int>(ts, ts);
     for (int i = 0; i < mTerrainHeight.size(); ++i)
@@ -75,7 +77,8 @@ bool MapEditorModule::onInit()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-/*
+    glLoadIdentity();
+
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
 
@@ -88,7 +91,12 @@ bool MapEditorModule::onInit()
     glEndList();
 
         glDisableClientState(GL_VERTEX_ARRAY);
-*/
+
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_BACK);
+    //glFrontFace(GL_CCW);
+
+    glEnable(GL_DEPTH_TEST);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_CULL_FACE);
     //glFrontFace(GL_CW);
@@ -114,6 +122,9 @@ void MapEditorModule::onLoop()
     glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
         mTerrainIndices);
+    glDisableClientState(GL_VERTEX_ARRAY);
+
+    mSphere.display();
 
     glPopMatrix();
 }

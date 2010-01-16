@@ -15,7 +15,7 @@ GLuint TSphere::mTIndices[20][3] =
 
 void TSphere::setup()
 {
-    mFill = false;
+    mFill = true;
 
 /*
     string fill;
@@ -46,22 +46,32 @@ void TSphere::setup()
 
 void TSphere::display()
 {
-    if (!mFill)
-        glPolygonMode(GL_FRONT, GL_LINE);
-    else
-        glShadeModel(GL_FLAT);
-
-    glPushMatrix();
+    glPushAttrib(GL_POLYGON_BIT);
     {
-        glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
-        glCallList(mID);
-    }
-    glPopMatrix();
-
-    if (!mFill)
         glPolygonMode(GL_FRONT, GL_FILL);
-    else
-        glShadeModel(GL_SMOOTH);
+        if (!mFill)
+        {
+            glPolygonMode(GL_FRONT, GL_LINE);
+        }
+        else
+        {
+            glShadeModel(GL_FLAT);
+        }
+
+        glPushMatrix();
+        {
+            glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
+            glCallList(mID);
+        }
+        glPopMatrix();
+/*
+        if (!mFill)
+            glPolygonMode(GL_FRONT, GL_FILL);
+        else
+            glShadeModel(GL_SMOOTH);
+            */
+    }
+    glPopAttrib();
 }
 
 void TSphere::moveSphere(int inX, int inY, int inZ)

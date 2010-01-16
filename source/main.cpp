@@ -21,14 +21,17 @@
 
 #include "MapEditorModule.h"
 
+#include "BlankWindow.h"
+
 int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
-    //SoundEngine::initialize();
     DisplayEngine::initialize();
+    SoundEngine::initialize();
 
     Config::outputSettings();
 
     DisplayEngine::start(new MapEditorModule);
+    //DisplayEngine::start(new BlankWindow);
     return 0;
 }

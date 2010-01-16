@@ -1,4 +1,4 @@
 display width = 1024
 display height = 768
 full screen = 0
-terrain size = 20
+terrain size = 10
