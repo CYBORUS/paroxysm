@@ -76,7 +76,7 @@ bool MapEditorModule::onInit()
 
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    //glLoadIdentity();
 /*
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
@@ -221,6 +221,19 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
     if (keyState[SDLK_LSHIFT])
     {
         cerr << "left shift down" << endl;
+
+        GLfloat modelMatrix[16];
+
+        glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
+
+        cerr << "modelMatrix: \n";
+
+        cerr << modelMatrix[0] << " " << modelMatrix[4] << " " << modelMatrix[8] << " " << modelMatrix[12] << endl;
+        cerr << modelMatrix[1] << " " << modelMatrix[5] << " " << modelMatrix[9] << " " << modelMatrix[13] << endl;
+        cerr << modelMatrix[2] << " " << modelMatrix[6] << " " << modelMatrix[10] << " " << modelMatrix[14] << endl;
+        cerr << modelMatrix[3] << " " << modelMatrix[7] << " " << modelMatrix[11] << " " << modelMatrix[15] << endl;
+
+        //cerr << "x rotation: " << acos(modelMatrix[
     }
     else if (mMouseMode == MM_DEFAULT)
     {

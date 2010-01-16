@@ -8,6 +8,9 @@
 
 #include <SDL_opengl.h>
 
+#include <cmath>
+using namespace std;
+
 #define TRACKBALL_STEP 1.0f
 #define PANNING_STEP 0.1f
 #define MM_DEFAULT 0
