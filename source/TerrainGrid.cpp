@@ -1,4 +1,5 @@
 #include "TerrainGrid.h"
+#include "Vector3D.h"
 
 #include <vector>
 using namespace std;
@@ -86,10 +87,12 @@ void TerrainGrid::create(int inRows, int inCols)
 void TerrainGrid::display()
 {
     glEnableClientState(GL_VERTEX_ARRAY);
+    //glEnableClientState(GL_NORMAL_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, mVertices);
     glNormalPointer(GL_FLOAT, 0, mNormals);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
         mIndices);
+    //glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
