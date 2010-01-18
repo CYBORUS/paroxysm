@@ -37,15 +37,15 @@ void TerrainGrid::create(int inRows, int inCols)
 
             if (slant)
             {
-                mIndices[t++] = mHeights.toIndex(i, j + 1);
-                mIndices[t++] = mHeights.toIndex(i + 1, j);
+                mIndices[t++] = mHeights.toIndex(i + 1, j + 1);
+                mIndices[t++] = mHeights.toIndex(i, j);
                 mIndices[t++] = mHeights.toIndex(i + 1, j + 1);
                 mIndices[t++] = mHeights.toIndex(i, j + 1);
             }
             else
             {
-                mIndices[t++] = mHeights.toIndex(i + 1, j + 1);
-                mIndices[t++] = mHeights.toIndex(i, j);
+                mIndices[t++] = mHeights.toIndex(i, j + 1);
+                mIndices[t++] = mHeights.toIndex(i + 1, j);
                 mIndices[t++] = mHeights.toIndex(i + 1, j + 1);
                 mIndices[t++] = mHeights.toIndex(i, j + 1);
             }
@@ -146,7 +146,7 @@ void TerrainGrid::findNormal(int inRow, int inCol)
     Vector3D<GLfloat> c;
     int t;
 
-    cout << "finding normal for row " << inRow << " col " << inCol << endl;
+    cout << "\nfinding normal for row " << inRow << " col " << inCol << endl;
 
     if (slant)
     {
@@ -157,6 +157,8 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol > 0)
             {
                 // upper left triangle
+                cout << "upper left triangle" << endl;
+
                 t = mHeights.toIndex(inRow, inCol - 1) * 3;
 
                 a[0] = -1.0f;
@@ -178,6 +180,8 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol < mHeights.lastCol())
             {
                 // upper right triangle
+                cout << "upper right triangle" << endl;
+
                 t = mHeights.toIndex(inRow, inCol + 1) * 3;
 
                 a[0] = 1.0f;
@@ -202,6 +206,8 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol > 0)
             {
                 // lower left triangle
+                cout << "lower left triangle" << endl;
+
                 t = mHeights.toIndex(inRow, inCol - 1) * 3;
 
                 a[0] = -1.0f;
@@ -223,6 +229,8 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol < mHeights.lastCol())
             {
                 // lower right triangle
+                cout << "lower right triangle" << endl;
+
                 t = mHeights.toIndex(inRow, inCol + 1) * 3;
 
                 a[0] = 1.0f;
@@ -251,6 +259,8 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol > 0)
             {
                 // upper left triangles
+                cout << "upper left triangles" << endl;
+
                 t = mHeights.toIndex(inRow, inCol - 1) * 3;
 
                 a[0] = -1.0f;
@@ -283,6 +293,7 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol < mHeights.lastCol())
             {
                 // upper right triangles
+                cout << "upper right triangles" << endl;
                 t = mHeights.toIndex(inRow - 1, inCol) * 3;
 
                 a[0] = 0.0f;
@@ -318,6 +329,8 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol > 0)
             {
                 // lower left triangles
+                cout << "lower left triangles" << endl;
+
                 t = mHeights.toIndex(inRow, inCol - 1) * 3;
 
                 a[0] = -1.0f;
@@ -350,6 +363,8 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol < mHeights.lastCol())
             {
                 // lower right triangles
+                cout << "lower right triangle" << endl;
+
                 t = mHeights.toIndex(inRow, inCol + 1) * 3;
 
                 a[0] = 1.0f;
