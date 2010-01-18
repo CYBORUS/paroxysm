@@ -186,6 +186,9 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
 void MapEditorModule::onLButtonDown(int inX, int inY)
 {
+    if (mMouseMode != MM_DEFAULT) return;
+
+
     Uint8* keyState = SDL_GetKeyState(NULL);
 
     if (keyState[SDLK_LSHIFT])
@@ -210,7 +213,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
         //cerr << "x rotation: " << acos(modelMatrix[
     }
-    else if (mMouseMode == MM_DEFAULT)
+    else
     {
         SDL_ShowCursor(SDL_DISABLE);
         mOldMouseX = inX;

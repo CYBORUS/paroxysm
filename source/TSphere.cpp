@@ -45,13 +45,13 @@ void TSphere::display()
     glPushAttrib(GL_POLYGON_BIT);
     {
         glPolygonMode(GL_FRONT, GL_LINE);
+        glShadeModel(GL_SMOOTH);
         if (!mFill)
         {
             glPolygonMode(GL_FRONT, GL_LINE);
         }
         else
         {
-            glShadeModel(GL_FLAT);
         }
 
         glPushMatrix();
