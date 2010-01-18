@@ -88,6 +88,37 @@ void TerrainGrid::display()
         mIndices);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
+
+    // visualize normal vectors (debugging)
+    glPushAttrib(GL_LIGHTING_BIT);
+    {
+        glDisable(GL_LIGHTING);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glBegin(GL_LINES);
+        {
+            for (int i = 0; i < mHeights.rows(); ++i)
+            {
+                for (int j = 0; j < mHeights.cols(); ++j)
+                {
+                    int k = mHeights.toIndex(i, j) * 3;
+                    GLfloat x = static_cast<GLfloat>(j);
+                    GLfloat y = mVertices[k + 1];
+                    GLfloat z = static_cast<GLfloat>(i);
+
+                    glVertex3f(x, y, z);
+
+                    x += mNormals[k];
+                    y += mNormals[k + 1];
+                    z += mNormals[k + 2];
+
+                    glVertex3f(x, y, z);
+                }
+            }
+        }
+        glEnd();
+        glColor3f(1.0f, 1.0f, 1.0f);
+    }
+    glPopAttrib();
 }
 
 void TerrainGrid::set(int inRow, int inCol, int inHeight,
