@@ -15,7 +15,7 @@ class TerrainGrid
 
         void create(int inRows, int inCols);
         void display();
-        void set(int inRow, int inCol, int inHeight);
+        void set(int inRow, int inCol, int inHeight, bool inFindNormal);
         void findNormal(int inRow, int inCol);
 
     private:

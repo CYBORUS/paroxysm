@@ -250,8 +250,8 @@ istream& operator>>(istream& inStream, Vector3D<T>& inVector)
 template<class T>
 ostream& operator<<(ostream& inStream, const Vector3D<T>& inVector)
 {
-    inStream << '(' << inVector.x << ", " << inVector.y << ", "
-        << inVector.z << ')';
+    inStream << '(' << inVector[0] << ", " << inVector[1] << ", "
+        << inVector[2] << ')';
     return inStream;
 }
 

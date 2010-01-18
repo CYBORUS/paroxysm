@@ -22,9 +22,6 @@ void TerrainGrid::create(int inRows, int inCols)
 {
     mHeights = Matrix<int>(inRows, inCols);
 
-    for (int i = 0; i < mHeights.size(); ++i)
-        mHeights[i] = rand() % 3;
-
     mNumIndices = (mHeights.rows() - 1) * (mHeights.cols() - 1) * 6;
     mIndices = new GLuint[mNumIndices];
 
@@ -64,14 +61,11 @@ void TerrainGrid::create(int inRows, int inCols)
         for (int j = 0; j < mHeights.cols(); ++j)
         {
             int k = mHeights.toIndex(i, j) * 3;
-            mVertices[k] = static_cast<GLfloat>(j);
-            mVertices[k + 1] = static_cast<GLfloat>(mHeights(i, j))
-                * HEIGHT_SCALE;
-            mVertices[k + 2] = static_cast<GLfloat>(i);
+            set(i, j, rand() % 3, false);
 
-            mNormals[k] = 0.0f;
-            mNormals[k + 1] = 1.0f;
-            mNormals[k + 2] = 0.0f;
+            //mNormals[k] = 0.0f;
+            //mNormals[k + 1] = 1.0f;
+            //mNormals[k + 2] = 0.0f;
         }
     }
 
@@ -87,19 +81,27 @@ void TerrainGrid::create(int inRows, int inCols)
 void TerrainGrid::display()
 {
     glEnableClientState(GL_VERTEX_ARRAY);
-    //glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, mVertices);
     glNormalPointer(GL_FLOAT, 0, mNormals);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
         mIndices);
-    //glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void TerrainGrid::set(int inRow, int inCol, int inHeight)
+void TerrainGrid::set(int inRow, int inCol, int inHeight,
+    bool inFindNormal = true)
 {
     mHeights(inRow, inCol) = inHeight;
-    findNormal(inRow, inCol);
+
+    int k = mHeights.toIndex(inRow, inCol) * 3;
+    mVertices[k] = static_cast<GLfloat>(inCol);
+    mVertices[k + 1] = static_cast<GLfloat>(mHeights(inRow, inCol))
+        * HEIGHT_SCALE;
+    mVertices[k + 2] = static_cast<GLfloat>(inRow);
+
+    if (inFindNormal) findNormal(inRow, inCol);
 }
 
 void TerrainGrid::findNormal(int inRow, int inCol)
@@ -111,24 +113,227 @@ void TerrainGrid::findNormal(int inRow, int inCol)
     Vector3D<GLfloat> a;
     Vector3D<GLfloat> b;
     Vector3D<GLfloat> c;
+    int t;
 
     if (slant)
     {
+        // center of a diamond (four triangles to average)
+
         if (inRow > 0)
         {
+            if (inCol > 0)
+            {
+                t = mHeights.toIndex(inRow, inCol - 1) * 3;
+
+                a[0] = -1.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 0.0f;
+
+                t = mHeights.toIndex(inRow - 1, inCol) * 3;
+
+                b[0] = 0.0f;
+                b[1] = mNormals[t + 1] - mNormals[k + 1];
+                b[2] = -1.0f;
+
+                c = b ^ a;
+                c.normalize();
+                normals.push_back(c);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                t = mHeights.toIndex(inRow, inCol + 1) * 3;
+
+                a[0] = 1.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 0.0f;
+
+                t = mHeights.toIndex(inRow - 1, inCol) * 3;
+
+                b[0] = 0.0f;
+                b[1] = mNormals[t + 1] - mNormals[k + 1];
+                b[2] = -1.0f;
+
+                c = a ^ b;
+                c.normalize();
+                normals.push_back(c);
+            }
         }
-        else
+
+        if (inRow < mHeights.lastRow())
         {
+            if (inCol > 0)
+            {
+                t = mHeights.toIndex(inRow, inCol - 1) * 3;
+
+                a[0] = -1.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 0.0f;
+
+                t = mHeights.toIndex(inRow + 1, inCol) * 3;
+
+                b[0] = 0.0f;
+                b[1] = mNormals[t + 1] - mNormals[k + 1];
+                b[2] = -1.0f;
+
+                c = a ^ b;
+                c.normalize();
+                normals.push_back(c);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                t = mHeights.toIndex(inRow, inCol + 1) * 3;
+
+                a[0] = 1.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 0.0f;
+
+                t = mHeights.toIndex(inRow + 1, inCol) * 3;
+
+                b[0] = 0.0f;
+                b[1] = mNormals[t + 1] - mNormals[k + 1];
+                b[2] = -1.0f;
+
+                c = b ^ a;
+                c.normalize();
+                normals.push_back(c);
+            }
         }
     }
     else
     {
+        // center of a square (eight triangles to average)
+
+        if (inRow > 0)
+        {
+            if (inCol > 0)
+            {
+                t = mHeights.toIndex(inRow, inCol - 1) * 3;
+
+                a[0] = -1.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 0.0f;
+
+                t = mHeights.toIndex(inRow - 1, inCol - 1) * 3;
+
+                b[0] = -1.0f;
+                b[1] = mNormals[t + 1] - mNormals[k + 1];
+                b[2] = -1.0f;
+
+                c = b ^ a;
+                c.normalize();
+                normals.push_back(c);
+
+                t = mHeights.toIndex(inRow - 1, inCol) * 3;
+
+                a[0] = 0.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = -1.0f;
+
+                c = a ^ b;
+                c.normalize();
+                normals.push_back(c);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                t = mHeights.toIndex(inRow - 1, inCol) * 3;
+
+                a[0] = 0.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = -1.0f;
+
+                t = mHeights.toIndex(inRow - 1, inCol + 1) * 3;
+
+                b[0] = 1.0f;
+                b[1] = mNormals[t + 1] - mNormals[k + 1];
+                b[2] = -1.0f;
+
+                c = b ^ a;
+                c.normalize();
+                normals.push_back(c);
+
+                t = mHeights.toIndex(inRow, inCol + 1) * 3;
+
+                a[0] = 1.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 0.0f;
+
+                c = a ^ b;
+                c.normalize();
+                normals.push_back(c);
+            }
+        }
+
+        if (inRow < mHeights.lastRow())
+        {
+            if (inCol > 0)
+            {
+                t = mHeights.toIndex(inRow, inCol - 1) * 3;
+
+                a[0] = -1.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 0.0f;
+
+                t = mHeights.toIndex(inRow + 1, inCol - 1) * 3;
+
+                b[0] = -1.0f;
+                b[1] = mNormals[t + 1] - mNormals[k + 1];
+                b[2] = 1.0f;
+
+                c = a ^ b;
+                c.normalize();
+                normals.push_back(c);
+
+                t = mHeights.toIndex(inRow + 1, inCol) * 3;
+
+                a[0] = 0.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 1.0f;
+
+                c = b ^ a;
+                c.normalize();
+                normals.push_back(c);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                t = mHeights.toIndex(inRow, inCol + 1) * 3;
+
+                a[0] = 1.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 0.0f;
+
+                t = mHeights.toIndex(inRow + 1, inCol + 1) * 3;
+
+                b[0] = 1.0f;
+                b[1] = mNormals[t + 1] - mNormals[k + 1];
+                b[2] = 1.0f;
+
+                c = b ^ a;
+                c.normalize();
+                normals.push_back(c);
+
+                t = mHeights.toIndex(inRow + 1, inCol) * 3;
+
+                a[0] = 0.0f;
+                a[1] = mNormals[t + 1] - mNormals[k + 1];
+                a[2] = 1.0f;
+
+                c = a ^ b;
+                c.normalize();
+                normals.push_back(c);
+            }
+        }
     }
 
     Vector3D<GLfloat> normal;
-    for (int i = 0; i < normals.size(); ++i) normal += normals[i];
+    for (unsigned int i = 0; i < normals.size(); ++i) normal += normals[i];
 
     normal.normalize();
+
+    cout << "final " << normal << endl;
 
     mNormals[k] = normal[0];
     mNormals[k + 1] = normal[1];

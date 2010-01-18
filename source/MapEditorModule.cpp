@@ -44,8 +44,9 @@ bool MapEditorModule::onInit()
 */
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
+    glShadeModel(GL_SMOOTH);
 
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
@@ -53,7 +54,7 @@ bool MapEditorModule::onInit()
     mLight.diffuse.set(1.0f);
     mLight.direction[1] = -1.0f;
     mLight.position[1] = 10.0f;
-    mLight.position[3] = 0.0f;
+    mLight.position[3] = 0.0f; // distant light source
 
     glEnable(GL_LIGHT0);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
@@ -197,6 +198,11 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
         cerr << "modelMatrix: \n";
 
+        // @Chad -- This is showing an identity matrix because before any
+        // transformations are applied, we glPushMatrix, do a bunch of stuff,
+        // and then glPopMatrix. Since glGetFloatv is called after the
+        // glPopMatrix, you see only the identity matrix since the matrix you
+        // wanted was popped off.
         cerr << modelMatrix[0] << " " << modelMatrix[4] << " " << modelMatrix[8] << " " << modelMatrix[12] << endl;
         cerr << modelMatrix[1] << " " << modelMatrix[5] << " " << modelMatrix[9] << " " << modelMatrix[13] << endl;
         cerr << modelMatrix[2] << " " << modelMatrix[6] << " " << modelMatrix[10] << " " << modelMatrix[14] << endl;
