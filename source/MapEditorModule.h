@@ -5,6 +5,7 @@
 #include "Matrix.h"
 #include "Vector3D.h"
 #include "TSphere.h"
+#include "TerrainGrid.h"
 
 #include <SDL_opengl.h>
 
@@ -16,6 +17,16 @@ using namespace std;
 #define MM_DEFAULT 0
 #define MM_PANNING 1
 #define MM_ROTATING 2
+
+struct Light
+{
+    Vector3D<GLfloat> ambient;
+    Vector3D<GLfloat> diffuse;
+    Vector3D<GLfloat> specular;
+
+    Vector3D<GLfloat> position;
+    Vector3D<GLfloat> direction;
+};
 
 class MapEditorModule : public Module
 {
@@ -37,15 +48,14 @@ class MapEditorModule : public Module
             bool inLeft, bool inRight, bool inMiddle);
 
     private:
-        Matrix<int> mTerrainHeight;
-        GLfloat* mTerrainVertices;
-        GLuint* mTerrainIndices;
+        int mTerrainSize;
+        TerrainGrid mTerrainGrid;
+        Light mLight;
 
         GLuint mList;
 
         TSphere mSphere;
 
-        GLsizei mNumIndices;
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;
         int mCenterX;

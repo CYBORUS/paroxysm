@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
-    SoundEngine::initialize();
+    //SoundEngine::initialize();
 
     Config::outputSettings();
 

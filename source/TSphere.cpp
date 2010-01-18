@@ -13,20 +13,11 @@ GLuint TSphere::mTIndices[20][3] =
      {3, 10, 7}, {10, 6, 7}, {6,  11, 7}, {6, 0, 11}, {6, 1, 0},
      {10, 1, 6}, {11, 0, 9}, {2, 11, 9}, {5, 2, 9}, {11, 2, 7}};
 
-void TSphere::setup()
+TSphere::TSphere()
 {
     mFill = true;
 
-/*
-    string fill;
-    addToStream(inNode, "fill", "false");
-    addToStream(inNode, "color0", "0.5,0.5,0.5");
-    addToStream(inNode, "color1", "1,1,1");
-    addToStream(inNode, "detail", "4");
-    mStream >> fill >> mColor[0] >> mColor[1] >> mDetail;
-    if (fill == "true") mFill = true;
-*/
-    mDetail = 4;
+    mDetail = 3;
 
     mID = glGenLists(1);
     mCurrentColor = 1;
@@ -42,6 +33,11 @@ void TSphere::setup()
         glEnd();
     }
     glEndList();
+}
+
+TSphere::~TSphere()
+{
+    glDeleteLists(mID, 1);
 }
 
 void TSphere::display()

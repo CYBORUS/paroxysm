@@ -1,15 +1,16 @@
 #ifndef TSPHERE_H
 #define TSPHERE_H
 
-//#include "NodeReader.h"
 #include <SDL_opengl.h>
 
 #include "Vector3D.h"
 
-class TSphere// : public NodeReader
+class TSphere
 {
     public:
-        void setup();
+        TSphere();
+        ~TSphere();
+
         void display();
 
         void moveSphere(int inX, int inY, int inZ);

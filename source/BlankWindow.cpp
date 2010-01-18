@@ -17,8 +17,6 @@ bool BlankWindow::onInit()
 
     glMatrixMode(GL_MODELVIEW);
 
-    mSphere.setup();
-
     return true;
 }
 

@@ -7,62 +7,13 @@ bool MapEditorModule::onInit()
     mRunning = true;
     mMouseMode = MM_DEFAULT;
 
-    mSphere.setup();
-
-    int ts = Config::get<int>("terrain size", 10);
-    mTerrainHeight = Matrix<int>(ts, ts);
-    for (int i = 0; i < mTerrainHeight.size(); ++i)
-        mTerrainHeight[i] = rand() % 3;
-
-    mTerrainVertices = new GLfloat[mTerrainHeight.size() * 3];
-
-    for (int i = 0; i < mTerrainHeight.rows(); ++i)
-    {
-        for (int j = 0; j < mTerrainHeight.cols(); ++j)
-        {
-            int k = mTerrainHeight.toIndex(i, j) * 3;
-            mTerrainVertices[k] = static_cast<GLfloat>(j);
-            mTerrainVertices[k + 1] = static_cast<GLfloat>(mTerrainHeight(i, j))
-                * 0.5f;
-            mTerrainVertices[k + 2] = static_cast<GLfloat>(i);
-        }
-    }
-
-    mNumIndices = (mTerrainHeight.rows() - 1) * (mTerrainHeight.cols() - 1) * 6;
-    mTerrainIndices = new GLuint[mNumIndices];
-
-    int t = 0;
-    for (int i = 0; i < mTerrainHeight.rows() - 1; ++i)
-    {
-        for (int j = 0; j < mTerrainHeight.cols() - 1; ++j)
-        {
-            int slant = ((i % 2) + (j % 2)) % 2;
-
-            mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j);
-            mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
-
-            if (slant)
-            {
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j);
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
-            }
-            else
-            {
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j);
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i + 1, j + 1);
-                mTerrainIndices[t++] = mTerrainHeight.toIndex(i, j + 1);
-            }
-        }
-    }
-
+    mTerrainSize = Config::get<int>("terrain size", 10);
+    mTerrainGrid.create(mTerrainSize, mTerrainSize);
 
     mTrackball[0] = 22.0f;
     mTrackball[2] = 20.0f;
-    mPanning[0] = static_cast<GLfloat>(mTerrainHeight.cols()) / -2.0f;
-    mPanning[2] = static_cast<GLfloat>(mTerrainHeight.rows()) / -2.0f;
+    mPanning[0] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
+    mPanning[2] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
 
     int w = SDL_GetVideoSurface()->w;
     mCenterX = w / 2;
@@ -79,27 +30,35 @@ bool MapEditorModule::onInit()
     //glLoadIdentity();
 /*
         glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
+        glVertexPointer(3, GL_FLOAT, 0, mVertices);
 
     glNewList(mList, GL_COMPILE);
     {
 
         glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
-            mTerrainIndices);
+            mIndices);
     }
     glEndList();
 
         glDisableClientState(GL_VERTEX_ARRAY);
 */
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_BACK);
-    //glFrontFace(GL_CCW);
 
     glEnable(GL_DEPTH_TEST);
-    glEnableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_CULL_FACE);
-    //glFrontFace(GL_CW);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glFrontFace(GL_CCW);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+
+    mLight.diffuse.set(1.0f);
+    mLight.direction[1] = -1.0f;
+    mLight.position[1] = 10.0f;
+    mLight.position[3] = 0.0f;
+
+    glEnable(GL_LIGHT0);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     return true;
 }
@@ -107,6 +66,13 @@ bool MapEditorModule::onInit()
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // purposefully left outside the camera control to illustrate the changing
+    // light patterns
+    glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
+    glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
+    glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
 
     glPushMatrix();
 
@@ -117,11 +83,14 @@ void MapEditorModule::onLoop()
     glTranslatef(mPanning[0], mPanning[1], mPanning[2]);
 
     //glCallList(mList);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(3, GL_FLOAT, 0, mTerrainVertices);
-    glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
-        mTerrainIndices);
-    glDisableClientState(GL_VERTEX_ARRAY);
+    mTerrainGrid.display();
+
+    glBegin(GL_LINES);
+    {
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        glVertex3f(0.0f, 10.0f, 0.0f);
+    }
+    glEnd();
 
     mSphere.display();
 
@@ -130,12 +99,12 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onFrame()
 {
+    /// There really is no game logic running in the map editor. Virtually
+    /// everything is event-driven (mouse clicks, keystrokes, etc.).
 }
 
 void MapEditorModule::onCleanup()
 {
-    delete [] mTerrainVertices;
-    delete [] mTerrainIndices;
 }
 
 
@@ -154,8 +123,8 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             mTrackball[0] = 22.0f;
             mTrackball[1] = 0.0f;
             mTrackball[2] = 20.0f;
-            mPanning[0] = static_cast<GLfloat>(mTerrainHeight.cols()) / -2.0f;
-            mPanning[2] = static_cast<GLfloat>(mTerrainHeight.rows()) / -2.0f;
+            mPanning[0] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
+            mPanning[2] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
             break;
         }
 

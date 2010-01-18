@@ -56,6 +56,8 @@
 		<Unit filename="../SoundEngine.h" />
 		<Unit filename="../TSphere.cpp" />
 		<Unit filename="../TSphere.h" />
+		<Unit filename="../TerrainGrid.cpp" />
+		<Unit filename="../TerrainGrid.h" />
 		<Unit filename="../Vector3D.h" />
 		<Unit filename="../main.cpp" />
 		<Extensions>

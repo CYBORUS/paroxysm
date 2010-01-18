@@ -15,6 +15,7 @@ class Vector3D
         Vector3D<T>();
         Vector3D<T>(const Vector3D<T>& inVector);
         Matrix<T> toMatrix() const;
+        void set(T inValue);
         void set(T inX, T inY, T inZ);
         T get(int inIndex) const;
         void normalize();
@@ -46,7 +47,7 @@ Vector3D<T>::Vector3D()
     mVector[0] = 0;
     mVector[1] = 0;
     mVector[2] = 0;
-    mVector[3] = 0;
+    mVector[3] = 1;
 }
 
 template<class T>
@@ -67,6 +68,14 @@ Matrix<T> Vector3D<T>::toMatrix() const
     outMatrix[2] = mVector[2];
     outMatrix[3] = mVector[3];
     return outMatrix;
+}
+
+template<class T>
+void Vector3D<T>::set(T inValue)
+{
+    mVector[0] = inValue;
+    mVector[1] = inValue;
+    mVector[2] = inValue;
 }
 
 template<class T>

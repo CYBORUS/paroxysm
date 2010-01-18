@@ -20,6 +20,8 @@ class Matrix
         int rows() const;
         int cols() const;
         int size() const;
+        int lastRow() const;
+        int lastCol() const;
         bool square() const;
         T at(int inIndex) const;
         T at(int inRow, int inCol) const;
@@ -126,6 +128,18 @@ template<class T>
 inline int Matrix<T>::size() const
 {
     return mSize;
+}
+
+template<class T>
+inline int Matrix<T>::lastRow() const
+{
+    return mRows - 1;
+}
+
+template<class T>
+inline int Matrix<T>::lastCol() const
+{
+    return mCols - 1;
 }
 
 template<class T>
