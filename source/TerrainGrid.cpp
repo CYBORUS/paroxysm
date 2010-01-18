@@ -218,7 +218,7 @@ void TerrainGrid::findNormal(int inRow, int inCol)
 
                 b[0] = 0.0f;
                 b[1] = mNormals[t + 1] - mNormals[k + 1];
-                b[2] = -1.0f;
+                b[2] = 1.0f;
 
                 c = a ^ b;
                 cout << "abc: " << a << " | " << b << " | " << c << endl;
@@ -241,7 +241,7 @@ void TerrainGrid::findNormal(int inRow, int inCol)
 
                 b[0] = 0.0f;
                 b[1] = mNormals[t + 1] - mNormals[k + 1];
-                b[2] = -1.0f;
+                b[2] = 1.0f;
 
                 c = b ^ a;
                 cout << "abc: " << a << " | " << b << " | " << c << endl;

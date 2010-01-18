@@ -48,7 +48,7 @@ bool MapEditorModule::onInit()
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
 
-    //glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
 
     mLight.diffuse.set(1.0f);
@@ -59,7 +59,7 @@ bool MapEditorModule::onInit()
     glEnable(GL_LIGHT0);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     return true;
 }
