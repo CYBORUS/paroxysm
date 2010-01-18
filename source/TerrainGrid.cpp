@@ -148,7 +148,7 @@ void TerrainGrid::findNormal(int inRow, int inCol)
 
     cout << "\nfinding normal for row " << inRow << " col " << inCol << endl;
 
-    if (slant)
+    if (!slant)
     {
         // center of a diamond (four triangles to average)
 
@@ -363,7 +363,7 @@ void TerrainGrid::findNormal(int inRow, int inCol)
             if (inCol < mHeights.lastCol())
             {
                 // lower right triangles
-                cout << "lower right triangle" << endl;
+                cout << "lower right triangles" << endl;
 
                 t = mHeights.toIndex(inRow, inCol + 1) * 3;
 
