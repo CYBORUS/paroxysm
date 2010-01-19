@@ -7,6 +7,8 @@ bool MapEditorModule::onInit()
     mRunning = true;
     mMouseMode = MM_DEFAULT;
 
+    mTransform = Matrix<GLfloat>(4);
+
     mTerrainSize = Config::get<int>("terrain size", 10);
     mTerrainGrid.create(mTerrainSize, mTerrainSize);
 
@@ -84,6 +86,9 @@ void MapEditorModule::onLoop()
     glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
 
     glTranslatef(mPanning[0], mPanning[1], mPanning[2]);
+
+    glGetFloatv(GL_MODELVIEW_MATRIX, mTransform.array());
+
 
     //glCallList(mList);
     mTerrainGrid.display();
@@ -197,9 +202,9 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
     {
         cerr << "left shift down" << endl;
 
-        GLfloat modelMatrix[16];
+        //GLfloat modelMatrix[16];
 
-        glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
+        //glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
 /*
         cerr << "modelMatrix: \n";
 
@@ -208,13 +213,12 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         // and then glPopMatrix. Since glGetFloatv is called after the
         // glPopMatrix, you see only the identity matrix since the matrix you
         // wanted was popped off.
-        cerr << modelMatrix[0] << " " << modelMatrix[4] << " " << modelMatrix[8] << " " << modelMatrix[12] << endl;
-        cerr << modelMatrix[1] << " " << modelMatrix[5] << " " << modelMatrix[9] << " " << modelMatrix[13] << endl;
-        cerr << modelMatrix[2] << " " << modelMatrix[6] << " " << modelMatrix[10] << " " << modelMatrix[14] << endl;
-        cerr << modelMatrix[3] << " " << modelMatrix[7] << " " << modelMatrix[11] << " " << modelMatrix[15] << endl;
+        cerr << mTransform[0] << " " << mTransform[4] << " " << mTransform[8] << " " << mTransform[12] << endl;
+        cerr << mTransform[1] << " " << mTransform[5] << " " << mTransform[9] << " " << mTransform[13] << endl;
+        cerr << mTransform[2] << " " << mTransform[6] << " " << mTransform[10] << " " << mTransform[14] << endl;
+        cerr << mTransform[3] << " " << mTransform[7] << " " << mTransform[11] << " " << mTransform[15] << endl;
 */
-        Vector3D<int> sceneTranslation;
-        Vector3D<float> sceneRotation;
+        cerr << "modelMatrix: \n" << mTransform.transposed() << endl;
 
         Matrix<float> transform(4);
 
@@ -222,16 +226,16 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         transform(1, 3) = mPanning[1];
         transform(2, 3) = mPanning[2] - mTrackball[2];
 
-        float cosRotation = cos(mTrackball[0]);
-        float sinRotation = sin(mTrackball[0]);
+        float cosRotation = cos(TO_RADIANS(mTrackball[0]));
+        float sinRotation = sin(TO_RADIANS(mTrackball[0]));
 
         transform(1,1) += cosRotation;
         transform(2,2) += cosRotation;
         transform(1,2) += sinRotation;
         transform(2,1) += -sinRotation;
 
-        cosRotation = cos(mTrackball[1]);
-        sinRotation = sin(mTrackball[1]);
+        cosRotation = cos(TO_RADIANS(mTrackball[1]));
+        sinRotation = sin(TO_RADIANS(mTrackball[1]));
 
         transform(0,0) += cosRotation;
         transform(0,2) += -sinRotation;
