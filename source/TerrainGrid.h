@@ -2,6 +2,7 @@
 #define TERRAINGRID_H
 
 #include "Matrix.h"
+#include "Vector3D.h"
 #include "DisplayEngine.h"
 
 #include <SDL_opengl.h>
@@ -20,6 +21,8 @@ class TerrainGrid
         void create(int inRows, int inCols);
         void display();
         void set(int inRow, int inCol, int inHeight, bool inFindNormal);
+        Vector3D<float> getVertex(int inRow, int inCol);
+        const Matrix<int>& getMatrix() const;
         void findNormal(int inRow, int inCol);
 
     private:
