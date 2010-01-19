@@ -61,6 +61,8 @@ bool MapEditorModule::onInit()
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+
+
     return true;
 }
 
@@ -198,7 +200,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         GLfloat modelMatrix[16];
 
         glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
-
+/*
         cerr << "modelMatrix: \n";
 
         // @Chad -- This is showing an identity matrix because before any
@@ -210,6 +212,34 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         cerr << modelMatrix[1] << " " << modelMatrix[5] << " " << modelMatrix[9] << " " << modelMatrix[13] << endl;
         cerr << modelMatrix[2] << " " << modelMatrix[6] << " " << modelMatrix[10] << " " << modelMatrix[14] << endl;
         cerr << modelMatrix[3] << " " << modelMatrix[7] << " " << modelMatrix[11] << " " << modelMatrix[15] << endl;
+*/
+        Vector3D<int> sceneTranslation;
+        Vector3D<float> sceneRotation;
+
+        Matrix<float> transform(4);
+
+        transform(0, 3) = mPanning[0];
+        transform(1, 3) = mPanning[1];
+        transform(2, 3) = mPanning[2] - mTrackball[2];
+
+        float cosRotation = cos(mTrackball[0]);
+        float sinRotation = sin(mTrackball[0]);
+
+        transform(1,1) += cosRotation;
+        transform(2,2) += cosRotation;
+        transform(1,2) += sinRotation;
+        transform(2,1) += -sinRotation;
+
+        cosRotation = cos(mTrackball[1]);
+        sinRotation = sin(mTrackball[1]);
+
+        transform(0,0) += cosRotation;
+        transform(0,2) += -sinRotation;
+        transform(2,0) += sinRotation;
+        transform(2,2) += cosRotation;
+
+        cerr << "\nTransformation matrix: \n" << transform << endl;
+
 
         //cerr << "x rotation: " << acos(modelMatrix[
     }
