@@ -65,7 +65,7 @@ void TerrainGrid::create(int inRows, int inCols)
     {
         for (int j = 0; j < mHeights.cols(); ++j)
         {
-            set(i, j, rand() % 3, false);
+            set(i, j, 0, false);
 
             int k = mHeights.toIndex(i, j) * 2;
             mTextureCoordinates[k] = j % 2;
