@@ -23,6 +23,7 @@ class Vector3D
         bool isZero() const;
         void negate();
         const Vector3D<T> negated() const;
+        void processMatrix(const Matrix<T> inMatrix);
 
         Vector3D<T>& operator=(const Vector3D<T>& inVector);
         Vector3D<T>& operator+=(const Vector3D<T>& inVector);
@@ -231,6 +232,13 @@ template<class T>
 T* Vector3D<T>::array()
 {
     return mVector;
+}
+
+template<class T>
+void Vector3D<T>::processMatrix(const Matrix<T> inMatrix)
+{
+    Matrix<T> result(inMatrix * toMatrix());
+    for (int i = 0; i < 4; ++i) mVector[i] = result[i];
 }
 
 template<class T>
