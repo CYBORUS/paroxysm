@@ -210,23 +210,6 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
     if (keyState[SDLK_LSHIFT])
     {
         cerr << "left shift down" << endl;
-
-        //GLfloat modelMatrix[16];
-
-        //glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
-/*
-        cerr << "modelMatrix: \n";
-
-        // @Chad -- This is showing an identity matrix because before any
-        // transformations are applied, we glPushMatrix, do a bunch of stuff,
-        // and then glPopMatrix. Since glGetFloatv is called after the
-        // glPopMatrix, you see only the identity matrix since the matrix you
-        // wanted was popped off.
-        cerr << mTransform[0] << " " << mTransform[4] << " " << mTransform[8] << " " << mTransform[12] << endl;
-        cerr << mTransform[1] << " " << mTransform[5] << " " << mTransform[9] << " " << mTransform[13] << endl;
-        cerr << mTransform[2] << " " << mTransform[6] << " " << mTransform[10] << " " << mTransform[14] << endl;
-        cerr << mTransform[3] << " " << mTransform[7] << " " << mTransform[11] << " " << mTransform[15] << endl;
-*/
 /*
         //this math works, and is proven to produce exactly the same results
         //as opengl's math does
@@ -265,7 +248,6 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         cerr << "\nTransformation matrix: \n" << transform << endl;
 */
 
-        //cerr << "x rotation: " << acos(modelMatrix[
     }
     else
     {
