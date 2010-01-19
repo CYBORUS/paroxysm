@@ -42,6 +42,7 @@ class Matrix
         Matrix<T>& operator*=(const T inValue);
         Matrix<T>& operator/=(const T inValue);
         T& operator()(int inRow, int inCol);
+        T operator()(int inRow, int inCol) const;
         T& operator[](int inIndex) const;
         bool operator==(const Matrix<T>& inMatrix) const;
         bool operator!=(const Matrix<T>& inMatrix) const;
@@ -371,6 +372,16 @@ Matrix<T>& Matrix<T>::operator/=(const T inValue)
 
 template<class T>
 T& Matrix<T>::operator()(int inRow, int inCol)
+{
+    if (inRow < 0 || inCol < 0) return mMatrix[0];
+
+    inRow %= mRows;
+    inCol %= mCols;
+    return mMatrix[(inRow * mCols) + inCol];
+}
+
+template<class T>
+T Matrix<T>::operator()(int inRow, int inCol) const
 {
     if (inRow < 0 || inCol < 0) return mMatrix[0];
 

@@ -19,6 +19,7 @@
 #define _DISPLAYENGINE_H_
 
 #include <SDL.h>
+#include <SDL_opengl.h>
 typedef SDL_Surface* Surface;
 
 #define ENGINE_FPS 60
@@ -35,6 +36,7 @@ class DisplayEngine
         static void start(Module* inModule);
         static void initialize();
         static Surface loadImage(const char* inFile);
+        static bool loadTexture(Surface inSurface, GLuint inTexture);
 
     private:
         static void cleanup();

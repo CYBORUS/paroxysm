@@ -180,3 +180,43 @@ Surface DisplayEngine::loadImage(const char* inFile)
 
     return outSurface;
 }
+
+bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
+{
+    if (inSurface == NULL) return false;
+    glBindTexture(GL_TEXTURE_2D, inTexture);
+
+    GLint nOfColors = inSurface->format->BytesPerPixel;
+    GLenum tFormat = GL_RGBA;
+    if (nOfColors == 4)
+    {
+        if (inSurface->format->Rmask == 0x000000ff)
+            tFormat = GL_RGBA;
+        else
+            tFormat = GL_BGRA;
+    }
+    else if (nOfColors == 3)
+    {
+        if (inSurface->format->Rmask == 0x000000ff)
+            tFormat = GL_RGB;
+        else
+            tFormat = GL_BGR;
+    }
+    else
+    {
+        cerr << "failed to load texture -- not true color\n";
+        SDL_FreeSurface(inSurface);
+        return false;
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
+        0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    return true;
+}
