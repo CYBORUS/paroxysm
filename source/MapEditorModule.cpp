@@ -246,15 +246,15 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
         rotateX(1,1) += cosRotation;
         rotateX(2,2) += cosRotation;
-        rotateX(1,2) += sinRotation;
-        rotateX(2,1) += -sinRotation;
+        rotateX(1,2) += -sinRotation;
+        rotateX(2,1) += sinRotation;
 
         cosRotation = cos(TO_RADIANS(mTrackball[1]));
         sinRotation = sin(TO_RADIANS(mTrackball[1]));
 
         rotateY(0,0) += cosRotation;
-        rotateY(0,2) += -sinRotation;
-        rotateY(2,0) += sinRotation;
+        rotateY(0,2) += sinRotation;
+        rotateY(2,0) += -sinRotation;
         rotateY(2,2) += cosRotation;
 
         transform = translateZ * rotateX * rotateY * translateRest;
