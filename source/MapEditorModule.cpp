@@ -9,6 +9,8 @@ bool MapEditorModule::onInit()
 
     mTransform = Matrix<GLfloat>(4);
 
+    mSceneChanged = false;
+
     mTerrainSize = Config::get<int>("terrain size", 10);
     mTerrainGrid.create(mTerrainSize, mTerrainSize);
 
@@ -78,7 +80,6 @@ void MapEditorModule::onLoop()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
     glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
     glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
-
     glPushMatrix();
 
     glTranslatef(0.0f, 0.0f, -mTrackball[2]);
@@ -87,7 +88,11 @@ void MapEditorModule::onLoop()
 
     glTranslatef(mPanning[0], mPanning[1], mPanning[2]);
 
-    glGetFloatv(GL_MODELVIEW_MATRIX, mTransform.array());
+    if (mSceneChanged)
+    {
+        glGetFloatv(GL_MODELVIEW_MATRIX, mTransform.array());
+    }
+
 
 
     //glCallList(mList);
@@ -101,6 +106,7 @@ void MapEditorModule::onLoop()
     glEnd();
 
     mSphere.display();
+
 
     glPopMatrix();
 }
@@ -151,6 +157,8 @@ void MapEditorModule::onMouseWheel(bool inUp, bool inDown)
         mTrackball[2] += TRACKBALL_STEP;
 
     if (mTrackball[2] < 0.0f) mTrackball[2] = 0.0f;
+
+    mSceneChanged = true;
 }
 
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
@@ -218,29 +226,38 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         cerr << mTransform[2] << " " << mTransform[6] << " " << mTransform[10] << " " << mTransform[14] << endl;
         cerr << mTransform[3] << " " << mTransform[7] << " " << mTransform[11] << " " << mTransform[15] << endl;
 */
+
         cerr << "modelMatrix: \n" << mTransform.transposed() << endl;
 
         Matrix<float> transform(4);
+        Matrix<float> translateZ(4);
+        Matrix<float> translateRest(4);
+        Matrix<float> rotateX(4);
+        Matrix<float> rotateY(4);
 
-        transform(0, 3) = mPanning[0];
-        transform(1, 3) = mPanning[1];
-        transform(2, 3) = mPanning[2] - mTrackball[2];
+        translateZ(2, 3) = -mTrackball[2];
+
+        translateRest(0,3) = mPanning[0];
+        translateRest(1,3) = mPanning[1];
+        translateRest(2,3) = mPanning[2];
 
         float cosRotation = cos(TO_RADIANS(mTrackball[0]));
         float sinRotation = sin(TO_RADIANS(mTrackball[0]));
 
-        transform(1,1) += cosRotation;
-        transform(2,2) += cosRotation;
-        transform(1,2) += sinRotation;
-        transform(2,1) += -sinRotation;
+        rotateX(1,1) += cosRotation;
+        rotateX(2,2) += cosRotation;
+        rotateX(1,2) += sinRotation;
+        rotateX(2,1) += -sinRotation;
 
         cosRotation = cos(TO_RADIANS(mTrackball[1]));
         sinRotation = sin(TO_RADIANS(mTrackball[1]));
 
-        transform(0,0) += cosRotation;
-        transform(0,2) += -sinRotation;
-        transform(2,0) += sinRotation;
-        transform(2,2) += cosRotation;
+        rotateY(0,0) += cosRotation;
+        rotateY(0,2) += -sinRotation;
+        rotateY(2,0) += sinRotation;
+        rotateY(2,2) += cosRotation;
+
+        transform = translateZ * rotateX * rotateY * translateRest;
 
         cerr << "\nTransformation matrix: \n" << transform << endl;
 
@@ -264,6 +281,7 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
         mMouseMode = MM_DEFAULT;
         SDL_WarpMouse(mOldMouseX, mOldMouseY);
         SDL_ShowCursor(SDL_ENABLE);
+        mSceneChanged = true;
     }
 }
 
@@ -286,5 +304,6 @@ void MapEditorModule::onRButtonUp(int inX, int inY)
         mMouseMode = MM_DEFAULT;
         SDL_WarpMouse(mOldMouseX, mOldMouseY);
         SDL_ShowCursor(SDL_ENABLE);
+        mSceneChanged = true;
     }
 }

@@ -59,6 +59,8 @@ class MapEditorModule : public Module
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;
 
+        bool mSceneChanged;
+
         Matrix<GLfloat> mTransform;
         int mCenterX;
         int mCenterY;
