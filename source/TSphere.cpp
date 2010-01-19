@@ -24,13 +24,18 @@ TSphere::TSphere()
 
     glNewList(mID, GL_COMPILE);
     {
-        glBegin(GL_TRIANGLES);
-        for (int i = 0; i < 20; ++i)
+        glPushAttrib(GL_CURRENT_BIT);
         {
-            subdivide(&mVData[mTIndices[i][2]][0], &mVData[mTIndices[i][1]][0],
-                &mVData[mTIndices[i][0]][0], mDetail);
+            glColor3f(0.0f, 0.0f, 1.0f);
+            glBegin(GL_TRIANGLES);
+            for (int i = 0; i < 20; ++i)
+            {
+                subdivide(&mVData[mTIndices[i][2]][0], &mVData[mTIndices[i][1]][0],
+                    &mVData[mTIndices[i][0]][0], mDetail);
+            }
+            glEnd();
         }
-        glEnd();
+        glPopAttrib();
     }
     glEndList();
 }
@@ -45,11 +50,12 @@ void TSphere::display()
 
     glPushAttrib(GL_POLYGON_BIT);
     {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         glPushMatrix();
         {
             glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
+            glScalef(0.5f, 0.5f, 0.5f);
             glCallList(mID);
         }
         glPopMatrix();

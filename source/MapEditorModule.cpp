@@ -7,6 +7,8 @@ bool MapEditorModule::onInit()
     mRunning = true;
     mMouseMode = MM_DEFAULT;
 
+    mProjection = Matrix<GLfloat>(4);
+    mModelView = Matrix<GLfloat>(4);
     mTransform = Matrix<GLfloat>(4);
 
     mSceneChanged = false;
@@ -31,6 +33,11 @@ bool MapEditorModule::onInit()
 
 
     glMatrixMode(GL_MODELVIEW);
+
+    glGetFloatv(GL_PROJECTION_MATRIX, mProjection.array());
+    mProjection.transpose();
+
+    cerr << "\nProjection Matrix: \n" << mProjection << endl;
     //glLoadIdentity();
 /*
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -90,8 +97,8 @@ void MapEditorModule::onLoop()
 
     if (mSceneChanged)
     {
-        glGetFloatv(GL_MODELVIEW_MATRIX, mTransform.array());
-        mTransform.transpose();
+        glGetFloatv(GL_MODELVIEW_MATRIX, mModelView.array());
+        mModelView.transpose();
         mSceneChanged = false;
     }
 
@@ -214,7 +221,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 /*
         //this math works, and is proven to produce exactly the same results
         //as opengl's math does
-        cerr << "modelMatrix: \n" << mTransform.transposed() << endl;
+        cerr << "modelMatrix: \n" << mModelView.transposed() << endl;
 
         Matrix<float> transform(4);
         Matrix<float> translateZ(4);

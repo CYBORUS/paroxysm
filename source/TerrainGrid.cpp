@@ -82,7 +82,7 @@ void TerrainGrid::create(int inRows, int inCols)
     }
 
     glGenTextures(1, &mTextureIndex);
-    mTexture = DisplayEngine::loadImage("assets/images/green.png");
+    mTexture = DisplayEngine::loadImage("./assets/images/green.png");
     if (!DisplayEngine::loadTexture(mTexture, mTextureIndex))
         cerr << "Error loading texture!" << endl;
 }

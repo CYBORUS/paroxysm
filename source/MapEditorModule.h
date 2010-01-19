@@ -61,6 +61,8 @@ class MapEditorModule : public Module
 
         bool mSceneChanged;
 
+        Matrix<GLfloat> mModelView;
+        Matrix<GLfloat> mProjection;
         Matrix<GLfloat> mTransform;
         int mCenterX;
         int mCenterY;
