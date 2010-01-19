@@ -20,13 +20,13 @@ class TerrainGrid
 
         void create(int inRows, int inCols);
         void display();
-        void set(int inRow, int inCol, int inHeight, bool inFindNormal);
+        void set(int inRow, int inCol, float inHeight, bool inFindNormal);
         Vector3D<float> getVertex(int inRow, int inCol);
-        const Matrix<int>& getMatrix() const;
+        const Matrix<float>& getMatrix() const;
         void findNormal(int inRow, int inCol);
 
     private:
-        Matrix<int> mHeights;
+        Matrix<float> mHeights;
         GLfloat* mVertices;
         GLfloat* mNormals;
         GLfloat* mTextureCoordinates;
