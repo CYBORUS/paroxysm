@@ -45,7 +45,7 @@ void TSphere::display()
 
     glPushAttrib(GL_POLYGON_BIT);
     {
-        glPolygonMode(GL_FRONT, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glPushMatrix();
         {
@@ -68,10 +68,10 @@ void TSphere::drawTriangle(float* inA, float* inB, float* inC)
 {
     glNormal3fv(inA);
     glVertex3fv(inA);
-    glNormal3fv(inB);
-    glVertex3fv(inB);
     glNormal3fv(inC);
     glVertex3fv(inC);
+    glNormal3fv(inB);
+    glVertex3fv(inB);
 }
 
 void TSphere::drawTriangle(Vector3D<float>& inA, Vector3D<float>& inB,

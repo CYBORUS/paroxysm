@@ -91,6 +91,7 @@ void MapEditorModule::onLoop()
     if (mSceneChanged)
     {
         glGetFloatv(GL_MODELVIEW_MATRIX, mTransform.array());
+        mTransform.transpose();
     }
 
 
@@ -226,7 +227,9 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         cerr << mTransform[2] << " " << mTransform[6] << " " << mTransform[10] << " " << mTransform[14] << endl;
         cerr << mTransform[3] << " " << mTransform[7] << " " << mTransform[11] << " " << mTransform[15] << endl;
 */
-
+/*
+        //this math works, and is proven to produce exactly the same results
+        //as opengl's math does
         cerr << "modelMatrix: \n" << mTransform.transposed() << endl;
 
         Matrix<float> transform(4);
@@ -234,7 +237,6 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         Matrix<float> translateRest(4);
         Matrix<float> rotateX(4);
         Matrix<float> rotateY(4);
-        Matrix<float> rotateZ(4);
 
         translateZ(2, 3) = -mTrackball[2];
 
@@ -258,13 +260,10 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         rotateY(2,0) = -sinRotation;
         rotateY(2,2) = cosRotation;
 
-        rotateZ(0,0) = 0;
-        rotateZ(1,1) = 0;
-
         transform = translateZ * rotateX * rotateY * translateRest;
 
         cerr << "\nTransformation matrix: \n" << transform << endl;
-
+*/
 
         //cerr << "x rotation: " << acos(modelMatrix[
     }
