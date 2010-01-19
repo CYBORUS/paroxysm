@@ -92,6 +92,7 @@ void MapEditorModule::onLoop()
     {
         glGetFloatv(GL_MODELVIEW_MATRIX, mTransform.array());
         mTransform.transpose();
+        mSceneChanged = false;
     }
 
 
