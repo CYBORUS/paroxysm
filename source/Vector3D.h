@@ -5,7 +5,7 @@
 #include "Matrix.h"
 
 #define PI 3.141592654
-#define TO_RADIANS(n) ((n) * PI / 180.0)
+#define TO_RADIANS(n) ((n) * (PI / 180.0))
 #define PSEUDO_ZERO 0.000001
 
 template<class T>

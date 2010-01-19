@@ -234,6 +234,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         Matrix<float> translateRest(4);
         Matrix<float> rotateX(4);
         Matrix<float> rotateY(4);
+        Matrix<float> rotateZ(4);
 
         translateZ(2, 3) = -mTrackball[2];
 
@@ -244,18 +245,21 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         float cosRotation = cos(TO_RADIANS(mTrackball[0]));
         float sinRotation = sin(TO_RADIANS(mTrackball[0]));
 
-        rotateX(1,1) += cosRotation;
-        rotateX(2,2) += cosRotation;
-        rotateX(1,2) += -sinRotation;
-        rotateX(2,1) += sinRotation;
+        rotateX(1,1) = cosRotation;
+        rotateX(2,2) = cosRotation;
+        rotateX(1,2) = -sinRotation;
+        rotateX(2,1) = sinRotation;
 
         cosRotation = cos(TO_RADIANS(mTrackball[1]));
         sinRotation = sin(TO_RADIANS(mTrackball[1]));
 
-        rotateY(0,0) += cosRotation;
-        rotateY(0,2) += sinRotation;
-        rotateY(2,0) += -sinRotation;
-        rotateY(2,2) += cosRotation;
+        rotateY(0,0) = cosRotation;
+        rotateY(0,2) = sinRotation;
+        rotateY(2,0) = -sinRotation;
+        rotateY(2,2) = cosRotation;
+
+        rotateZ(0,0) = 0;
+        rotateZ(1,1) = 0;
 
         transform = translateZ * rotateX * rotateY * translateRest;
 
