@@ -229,7 +229,7 @@ T Vector3D<T>::get(int inIndex) const
 }
 
 template<class T>
-T* Vector3D<T>::array()
+inline T* Vector3D<T>::array()
 {
     return mVector;
 }

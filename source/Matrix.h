@@ -52,6 +52,7 @@ class Matrix
         const Matrix<T> operator-(const T inValue) const;
         const Matrix<T> operator*(const T inValue) const;
         const Matrix<T> operator/(const T inValue) const;
+        T* array();
 
     private:
         void copy(const Matrix<T>& inMatrix);
@@ -477,6 +478,12 @@ template<class T>
 bool Matrix<T>::operator!=(const Matrix<T>& inMatrix) const
 {
     return !(*this == inMatrix);
+}
+
+template<class T>
+T* Matrix<T>::array()
+{
+    return mMatrix;
 }
 
 template<class T>
