@@ -36,6 +36,11 @@ class TerrainGrid
         GLuint mTextureIndex;
 };
 
+inline const Matrix<float>& TerrainGrid::getMatrix() const
+{
+    return mHeights;
+}
+
 istream& operator>>(istream& inStream, TerrainGrid& inGrid);
 ostream& operator<<(ostream& inStream, const TerrainGrid& inGrid);
 

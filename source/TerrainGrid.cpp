@@ -147,7 +147,40 @@ void TerrainGrid::set(int inRow, int inCol, float inHeight,
     mVertices[k + 1] = inHeight;
     mVertices[k + 2] = static_cast<GLfloat>(inRow);
 
-    if (inFindNormal) findNormal(inRow, inCol);
+    if (inFindNormal)
+    {
+        findNormal(inRow, inCol);
+
+        if (inRow > 0)
+        {
+            findNormal(inRow - 1, inCol);
+
+            if (inCol > 0)
+            {
+                findNormal(inRow - 1, inCol - 1);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                findNormal(inRow - 1, inCol + 1);
+            }
+        }
+
+        if (inRow < mHeights.lastRow())
+        {
+            findNormal(inRow + 1, inCol);
+
+            if (inCol > 0)
+            {
+                findNormal(inRow + 1, inCol - 1);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                findNormal(inRow + 1, inCol + 1);
+            }
+        }
+    }
 }
 
 void TerrainGrid::findNormal(int inRow, int inCol)
@@ -429,9 +462,4 @@ Vector3D<float> TerrainGrid::getVertex(int inRow, int inCol)
     int k = mHeights.toIndex(inRow, inCol) * 3;
     for (int i = 0; i < 3; ++i) outVector[i] = mVertices[k + i];
     return outVector;
-}
-
-inline const Matrix<float>& TerrainGrid::getMatrix() const
-{
-    return mHeights;
 }
