@@ -99,6 +99,8 @@ void MapEditorModule::onLoop()
     {
         glGetFloatv(GL_MODELVIEW_MATRIX, mModelView.array());
         mModelView.transpose();
+        mTransform = mProjection * mModelView;
+        cerr << "\nmTransform: \n" << mTransform << endl;
         mSceneChanged = false;
     }
 
@@ -256,6 +258,12 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         cerr << "\nTransformation matrix: \n" << transform << endl;
 */
 
+        Vector3D<float> closestMatch;
+        Vector3D<float> currentVertex;
+        Vector3D<float> currentVertexPixelCoor;
+
+        int numRows = mTerrainGrid.getMatrix().rows();
+        int numCols = mTerrainGrid.getMatrix().cols();
     }
     else
     {
