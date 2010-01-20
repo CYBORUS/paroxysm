@@ -63,7 +63,7 @@ void TSphere::display()
     glPopAttrib();
 }
 
-void TSphere::moveSphere(int inX, int inY, int inZ)
+void TSphere::moveSphere(float inX, float inY, float inZ)
 {
     mTranslation[0] = inX;
     mTranslation[1] = inY;

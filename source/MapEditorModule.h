@@ -13,7 +13,7 @@
 #include <fstream>
 using namespace std;
 
-#define VERTEX_DISTANCE 3.0f
+#define VERTEX_DISTANCE 0.0f
 #define TRACKBALL_STEP 1.0f
 #define PANNING_STEP 0.1f
 #define MM_DEFAULT 0

@@ -292,7 +292,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
                 cerr << "\nThis vertex scene coordinates: " << currentVertex;
 
-                currentVertex.processMatrix(currentHeights);
+                currentVertex.processMatrix(mTransform);
 
                 cerr << " Pixel coordinates: " << currentVertex << endl;
 
@@ -326,6 +326,8 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         }
 
         cerr << "done testing coordinates, chosen coordinate: " << closestMatch << endl;
+        currentVertex = mTerrainGrid.getVertex(closestRow, closestCol);
+        mSphere.moveSphere(currentVertex[0], currentVertex[1], currentVertex[2]);
     }
     else
     {

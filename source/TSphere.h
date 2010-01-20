@@ -13,7 +13,7 @@ class TSphere
 
         void display();
 
-        void moveSphere(int inX, int inY, int inZ);
+        void moveSphere(float inX, float inY, float inZ);
 
     private:
         void swapColor();
