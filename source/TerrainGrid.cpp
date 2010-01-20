@@ -1,6 +1,7 @@
 #include "TerrainGrid.h"
 
 #include <vector>
+#include <fstream>
 using namespace std;
 
 TerrainGrid::TerrainGrid() : mNumIndices(0)
@@ -9,8 +10,17 @@ TerrainGrid::TerrainGrid() : mNumIndices(0)
 
 TerrainGrid::~TerrainGrid()
 {
+    destroy();
+}
+
+void TerrainGrid::destroy()
+{
     if (mNumIndices > 0)
     {
+        ofstream lastTerrain("last_terrain.txt");
+        lastTerrain << *this;
+        lastTerrain.close();
+
         mNumIndices = 0;
         delete [] mVertices;
         delete [] mNormals;
@@ -23,7 +33,15 @@ TerrainGrid::~TerrainGrid()
 
 void TerrainGrid::create(int inRows, int inCols)
 {
+    destroy();
+
     mHeights = Matrix<float>(inRows, inCols);
+    create();
+}
+
+void TerrainGrid::create()
+{
+    destroy();
 
     mNumIndices = (mHeights.rows() - 1) * (mHeights.cols() - 1) * 6;
     mTextureCoordinates = new GLfloat[mHeights.size() * 2];
@@ -64,7 +82,7 @@ void TerrainGrid::create(int inRows, int inCols)
     {
         for (int j = 0; j < mHeights.cols(); ++j)
         {
-            set(i, j, float(rand() % 8) * 0.2f, false);
+            set(i, j, 0.0f, false);
 
             int k = mHeights.toIndex(i, j) * 2;
             mTextureCoordinates[k] = j % 2;
@@ -179,6 +197,16 @@ void TerrainGrid::set(int inRow, int inCol, float inHeight,
             {
                 findNormal(inRow + 1, inCol + 1);
             }
+        }
+
+        if (inCol > 0)
+        {
+            findNormal(inRow, inCol - 1);
+        }
+
+        if (inCol < mHeights.lastCol())
+        {
+            findNormal(inRow, inCol + 1);
         }
     }
 }
@@ -462,4 +490,21 @@ Vector3D<float> TerrainGrid::getVertex(int inRow, int inCol)
     int k = mHeights.toIndex(inRow, inCol) * 3;
     for (int i = 0; i < 3; ++i) outVector[i] = mVertices[k + i];
     return outVector;
+}
+
+istream& operator>>(istream& inStream, TerrainGrid& inGrid)
+{
+    inStream >> inGrid.mHeights;
+    inGrid.create();
+    return inStream;
+}
+
+ostream& operator<<(ostream& inStream, const TerrainGrid& inGrid)
+{
+    inStream << inGrid.mHeights.rows() << ' ' << inGrid.mHeights.cols();
+
+    for (int i = 0; i < inGrid.mHeights.size(); ++i)
+        inStream << ' ' << inGrid.mHeights[i];
+
+    return inStream;
 }

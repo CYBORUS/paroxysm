@@ -512,4 +512,17 @@ ostream& operator<<(ostream& inStream, const Matrix<T>& inMatrix)
     return inStream;
 }
 
+template<class T>
+istream& operator>>(istream& inStream, Matrix<T>& inMatrix)
+{
+    int rows;
+    int cols;
+    inStream >> rows >> cols;
+    inMatrix = Matrix<T>(rows, cols);
+
+    for (int i = 0; i < inMatrix.size(); ++i) inStream >> inMatrix[i];
+
+    return inStream;
+}
+
 #endif

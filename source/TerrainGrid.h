@@ -19,11 +19,17 @@ class TerrainGrid
         ~TerrainGrid();
 
         void create(int inRows, int inCols);
+        void create();
+        void destroy();
         void display();
         void set(int inRow, int inCol, float inHeight, bool inFindNormal);
         Vector3D<float> getVertex(int inRow, int inCol);
         const Matrix<float>& getMatrix() const;
         void findNormal(int inRow, int inCol);
+
+        friend istream& operator>>(istream& inStream, TerrainGrid& inGrid);
+        friend ostream& operator<<(ostream& inStream,
+            const TerrainGrid& inGrid);
 
     private:
         Matrix<float> mHeights;
@@ -40,8 +46,5 @@ inline const Matrix<float>& TerrainGrid::getMatrix() const
 {
     return mHeights;
 }
-
-istream& operator>>(istream& inStream, TerrainGrid& inGrid);
-ostream& operator<<(ostream& inStream, const TerrainGrid& inGrid);
 
 #endif

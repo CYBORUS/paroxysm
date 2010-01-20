@@ -32,9 +32,10 @@ class Config
         static void initialize(int inArgc, char** inArgv);
         static void loadFromFile(const char* inFile);
         static void outputSettings();
-        static void outputSettings(std::ostream& inStream);
+        static void outputSettings(ostream& inStream);
         static const char* getRaw(const char* inKey, const char* inDefault);
         static const char* getRaw(const char* inKey);
+        static const char* set(const char* inKey, const char* inValue);
         template<class T> static T get(const char* inKey, T inDefault);
 
     private:
