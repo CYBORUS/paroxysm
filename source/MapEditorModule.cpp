@@ -110,7 +110,7 @@ void MapEditorModule::onLoop()
     {
         glGetFloatv(GL_MODELVIEW_MATRIX, mModelView.array());
         mModelView.transpose();
-        mTransform = mProjection * mModelView;
+        mTransform = mModelView * mProjection;
         cerr << "\nmTransform: \n" << mTransform << endl;
         mSceneChanged = false;
     }

@@ -29,7 +29,7 @@ class TSphere
         GLuint mID;
         static GLfloat mVData[12][3];
         static GLuint mTIndices[20][3];
-        Vector3D<int> mTranslation;
+        Vector3D<float> mTranslation;
         //Vector3D<double>** mRows;
 };
 
