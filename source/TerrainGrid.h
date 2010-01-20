@@ -32,6 +32,8 @@ class TerrainGrid
             const TerrainGrid& inGrid);
 
     private:
+        void displayNormals();
+
         Matrix<float> mHeights;
         GLfloat* mVertices;
         GLfloat* mNormals;

@@ -121,8 +121,12 @@ void TerrainGrid::display()
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisable(GL_TEXTURE_2D);
 
+    //displayNormals();
+}
+
+void TerrainGrid::displayNormals()
+{
     // visualize normal vectors (debugging)
-    /*
     glPushAttrib(GL_LIGHTING_BIT);
     {
         glDisable(GL_LIGHTING);
@@ -152,7 +156,6 @@ void TerrainGrid::display()
         glColor3f(1.0f, 1.0f, 1.0f);
     }
     glPopAttrib();
-    */
 }
 
 void TerrainGrid::set(int inRow, int inCol, float inHeight,
