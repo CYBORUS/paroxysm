@@ -14,7 +14,18 @@ bool MapEditorModule::onInit()
     mSceneChanged = false;
 
     mTerrainSize = Config::get<int>("terrain size", 10);
-    mTerrainGrid.create(mTerrainSize, mTerrainSize);
+    string terrainFilename = Config::get<string>("terrain file", "_");
+    ifstream terrainFile(terrainFilename.c_str());
+    if (terrainFile.fail())
+    {
+        cerr << "no terrain file: " << terrainFilename << endl;
+        mTerrainGrid.create(mTerrainSize, mTerrainSize);
+    }
+    else
+    {
+        terrainFile >> mTerrainGrid;
+        terrainFile.close();
+    }
 
     mTrackball[0] = 22.0f;
     mTrackball[2] = 20.0f;

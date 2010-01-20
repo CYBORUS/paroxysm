@@ -10,6 +10,7 @@
 #include <SDL_opengl.h>
 
 #include <cmath>
+#include <fstream>
 using namespace std;
 
 #define VERTEX_DISTANCE 3.0f

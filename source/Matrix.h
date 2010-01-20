@@ -520,7 +520,11 @@ istream& operator>>(istream& inStream, Matrix<T>& inMatrix)
     inStream >> rows >> cols;
     inMatrix = Matrix<T>(rows, cols);
 
-    for (int i = 0; i < inMatrix.size(); ++i) inStream >> inMatrix[i];
+    for (int i = 0; i < inMatrix.size(); ++i)
+    {
+        inStream >> inMatrix[i];
+        //cout << "read in " << inMatrix[i] << endl;
+    }
 
     return inStream;
 }

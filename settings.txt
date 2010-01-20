@@ -1,4 +1,5 @@
 display width = 1024
 display height = 768
 full screen = 0
-terrain size = 4
+terrain file = my_terrain.txt
+terrain size = 10
