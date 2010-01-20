@@ -14,6 +14,7 @@ class Vector3D
     public:
         Vector3D<T>();
         Vector3D<T>(const Vector3D<T>& inVector);
+        Vector3D<T>(T inX, T inY, T inZ);
         Matrix<T> toMatrix() const;
         void set(T inValue);
         void set(T inX, T inY, T inZ);
@@ -22,6 +23,7 @@ class Vector3D
         const Vector3D<T> normalized() const;
         bool isZero() const;
         void negate();
+        inline float length() const;
         const Vector3D<T> negated() const;
         void processMatrix(const Matrix<T> inMatrix);
 
@@ -58,6 +60,16 @@ Vector3D<T>::Vector3D(const Vector3D<T>& inVector)
     mVector[1] = inVector.mVector[1];
     mVector[2] = inVector.mVector[2];
     mVector[3] = inVector.mVector[3];
+}
+
+template<class T>
+Vector3D<T>::Vector3D(T inX, T inY, T inZ)
+{
+    mVector[0] = inX;
+    mVector[1] = inY;
+    mVector[2] = inZ;
+    mVector[3] = 1;
+
 }
 
 template<class T>
@@ -120,6 +132,13 @@ void Vector3D<T>::negate()
     mVector[0] = -mVector[0];
     mVector[1] = -mVector[1];
     mVector[2] = -mVector[2];
+}
+
+template<class T>
+inline float Vector3D<T>::length() const
+{
+    return sqrt((mVector[0] * mVector[0]) + (mVector[1] * mVector[1]) +
+                (mVector[2] * mVector[2]));
 }
 
 template<class T>
@@ -237,8 +256,13 @@ inline T* Vector3D<T>::array()
 template<class T>
 void Vector3D<T>::processMatrix(const Matrix<T> inMatrix)
 {
-    Matrix<T> result(inMatrix * toMatrix());
-    for (int i = 0; i < 4; ++i) mVector[i] = result[i];
+    mVector[0] = mVector[0] * inMatrix[0] + mVector[1] * inMatrix[4] + mVector[2] * inMatrix[8] + mVector[3] * inMatrix[12];
+    mVector[0] = mVector[0] * inMatrix[1] + mVector[1] * inMatrix[5] + mVector[2] * inMatrix[9] + mVector[3] * inMatrix[13];
+    mVector[0] = mVector[0] * inMatrix[2] + mVector[1] * inMatrix[6] + mVector[2] * inMatrix[10] + mVector[3] * inMatrix[14];
+    mVector[0] = mVector[0] * inMatrix[3] + mVector[1] * inMatrix[7] + mVector[2] * inMatrix[11] + mVector[3] * inMatrix[15];
+
+    //Matrix<T> result(inMatrix * toMatrix());
+    //for (int i = 0; i < 4; ++i) mVector[i] = result[i];
 }
 
 template<class T>

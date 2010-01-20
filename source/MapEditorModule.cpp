@@ -258,12 +258,63 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         cerr << "\nTransformation matrix: \n" << transform << endl;
 */
 
+        Vector3D<float> mousePoint(inX, inY, 0);
         Vector3D<float> closestMatch;
+        float closestMatchZCoor = 0;
+        int closestRow = 0;
+        int closestCol = 0;
+        float currentZCoor = 0;
         Vector3D<float> currentVertex;
         Vector3D<float> currentVertexPixelCoor;
 
-        int numRows = mTerrainGrid.getMatrix().rows();
-        int numCols = mTerrainGrid.getMatrix().cols();
+        Matrix<float> currentHeights = mTerrainGrid.getMatrix();
+
+        int numRows = currentHeights.rows();
+        int numCols = currentHeights.cols();
+
+        for (int i = 0; i < numRows; ++i)
+        {
+            for (int j = 0; j < numCols; ++j)
+            {
+                currentVertex = mTerrainGrid.getVertex(i, j);
+                currentZCoor = currentVertex[2];
+
+                cerr << "\nThis vertex scene coordinates: " << currentVertex;
+
+                currentVertex.processMatrix(currentHeights);
+
+                cerr << " Pixel coordinates: " << currentVertex << endl;
+
+                float closestLength = (closestMatch - mousePoint).length();
+                float currentLength = (currentVertex - mousePoint).length();
+
+                if (abs(currentLength - closestLength) < VERTEX_DISTANCE)
+                {
+                    //We have two vertices whose 2 dimensional distance is
+                    //extremely close together, use the z coordinates to
+                    //determine which one best fits
+                    //We test the z coordinate first to take care of cases where
+                    //a vertex is hidden from view but happens to be closer to
+                    //the mouse than the visible one is
+                    if (currentZCoor < closestMatchZCoor)
+                    {
+                        closestRow = i;
+                        closestCol = j;
+                        closestMatch = currentVertex;
+                        closestMatchZCoor = currentZCoor;
+                    }
+                }
+                else if (currentLength < closestLength)
+                {
+                    closestRow = i;
+                    closestCol = j;
+                    closestMatch = currentVertex;
+                    closestMatchZCoor = currentZCoor;
+                }
+            }
+        }
+
+        cerr << "done testing coordinates, chosen coordinate: " << closestMatch << endl;
     }
     else
     {
