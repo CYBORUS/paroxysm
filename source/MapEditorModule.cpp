@@ -236,6 +236,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             mClickedVertex[1] += (dy * VERTEX_STEP);
             //cerr << " dy: " << dy << " vertex: " << mClickedVertex[1] << endl;
             mTerrainGrid.set(mClickedVertex[2], mClickedVertex[0], mClickedVertex[1]);
+            mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1], mClickedVertex[2]);
             break;
         }
     }

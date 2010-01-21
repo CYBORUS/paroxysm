@@ -121,7 +121,7 @@ void TerrainGrid::display()
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisable(GL_TEXTURE_2D);
 
-    //displayNormals();
+    displayNormals();
 }
 
 void TerrainGrid::displayNormals()

@@ -17,7 +17,7 @@ TSphere::TSphere()
 {
     mFill = true;
 
-    mDetail = 3;
+    mDetail = 2;
 
     mID = glGenLists(1);
     mCurrentColor = 1;
@@ -26,7 +26,7 @@ TSphere::TSphere()
     {
         glPushAttrib(GL_CURRENT_BIT);
         {
-            glColor3f(0.0f, 0.0f, 1.0f);
+            glColor3f(1.0f, 1.0f, 1.0f);
             glBegin(GL_TRIANGLES);
             for (int i = 0; i < 20; ++i)
             {
@@ -52,13 +52,18 @@ void TSphere::display()
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-        glPushMatrix();
+        glPushAttrib(GL_LIGHTING_BIT);
         {
-            glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
-            glScalef(0.25f, 0.25f, 0.25f);
-            glCallList(mID);
+            glDisable(GL_LIGHTING);
+            glPushMatrix();
+            {
+                glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
+                glScalef(0.01f, 0.01f, 0.01f);
+                glCallList(mID);
+            }
+            glPopMatrix();
         }
-        glPopMatrix();
+        glPopAttrib();
     }
     glPopAttrib();
 }
