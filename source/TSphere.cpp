@@ -55,7 +55,7 @@ void TSphere::display()
         glPushMatrix();
         {
             glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
-            glScalef(0.5f, 0.5f, 0.5f);
+            glScalef(0.25f, 0.25f, 0.25f);
             glCallList(mID);
         }
         glPopMatrix();
