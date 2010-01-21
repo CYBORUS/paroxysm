@@ -19,6 +19,7 @@ using namespace std;
 #define MM_DEFAULT 0
 #define MM_PANNING 1
 #define MM_ROTATING 2
+#define MM_EDITING_VERTEX 3
 
 struct Light
 {
@@ -66,7 +67,9 @@ class MapEditorModule : public Module
         Matrix<GLdouble> mModelView;
         Vector3D<GLint> mViewport;
         Matrix<GLdouble> mProjection;
-        Matrix<GLdouble> mTransform;
+
+        Vector3D<float> mClickedVertex;
+
         int mCenterX;
         int mCenterY;
         int mOldMouseX;

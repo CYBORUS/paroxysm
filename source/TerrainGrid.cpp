@@ -159,7 +159,7 @@ void TerrainGrid::displayNormals()
 }
 
 void TerrainGrid::set(int inRow, int inCol, float inHeight,
-    bool inFindNormal = true)
+    bool inFindNormal)
 {
     mHeights(inRow, inCol) = inHeight;
 

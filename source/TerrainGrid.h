@@ -22,7 +22,7 @@ class TerrainGrid
         void create();
         void destroy();
         void display();
-        void set(int inRow, int inCol, float inHeight, bool inFindNormal);
+        void set(int inRow, int inCol, float inHeight, bool inFindNormal = true);
         Vector3D<float> getVertex(int inRow, int inCol);
         const Matrix<float>& getMatrix() const;
         void findNormal(int inRow, int inCol);

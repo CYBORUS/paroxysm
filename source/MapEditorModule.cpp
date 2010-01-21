@@ -9,7 +9,6 @@ bool MapEditorModule::onInit()
 
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
-    mTransform = Matrix<GLdouble>(4);
 
     mSceneChanged = true;
 
@@ -112,8 +111,8 @@ void MapEditorModule::onLoop()
     {
         glGetDoublev(GL_MODELVIEW_MATRIX, mModelView.array());
         //mModelView.transpose();
-        mTransform = mModelView * mProjection;
-        cerr << "\nmTransform: \n" << mTransform << endl;
+        //mTransform = mModelView * mProjection;
+        //cerr << "\nmTransform: \n" << mTransform << endl;
         mSceneChanged = false;
     }
 
@@ -192,33 +191,44 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     if (mMouseMode == MM_DEFAULT || (inX == mCenterX && inY == mCenterY))
         return;
 
-    if (mMouseMode == MM_ROTATING)
+    switch (mMouseMode)
     {
-        mTrackball[1] += static_cast<GLfloat>(inX - mCenterX) * TRACKBALL_STEP;
-        if (mTrackball[1] < -180.0f)
-            mTrackball[1] += 360.0f;
-        else if (mTrackball[1] > 180.0f)
-            mTrackball[1] -= 360.0f;
+        case MM_ROTATING:
+        {
+            mTrackball[1] += static_cast<GLfloat>(inX - mCenterX) * TRACKBALL_STEP;
+            if (mTrackball[1] < -180.0f)
+                mTrackball[1] += 360.0f;
+            else if (mTrackball[1] > 180.0f)
+                mTrackball[1] -= 360.0f;
 
-        mTrackball[0] += static_cast<GLfloat>(inY - mCenterY) * TRACKBALL_STEP;
-        if (mTrackball[0] < -180.0f)
-            mTrackball[0] += 360.0f;
-        else if (mTrackball[0] > 180.0f)
-            mTrackball[0] -= 360.0f;
-    }
-    else if (mMouseMode == MM_PANNING)
-    {
-        GLfloat dx = static_cast<GLfloat>(inX - mCenterX) * PANNING_STEP;
-        GLfloat dy = static_cast<GLfloat>(inY - mCenterY) * PANNING_STEP;
+            mTrackball[0] += static_cast<GLfloat>(inY - mCenterY) * TRACKBALL_STEP;
+            if (mTrackball[0] < -180.0f)
+                mTrackball[0] += 360.0f;
+            else if (mTrackball[0] > 180.0f)
+                mTrackball[0] -= 360.0f;
+            break;
+        }
+        case MM_PANNING:
+        {
+            GLfloat dx = static_cast<GLfloat>(inX - mCenterX) * PANNING_STEP;
+            GLfloat dy = static_cast<GLfloat>(inY - mCenterY) * PANNING_STEP;
 
-        GLfloat theta = TO_RADIANS(mTrackball[1]);
-        GLfloat dxp = cos(theta) * dx;
-        GLfloat dyp = sin(theta) * dx;
-        dxp -= sin(theta) * dy;
-        dyp += cos(theta) * dy;
+            GLfloat theta = TO_RADIANS(mTrackball[1]);
+            GLfloat dxp = cos(theta) * dx;
+            GLfloat dyp = sin(theta) * dx;
+            dxp -= sin(theta) * dy;
+            dyp += cos(theta) * dy;
 
-        mPanning[0] += dxp;
-        mPanning[2] += dyp;
+            mPanning[0] += dxp;
+            mPanning[2] += dyp;
+            break;
+        }
+        case MM_EDITING_VERTEX:
+        {
+            cerr << mClickedVertex << endl;
+            mTerrainGrid.set(mClickedVertex[2], mClickedVertex[0], 1);
+            break;
+        }
     }
 
     SDL_WarpMouse(mCenterX, mCenterY);
@@ -231,9 +241,8 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
     Uint8* keyState = SDL_GetKeyState(NULL);
 
-    if (keyState[SDLK_LSHIFT])
+    if (keyState[SDLK_LSHIFT] || keyState[SDLK_RSHIFT])
     {
-        cerr << "left shift down" << endl;
 /*
         //this math works, and is proven to produce exactly the same results
         //as opengl's math does
@@ -287,88 +296,46 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
         GLfloat depthZ = 0;
 
+        //we have to invert the y axis because of opengl's viewport
         int newY = -(inY - Config::get("display height", 600));
 
-
+        //read the depth buffer to determine the z coordinate at the clicked
+        //x,y coordinates
         glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
 
-        cerr << "newY: " << newY <<  " depthZ: " << depthZ << endl;
-
+        //now let the glu library do the math for us :)
         if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView.array(), mProjection.array(), mViewport.array(), &tempX, &tempY, &tempZ) == GL_FALSE)
         {
             cerr << "gluUnProject failed." << endl;
         }
 
-        Vector3D<GLdouble> clickPoint(tempX, tempY, tempZ);
-
-        mSphere.moveSphere(clickPoint[0], clickPoint[1], clickPoint[2]);
+        Vector3D<float> clickPoint(tempX, tempY, tempZ);
 
 
-        cerr << "\nReturned by gluUnProject: " << clickPoint << endl;
-        cerr << "Actual clicked coordinates: " << inX << "," << inY << endl;
-
-        if (gluProject(tempX, tempY, tempZ, mModelView.array(), mProjection.array(), mViewport.array(), &tempX, &tempY, &tempZ) == GL_FALSE)
-        {
-            cerr << "gluProject failed." << endl;
-        }
-
-        clickPoint[0] = tempX;
-        clickPoint[1] = tempY;
-        clickPoint[2] = tempZ;
-
-        cerr << "Returned by gluProject: " << clickPoint << endl;
-
-        Matrix<float> currentHeights = mTerrainGrid.getMatrix();
-
-        int numRows = currentHeights.rows();
-        int numCols = currentHeights.cols();
+        int numRows = mTerrainGrid.getMatrix().rows();
+        int numCols = mTerrainGrid.getMatrix().cols();
 
         for (int i = 0; i < numRows; ++i)
         {
             for (int j = 0; j < numCols; ++j)
             {
                 currentVertex = mTerrainGrid.getVertex(i, j);
-                currentZCoor = currentVertex[2];
-
-                //cerr << "\nThis vertex scene coordinates: " << currentVertex;
-
-                //currentVertex.processMatrix(mModelView);
-                //currentVertex.processMatrix(mProjection);
-                //currentVertex.processMatrix(mTransform);
-
-                //cerr << " Pixel coordinates: " << currentVertex << endl;
-
-                float closestLength = (closestMatch - mousePoint).length();
-                float currentLength = (currentVertex - mousePoint).length();
-
-                if (abs(currentLength - closestLength) < VERTEX_DISTANCE)
+                if ((currentVertex - clickPoint).length() <= (closestMatch - clickPoint).length())
                 {
-                    //We have two vertices whose 2 dimensional distance is
-                    //extremely close together, use the z coordinates to
-                    //determine which one best fits
-                    //We test the z coordinate first to take care of cases where
-                    //a vertex is hidden from view but happens to be closer to
-                    //the mouse than the visible one is
-                    if (currentZCoor < closestMatchZCoor)
-                    {
-                        closestRow = i;
-                        closestCol = j;
-                        closestMatch = currentVertex;
-                        closestMatchZCoor = currentZCoor;
-                    }
-                }
-                else if (currentLength < closestLength)
-                {
-                    closestRow = i;
-                    closestCol = j;
                     closestMatch = currentVertex;
-                    closestMatchZCoor = currentZCoor;
                 }
             }
         }
 
-        cerr << "done testing coordinates, chosen coordinate: " << closestMatch << endl;
-        currentVertex = mTerrainGrid.getVertex(closestRow, closestCol);
+        mClickedVertex = closestMatch;
+
+        mSphere.moveSphere(closestMatch[0], closestMatch[1], closestMatch[2]);
+
+        SDL_ShowCursor(SDL_DISABLE);
+        mOldMouseX = inX;
+        mOldMouseY = inY;
+        SDL_WarpMouse(mCenterX, mCenterY);
+        mMouseMode = MM_EDITING_VERTEX;
     }
     else
     {
@@ -382,12 +349,23 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
 void MapEditorModule::onLButtonUp(int inX, int inY)
 {
-    if (mMouseMode == MM_PANNING)
+    switch (mMouseMode)
     {
-        mMouseMode = MM_DEFAULT;
-        SDL_WarpMouse(mOldMouseX, mOldMouseY);
-        SDL_ShowCursor(SDL_ENABLE);
-        mSceneChanged = true;
+        case MM_PANNING:
+        {
+            mMouseMode = MM_DEFAULT;
+            SDL_WarpMouse(mOldMouseX, mOldMouseY);
+            SDL_ShowCursor(SDL_ENABLE);
+            mSceneChanged = true;
+            break;
+        }
+        case MM_EDITING_VERTEX:
+        {
+            mMouseMode = MM_DEFAULT;
+            SDL_WarpMouse(mOldMouseX, mOldMouseY);
+            SDL_ShowCursor(SDL_ENABLE);
+            break;
+        }
     }
 }
 
