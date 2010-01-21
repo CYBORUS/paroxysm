@@ -50,7 +50,7 @@ void TSphere::display()
 
     glPushAttrib(GL_POLYGON_BIT);
     {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glPushMatrix();
         {

@@ -11,7 +11,7 @@ bool MapEditorModule::onInit()
     mModelView = Matrix<GLdouble>(4);
     mTransform = Matrix<GLdouble>(4);
 
-    mSceneChanged = false;
+    mSceneChanged = true;
 
     mTerrainSize = Config::get<int>("terrain size", 10);
     string terrainFilename = Config::get<string>("terrain file", "_");
@@ -163,6 +163,7 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             mTrackball[2] = 20.0f;
             mPanning[0] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
             mPanning[2] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
+            mSceneChanged = true;
             break;
         }
 
