@@ -7,9 +7,9 @@ bool MapEditorModule::onInit()
     mRunning = true;
     mMouseMode = MM_DEFAULT;
 
-    mProjection = Matrix<GLfloat>(4);
-    mModelView = Matrix<GLfloat>(4);
-    mTransform = Matrix<GLfloat>(4);
+    mProjection = Matrix<GLdouble>(4);
+    mModelView = Matrix<GLdouble>(4);
+    mTransform = Matrix<GLdouble>(4);
 
     mSceneChanged = false;
 
@@ -45,8 +45,10 @@ bool MapEditorModule::onInit()
 
     glMatrixMode(GL_MODELVIEW);
 
-    glGetFloatv(GL_PROJECTION_MATRIX, mProjection.array());
-    mProjection.transpose();
+    glGetDoublev(GL_PROJECTION_MATRIX, mProjection.array());
+    //mProjection.transpose();
+
+    glGetIntegerv(GL_VIEWPORT, mViewport.array());
 
     cerr << "\nProjection Matrix: \n" << mProjection << endl;
     //glLoadIdentity();
@@ -108,8 +110,8 @@ void MapEditorModule::onLoop()
 
     if (mSceneChanged)
     {
-        glGetFloatv(GL_MODELVIEW_MATRIX, mModelView.array());
-        mModelView.transpose();
+        glGetDoublev(GL_MODELVIEW_MATRIX, mModelView.array());
+        //mModelView.transpose();
         mTransform = mModelView * mProjection;
         cerr << "\nmTransform: \n" << mTransform << endl;
         mSceneChanged = false;
@@ -278,6 +280,43 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         Vector3D<float> currentVertex;
         Vector3D<float> currentVertexPixelCoor;
 
+        GLdouble tempX = 0;
+        GLdouble tempY = 0;
+        GLdouble tempZ = 0;
+
+        GLfloat depthZ = 0;
+
+        int newY = -(inY - Config::get("display height", 600));
+
+
+        glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
+
+        cerr << "newY: " << newY <<  " depthZ: " << depthZ << endl;
+
+        if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView.array(), mProjection.array(), mViewport.array(), &tempX, &tempY, &tempZ) == GL_FALSE)
+        {
+            cerr << "gluUnProject failed." << endl;
+        }
+
+        Vector3D<GLdouble> clickPoint(tempX, tempY, tempZ);
+
+        mSphere.moveSphere(clickPoint[0], clickPoint[1], clickPoint[2]);
+
+
+        cerr << "\nReturned by gluUnProject: " << clickPoint << endl;
+        cerr << "Actual clicked coordinates: " << inX << "," << inY << endl;
+
+        if (gluProject(tempX, tempY, tempZ, mModelView.array(), mProjection.array(), mViewport.array(), &tempX, &tempY, &tempZ) == GL_FALSE)
+        {
+            cerr << "gluProject failed." << endl;
+        }
+
+        clickPoint[0] = tempX;
+        clickPoint[1] = tempY;
+        clickPoint[2] = tempZ;
+
+        cerr << "Returned by gluProject: " << clickPoint << endl;
+
         Matrix<float> currentHeights = mTerrainGrid.getMatrix();
 
         int numRows = currentHeights.rows();
@@ -290,11 +329,13 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
                 currentVertex = mTerrainGrid.getVertex(i, j);
                 currentZCoor = currentVertex[2];
 
-                cerr << "\nThis vertex scene coordinates: " << currentVertex;
+                //cerr << "\nThis vertex scene coordinates: " << currentVertex;
 
-                currentVertex.processMatrix(mTransform);
+                //currentVertex.processMatrix(mModelView);
+                //currentVertex.processMatrix(mProjection);
+                //currentVertex.processMatrix(mTransform);
 
-                cerr << " Pixel coordinates: " << currentVertex << endl;
+                //cerr << " Pixel coordinates: " << currentVertex << endl;
 
                 float closestLength = (closestMatch - mousePoint).length();
                 float currentLength = (currentVertex - mousePoint).length();
@@ -327,7 +368,6 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
         cerr << "done testing coordinates, chosen coordinate: " << closestMatch << endl;
         currentVertex = mTerrainGrid.getVertex(closestRow, closestCol);
-        mSphere.moveSphere(currentVertex[0], currentVertex[1], currentVertex[2]);
     }
     else
     {

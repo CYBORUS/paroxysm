@@ -63,9 +63,10 @@ class MapEditorModule : public Module
 
         bool mSceneChanged;
 
-        Matrix<GLfloat> mModelView;
-        Matrix<GLfloat> mProjection;
-        Matrix<GLfloat> mTransform;
+        Matrix<GLdouble> mModelView;
+        Vector3D<GLint> mViewport;
+        Matrix<GLdouble> mProjection;
+        Matrix<GLdouble> mTransform;
         int mCenterX;
         int mCenterY;
         int mOldMouseX;
