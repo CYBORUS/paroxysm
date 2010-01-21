@@ -16,10 +16,13 @@ using namespace std;
 #define VERTEX_DISTANCE 0.0f
 #define TRACKBALL_STEP 1.0f
 #define PANNING_STEP 0.1f
+#define VERTEX_STEP 0.1f
 #define MM_DEFAULT 0
 #define MM_PANNING 1
 #define MM_ROTATING 2
 #define MM_EDITING_VERTEX 3
+
+
 
 struct Light
 {

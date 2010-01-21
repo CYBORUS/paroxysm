@@ -225,8 +225,17 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
         case MM_EDITING_VERTEX:
         {
-            cerr << mClickedVertex << endl;
-            mTerrainGrid.set(mClickedVertex[2], mClickedVertex[0], 1);
+            GLfloat dy = -(inY - mCenterY);
+            dy /= abs(dy);
+
+            if (dy != 1 && dy != -1)
+            {
+                dy = 0;
+            }
+            //cerr << "vertex before: " << mClickedVertex[1];
+            mClickedVertex[1] += (dy * VERTEX_STEP);
+            //cerr << " dy: " << dy << " vertex: " << mClickedVertex[1] << endl;
+            mTerrainGrid.set(mClickedVertex[2], mClickedVertex[0], mClickedVertex[1]);
             break;
         }
     }
