@@ -17,7 +17,7 @@ TSphere::TSphere()
 {
     mFill = true;
 
-    mDetail = 2;
+    mDetail = 1;
 
     mID = glGenLists(1);
     mCurrentColor = 1;

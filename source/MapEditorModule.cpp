@@ -145,6 +145,51 @@ void MapEditorModule::onCleanup()
 }
 
 
+Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
+{
+    Vector3D<float> closestMatch;
+    Vector3D<float> currentVertex;
+
+    GLdouble tempX = 0;
+    GLdouble tempY = 0;
+    GLdouble tempZ = 0;
+
+    GLfloat depthZ = 0;
+
+    //we have to invert the y axis because of opengl's viewport
+    int newY = -(inY - Config::get("display height", 600));
+
+    //read the depth buffer to determine the z coordinate at the clicked
+    //x,y coordinates
+    glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
+
+    //now let the glu library do the math for us :)
+    if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView.array(), mProjection.array(), mViewport.array(), &tempX, &tempY, &tempZ) == GL_FALSE)
+    {
+        cerr << "gluUnProject failed." << endl;
+    }
+
+    Vector3D<float> clickPoint(tempX, tempY, tempZ);
+
+
+    int numRows = mTerrainGrid.getMatrix().rows();
+    int numCols = mTerrainGrid.getMatrix().cols();
+
+    for (int i = 0; i < numRows; ++i)
+    {
+        for (int j = 0; j < numCols; ++j)
+        {
+            currentVertex = mTerrainGrid.getVertex(i, j);
+            if ((currentVertex - clickPoint).length() <= (closestMatch - clickPoint).length())
+            {
+                closestMatch = currentVertex;
+            }
+        }
+    }
+    return closestMatch;
+}
+
+
 void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
@@ -188,9 +233,6 @@ void MapEditorModule::onMouseWheel(bool inUp, bool inDown)
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
-    if (mMouseMode == MM_DEFAULT || (inX == mCenterX && inY == mCenterY))
-        return;
-
     switch (mMouseMode)
     {
         case MM_ROTATING:
@@ -235,13 +277,22 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             //cerr << "vertex before: " << mClickedVertex[1];
             mClickedVertex[1] += (dy * VERTEX_STEP);
             //cerr << " dy: " << dy << " vertex: " << mClickedVertex[1] << endl;
-            mTerrainGrid.set(mClickedVertex[2], mClickedVertex[0], mClickedVertex[1]);
+            mTerrainGrid.set((int)mClickedVertex[2], (int)mClickedVertex[0], mClickedVertex[1]);
             mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1], mClickedVertex[2]);
+            break;
+        }
+        case MM_DEFAULT:
+        {
+            Vector3D<float> hoverVertex = selectVertex(inX, inY);
+            mSphere.moveSphere(hoverVertex[0], hoverVertex[1], hoverVertex[2]);
             break;
         }
     }
 
-    SDL_WarpMouse(mCenterX, mCenterY);
+    if (mMouseMode != MM_DEFAULT && (inX != mCenterX || inY != mCenterY))
+    {
+        SDL_WarpMouse(mCenterX, mCenterY);
+    }
 }
 
 void MapEditorModule::onLButtonDown(int inX, int inY)
@@ -291,55 +342,10 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         cerr << "\nTransformation matrix: \n" << transform << endl;
 */
 
-        Vector3D<float> mousePoint(inX, inY, 0);
-        Vector3D<float> closestMatch;
-        float closestMatchZCoor = 0;
-        int closestRow = 0;
-        int closestCol = 0;
-        float currentZCoor = 0;
-        Vector3D<float> currentVertex;
-        Vector3D<float> currentVertexPixelCoor;
 
-        GLdouble tempX = 0;
-        GLdouble tempY = 0;
-        GLdouble tempZ = 0;
+        mClickedVertex = selectVertex(inX, inY);
 
-        GLfloat depthZ = 0;
-
-        //we have to invert the y axis because of opengl's viewport
-        int newY = -(inY - Config::get("display height", 600));
-
-        //read the depth buffer to determine the z coordinate at the clicked
-        //x,y coordinates
-        glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
-
-        //now let the glu library do the math for us :)
-        if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView.array(), mProjection.array(), mViewport.array(), &tempX, &tempY, &tempZ) == GL_FALSE)
-        {
-            cerr << "gluUnProject failed." << endl;
-        }
-
-        Vector3D<float> clickPoint(tempX, tempY, tempZ);
-
-
-        int numRows = mTerrainGrid.getMatrix().rows();
-        int numCols = mTerrainGrid.getMatrix().cols();
-
-        for (int i = 0; i < numRows; ++i)
-        {
-            for (int j = 0; j < numCols; ++j)
-            {
-                currentVertex = mTerrainGrid.getVertex(i, j);
-                if ((currentVertex - clickPoint).length() <= (closestMatch - clickPoint).length())
-                {
-                    closestMatch = currentVertex;
-                }
-            }
-        }
-
-        mClickedVertex = closestMatch;
-
-        mSphere.moveSphere(closestMatch[0], closestMatch[1], closestMatch[2]);
+        //mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1], mClickedVertex[2]);
 
         SDL_ShowCursor(SDL_DISABLE);
         mOldMouseX = inX;

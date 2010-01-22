@@ -54,6 +54,8 @@ class MapEditorModule : public Module
             bool inLeft, bool inRight, bool inMiddle);
 
     private:
+        Vector3D<float> selectVertex(int inX, int inY);
+
         int mTerrainSize;
         TerrainGrid mTerrainGrid;
         Light mLight;
