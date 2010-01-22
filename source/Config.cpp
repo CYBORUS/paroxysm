@@ -97,3 +97,8 @@ const char* Config::getRaw(const char* inKey)
 {
     return getRaw(inKey, DEFAULT_VALUE);
 }
+
+void Config::set(const char* inKey, const char* inValue)
+{
+    mSettings[inKey] = inValue;
+}

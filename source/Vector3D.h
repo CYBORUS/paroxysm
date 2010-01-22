@@ -1,3 +1,20 @@
+/**
+ *  This file is part of "Paroxysm".
+ *
+ *  "Paroxysm" is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  "Paroxysm" is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef _VECTOR3D_H_
 #define _VECTOR3D_H_
 
@@ -256,13 +273,14 @@ inline T* Vector3D<T>::array()
 template<class T>
 void Vector3D<T>::processMatrix(const Matrix<T>& inMatrix)
 {
-    mVector[0] = mVector[0] * inMatrix[0] + mVector[1] * inMatrix[4] + mVector[2] * inMatrix[8] + mVector[3] * inMatrix[12];
-    mVector[1] = mVector[0] * inMatrix[1] + mVector[1] * inMatrix[5] + mVector[2] * inMatrix[9] + mVector[3] * inMatrix[13];
-    mVector[2] = mVector[0] * inMatrix[2] + mVector[1] * inMatrix[6] + mVector[2] * inMatrix[10] + mVector[3] * inMatrix[14];
-    mVector[3] = mVector[0] * inMatrix[3] + mVector[1] * inMatrix[7] + mVector[2] * inMatrix[11] + mVector[3] * inMatrix[15];
-
-    //Matrix<T> result(inMatrix * toMatrix());
-    //for (int i = 0; i < 4; ++i) mVector[i] = result[i];
+    mVector[0] = mVector[0] * inMatrix[0] + mVector[1] * inMatrix[4]
+        + mVector[2] * inMatrix[8] + mVector[3] * inMatrix[12];
+    mVector[1] = mVector[0] * inMatrix[1] + mVector[1] * inMatrix[5]
+        + mVector[2] * inMatrix[9] + mVector[3] * inMatrix[13];
+    mVector[2] = mVector[0] * inMatrix[2] + mVector[1] * inMatrix[6]
+        + mVector[2] * inMatrix[10] + mVector[3] * inMatrix[14];
+    mVector[3] = mVector[0] * inMatrix[3] + mVector[1] * inMatrix[7]
+        + mVector[2] * inMatrix[11] + mVector[3] * inMatrix[15];
 }
 
 template<class T>

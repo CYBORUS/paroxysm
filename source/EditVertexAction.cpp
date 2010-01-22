@@ -15,26 +15,35 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BLANKWINDOW_H_
-#define _BLANKWINDOW_H_
+#include "EditVertexAction.h"
 
-#include "Module.h"
-#include "SoundEngine.h"
-#include "DisplayEngine.h"
-#include "TSphere.h"
-
-class BlankWindow : public Module
+EditVertexAction::EditVertexAction(TerrainGrid* inGrid)
 {
-    public:
-        /// module operation
-        virtual bool onInit();
-        virtual void onCleanup();
+    mGrid = inGrid;
+}
 
-        void onLoop();
+EditVertexAction::~EditVertexAction()
+{
+}
 
-        void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
-    private:
-        TSphere mSphere;
-};
+void EditVertexAction::execute()
+{
+    mGrid->set(mRow, mCol, mAfter);
+}
 
-#endif
+void EditVertexAction::undo()
+{
+    mGrid->set(mRow, mCol, mBefore);
+}
+
+void EditVertexAction::setBefore(int inRow, int inCol, float inBefore)
+{
+    mRow = inRow;
+    mCol = inCol;
+    mBefore = inBefore;
+}
+
+void EditVertexAction::setAfter(float inAfter)
+{
+    mAfter = inAfter;
+}

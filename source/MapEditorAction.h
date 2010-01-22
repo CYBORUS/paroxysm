@@ -15,26 +15,17 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BLANKWINDOW_H_
-#define _BLANKWINDOW_H_
+#ifndef MAPEDITORACTION_H
+#define MAPEDITORACTION_H
 
-#include "Module.h"
-#include "SoundEngine.h"
-#include "DisplayEngine.h"
-#include "TSphere.h"
-
-class BlankWindow : public Module
+class MapEditorAction
 {
     public:
-        /// module operation
-        virtual bool onInit();
-        virtual void onCleanup();
+        MapEditorAction();
+        virtual ~MapEditorAction();
 
-        void onLoop();
-
-        void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
-    private:
-        TSphere mSphere;
+        virtual void execute() = 0;
+        virtual void undo() = 0;
 };
 
 #endif

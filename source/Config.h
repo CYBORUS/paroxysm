@@ -35,7 +35,7 @@ class Config
         static void outputSettings(ostream& inStream);
         static const char* getRaw(const char* inKey, const char* inDefault);
         static const char* getRaw(const char* inKey);
-        static const char* set(const char* inKey, const char* inValue);
+        static void set(const char* inKey, const char* inValue);
         template<class T> static T get(const char* inKey, T inDefault);
 
     private:

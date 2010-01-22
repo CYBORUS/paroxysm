@@ -15,26 +15,31 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BLANKWINDOW_H_
-#define _BLANKWINDOW_H_
+#ifndef EDITVERTEXACTION_H
+#define EDITVERTEXACTION_H
 
-#include "Module.h"
-#include "SoundEngine.h"
-#include "DisplayEngine.h"
-#include "TSphere.h"
+#include "MapEditorAction.h"
+#include "TerrainGrid.h"
 
-class BlankWindow : public Module
+class EditVertexAction : public MapEditorAction
 {
     public:
-        /// module operation
-        virtual bool onInit();
-        virtual void onCleanup();
+        EditVertexAction(TerrainGrid* inGrid);
+        virtual ~EditVertexAction();
 
-        void onLoop();
+        virtual void execute();
+        virtual void undo();
 
-        void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        void setBefore(int inRow, int inCol, float inBefore);
+        void setAfter(float inAfter);
+
     private:
-        TSphere mSphere;
+        TerrainGrid* mGrid;
+
+        int mRow;
+        int mCol;
+        float mBefore;
+        float mAfter;
 };
 
 #endif

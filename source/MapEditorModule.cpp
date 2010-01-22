@@ -1,6 +1,24 @@
+/**
+ *  This file is part of "Paroxysm".
+ *
+ *  "Paroxysm" is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  "Paroxysm" is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "MapEditorModule.h"
 #include "DisplayEngine.h"
 #include "Config.h"
+#include "EditVertexAction.h"
 
 bool MapEditorModule::onInit()
 {
@@ -51,20 +69,6 @@ bool MapEditorModule::onInit()
 
     cerr << "\nProjection Matrix: \n" << mProjection << endl;
     //glLoadIdentity();
-/*
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 0, mVertices);
-
-    glNewList(mList, GL_COMPILE);
-    {
-
-        glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
-            mIndices);
-    }
-    glEndList();
-
-        glDisableClientState(GL_VERTEX_ARRAY);
-*/
 
     glEnable(GL_DEPTH_TEST);
     //glEnable(GL_CULL_FACE);
@@ -116,17 +120,18 @@ void MapEditorModule::onLoop()
         mSceneChanged = false;
     }
 
-
-
-    //glCallList(mList);
     mTerrainGrid.display();
 
+    // reference Y-axis
+    glPushAttrib(GL_LIGHTING_BIT);
+    glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     {
         glVertex3f(0.0f, 0.0f, 0.0f);
         glVertex3f(0.0f, 10.0f, 0.0f);
     }
     glEnd();
+    glPopAttrib();
 
     mSphere.display();
 
@@ -142,6 +147,11 @@ void MapEditorModule::onFrame()
 
 void MapEditorModule::onCleanup()
 {
+    while (!mActions.empty())
+    {
+        delete mActions.back();
+        mActions.pop_back();
+    }
 }
 
 
@@ -194,6 +204,12 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
+        case SDLK_z:
+        {
+            if (inMod & (KMOD_LCTRL | KMOD_RCTRL)) undoAction();
+            break;
+        }
+
         case SDLK_ESCAPE:
         {
             mRunning = false;
@@ -277,8 +293,14 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             //cerr << "vertex before: " << mClickedVertex[1];
             mClickedVertex[1] += (dy * VERTEX_STEP);
             //cerr << " dy: " << dy << " vertex: " << mClickedVertex[1] << endl;
-            mTerrainGrid.set((int)mClickedVertex[2], (int)mClickedVertex[0], mClickedVertex[1]);
-            mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1], mClickedVertex[2]);
+
+            EditVertexAction* eva =
+                dynamic_cast<EditVertexAction*>(mCurrentAction);
+            eva->setAfter(mClickedVertex[1]);
+            eva->execute();
+
+            mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1],
+                mClickedVertex[2]);
             break;
         }
         case MM_DEFAULT:
@@ -354,6 +376,11 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
 
         mClickedVertex = selectVertex(inX, inY);
+        EditVertexAction* eva = new EditVertexAction(&mTerrainGrid);
+        eva->setBefore((int)mClickedVertex[2], (int)mClickedVertex[0],
+            mClickedVertex[1]);
+        eva->setAfter(mClickedVertex[1]);
+        mCurrentAction = eva;
 
         //mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1], mClickedVertex[2]);
 
@@ -380,6 +407,8 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
         }
         case MM_EDITING_VERTEX:
         {
+            mActions.push_back(mCurrentAction);
+            mCurrentAction = NULL;
             mMouseMode = MM_DEFAULT;
             SDL_WarpMouse(mOldMouseX, mOldMouseY);
             SDL_ShowCursor(SDL_ENABLE);
@@ -409,4 +438,15 @@ void MapEditorModule::onRButtonUp(int inX, int inY)
         SDL_ShowCursor(SDL_ENABLE);
         mSceneChanged = true;
     }
+}
+
+void MapEditorModule::undoAction()
+{
+    if (mActions.empty()) return;
+
+    MapEditorAction* action = mActions.back();
+    action->undo();
+    delete action;
+
+    mActions.pop_back();
 }
