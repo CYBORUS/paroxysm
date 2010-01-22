@@ -48,6 +48,10 @@
 		<Unit filename="..\Config.h" />
 		<Unit filename="..\DisplayEngine.cpp" />
 		<Unit filename="..\DisplayEngine.h" />
+		<Unit filename="..\EditVertexAction.cpp" />
+		<Unit filename="..\EditVertexAction.h" />
+		<Unit filename="..\MapEditorAction.cpp" />
+		<Unit filename="..\MapEditorAction.h" />
 		<Unit filename="..\MapEditorModule.cpp" />
 		<Unit filename="..\MapEditorModule.h" />
 		<Unit filename="..\Matrix.h" />
