@@ -147,10 +147,16 @@ void MapEditorModule::onFrame()
 
 void MapEditorModule::onCleanup()
 {
-    while (!mActions.empty())
+    while (!mUndo.empty())
     {
-        delete mActions.back();
-        mActions.pop_back();
+        delete mUndo.back();
+        mUndo.pop_back();
+    }
+
+    while (!mRedo.empty())
+    {
+        delete mRedo.back();
+        mRedo.pop_back();
     }
 }
 
@@ -206,7 +212,13 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     {
         case SDLK_z:
         {
-            if (inMod & (KMOD_LCTRL | KMOD_RCTRL)) undoAction();
+            if (inMod & (KMOD_LCTRL | KMOD_RCTRL))
+            {
+                if (inMod & (KMOD_LSHIFT | KMOD_RSHIFT))
+                    redoAction();
+                else
+                    undoAction();
+            }
             break;
         }
 
@@ -407,7 +419,7 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
         }
         case MM_EDITING_VERTEX:
         {
-            mActions.push_back(mCurrentAction);
+            doAction();
             mCurrentAction = NULL;
             mMouseMode = MM_DEFAULT;
             SDL_WarpMouse(mOldMouseX, mOldMouseY);
@@ -440,13 +452,36 @@ void MapEditorModule::onRButtonUp(int inX, int inY)
     }
 }
 
+void MapEditorModule::doAction()
+{
+    while (!mRedo.empty())
+    {
+        delete mRedo.back();
+        mRedo.pop_back();
+    }
+
+    mUndo.push_back(mCurrentAction);
+    mCurrentAction->execute();
+}
+
+void MapEditorModule::redoAction()
+{
+    if (mRedo.empty()) return;
+
+    MapEditorAction* action = mRedo.back();
+    action->execute();
+
+    mUndo.push_back(action);
+    mRedo.pop_back();
+}
+
 void MapEditorModule::undoAction()
 {
-    if (mActions.empty()) return;
+    if (mUndo.empty()) return;
 
-    MapEditorAction* action = mActions.back();
+    MapEditorAction* action = mUndo.back();
     action->undo();
-    delete action;
 
-    mActions.pop_back();
+    mRedo.push_back(action);
+    mUndo.pop_back();
 }

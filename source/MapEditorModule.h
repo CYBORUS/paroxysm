@@ -74,7 +74,9 @@ class MapEditorModule : public Module
             bool inLeft, bool inRight, bool inMiddle);
 
     private:
+        void doAction();
         void undoAction();
+        void redoAction();
 
         Vector3D<float> selectVertex(int inX, int inY);
 
@@ -101,7 +103,8 @@ class MapEditorModule : public Module
         int mOldMouseY;
         int mMouseMode;
 
-        list<MapEditorAction*> mActions;
+        list<MapEditorAction*> mUndo;
+        list<MapEditorAction*> mRedo;
         MapEditorAction* mCurrentAction;
 };
 
