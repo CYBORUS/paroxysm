@@ -304,6 +304,16 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 
     if (keyState[SDLK_LSHIFT] || keyState[SDLK_RSHIFT])
     {
+        SDL_ShowCursor(SDL_DISABLE);
+        mOldMouseX = inX;
+        mOldMouseY = inY;
+        SDL_WarpMouse(mCenterX, mCenterY);
+        mMouseMode = MM_PANNING;
+    }
+    else
+    {
+
+
 /*
         //this math works, and is proven to produce exactly the same results
         //as opengl's math does
@@ -352,14 +362,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         mOldMouseY = inY;
         SDL_WarpMouse(mCenterX, mCenterY);
         mMouseMode = MM_EDITING_VERTEX;
-    }
-    else
-    {
-        SDL_ShowCursor(SDL_DISABLE);
-        mOldMouseX = inX;
-        mOldMouseY = inY;
-        SDL_WarpMouse(mCenterX, mCenterY);
-        mMouseMode = MM_PANNING;
+
     }
 }
 
