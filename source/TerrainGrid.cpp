@@ -30,13 +30,18 @@ TerrainGrid::~TerrainGrid()
     destroy();
 }
 
+void TerrainGrid::save(const char* inFile)
+{
+    ofstream lastTerrain(inFile);
+    lastTerrain << *this;
+    lastTerrain.close();
+}
+
 void TerrainGrid::destroy()
 {
     if (mNumIndices > 0)
     {
-        ofstream lastTerrain("last_terrain.txt");
-        lastTerrain << *this;
-        lastTerrain.close();
+        save("last_terrain.txt");
 
         mNumIndices = 0;
         delete [] mVertices;

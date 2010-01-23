@@ -20,6 +20,13 @@
 
 #include <SDL.h>
 
+template<class T>
+struct Point2D
+{
+    T x;
+    T y;
+};
+
 class Module
 {
     public:

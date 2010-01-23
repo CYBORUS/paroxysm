@@ -24,41 +24,47 @@ bool MapEditorModule::onInit()
 {
     mRunning = true;
     mMouseMode = MM_DEFAULT;
+    mEditMode = EM_TERRAIN;
+    mCurrentAction = NULL;
 
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
     mSceneChanged = true;
 
-    mTerrainSize = Config::get<int>("terrain size", 10);
+    mTerrainSize.x = Config::get<int>("terrain cols", 8);
+    mTerrainSize.y = Config::get<int>("terrain rows", 8);
     string terrainFilename = Config::get<string>("terrain file", "_");
     ifstream terrainFile(terrainFilename.c_str());
     if (terrainFile.fail())
     {
         cerr << "no terrain file: " << terrainFilename << endl;
-        mTerrainGrid.create(mTerrainSize, mTerrainSize);
+        mTerrainGrid.create(mTerrainSize.y, mTerrainSize.x);
     }
     else
     {
         terrainFile >> mTerrainGrid;
+        mTerrainSize.x = mTerrainGrid.getMatrix().cols();
+        mTerrainSize.y = mTerrainGrid.getMatrix().rows();
         terrainFile.close();
     }
 
     mTrackball[0] = 22.0f;
     mTrackball[2] = 20.0f;
-    mPanning[0] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
-    mPanning[2] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
+    mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
+    mPanning[2] = static_cast<GLfloat>(mTerrainSize.y) / -2.0f;
 
-    int w = SDL_GetVideoSurface()->w;
-    mCenterX = w / 2;
-    int h = SDL_GetVideoSurface()->h;
-    mCenterY = h / 2;
+    mDisplay.x = SDL_GetVideoSurface()->w;
+    mCenter.x = mDisplay.x / 2;
+    mDisplay.y = SDL_GetVideoSurface()->h;
+    mCenter.y = mDisplay.y / 2;
+
+    glViewport(0, 0, (GLsizei)mDisplay.x, (GLsizei)mDisplay.y);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-    gluPerspective(FIELD_OF_VIEW, (GLdouble)w / (GLdouble)h, NEAR_CP, FAR_CP);
-
+    gluPerspective(FIELD_OF_VIEW, (GLdouble)mDisplay.x / (GLdouble)mDisplay.y,
+        NEAR_CP, FAR_CP);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -97,6 +103,13 @@ void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(FIELD_OF_VIEW, (GLdouble)mDisplay.x / (GLdouble)mDisplay.y,
+        NEAR_CP, FAR_CP);
+
+    glMatrixMode(GL_MODELVIEW);
+
     // purposefully left outside the camera control to illustrate the changing
     // light patterns
     glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
@@ -133,10 +146,43 @@ void MapEditorModule::onLoop()
     glEnd();
     glPopAttrib();
 
-    mSphere.display();
-
+    if (mEditMode == EM_TERRAIN)
+    {
+        mSphere.display();
+    }
 
     glPopMatrix();
+
+    /// HUD display (orthographic projection)
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    double range = 8.0;
+    double ratio = double(mDisplay.x) / double(mDisplay.y);
+    glOrtho(-range * ratio, range * ratio, -range, range, -range, range);
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glDepthMask(GL_FALSE);
+    glDisable(GL_DEPTH_TEST);
+    glPushAttrib(GL_LIGHTING_BIT);
+    glDisable(GL_LIGHTING);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glBegin(GL_QUADS);
+    {
+        glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
+        glVertex2f(-6.0f, -6.0f);
+        glVertex2f(-2.0f, -6.0f);
+        glVertex2f(-2.0f, -2.0f);
+        glVertex2f(-6.0f, -2.0f);
+    }
+    glEnd();
+
+    glDisable(GL_BLEND);
+    glPopAttrib();
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
 }
 
 void MapEditorModule::onFrame()
@@ -233,9 +279,23 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             mTrackball[0] = 22.0f;
             mTrackball[1] = 0.0f;
             mTrackball[2] = 20.0f;
-            mPanning[0] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
-            mPanning[2] = static_cast<GLfloat>(mTerrainSize) / -2.0f;
+            mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
+            mPanning[2] = static_cast<GLfloat>(mTerrainSize.y) / -2.0f;
             mSceneChanged = true;
+            break;
+        }
+
+        case SDLK_TAB:
+        {
+            if (mMouseMode != MM_DEFAULT) break;
+
+            mEditMode = !mEditMode;
+
+            if (mEditMode == EM_TERRAIN)
+                cerr << "terrain mode" << endl;
+            else if (mEditMode == EM_TILE)
+                cerr << "tile mode" << endl;
+
             break;
         }
 
@@ -265,13 +325,13 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     {
         case MM_ROTATING:
         {
-            mTrackball[1] += static_cast<GLfloat>(inX - mCenterX) * TRACKBALL_STEP;
+            mTrackball[1] += static_cast<GLfloat>(inX - mCenter.x) * TRACKBALL_STEP;
             if (mTrackball[1] < -180.0f)
                 mTrackball[1] += 360.0f;
             else if (mTrackball[1] > 180.0f)
                 mTrackball[1] -= 360.0f;
 
-            mTrackball[0] += static_cast<GLfloat>(inY - mCenterY) * TRACKBALL_STEP;
+            mTrackball[0] += static_cast<GLfloat>(inY - mCenter.y) * TRACKBALL_STEP;
             if (mTrackball[0] < -180.0f)
                 mTrackball[0] += 360.0f;
             else if (mTrackball[0] > 180.0f)
@@ -280,8 +340,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
         case MM_PANNING:
         {
-            GLfloat dx = static_cast<GLfloat>(inX - mCenterX) * PANNING_STEP;
-            GLfloat dy = static_cast<GLfloat>(inY - mCenterY) * PANNING_STEP;
+            GLfloat dx = static_cast<GLfloat>(inX - mCenter.x) * PANNING_STEP;
+            GLfloat dy = static_cast<GLfloat>(inY - mCenter.y) * PANNING_STEP;
 
             GLfloat theta = TO_RADIANS(mTrackball[1]);
             GLfloat dxp = cos(theta) * dx;
@@ -295,7 +355,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
         case MM_EDITING_VERTEX:
         {
-            GLfloat dy = -(inY - mCenterY);
+            GLfloat dy = -(inY - mCenter.y);
             dy /= abs(dy);
 
             if (dy != 1 && dy != -1)
@@ -323,9 +383,9 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
     }
 
-    if (mMouseMode != MM_DEFAULT && (inX != mCenterX || inY != mCenterY))
+    if (mMouseMode != MM_DEFAULT && (inX != mCenter.x || inY != mCenter.y))
     {
-        SDL_WarpMouse(mCenterX, mCenterY);
+        SDL_WarpMouse(mCenter.x, mCenter.y);
     }
 }
 
@@ -339,9 +399,9 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
     if (keyState[SDLK_LSHIFT] || keyState[SDLK_RSHIFT])
     {
         SDL_ShowCursor(SDL_DISABLE);
-        mOldMouseX = inX;
-        mOldMouseY = inY;
-        SDL_WarpMouse(mCenterX, mCenterY);
+        mOldMouse.x = inX;
+        mOldMouse.y = inY;
+        SDL_WarpMouse(mCenter.x, mCenter.y);
         mMouseMode = MM_PANNING;
     }
     else
@@ -397,9 +457,9 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         //mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1], mClickedVertex[2]);
 
         SDL_ShowCursor(SDL_DISABLE);
-        mOldMouseX = inX;
-        mOldMouseY = inY;
-        SDL_WarpMouse(mCenterX, mCenterY);
+        mOldMouse.x = inX;
+        mOldMouse.y = inY;
+        SDL_WarpMouse(mCenter.x, mCenter.y);
         mMouseMode = MM_EDITING_VERTEX;
 
     }
@@ -412,7 +472,7 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
         case MM_PANNING:
         {
             mMouseMode = MM_DEFAULT;
-            SDL_WarpMouse(mOldMouseX, mOldMouseY);
+            SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
             SDL_ShowCursor(SDL_ENABLE);
             mSceneChanged = true;
             break;
@@ -422,7 +482,7 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
             doAction();
             mCurrentAction = NULL;
             mMouseMode = MM_DEFAULT;
-            SDL_WarpMouse(mOldMouseX, mOldMouseY);
+            SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
             SDL_ShowCursor(SDL_ENABLE);
             break;
         }
@@ -434,9 +494,9 @@ void MapEditorModule::onRButtonDown(int inX, int inY)
     if (mMouseMode == MM_DEFAULT)
     {
         SDL_ShowCursor(SDL_DISABLE);
-        mOldMouseX = inX;
-        mOldMouseY = inY;
-        SDL_WarpMouse(mCenterX, mCenterY);
+        mOldMouse.x = inX;
+        mOldMouse.y = inY;
+        SDL_WarpMouse(mCenter.x, mCenter.y);
         mMouseMode = MM_ROTATING;
     }
 }
@@ -446,7 +506,7 @@ void MapEditorModule::onRButtonUp(int inX, int inY)
     if (mMouseMode == MM_ROTATING)
     {
         mMouseMode = MM_DEFAULT;
-        SDL_WarpMouse(mOldMouseX, mOldMouseY);
+        SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
         SDL_ShowCursor(SDL_ENABLE);
         mSceneChanged = true;
     }
@@ -462,6 +522,7 @@ void MapEditorModule::doAction()
 
     mUndo.push_back(mCurrentAction);
     mCurrentAction->execute();
+    mCurrentAction = NULL;
 }
 
 void MapEditorModule::redoAction()

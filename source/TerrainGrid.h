@@ -38,6 +38,7 @@ class TerrainGrid
         void create(int inRows, int inCols);
         void create();
         void destroy();
+        void save(const char* inFile);
         void display();
         void set(int inRow, int inCol, float inHeight,
             bool inFindNormal = true);

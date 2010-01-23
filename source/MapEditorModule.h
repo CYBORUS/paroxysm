@@ -36,10 +36,16 @@ using namespace std;
 #define TRACKBALL_STEP 1.0f
 #define PANNING_STEP 0.1f
 #define VERTEX_STEP 0.05f
+
+/// mouse mode options
 #define MM_DEFAULT 0
 #define MM_PANNING 1
 #define MM_ROTATING 2
 #define MM_EDITING_VERTEX 3
+
+/// edit mode options
+#define EM_TERRAIN 0
+#define EM_TILE 1
 
 
 
@@ -80,7 +86,7 @@ class MapEditorModule : public Module
 
         Vector3D<float> selectVertex(int inX, int inY);
 
-        int mTerrainSize;
+        Point2D<int> mTerrainSize;
         TerrainGrid mTerrainGrid;
         Light mLight;
 
@@ -97,11 +103,11 @@ class MapEditorModule : public Module
 
         Vector3D<float> mClickedVertex;
 
-        int mCenterX;
-        int mCenterY;
-        int mOldMouseX;
-        int mOldMouseY;
+        Point2D<int> mDisplay;
+        Point2D<int> mCenter;
+        Point2D<int> mOldMouse;
         int mMouseMode;
+        int mEditMode;
 
         list<MapEditorAction*> mUndo;
         list<MapEditorAction*> mRedo;
