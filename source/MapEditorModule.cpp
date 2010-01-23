@@ -43,6 +43,7 @@ bool MapEditorModule::onInit()
     }
     else
     {
+        //hello
         terrainFile >> mTerrainGrid;
         mTerrainSize.x = mTerrainGrid.getMatrix().cols();
         mTerrainSize.y = mTerrainGrid.getMatrix().rows();
@@ -103,13 +104,14 @@ void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+/*
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(FIELD_OF_VIEW, (GLdouble)mDisplay.x / (GLdouble)mDisplay.y,
         NEAR_CP, FAR_CP);
 
     glMatrixMode(GL_MODELVIEW);
-
+*/
     // purposefully left outside the camera control to illustrate the changing
     // light patterns
     glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
@@ -155,6 +157,7 @@ void MapEditorModule::onLoop()
 
     /// HUD display (orthographic projection)
     glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
     glLoadIdentity();
     double range = 8.0;
     double ratio = double(mDisplay.x) / double(mDisplay.y);
@@ -183,6 +186,10 @@ void MapEditorModule::onLoop()
     glPopAttrib();
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void MapEditorModule::onFrame()
