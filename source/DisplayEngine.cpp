@@ -186,6 +186,11 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     if (inSurface == NULL) return false;
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
+     glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
+
+
     GLint nOfColors = inSurface->format->BytesPerPixel;
     GLenum tFormat = GL_RGBA;
     if (nOfColors == 4)
@@ -212,11 +217,13 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
 
     return true;
 }

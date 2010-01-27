@@ -6,8 +6,14 @@
 
 #include <SDL_opengl.h>
 
+#include <sstream>
+#include <iostream>
+using namespace std;
+
 
 #define RANGE 10.0
+
+#define NUM_TEXTURES 20
 
 class MainMenuModule : public Module
 {
@@ -21,6 +27,8 @@ class MainMenuModule : public Module
 
     protected:
         Module* mNextModule;
+
+        GLuint mTextures[NUM_TEXTURES];
 
 };
 

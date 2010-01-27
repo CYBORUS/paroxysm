@@ -51,6 +51,8 @@
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
 		<Unit filename="..\EditVertexAction.h" />
+		<Unit filename="..\MainMenuModule.cpp" />
+		<Unit filename="..\MainMenuModule.h" />
 		<Unit filename="..\MapEditorAction.cpp" />
 		<Unit filename="..\MapEditorAction.h" />
 		<Unit filename="..\MapEditorModule.cpp" />
