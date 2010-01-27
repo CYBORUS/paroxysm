@@ -187,8 +187,8 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
      glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
+     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
 
 
     GLint nOfColors = inSurface->format->BytesPerPixel;
