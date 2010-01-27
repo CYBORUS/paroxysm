@@ -5,8 +5,6 @@ bool MainMenuModule::onInit()
     mRunning = true;
     mNextModule = NULL;
 
-    cerr << "starting" << endl;
-
 
     GLdouble ratio = 0;
     int w = SDL_GetVideoSurface()->w;
@@ -23,7 +21,7 @@ bool MainMenuModule::onInit()
     if (w >= h)
     {
         ratio = (GLdouble)w / (GLdouble)h;
-        glOrtho(-RANGE * ratio, RANGE * ratio, -RANGE, RANGE, 1.0, 10.0);
+        glOrtho(-RANGE * ratio, RANGE * ratio, -RANGE, RANGE, -10.0, 10.0);
     }
     else
     {
@@ -32,11 +30,13 @@ bool MainMenuModule::onInit()
     }
 
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
     glGenTextures(NUM_TEXTURES, mTextures);
+    mList = glGenLists(1);
     glBindTexture(GL_TEXTURE_2D, mTextures[0]);
 
-     glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+     //glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
 
@@ -45,14 +45,13 @@ bool MainMenuModule::onInit()
 
     string names[4] = {"map_editor.png", "map_editor_hover.png", "new_game.png", "new_game_hover.png"};
 
-    cerr << "setting up" << endl;
-
     stringstream input;
 
     input << "./assets/images/" << names[0];
 
     next = DisplayEngine::loadImage(input.str().c_str());
 
+/*
     GLint nOfColors = next->format->BytesPerPixel;
     GLenum tFormat = GL_RGBA;
     if (nOfColors == 4)
@@ -84,39 +83,46 @@ bool MainMenuModule::onInit()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+*/
+    if (!DisplayEngine::loadTexture(next, mTextures[0]))
+    {
+        return false;
+    }
 
     glNewList(mList, GL_COMPILE);
     {
-        glEnable(GL_TEXTURE_2D);
 
-        glBindTexture(GL_TEXTURE_2D, mTextures[0]);
+        //glBindTexture(GL_TEXTURE_2D, mTextures[0]);
 
         glBegin(GL_QUADS);
         {
             glColor3f(1.0f, 1.0f, 1.0f);
             glNormal3f(0.0f, 0.0f, 1.0f);
             glTexCoord2i(0, 1);
-            glVertex2f(-1.0f, 0.5f);
+            glVertex2f(-6.0f, -0.5f);
             glTexCoord2i(0, 0);
-            glVertex2f(-1.0f, -0.5f);
+            glVertex2f(-6.0f, 0.5f);
             glTexCoord2i(1, 0);
-            glVertex2f(1.0f, -0.5f);
+            glVertex2f(6.0f, 0.5f);
             glTexCoord2i(1, 1);
-            glVertex2f(1.0f, 0.5f);
+            glVertex2f(6.0f, -0.5f);
         }
         glEnd();
 
-        glDisable(GL_TEXTURE_2D);
     }
     glEndList();
 
-
+    return true;
 }
 
 void MainMenuModule::onLoop()
 {
-    cerr << "looping" << endl;
+            glEnable(GL_TEXTURE_2D);
+
+    //cerr << "looping" << endl;
     glCallList(mList);
+        glDisable(GL_TEXTURE_2D);
+
 }
 
 void MainMenuModule::onFrame()
