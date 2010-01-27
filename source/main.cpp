@@ -20,6 +20,7 @@
 #include "SoundEngine.h"
 
 #include "MapEditorModule.h"
+#include "MainMenuModule.h"
 
 #include "BlankWindow.h"
 
@@ -31,7 +32,8 @@ int main(int argc, char** argv)
 
     Config::outputSettings();
 
-    DisplayEngine::start(new MapEditorModule);
+    //DisplayEngine::start(new MapEditorModule);
     //DisplayEngine::start(new BlankWindow);
+    DisplayEngine::start(new MainMenuModule);
     return 0;
 }

@@ -29,6 +29,7 @@ class MainMenuModule : public Module
         Module* mNextModule;
 
         GLuint mTextures[NUM_TEXTURES];
+        GLuint mList;
 
 };
 

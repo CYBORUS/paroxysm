@@ -5,6 +5,8 @@ bool MainMenuModule::onInit()
     mRunning = true;
     mNextModule = NULL;
 
+    cerr << "starting" << endl;
+
 
     GLdouble ratio = 0;
     int w = SDL_GetVideoSurface()->w;
@@ -31,22 +33,23 @@ bool MainMenuModule::onInit()
 
     glMatrixMode(GL_MODELVIEW);
 
-    glEnable(GL_TEXTURE_2D);
-
+    glGenTextures(NUM_TEXTURES, mTextures);
     glBindTexture(GL_TEXTURE_2D, mTextures[0]);
 
      glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
+     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
 
 
     Surface next;
 
     string names[4] = {"map_editor.png", "map_editor_hover.png", "new_game.png", "new_game_hover.png"};
 
+    cerr << "setting up" << endl;
+
     stringstream input;
 
-    input << "/assets/images/" << names[0];
+    input << "./assets/images/" << names[0];
 
     next = DisplayEngine::loadImage(input.str().c_str());
 
@@ -82,11 +85,38 @@ bool MainMenuModule::onInit()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+    glNewList(mList, GL_COMPILE);
+    {
+        glEnable(GL_TEXTURE_2D);
+
+        glBindTexture(GL_TEXTURE_2D, mTextures[0]);
+
+        glBegin(GL_QUADS);
+        {
+            glColor3f(1.0f, 1.0f, 1.0f);
+            glNormal3f(0.0f, 0.0f, 1.0f);
+            glTexCoord2i(0, 1);
+            glVertex2f(-1.0f, 0.5f);
+            glTexCoord2i(0, 0);
+            glVertex2f(-1.0f, -0.5f);
+            glTexCoord2i(1, 0);
+            glVertex2f(1.0f, -0.5f);
+            glTexCoord2i(1, 1);
+            glVertex2f(1.0f, 0.5f);
+        }
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
+    }
+    glEndList();
+
 
 }
 
 void MainMenuModule::onLoop()
 {
+    cerr << "looping" << endl;
+    glCallList(mList);
 }
 
 void MainMenuModule::onFrame()
