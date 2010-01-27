@@ -179,20 +179,8 @@ void MapEditorModule::onLoop()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_2D);
 
-    glBindTexture(GL_TEXTURE_2D, mTexturesHUD[0]);
-    glBegin(GL_QUADS);
-    {
-        glColor3f(1.0f, 1.0f, 1.0f);
-        glTexCoord2i(0, 1);
-        glVertex2f(-6.0f, -6.0f);
-        glTexCoord2i(1, 1);
-        glVertex2f(-2.0f, -6.0f);
-        glTexCoord2i(1, 0);
-        glVertex2f(-2.0f, -5.0f);
-        glTexCoord2i(0, 0);
-        glVertex2f(-6.0f, -5.0f);
-    }
-    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    displayButton(-6.0f, -5.0f, mTexturesHUD[0]);
 
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
@@ -402,6 +390,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             Vector3D<float> hoverVertex = selectVertex(inX, inY);
             mSphere.moveSphere(hoverVertex[0], hoverVertex[1], hoverVertex[2]);
             break;
+
+
         }
     }
 
@@ -567,4 +557,21 @@ void MapEditorModule::undoAction()
 
     mRedo.push_back(action);
     mUndo.pop_back();
+}
+
+void MapEditorModule::displayButton(float inX, float inY, GLuint inTexture)
+{
+    glBindTexture(GL_TEXTURE_2D, inTexture);
+    glBegin(GL_QUADS);
+    {
+        glTexCoord2i(0, 1);
+        glVertex2f(inX, inY - 1.0f);
+        glTexCoord2i(1, 1);
+        glVertex2f(inX + 4.0f, inY - 1.0f);
+        glTexCoord2i(1, 0);
+        glVertex2f(inX + 4.0f, inY);
+        glTexCoord2i(0, 0);
+        glVertex2f(inX, inY);
+    }
+    glEnd();
 }

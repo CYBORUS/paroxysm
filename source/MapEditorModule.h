@@ -21,6 +21,7 @@
 #include "Module.h"
 #include "Matrix.h"
 #include "Vector3D.h"
+#include "Point2D.h"
 #include "TSphere.h"
 #include "TerrainGrid.h"
 #include "MapEditorAction.h"
@@ -47,6 +48,7 @@ using namespace std;
 #define MM_PANNING 1
 #define MM_ROTATING 2
 #define MM_EDITING_VERTEX 3
+#define MM_BUTTON_PRESS 4
 
 /// edit mode options
 #define EM_TERRAIN 0
@@ -88,6 +90,7 @@ class MapEditorModule : public Module
         void doAction();
         void undoAction();
         void redoAction();
+        void displayButton(float inX, float inY, GLuint inTexture);
 
         Vector3D<float> selectVertex(int inX, int inY);
 
