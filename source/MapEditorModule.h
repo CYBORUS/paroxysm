@@ -37,6 +37,11 @@ using namespace std;
 #define PANNING_STEP 0.1f
 #define VERTEX_STEP 0.05f
 
+#define HUD_RANGE 8.0
+#define HUD_OUT 0
+#define HUD_ON 1
+#define HUD_PRESS 2
+
 /// mouse mode options
 #define MM_DEFAULT 0
 #define MM_PANNING 1
@@ -108,6 +113,7 @@ class MapEditorModule : public Module
         Point2D<int> mOldMouse;
         int mMouseMode;
         int mEditMode;
+        GLuint mTexturesHUD[3];
 
         list<MapEditorAction*> mUndo;
         list<MapEditorAction*> mRedo;

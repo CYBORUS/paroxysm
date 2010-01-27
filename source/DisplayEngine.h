@@ -37,6 +37,7 @@ class DisplayEngine
         static void initialize();
         static Surface loadImage(const char* inFile);
         static bool loadTexture(Surface inSurface, GLuint inTexture);
+        static bool loadTexture(const char* inFile, GLuint inTexture);
 
     private:
         static void cleanup();

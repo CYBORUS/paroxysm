@@ -95,7 +95,13 @@ bool MapEditorModule::onInit()
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-
+    glGenTextures(3, mTexturesHUD);
+    DisplayEngine::loadTexture("assets/images/hud_terrain_out.png",
+        mTexturesHUD[0]);
+    DisplayEngine::loadTexture("assets/images/hud_terrain_on.png",
+        mTexturesHUD[1]);
+    DisplayEngine::loadTexture("assets/images/hud_terrain_press.png",
+        mTexturesHUD[2]);
 
     return true;
 }
@@ -159,9 +165,9 @@ void MapEditorModule::onLoop()
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    double range = 8.0;
     double ratio = double(mDisplay.x) / double(mDisplay.y);
-    glOrtho(-range * ratio, range * ratio, -range, range, -range, range);
+    glOrtho(-HUD_RANGE * ratio, HUD_RANGE * ratio, -HUD_RANGE, HUD_RANGE,
+        -HUD_RANGE, HUD_RANGE);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -171,17 +177,24 @@ void MapEditorModule::onLoop()
     glDisable(GL_LIGHTING);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_TEXTURE_2D);
 
+    glBindTexture(GL_TEXTURE_2D, mTexturesHUD[0]);
     glBegin(GL_QUADS);
     {
-        glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glTexCoord2i(0, 1);
         glVertex2f(-6.0f, -6.0f);
+        glTexCoord2i(1, 1);
         glVertex2f(-2.0f, -6.0f);
-        glVertex2f(-2.0f, -2.0f);
-        glVertex2f(-6.0f, -2.0f);
+        glTexCoord2i(1, 0);
+        glVertex2f(-2.0f, -5.0f);
+        glTexCoord2i(0, 0);
+        glVertex2f(-6.0f, -5.0f);
     }
     glEnd();
 
+    glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
     glPopAttrib();
     glEnable(GL_DEPTH_TEST);
@@ -211,6 +224,8 @@ void MapEditorModule::onCleanup()
         delete mRedo.back();
         mRedo.pop_back();
     }
+
+    glDeleteTextures(3, mTexturesHUD);
 }
 
 
