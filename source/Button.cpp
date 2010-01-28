@@ -58,6 +58,27 @@ void Button::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
     mSize = inSize;
 }
 
+bool Button::isHover(int inX, int inY, const Point2D<int>& inDisplay,
+    float inRange)
+{
+    Point2D<int> center;
+    center.x = inDisplay.x / 2;
+    center.y = inDisplay.y / 2;
+
+    float ratio = float(center.y) / inRange;
+
+    Point2D<int> rectangleUL; // upper left corner
+    rectangleUL.x = center.x + int(mLocation.x * ratio);
+    rectangleUL.y = center.y - int(mLocation.y * ratio);
+
+    Point2D<int> rectangleLR; // lower right corner
+    rectangleLR.x = center.x + int((mLocation.x + mSize.x) * ratio);
+    rectangleLR.y = center.y - int((mLocation.y + mSize.y) * ratio);
+
+    return inX >= rectangleUL.x && inX <= rectangleLR.x && inY >= rectangleUL.y
+        && inY <= rectangleLR.y;
+}
+
 void Button::assemble(string& inString, const char* inAdd)
 {
     inString = mPrefix;

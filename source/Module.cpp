@@ -213,6 +213,7 @@ void Module::onInputBlur()
 
 void Module::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
+    if (inSym == SDLK_ESCAPE) mRunning = false;
 }
 
 void Module::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)

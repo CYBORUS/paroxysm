@@ -35,6 +35,9 @@ class Button
         void set(const Point2D<float>& inLocation,
             const Point2D<float>& inSize);
 
+        bool isHover(int inX, int inY, const Point2D<int>& inDisplay,
+            float inRange);
+
     private:
         void assemble(string& inString, const char* inAdd);
 
