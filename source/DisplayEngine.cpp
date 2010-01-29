@@ -96,6 +96,8 @@ void DisplayEngine::start(Module* inModule)
 
 void DisplayEngine::initialize()
 {
+    putenv((char*)"SDL_VIDEO_CENTERED=1");
+
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         cerr << "error on SDL_Init" << endl;

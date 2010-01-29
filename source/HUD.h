@@ -22,6 +22,7 @@
 #include "Button.h"
 
 #include <vector>
+#include <iostream>
 using namespace std;
 
 #define HUD_RANGE 8.0f

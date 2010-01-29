@@ -68,8 +68,8 @@ void HUD::display()
     glPushMatrix();
     glLoadIdentity();
     double ratio = double(mDisplay.x) / double(mDisplay.y);
-    glOrtho(-HUD_RANGE * ratio, HUD_RANGE * ratio, -HUD_RANGE, HUD_RANGE,
-        -HUD_RANGE, HUD_RANGE);
+    glOrtho(-mRange * ratio, mRange * ratio, -mRange, mRange,
+        -mRange, mRange);
 
     glMatrixMode(GL_MODELVIEW);
 

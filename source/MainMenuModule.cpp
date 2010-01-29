@@ -1,5 +1,14 @@
 #include "MainMenuModule.h"
 
+MainMenuModule::MainMenuModule()
+{
+    //mNewGameButton = new Button("new_game");
+    //mMapEditorButton = new Button("map_editor");
+
+    mNewGameButton = new Button("new_game");
+    mMapEditorButton = new Button("map_editor");
+}
+
 bool MainMenuModule::onInit()
 {
     mRunning = true;
@@ -47,9 +56,20 @@ bool MainMenuModule::onInit()
 
     stringstream input;
 
-    input << "./assets/images/" << names[0];
+    for (int i = 0; i < 4; ++i)
+    {
+        input << "./assets/images/" << names[i];
 
-    next = DisplayEngine::loadImage(input.str().c_str());
+        next = DisplayEngine::loadImage(input.str().c_str());
+
+        input.str("");
+
+        if (!DisplayEngine::loadTexture(next, mTextures[i]))
+        {
+            return false;
+        }
+
+    }
 
 /*
     GLint nOfColors = next->format->BytesPerPixel;
@@ -84,49 +104,101 @@ bool MainMenuModule::onInit()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 */
-    if (!DisplayEngine::loadTexture(next, mTextures[0]))
-    {
-        return false;
-    }
 
+    newHover = false;
+    mapHover = false;
+/*
     glNewList(mList, GL_COMPILE);
     {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        //glBindTexture(GL_TEXTURE_2D, mTextures[0]);
 
-        glBegin(GL_QUADS);
+
+        glEnable(GL_TEXTURE_2D);
+
+        if (newHover)
         {
-            glColor3f(1.0f, 1.0f, 1.0f);
-            glNormal3f(0.0f, 0.0f, 1.0f);
-            glTexCoord2i(0, 1);
-            glVertex2f(-6.0f, -0.5f);
-            glTexCoord2i(0, 0);
-            glVertex2f(-6.0f, 0.5f);
-            glTexCoord2i(1, 0);
-            glVertex2f(6.0f, 0.5f);
-            glTexCoord2i(1, 1);
-            glVertex2f(6.0f, -0.5f);
+            displayButton(0.0f, 1.0f, 3.0f, 0.75f, mTextures[1]);
         }
-        glEnd();
+        else
+        {
+            displayButton(0.0f, 1.0f, 3.0f, 0.75f, mTextures[0]);
+        }
+
+        if (mapHover)
+        {
+            displayButton(0.0f, -1.0f, 3.0f, 0.75f, mTextures[3]);
+        }
+        else
+        {
+            displayButton(0.0f, -1.0f, 3.0f, 0.75f, mTextures[2]);
+        }
+
+        glDisable(GL_TEXTURE_2D);
+        //displayButton(0.0f, -1.0f, 3.0f, 0.75f, mTextures[3]);
+
+        glDisable(GL_BLEND);
 
     }
     glEndList();
+*/
+    mCounter = 0;
+
+    mDisplay.x = SDL_GetVideoSurface()->w;
+    mDisplay.y = SDL_GetVideoSurface()->h;
+
+
+    mHUD.setDisplay(mDisplay, RANGE);
+
+    Button* b = new Button("map_editor");
+    b->setLocation(-8.0f, -2.0f);
+    b->setSize(4.0f, 1.0f);
+    mHUD.addButton(b);
+
 
     return true;
 }
 
 void MainMenuModule::onLoop()
 {
-            glEnable(GL_TEXTURE_2D);
+    glClear(GL_COLOR_BUFFER_BIT);
+/*
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //cerr << "looping" << endl;
-    glCallList(mList);
-        glDisable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_2D);
 
+    if (newHover)
+    {
+        displayButton(0.0f, 1.0f, 3.0f, 0.75f, mTextures[1]);
+    }
+    else
+    {
+        displayButton(0.0f, 1.0f, 3.0f, 0.75f, mTextures[0]);
+    }
+
+    if (mapHover)
+    {
+        displayButton(0.0f, -1.0f, 3.0f, 0.75f, mTextures[3]);
+    }
+    else
+    {
+        displayButton(0.0f, -1.0f, 3.0f, 0.75f, mTextures[2]);
+    }
+
+    glDisable(GL_TEXTURE_2D);
+    //displayButton(0.0f, -1.0f, 3.0f, 0.75f, mTextures[3]);
+
+    glDisable(GL_BLEND);
+    //glCallList(mList);
+*/
+    mHUD.display();
 }
 
 void MainMenuModule::onFrame()
 {
+
 }
 
 void MainMenuModule::onCleanup()
@@ -138,3 +210,27 @@ Module* MainMenuModule::next()
     return mNextModule;
 }
 
+void MainMenuModule::displayButton(float inX, float inY, float inWidthRange, float inHeightRange, GLuint inTexture)
+{
+    glBindTexture(GL_TEXTURE_2D, inTexture);
+    glBegin(GL_QUADS);
+    {
+        glTexCoord2i(0, 1);
+        glVertex2f(inX - inWidthRange, inY - inHeightRange);
+        glTexCoord2i(1, 1);
+        glVertex2f(inX + inWidthRange, inY - inHeightRange);
+        glTexCoord2i(1, 0);
+        glVertex2f(inX + inWidthRange, inY + inHeightRange);
+        glTexCoord2i(0, 0);
+        glVertex2f(inX - inWidthRange, inY + inHeightRange);
+    }
+    glEnd();
+}
+
+
+void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
+            bool inLeft, bool inRight, bool inMiddle)
+{
+    mHUD.setStates(inX, inY, false);
+
+}

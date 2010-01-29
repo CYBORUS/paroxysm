@@ -32,8 +32,8 @@ int main(int argc, char** argv)
 
     Config::outputSettings();
 
-    DisplayEngine::start(new MapEditorModule);
+    //DisplayEngine::start(new MapEditorModule);
     //DisplayEngine::start(new BlankWindow);
-    //DisplayEngine::start(new MainMenuModule);
+    DisplayEngine::start(new MainMenuModule);
     return 0;
 }
