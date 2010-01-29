@@ -6,6 +6,8 @@
 #include "Point2D.h"
 #include "HUD.h"
 
+#include "MapEditorModule.h"
+
 #include "Button.h"
 
 #include <SDL_opengl.h>
@@ -22,8 +24,6 @@ using namespace std;
 class MainMenuModule : public Module
 {
     public:
-        MainMenuModule();
-
         bool onInit();
         void onLoop();
         void onFrame();
@@ -34,24 +34,19 @@ class MainMenuModule : public Module
     protected:
         void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
+        void onLButtonDown(int inX, int inY);
+        void onLButtonUp(int inX, int inY);
 
 
         Module* mNextModule;
 
-        GLuint mTextures[NUM_TEXTURES];
-        GLuint mList;
-
-        Button* mNewGameButton;
-        Button* mMapEditorButton;
+        //GLuint mTextures[NUM_TEXTURES];
+        //GLuint mList;
 
         Point2D<int> mDisplay;
         HUD mHUD;
 
-        int mCounter;
-        bool newHover;
-        bool mapHover;
-
-        void displayButton(float inX, float inY, float inWidthRange, float inHeightRange, GLuint inTexture);
+        //void displayButton(float inX, float inY, float inWidthRange, float inHeightRange, GLuint inTexture);
 
 };
 
