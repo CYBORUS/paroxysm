@@ -21,7 +21,7 @@
 string Button::mPrefix("assets/images/hud/");
 string Button::mSuffix(".png");
 
-Button::Button(const char* inKeyword) : mKeyword(inKeyword)
+Button::Button(const char* inKeyword) : mKeyword(inKeyword), mState(0)
 {
     glGenTextures(3, mTextures);
 
@@ -38,6 +38,28 @@ Button::Button(const char* inKeyword) : mKeyword(inKeyword)
 Button::~Button()
 {
     glDeleteTextures(3, mTextures);
+}
+
+void Button::display()
+{
+    glBindTexture(GL_TEXTURE_2D, mTextures[mState]);
+    glBegin(GL_QUADS);
+    {
+        glTexCoord2i(0, 1);
+        glVertex2f(mLocation.x, mLocation.y - mSize.y);
+        glTexCoord2i(1, 1);
+        glVertex2f(mLocation.x + mSize.x, mLocation.y - mSize.y);
+        glTexCoord2i(1, 0);
+        glVertex2f(mLocation.x + mSize.x, mLocation.y);
+        glTexCoord2i(0, 0);
+        glVertex2f(mLocation.x, mLocation.y);
+    }
+    glEnd();
+}
+
+void Button::setState(int inState)
+{
+    mState = inState;
 }
 
 void Button::setLocation(float inX, float inY)
@@ -58,8 +80,7 @@ void Button::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
     mSize = inSize;
 }
 
-bool Button::isHover(int inX, int inY, const Point2D<int>& inDisplay,
-    float inRange)
+void Button::findPixels(const Point2D<int>& inDisplay, float inRange)
 {
     Point2D<int> center;
     center.x = inDisplay.x / 2;
@@ -67,16 +88,10 @@ bool Button::isHover(int inX, int inY, const Point2D<int>& inDisplay,
 
     float ratio = float(center.y) / inRange;
 
-    Point2D<int> rectangleUL; // upper left corner
-    rectangleUL.x = center.x + int(mLocation.x * ratio);
-    rectangleUL.y = center.y - int(mLocation.y * ratio);
-
-    Point2D<int> rectangleLR; // lower right corner
-    rectangleLR.x = center.x + int((mLocation.x + mSize.x) * ratio);
-    rectangleLR.y = center.y - int((mLocation.y + mSize.y) * ratio);
-
-    return inX >= rectangleUL.x && inX <= rectangleLR.x && inY >= rectangleUL.y
-        && inY <= rectangleLR.y;
+    mPixelUL.x = center.x + int(mLocation.x * ratio);
+    mPixelUL.y = center.y - int(mLocation.y * ratio);
+    mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
+    mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
 }
 
 void Button::assemble(string& inString, const char* inAdd)
@@ -86,3 +101,4 @@ void Button::assemble(string& inString, const char* inAdd)
     inString += inAdd;
     inString += mSuffix;
 }
+

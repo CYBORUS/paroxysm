@@ -30,13 +30,14 @@ class Button
         Button(const char* inKeyword);
         virtual ~Button();
 
+        void display();
+        void setState(int inState);
         void setLocation(float inX, float inY);
         void setSize(float inX, float inY);
         void set(const Point2D<float>& inLocation,
             const Point2D<float>& inSize);
-
-        bool isHover(int inX, int inY, const Point2D<int>& inDisplay,
-            float inRange);
+        void findPixels(const Point2D<int>& inDisplay, float inRange);
+        bool isOver(int inX, int inY);
 
     private:
         void assemble(string& inString, const char* inAdd);
@@ -46,8 +47,18 @@ class Button
 
         string mKeyword;
         GLuint mTextures[3];
+        int mState;
+
         Point2D<float> mLocation;
         Point2D<float> mSize;
+        Point2D<float> mPixelUL;
+        Point2D<float> mPixelLR;
 };
+
+inline bool Button::isOver(int inX, int inY)
+{
+    return inX >= mPixelUL.x && inX <= mPixelLR.x && inY >= mPixelUL.y
+        && inY <= mPixelLR.y;
+}
 
 #endif

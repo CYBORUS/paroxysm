@@ -18,6 +18,8 @@
 #ifndef _DISPLAYENGINE_H_
 #define _DISPLAYENGINE_H_
 
+#include "Point2D.h"
+
 #include <SDL.h>
 #include <SDL_opengl.h>
 typedef SDL_Surface* Surface;

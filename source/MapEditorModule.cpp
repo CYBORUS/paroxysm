@@ -95,13 +95,12 @@ bool MapEditorModule::onInit()
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    glGenTextures(3, mTexturesHUD);
-    DisplayEngine::loadTexture("assets/images/hud_terrain_out.png",
-        mTexturesHUD[0]);
-    DisplayEngine::loadTexture("assets/images/hud_terrain_on.png",
-        mTexturesHUD[1]);
-    DisplayEngine::loadTexture("assets/images/hud_terrain_press.png",
-        mTexturesHUD[2]);
+    mHUD.setDisplay(mDisplay);
+
+    Button* b = new Button("terrain");
+    b->setLocation(-8.0f, -2.0f);
+    b->setSize(4.0f, 1.0f);
+    mHUD.addButton(b);
 
     return true;
 }
@@ -161,36 +160,7 @@ void MapEditorModule::onLoop()
 
     glPopMatrix();
 
-    /// HUD display (orthographic projection)
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    double ratio = double(mDisplay.x) / double(mDisplay.y);
-    glOrtho(-HUD_RANGE * ratio, HUD_RANGE * ratio, -HUD_RANGE, HUD_RANGE,
-        -HUD_RANGE, HUD_RANGE);
-
-    glMatrixMode(GL_MODELVIEW);
-
-    glDepthMask(GL_FALSE);
-    glDisable(GL_DEPTH_TEST);
-    glPushAttrib(GL_LIGHTING_BIT);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_TEXTURE_2D);
-
-    glColor3f(1.0f, 1.0f, 1.0f);
-    displayButton(-6.0f, -5.0f, mTexturesHUD[0]);
-
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
-    glPopAttrib();
-    glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_TRUE);
-
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
+    mHUD.display();
 }
 
 void MapEditorModule::onFrame()
@@ -213,7 +183,7 @@ void MapEditorModule::onCleanup()
         mRedo.pop_back();
     }
 
-    glDeleteTextures(3, mTexturesHUD);
+    mHUD.deleteButtons();
 }
 
 
@@ -331,10 +301,13 @@ void MapEditorModule::onMouseWheel(bool inUp, bool inDown)
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
+    bool lockMouse = false;
+
     switch (mMouseMode)
     {
         case MM_ROTATING:
         {
+            lockMouse = true;
             mTrackball[1] += static_cast<GLfloat>(inX - mCenter.x) * TRACKBALL_STEP;
             if (mTrackball[1] < -180.0f)
                 mTrackball[1] += 360.0f;
@@ -350,6 +323,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
         case MM_PANNING:
         {
+            lockMouse = true;
             GLfloat dx = static_cast<GLfloat>(inX - mCenter.x) * PANNING_STEP;
             GLfloat dy = static_cast<GLfloat>(inY - mCenter.y) * PANNING_STEP;
 
@@ -365,6 +339,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
         case MM_EDITING_VERTEX:
         {
+            lockMouse = true;
             GLfloat dy = -(inY - mCenter.y);
             dy /= abs(dy);
 
@@ -385,17 +360,24 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 mClickedVertex[2]);
             break;
         }
+        case MM_BUTTON_PRESS:
+        {
+            if (!mHUD.setStates(inX, inY, true))
+                mMouseMode = MM_DEFAULT;
+
+            break;
+        }
         case MM_DEFAULT:
         {
             Vector3D<float> hoverVertex = selectVertex(inX, inY);
             mSphere.moveSphere(hoverVertex[0], hoverVertex[1], hoverVertex[2]);
+
+            mHUD.setStates(inX, inY, false);
             break;
-
-
         }
     }
 
-    if (mMouseMode != MM_DEFAULT && (inX != mCenter.x || inY != mCenter.y))
+    if (lockMouse && (inX != mCenter.x || inY != mCenter.y))
     {
         SDL_WarpMouse(mCenter.x, mCenter.y);
     }
@@ -415,6 +397,10 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         mOldMouse.y = inY;
         SDL_WarpMouse(mCenter.x, mCenter.y);
         mMouseMode = MM_PANNING;
+    }
+    else if (mHUD.setStates(inX, inY, true))
+    {
+        mMouseMode = MM_BUTTON_PRESS;
     }
     else
     {
@@ -473,7 +459,6 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         mOldMouse.y = inY;
         SDL_WarpMouse(mCenter.x, mCenter.y);
         mMouseMode = MM_EDITING_VERTEX;
-
     }
 }
 
@@ -496,6 +481,16 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
             mMouseMode = MM_DEFAULT;
             SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
             SDL_ShowCursor(SDL_ENABLE);
+            break;
+        }
+        case MM_BUTTON_PRESS:
+        {
+            mHUD.setStates(inX, inY, false);
+            mMouseMode = MM_DEFAULT;
+            break;
+        }
+        default:
+        {
             break;
         }
     }
@@ -557,21 +552,4 @@ void MapEditorModule::undoAction()
 
     mRedo.push_back(action);
     mUndo.pop_back();
-}
-
-void MapEditorModule::displayButton(float inX, float inY, GLuint inTexture)
-{
-    glBindTexture(GL_TEXTURE_2D, inTexture);
-    glBegin(GL_QUADS);
-    {
-        glTexCoord2i(0, 1);
-        glVertex2f(inX, inY - 1.0f);
-        glTexCoord2i(1, 1);
-        glVertex2f(inX + 4.0f, inY - 1.0f);
-        glTexCoord2i(1, 0);
-        glVertex2f(inX + 4.0f, inY);
-        glTexCoord2i(0, 0);
-        glVertex2f(inX, inY);
-    }
-    glEnd();
 }

@@ -15,25 +15,38 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Config.h"
-#include "DisplayEngine.h"
-#include "SoundEngine.h"
+#ifndef HUD_H
+#define HUD_H
 
-#include "MapEditorModule.h"
-#include "MainMenuModule.h"
+#include "Point2D.h"
+#include "Button.h"
 
-#include "BlankWindow.h"
+#include <vector>
+using namespace std;
 
-int main(int argc, char** argv)
+#define HUD_RANGE 8.0f
+#define HUD_OUT 0
+#define HUD_HOVER 1
+#define HUD_PRESS 2
+
+class HUD
 {
-    Config::initialize(argc, argv);
-    DisplayEngine::initialize();
-    //SoundEngine::initialize();
+    public:
+        HUD();
+        ~HUD();
 
-    Config::outputSettings();
+        void setDisplay(const Point2D<int>& inDisplay,
+            float inRange = HUD_RANGE);
+        void addButton(Button* inButton);
+        void deleteButtons();
+        void setupButtons();
+        void display();
+        bool setStates(int inX, int inY, bool inPress);
 
-    DisplayEngine::start(new MapEditorModule);
-    //DisplayEngine::start(new BlankWindow);
-    //DisplayEngine::start(new MainMenuModule);
-    return 0;
-}
+    private:
+        vector<Button*> mButtons;
+        Point2D<int> mDisplay;
+        float mRange;
+};
+
+#endif
