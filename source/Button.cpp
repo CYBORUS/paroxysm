@@ -21,7 +21,8 @@
 string Button::mPrefix("assets/images/hud/");
 string Button::mSuffix(".png");
 
-Button::Button(const char* inKeyword) : mKeyword(inKeyword), mState(0)
+Button::Button(const char* inKeyword, int inID) : mKeyword(inKeyword),
+    mState(0), mID(inID)
 {
     glGenTextures(3, mTextures);
 

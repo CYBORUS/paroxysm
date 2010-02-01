@@ -39,7 +39,7 @@ bool MainMenuModule::onInit()
 
     mHUD.setDisplay(mDisplay, RANGE);
 
-    Button* b = new Button("map_editor");
+    Button* b = new Button("map_editor", 2);
     b->setLocation(-8.0f, -2.0f);
     b->setSize(8.0f, 2.0f);
     mHUD.addButton(b);

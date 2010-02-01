@@ -97,7 +97,7 @@ bool MapEditorModule::onInit()
 
     mHUD.setDisplay(mDisplay);
 
-    Button* b = new Button("terrain");
+    Button* b = new Button("terrain", 2);
     b->setLocation(-8.0f, -2.0f);
     b->setSize(4.0f, 1.0f);
     mHUD.addButton(b);

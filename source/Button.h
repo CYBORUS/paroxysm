@@ -27,7 +27,7 @@ using namespace std;
 class Button
 {
     public:
-        Button(const char* inKeyword);
+        Button(const char* inKeyword, int inID);
         virtual ~Button();
 
         void display();
@@ -38,6 +38,7 @@ class Button
             const Point2D<float>& inSize);
         void findPixels(const Point2D<int>& inDisplay, float inRange);
         bool isOver(int inX, int inY);
+        int getID();
 
     private:
         void assemble(string& inString, const char* inAdd);
@@ -48,6 +49,7 @@ class Button
         string mKeyword;
         GLuint mTextures[3];
         int mState;
+        int mID;
 
         Point2D<float> mLocation;
         Point2D<float> mSize;
@@ -59,6 +61,11 @@ inline bool Button::isOver(int inX, int inY)
 {
     return inX >= mPixelUL.x && inX <= mPixelLR.x && inY >= mPixelUL.y
         && inY <= mPixelLR.y;
+}
+
+inline int Button::getID()
+{
+    return mID;
 }
 
 #endif

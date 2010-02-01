@@ -42,7 +42,7 @@ class HUD
         void deleteButtons();
         void setupButtons();
         void display();
-        bool setStates(int inX, int inY, bool inPress);
+        int setStates(int inX, int inY, bool inPress);
 
     private:
         vector<Button*> mButtons;

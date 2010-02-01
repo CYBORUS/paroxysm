@@ -95,16 +95,16 @@ void HUD::display()
     glMatrixMode(GL_MODELVIEW);
 }
 
-bool HUD::setStates(int inX, int inY, bool inPress)
+int HUD::setStates(int inX, int inY, bool inPress)
 {
-    bool outHit = false;
+    int outHit = 0;
     int hover = inPress ? HUD_PRESS : HUD_HOVER;
 
     for (unsigned int i = 0; i < mButtons.size(); ++i)
     {
         int state = mButtons[i]->isOver(inX, inY) ? hover : HUD_OUT;
         mButtons[i]->setState(state);
-        if (state != HUD_OUT) outHit = true;
+        if (state != HUD_OUT) outHit = 1;
     }
 
     return outHit;
