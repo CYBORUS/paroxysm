@@ -34,12 +34,12 @@ void MainMenuModule::onInit()
     if (w >= h)
     {
         ratio = (GLdouble)w / (GLdouble)h;
-        glOrtho(-RANGE * ratio, RANGE * ratio, -RANGE, RANGE, -10.0, 10.0);
+        glOrtho(-MAIN_MENU_RANGE * ratio, MAIN_MENU_RANGE * ratio, -MAIN_MENU_RANGE, MAIN_MENU_RANGE, -10.0, 10.0);
     }
     else
     {
         ratio = (GLdouble)h / (GLdouble)w;
-        glOrtho(-RANGE, RANGE, -RANGE * ratio, RANGE * ratio, 1.0, 10.0);
+        glOrtho(-MAIN_MENU_RANGE, MAIN_MENU_RANGE, -MAIN_MENU_RANGE * ratio, MAIN_MENU_RANGE * ratio, 1.0, 10.0);
     }
 
     glMatrixMode(GL_MODELVIEW);
@@ -48,7 +48,7 @@ void MainMenuModule::onInit()
     mDisplay.x = SDL_GetVideoSurface()->w;
     mDisplay.y = SDL_GetVideoSurface()->h;
 
-    mHUD.setDisplay(mDisplay, RANGE);
+    mHUD.setDisplay(mDisplay, MAIN_MENU_RANGE);
 }
 
 void MainMenuModule::onLoop()
@@ -127,7 +127,9 @@ void MainMenuModule::onLButtonUp(int inX, int inY)
         }
         case NEW_GAME:
         {
-            cerr << "new game" << endl;
+            mNextModule = new GameModule();
+            mRunning = false;
+            mDead = false;
             break;
         }
     }

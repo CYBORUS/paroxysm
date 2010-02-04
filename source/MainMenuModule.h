@@ -7,6 +7,7 @@
 #include "HUD.h"
 
 #include "MapEditorModule.h"
+#include "GameModule.h"
 
 #include "Button.h"
 
@@ -17,7 +18,7 @@
 using namespace std;
 
 
-#define RANGE 10.0
+#define MAIN_MENU_RANGE 10.0
 
 #define NUM_TEXTURES 20
 
