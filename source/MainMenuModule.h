@@ -37,6 +37,8 @@ class MainMenuModule : public Module
         void onCleanup();
         Module* next();
 
+        bool isDead();
+
 
     protected:
         void onMouseMove(int inX, int inY, int inRelX, int inRelY,
@@ -52,6 +54,8 @@ class MainMenuModule : public Module
 
         Point2D<int> mDisplay;
         HUD mHUD;
+
+        bool mDead;
 
         //void displayButton(float inX, float inY, float inWidthRange, float inHeightRange, GLuint inTexture);
 

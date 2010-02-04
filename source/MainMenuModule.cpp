@@ -20,6 +20,7 @@ bool MainMenuModule::onLoad()
 void MainMenuModule::onInit()
 {
     mRunning = true;
+    mDead = true;
 
     GLdouble ratio = 0;
     int w = SDL_GetVideoSurface()->w;
@@ -122,6 +123,7 @@ void MainMenuModule::onLButtonUp(int inX, int inY)
         {
             mNextModule = new MapEditorModule();
             mRunning = false;
+            mDead = false;
             break;
         }
         case NEW_GAME:
@@ -130,4 +132,10 @@ void MainMenuModule::onLButtonUp(int inX, int inY)
             break;
         }
     }
+}
+
+
+bool MainMenuModule::isDead()
+{
+    return mDead;
 }
