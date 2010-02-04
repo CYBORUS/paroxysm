@@ -2,8 +2,6 @@
 
 bool MainMenuModule::onLoad()
 {
-    mNextModule = NULL;
-
     Button* b = new Button("map_editor", MAP_EDITOR);
     b->setLocation(-8.0f, -2.0f);
     b->setSize(8.0f, 2.0f);
@@ -21,6 +19,7 @@ void MainMenuModule::onInit()
 {
     mRunning = true;
     mDead = true;
+    mNextModule = NULL;
 
     GLdouble ratio = 0;
     int w = SDL_GetVideoSurface()->w;

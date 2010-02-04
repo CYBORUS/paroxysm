@@ -55,13 +55,13 @@ void DisplayEngine::start(Module* inModule)
         {
             if (!currentModule->onLoad())
             {
-                cerr << "failed to load module\n";
                 currentModule = NULL;
                 break;
             }
         }
 
         currentModule->onInit();
+
 
         unsigned int nextSecond = SDL_GetTicks() + 1000u;
         int framesPerSecond = 0;
