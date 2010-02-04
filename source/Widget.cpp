@@ -57,8 +57,8 @@ void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
 
     float ratio = float(center.y) / inRange;
 
-    mPixelUL.x = center.x + int(mLocation.x * ratio);
-    mPixelUL.y = center.y - int(mLocation.y * ratio);
+    mPixelUL.x = center.x + int((mLocation.x - (mSize.x / 2.0f)) * ratio);
+    mPixelUL.y = center.y - int((mLocation.y + (mSize.y / 2.0f)) * ratio);
     mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
     mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
 }

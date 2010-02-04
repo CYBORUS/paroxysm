@@ -48,13 +48,17 @@ void Button::display()
     glBegin(GL_QUADS);
     {
         glTexCoord2i(0, 1);
-        glVertex2f(mLocation.x, mLocation.y - mSize.y);
+        glVertex2f(mLocation.x - (mSize.x / 2.0f),
+            mLocation.y - (mSize.y / 2.0f));
         glTexCoord2i(1, 1);
-        glVertex2f(mLocation.x + mSize.x, mLocation.y - mSize.y);
+        glVertex2f(mLocation.x + (mSize.x / 2.0f),
+            mLocation.y - (mSize.y / 2.0f));
         glTexCoord2i(1, 0);
-        glVertex2f(mLocation.x + mSize.x, mLocation.y);
+        glVertex2f(mLocation.x + (mSize.x / 2.0f),
+            mLocation.y + (mSize.y / 2.0f));
         glTexCoord2i(0, 0);
-        glVertex2f(mLocation.x, mLocation.y);
+        glVertex2f(mLocation.x - (mSize.x / 2.0f),
+            mLocation.y + (mSize.y / 2.0f));
     }
     glEnd();
 }
