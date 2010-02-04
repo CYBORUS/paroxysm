@@ -20,9 +20,8 @@
 #include "Config.h"
 #include "EditVertexAction.h"
 
-bool MapEditorModule::onInit()
+bool MapEditorModule::onLoad()
 {
-    mRunning = true;
     mMouseMode = MM_DEFAULT;
     mEditMode = EM_TERRAIN;
     mCurrentAction = NULL;
@@ -60,6 +59,20 @@ bool MapEditorModule::onInit()
     mDisplay.y = SDL_GetVideoSurface()->h;
     mCenter.y = mDisplay.y / 2;
 
+    mHUD.setDisplay(mDisplay);
+
+    Button* b = new Button("terrain", 2);
+    b->setLocation(-8.0f, -2.0f);
+    b->setSize(4.0f, 1.0f);
+    mHUD.addButton(b);
+
+    return true;
+}
+
+void MapEditorModule::onInit()
+{
+    mRunning = true;
+
     glViewport(0, 0, (GLsizei)mDisplay.x, (GLsizei)mDisplay.y);
 
     glMatrixMode(GL_PROJECTION);
@@ -94,15 +107,6 @@ bool MapEditorModule::onInit()
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    mHUD.setDisplay(mDisplay);
-
-    Button* b = new Button("terrain", 2);
-    b->setLocation(-8.0f, -2.0f);
-    b->setSize(4.0f, 1.0f);
-    mHUD.addButton(b);
-
-    return true;
 }
 
 void MapEditorModule::onLoop()

@@ -30,7 +30,8 @@ using namespace std;
 class MainMenuModule : public Module
 {
     public:
-        bool onInit();
+        bool onLoad();
+        void onInit();
         void onLoop();
         void onFrame();
         void onCleanup();

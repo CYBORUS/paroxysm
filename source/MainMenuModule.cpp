@@ -1,16 +1,29 @@
 #include "MainMenuModule.h"
 
-bool MainMenuModule::onInit()
+bool MainMenuModule::onLoad()
 {
-    mRunning = true;
     mNextModule = NULL;
 
+    Button* b = new Button("map_editor", MAP_EDITOR);
+    b->setLocation(-8.0f, -2.0f);
+    b->setSize(8.0f, 2.0f);
+    mHUD.addButton(b);
+
+    b = new Button("new_game", NEW_GAME);
+    b->setLocation(-8.0f, 0.0f);
+    b->setSize(8.0f, 2.0f);
+    mHUD.addButton(b);
+
+    return true;
+}
+
+void MainMenuModule::onInit()
+{
+    mRunning = true;
 
     GLdouble ratio = 0;
     int w = SDL_GetVideoSurface()->w;
-
     int h = SDL_GetVideoSurface()->h;
-
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -32,25 +45,10 @@ bool MainMenuModule::onInit()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-
     mDisplay.x = SDL_GetVideoSurface()->w;
     mDisplay.y = SDL_GetVideoSurface()->h;
 
-
     mHUD.setDisplay(mDisplay, RANGE);
-
-    Button* b = new Button("map_editor", MAP_EDITOR);
-    b->setLocation(-8.0f, -2.0f);
-    b->setSize(8.0f, 2.0f);
-    mHUD.addButton(b);
-
-    b = new Button("new_game", NEW_GAME);
-    b->setLocation(-8.0f, 0.0f);
-    b->setSize(8.0f, 2.0f);
-    mHUD.addButton(b);
-
-
-    return true;
 }
 
 void MainMenuModule::onLoop()

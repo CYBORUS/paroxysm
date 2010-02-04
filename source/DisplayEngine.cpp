@@ -44,12 +44,14 @@ void DisplayEngine::start(Module* inModule)
 
     while (currentModule != NULL)
     {
-        if (!currentModule->onInit())
+        if (!currentModule->onLoad())
         {
-            cerr << "failed to initialize module\n";
+            cerr << "failed to load module\n";
             currentModule = NULL;
             break;
         }
+
+        currentModule->onInit();
 
         unsigned int nextSecond = SDL_GetTicks() + 1000u;
         int framesPerSecond = 0;

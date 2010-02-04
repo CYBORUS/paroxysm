@@ -20,6 +20,7 @@
 
 #include <SDL_opengl.h>
 #include "Point2D.h"
+#include "Widget.h"
 
 #include <string>
 using namespace std;

@@ -26,7 +26,8 @@ class Module
         virtual ~Module();
 
         /// module operation
-        virtual bool onInit() = 0;
+        virtual bool onLoad() = 0;
+        virtual void onInit() = 0;
         virtual void onLoop();
         virtual void onFrame();
         virtual void onCleanup() = 0;

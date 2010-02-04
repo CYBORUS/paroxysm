@@ -67,7 +67,8 @@ class MapEditorModule : public Module
 {
     public:
         /// module operation
-        virtual bool onInit();
+        virtual bool onLoad();
+        virtual void onInit();
         virtual void onLoop();
         virtual void onFrame();
 

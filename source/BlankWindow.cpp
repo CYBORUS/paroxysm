@@ -19,10 +19,15 @@
 
 #include <SDL_opengl.h>
 
-bool BlankWindow::onInit()
+bool BlankWindow::onLoad()
+{
+    SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
+    return true;
+}
+
+void BlankWindow::onInit()
 {
     mRunning = true;
-    SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -33,8 +38,6 @@ bool BlankWindow::onInit()
     gluPerspective(FIELD_OF_VIEW, (GLdouble)w / (GLdouble)h, NEAR_CP, FAR_CP);
 
     glMatrixMode(GL_MODELVIEW);
-
-    return true;
 }
 
 void BlankWindow::onLoop()
