@@ -21,6 +21,12 @@ using namespace std;
 
 #define NUM_TEXTURES 20
 
+
+//define the controls here
+#define NO_CONTROL_CLICKED 100
+#define MAP_EDITOR 101
+#define NEW_GAME 102
+
 class MainMenuModule : public Module
 {
     public:

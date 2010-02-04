@@ -39,8 +39,13 @@ bool MainMenuModule::onInit()
 
     mHUD.setDisplay(mDisplay, RANGE);
 
-    Button* b = new Button("map_editor", 2);
+    Button* b = new Button("map_editor", MAP_EDITOR);
     b->setLocation(-8.0f, -2.0f);
+    b->setSize(8.0f, 2.0f);
+    mHUD.addButton(b);
+
+    b = new Button("new_game", NEW_GAME);
+    b->setLocation(-8.0f, 0.0f);
     b->setSize(8.0f, 2.0f);
     mHUD.addButton(b);
 
@@ -111,9 +116,20 @@ void MainMenuModule::onLButtonDown(int inX, int inY)
 
 void MainMenuModule::onLButtonUp(int inX, int inY)
 {
-    if (mHUD.setStates(inX, inY, false))
+    int controlClicked = mHUD.setStates(inX, inY, false);
+
+    switch(controlClicked)
     {
-        mNextModule = new MapEditorModule();
-        mRunning = false;
+        case MAP_EDITOR:
+        {
+            mNextModule = new MapEditorModule();
+            mRunning = false;
+            break;
+        }
+        case NEW_GAME:
+        {
+            cerr << "new game" << endl;
+            break;
+        }
     }
 }
