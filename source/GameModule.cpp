@@ -2,6 +2,7 @@
 
 bool GameModule::onLoad()
 {
+    return true;
 }
 
 void GameModule::onInit()
