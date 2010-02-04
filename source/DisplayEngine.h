@@ -24,6 +24,10 @@
 #include <SDL_opengl.h>
 typedef SDL_Surface* Surface;
 
+
+#include <list>
+using namespace std;
+
 #define ENGINE_FPS 60
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
 #define FIELD_OF_VIEW 30.0

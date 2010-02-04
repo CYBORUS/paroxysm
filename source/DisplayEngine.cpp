@@ -39,16 +39,26 @@ void DisplayEngine::start(Module* inModule)
     if (inModule == NULL) return;
     Module* currentModule = inModule;
 
+    list<Module*> moduleStack;
+
     unsigned nextFrame = SDL_GetTicks() + FRAME_LENGTH;
     SDL_Event event;
 
-    while (currentModule != NULL)
+    while (currentModule != NULL || moduleStack.size() > 0)
     {
-        if (!currentModule->onLoad())
+        if (currentModule == NULL)
         {
-            cerr << "failed to load module\n";
-            currentModule = NULL;
-            break;
+            currentModule = moduleStack.back();
+            moduleStack.pop_back();
+        }
+        else
+        {
+            if (!currentModule->onLoad())
+            {
+                cerr << "failed to load module\n";
+                currentModule = NULL;
+                break;
+            }
         }
 
         currentModule->onInit();
@@ -91,6 +101,12 @@ void DisplayEngine::start(Module* inModule)
             deadModule->onCleanup();
             delete deadModule;
         }
+        else
+        {
+            moduleStack.push_back(deadModule);
+            deadModule = NULL;
+        }
+
     }
 
     cleanup();
