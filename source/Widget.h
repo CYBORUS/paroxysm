@@ -43,7 +43,6 @@ class Widget
         int mID;
         MouseState mMouseState;
 
-    private:
         Point2D<float> mLocation;
         Point2D<float> mSize;
         Point2D<int> mPixelUL;

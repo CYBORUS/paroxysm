@@ -64,7 +64,7 @@ bool MapEditorModule::onLoad()
     Button* b = new Button("terrain", 2);
     b->setLocation(-8.0f, -2.0f);
     b->setSize(4.0f, 1.0f);
-    mHUD.addButton(b);
+    mHUD.addWidget(b);
 
     return true;
 }
@@ -186,10 +186,7 @@ void MapEditorModule::onCleanup()
         delete mRedo.back();
         mRedo.pop_back();
     }
-
-    mHUD.deleteButtons();
 }
-
 
 Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
 {

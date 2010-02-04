@@ -19,6 +19,7 @@
 #define HUD_H
 
 #include "Point2D.h"
+#include "Widget.h"
 #include "Button.h"
 
 #include <vector>
@@ -38,14 +39,13 @@ class HUD
 
         void setDisplay(const Point2D<int>& inDisplay,
             float inRange = HUD_RANGE);
-        void addButton(Button* inButton);
-        void deleteButtons();
-        void setupButtons();
+        void addWidget(Widget* inWidget);
+        void findPixels();
         void display();
         int setStates(int inX, int inY, bool inPress);
 
     private:
-        vector<Button*> mButtons;
+        vector<Widget*> mWidgets;
         Point2D<int> mDisplay;
         float mRange;
 };

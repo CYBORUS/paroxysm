@@ -19,6 +19,7 @@
 
 Widget::Widget()
 {
+    mMouseState = OUTSIDE;
 }
 
 Widget::~Widget()

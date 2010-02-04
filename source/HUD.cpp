@@ -26,39 +26,32 @@ HUD::HUD()
 
 HUD::~HUD()
 {
-    // see HUD::deleteButtons()
+    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    {
+        delete mWidgets[i];
+        mWidgets[i] = NULL;
+    }
 }
 
 void HUD::setDisplay(const Point2D<int>& inDisplay, float inRange)
 {
     mDisplay = inDisplay;
     mRange = inRange;
-    setupButtons();
+    findPixels();
 }
 
-void HUD::addButton(Button* inButton)
+void HUD::addWidget(Widget* inWidget)
 {
-    if (inButton == NULL) return;
+    if (inWidget == NULL) return;
 
-    inButton->findPixels(mDisplay, mRange);
-    mButtons.push_back(inButton);
+    inWidget->findPixels(mDisplay, mRange);
+    mWidgets.push_back(inWidget);
 }
 
-void HUD::deleteButtons()
+void HUD::findPixels()
 {
-    // The HUD is not necessarily in charge of managing the Button objects, but
-    // this grants the option of having the HUD wipe out all of them.
-    for (unsigned int i = 0; i < mButtons.size(); ++i)
-    {
-        delete mButtons[i];
-        mButtons[i] = NULL;
-    }
-}
-
-void HUD::setupButtons()
-{
-    for (unsigned int i = 0; i < mButtons.size(); ++i)
-        mButtons[i]->findPixels(mDisplay, mRange);
+    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+        mWidgets[i]->findPixels(mDisplay, mRange);
 }
 
 void HUD::display()
@@ -82,7 +75,7 @@ void HUD::display()
     glEnable(GL_TEXTURE_2D);
 
     glColor3f(1.0f, 1.0f, 1.0f);
-    for (unsigned int i = 0; i < mButtons.size(); ++i) mButtons[i]->display();
+    for (unsigned int i = 0; i < mWidgets.size(); ++i) mWidgets[i]->display();
 
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
@@ -98,13 +91,13 @@ void HUD::display()
 int HUD::setStates(int inX, int inY, bool inPress)
 {
     int outHit = 0;
-    int hover = inPress ? HUD_PRESS : HUD_HOVER;
+    MouseState hover = inPress ? PRESS : HOVER;
 
-    for (unsigned int i = 0; i < mButtons.size(); ++i)
+    for (unsigned int i = 0; i < mWidgets.size(); ++i)
     {
-        int state = mButtons[i]->isOver(inX, inY) ? hover : HUD_OUT;
-        mButtons[i]->setState(state);
-        if (state != HUD_OUT) outHit = mButtons[i]->getID();
+        MouseState state = mWidgets[i]->isOver(inX, inY) ? hover : OUTSIDE;
+        mWidgets[i]->setState(state);
+        if (state != HUD_OUT) outHit = mWidgets[i]->getID();
     }
 
     return outHit;

@@ -21,9 +21,10 @@
 string Button::mPrefix("assets/images/hud/");
 string Button::mSuffix(".png");
 
-Button::Button(const char* inKeyword, int inID) : mKeyword(inKeyword),
-    mState(0), mID(inID)
+Button::Button(const char* inKeyword, int inID) : mKeyword(inKeyword)
 {
+    mID = inID;
+
     glGenTextures(3, mTextures);
 
     string file;
@@ -43,7 +44,7 @@ Button::~Button()
 
 void Button::display()
 {
-    glBindTexture(GL_TEXTURE_2D, mTextures[mState]);
+    glBindTexture(GL_TEXTURE_2D, mTextures[mMouseState]);
     glBegin(GL_QUADS);
     {
         glTexCoord2i(0, 1);
@@ -56,43 +57,6 @@ void Button::display()
         glVertex2f(mLocation.x, mLocation.y);
     }
     glEnd();
-}
-
-void Button::setState(int inState)
-{
-    mState = inState;
-}
-
-void Button::setLocation(float inX, float inY)
-{
-    mLocation.x = inX;
-    mLocation.y = inY;
-}
-
-void Button::setSize(float inX, float inY)
-{
-    mSize.x = inX;
-    mSize.y = inY;
-}
-
-void Button::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
-{
-    mLocation = inLocation;
-    mSize = inSize;
-}
-
-void Button::findPixels(const Point2D<int>& inDisplay, float inRange)
-{
-    Point2D<int> center;
-    center.x = inDisplay.x / 2;
-    center.y = inDisplay.y / 2;
-
-    float ratio = float(center.y) / inRange;
-
-    mPixelUL.x = center.x + int(mLocation.x * ratio);
-    mPixelUL.y = center.y - int(mLocation.y * ratio);
-    mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
-    mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
 }
 
 void Button::assemble(string& inString, const char* inAdd)
