@@ -54,8 +54,8 @@ class Button
 
         Point2D<float> mLocation;
         Point2D<float> mSize;
-        Point2D<float> mPixelUL;
-        Point2D<float> mPixelLR;
+        Point2D<int> mPixelUL;
+        Point2D<int> mPixelLR;
 };
 
 inline bool Button::isOver(int inX, int inY)

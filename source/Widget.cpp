@@ -24,3 +24,40 @@ Widget::Widget()
 Widget::~Widget()
 {
 }
+
+void Widget::setState(MouseState inState)
+{
+    mMouseState = inState;
+}
+
+void Widget::setLocation(float inX, float inY)
+{
+    mLocation.x = inX;
+    mLocation.y = inY;
+}
+
+void Widget::setSize(float inX, float inY)
+{
+    mSize.x = inX;
+    mSize.y = inY;
+}
+
+void Widget::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
+{
+    mLocation = inLocation;
+    mSize = inSize;
+}
+
+void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
+{
+    Point2D<int> center;
+    center.x = inDisplay.x / 2;
+    center.y = inDisplay.y / 2;
+
+    float ratio = float(center.y) / inRange;
+
+    mPixelUL.x = center.x + int(mLocation.x * ratio);
+    mPixelUL.y = center.y - int(mLocation.y * ratio);
+    mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
+    mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
+}

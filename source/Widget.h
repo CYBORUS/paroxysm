@@ -18,14 +18,47 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include "Point2D.h"
+
+enum MouseState {OUT, HOVER, PRESS};
 
 class Widget
 {
     public:
         Widget();
         virtual ~Widget();
+
+        virtual void display() = 0;
+
+        void setState(MouseState inState);
+        void setLocation(float inX, float inY);
+        void setSize(float inX, float inY);
+        void set(const Point2D<float>& inLocation,
+            const Point2D<float>& inSize);
+        void findPixels(const Point2D<int>& inDisplay, float inRange);
+        bool isOver(int inX, int inY);
+        int getID();
+
     protected:
+        int mID;
+        MouseState mMouseState;
+
     private:
+        Point2D<float> mLocation;
+        Point2D<float> mSize;
+        Point2D<int> mPixelUL;
+        Point2D<int> mPixelLR;
 };
+
+inline bool Widget::isOver(int inX, int inY)
+{
+    return inX >= mPixelUL.x && inX <= mPixelLR.x && inY >= mPixelUL.y
+        && inY <= mPixelLR.y;
+}
+
+inline int Widget::getID()
+{
+    return mID;
+}
 
 #endif
