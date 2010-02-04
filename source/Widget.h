@@ -20,7 +20,7 @@
 
 #include "Point2D.h"
 
-enum MouseState {OUT, HOVER, PRESS};
+enum MouseState { OUTSIDE, HOVER, PRESS };
 
 class Widget
 {
