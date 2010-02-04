@@ -70,6 +70,8 @@
 		<Unit filename="../TerrainGrid.cpp" />
 		<Unit filename="../TerrainGrid.h" />
 		<Unit filename="../Vector3D.h" />
+		<Unit filename="../Widget.cpp" />
+		<Unit filename="../Widget.h" />
 		<Unit filename="../main.cpp" />
 		<Extensions>
 			<code_completion />

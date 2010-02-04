@@ -104,7 +104,7 @@ int HUD::setStates(int inX, int inY, bool inPress)
     {
         int state = mButtons[i]->isOver(inX, inY) ? hover : HUD_OUT;
         mButtons[i]->setState(state);
-        if (state != HUD_OUT) outHit = 1;
+        if (state != HUD_OUT) outHit = mButtons[i]->getID();
     }
 
     return outHit;
