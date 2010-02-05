@@ -188,6 +188,8 @@ void MapEditorModule::onCleanup()
         delete mRedo.back();
         mRedo.pop_back();
     }
+
+    SoundEngine::stopBackgroundMusic();
 }
 
 Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
