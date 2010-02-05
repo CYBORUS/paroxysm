@@ -48,6 +48,7 @@ void HUD::addWidget(Widget* inWidget)
     mWidgets.push_back(inWidget);
 }
 
+
 void HUD::findPixels()
 {
     for (unsigned int i = 0; i < mWidgets.size(); ++i)

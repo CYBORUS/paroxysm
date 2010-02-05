@@ -44,6 +44,15 @@ void Widget::setSize(float inX, float inY)
     mSize.y = inY;
 }
 
+/**************************************************
+*   Called by the HUD every time a change occurs from the
+*   mouse.  Allows the widget to do things as the mouse
+*   moves around over it.
+**************************************************/
+void Widget::onMouseChange(float inX, float inY)
+{
+}
+
 void Widget::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
 {
     mLocation = inLocation;
