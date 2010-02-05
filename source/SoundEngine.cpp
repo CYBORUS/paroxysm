@@ -61,7 +61,7 @@ void SoundEngine::initialize()
 
 
 
-    Mix_AllocateChannels(16);
+    Mix_AllocateChannels(NUM_CHANNELS);
 
 }
 
@@ -139,11 +139,30 @@ SoundEffect SoundEngine::loadSound(const char* inFile)
 
 void SoundEngine::playSound(SoundEffect inSound)
 {
+    if (Mix_PlayChannel(mChannel, inSound, 0) == -1)
+    {
+        cerr << Mix_GetError() << endl;
+    }
+    mChannel = (mChannel + 1) % NUM_CHANNELS;
+}
 
+void SoundEngine::playPositionalSound(SoundEffect inSound, int inAngle, int inDistance)
+{
+    if (!Mix_SetPosition(mChannel, inAngle, inDistance))
+    {
+        cerr << Mix_GetError() << endl;
+    }
+    if (Mix_PlayChannel(mChannel, inSound, 0) == -1)
+    {
+        cerr << Mix_GetError() << endl;
+    }
+    mChannel = (mChannel + 1) % NUM_CHANNELS;
 }
 
 void unloadSound(SoundEffect inSound)
 {
+    Mix_FreeChunk(inSound);
+    inSound = NULL;
 }
 
 
@@ -173,7 +192,7 @@ void SoundEngine::decreaseMusicVolume()
     cerr << "\nVolume now: " << Mix_VolumeMusic(-1) << endl;
 }
 
-
+/*
 void SoundEngine::tankFire(int inAngle, int inDistance)
 {
 
@@ -187,7 +206,7 @@ void SoundEngine::tankFire(int inAngle, int inDistance)
     }
     mChannel = (mChannel + 1) % 16;
 }
-
+*/
 
 void SoundEngine::cleanup()
 {

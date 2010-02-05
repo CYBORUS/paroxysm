@@ -30,6 +30,8 @@ using namespace std;
 typedef Mix_Chunk* SoundEffect;
 typedef Mix_Music* Music;
 
+#define NUM_CHANNELS 32
+
 class SoundEngine
 {
     public:
@@ -47,8 +49,9 @@ class SoundEngine
         static void unloadSound(SoundEffect inSound);
 
         static void playSound(SoundEffect inSound);
+        static void playPositionalSound(SoundEffect inSound, int inAngle, int inDistance);
 
-        static void tankFire(int inAngle, int inDistance);
+        //static void tankFire(int inAngle, int inDistance);
 
         static void cleanup();
 
