@@ -51,13 +51,11 @@ void DisplayEngine::start(Module* inModule)
             currentModule = moduleStack.back();
             moduleStack.pop_back();
         }
-        else
+        else if (!currentModule->onLoad())
         {
-            if (!currentModule->onLoad())
-            {
-                currentModule = NULL;
-                break;
-            }
+            cerr << "module failed to load" << endl;
+            currentModule = NULL;
+            break;
         }
 
         currentModule->onInit();
