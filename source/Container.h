@@ -15,22 +15,26 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef POINT2D_H
-#define POINT2D_H
+#ifndef CONTAINER_H
+#define CONTAINER_H
 
-template<class T>
-struct Point2D
+#include "Widget.h"
+
+#include <vector>
+using namespace std;
+
+class Container : public Widget
 {
-    Point2D<T>();
-    T x;
-    T y;
+    public:
+        Container();
+        virtual ~Container();
+
+        virtual void display();
+
+        void addWidget(Widget* inWidget);
+
+    protected:
+        vector<Widget*> mWidgets;
 };
-
-template<class T>
-Point2D<T>::Point2D()
-{
-    x = 0;
-    y = 0;
-}
 
 #endif

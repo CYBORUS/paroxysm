@@ -75,7 +75,10 @@ void HUD::display()
     glEnable(GL_TEXTURE_2D);
 
     glColor3f(1.0f, 1.0f, 1.0f);
-    for (unsigned int i = 0; i < mWidgets.size(); ++i) mWidgets[i]->display();
+    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    {
+        if (mWidgets[i]->isVisible()) mWidgets[i]->display();
+    }
 
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);

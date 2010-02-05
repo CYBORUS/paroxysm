@@ -36,6 +36,7 @@
 		<Linker>
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
+			<Add library="SDL_ttf" />
 			<Add library="SDL_mixer" />
 			<Add library="SDL" />
 			<Add library="GL" />
@@ -47,6 +48,8 @@
 		<Unit filename="../Button.h" />
 		<Unit filename="../Config.cpp" />
 		<Unit filename="../Config.h" />
+		<Unit filename="../Container.cpp" />
+		<Unit filename="../Container.h" />
 		<Unit filename="../DisplayEngine.cpp" />
 		<Unit filename="../DisplayEngine.h" />
 		<Unit filename="../EditVertexAction.cpp" />
@@ -71,6 +74,8 @@
 		<Unit filename="../TSphere.h" />
 		<Unit filename="../TerrainGrid.cpp" />
 		<Unit filename="../TerrainGrid.h" />
+		<Unit filename="../TextLayer.cpp" />
+		<Unit filename="../TextLayer.h" />
 		<Unit filename="../Vector3D.h" />
 		<Unit filename="../Widget.cpp" />
 		<Unit filename="../Widget.h" />

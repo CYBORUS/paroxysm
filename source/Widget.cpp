@@ -20,6 +20,7 @@
 Widget::Widget()
 {
     mMouseState = OUTSIDE;
+    mVisible = true;
 }
 
 Widget::~Widget()
