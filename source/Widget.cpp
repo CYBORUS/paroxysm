@@ -49,7 +49,7 @@ void Widget::setSize(float inX, float inY)
 *   mouse.  Allows the widget to do things as the mouse
 *   moves around over it.
 **************************************************/
-void Widget::onMouseChange(float inX, float inY)
+void Widget::onMouseChange(int inX, int inY)
 {
 }
 

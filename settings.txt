@@ -3,4 +3,4 @@ display height = 768
 full screen = 0
 terrain file = Xmy_terrain.txt
 terrain cols = 20
-terrain rows = 10
+terrain rows = 20

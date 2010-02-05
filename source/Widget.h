@@ -34,7 +34,7 @@ class Widget
         void setState(MouseState inState);
         void setLocation(float inX, float inY);
         void setSize(float inX, float inY);
-        virtual void onMouseChange(float inX, float inY);
+        virtual void onMouseChange(int inX, int inY);
         void set(const Point2D<float>& inLocation,
             const Point2D<float>& inSize);
         virtual void findPixels(const Point2D<int>& inDisplay, float inRange);
@@ -56,8 +56,8 @@ class Widget
 
 inline bool Widget::isOver(int inX, int inY)
 {
-    return inX >= mPixelUL.x && inX <= mPixelLR.x && inY >= mPixelUL.y
-        && inY <= mPixelLR.y;
+    return mVisible && inX >= mPixelUL.x && inX <= mPixelLR.x
+        && inY >= mPixelUL.y && inY <= mPixelLR.y;
 }
 
 inline bool Widget::isVisible()

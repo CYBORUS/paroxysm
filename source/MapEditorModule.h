@@ -27,6 +27,7 @@
 #include "MapEditorAction.h"
 #include "SoundEngine.h"
 #include "HUD.h"
+#include "Button.h"
 
 #include <SDL_opengl.h>
 
@@ -51,8 +52,15 @@ using namespace std;
 #define EM_TERRAIN 0
 #define EM_TILE 1
 
+/// button IDs
+#define B_TERRAIN_MODE 1
+#define B_TILE_MODE 2
 
-
+/// mode button details
+#define MB_POS_X -8.0f
+#define MB_POS_Y -2.0f
+#define MB_WIDTH 4.0f
+#define MB_HEIGHT 1.0f
 
 struct Light
 {
@@ -72,7 +80,6 @@ class MapEditorModule : public Module
         virtual void onInit();
         virtual void onLoop();
         virtual void onFrame();
-
         virtual void onCleanup();
 
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
@@ -88,6 +95,9 @@ class MapEditorModule : public Module
         void doAction();
         void undoAction();
         void redoAction();
+
+        void onButtonPress(int inID);
+        void switchModes();
 
         Vector3D<float> selectVertex(int inX, int inY);
 
@@ -119,6 +129,8 @@ class MapEditorModule : public Module
         MapEditorAction* mCurrentAction;
 
         HUD mHUD;
+        Button* mTerrainButton;
+        Button* mTileButton;
 };
 
 #endif

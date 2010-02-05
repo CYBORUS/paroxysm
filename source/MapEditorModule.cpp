@@ -61,10 +61,16 @@ bool MapEditorModule::onLoad()
 
     mHUD.setDisplay(mDisplay);
 
-    Button* b = new Button("terrain", 2);
-    b->setLocation(-8.0f, -2.0f);
-    b->setSize(4.0f, 1.0f);
-    mHUD.addWidget(b);
+    mTerrainButton = new Button("terrain", B_TERRAIN_MODE);
+    mTerrainButton->setLocation(MB_POS_X, MB_POS_Y);
+    mTerrainButton->setSize(MB_WIDTH, MB_HEIGHT);
+    mHUD.addWidget(mTerrainButton);
+
+    mTileButton = new Button("tile", B_TILE_MODE);
+    mTileButton->setLocation(MB_POS_X, MB_POS_Y);
+    mTileButton->setSize(MB_WIDTH, MB_HEIGHT);
+    mTileButton->setVisible(false);
+    mHUD.addWidget(mTileButton);
 
     return true;
 }
@@ -286,12 +292,7 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         {
             if (mMouseMode != MM_DEFAULT) break;
 
-            mEditMode = !mEditMode;
-
-            if (mEditMode == EM_TERRAIN)
-                cerr << "terrain mode" << endl;
-            else if (mEditMode == EM_TILE)
-                cerr << "tile mode" << endl;
+            switchModes();
 
             break;
         }
@@ -419,7 +420,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
     {
         mMouseMode = MM_BUTTON_PRESS;
     }
-    else
+    else if (mEditMode == EM_TERRAIN)
     {
 
 
@@ -502,7 +503,7 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
         }
         case MM_BUTTON_PRESS:
         {
-            mHUD.setStates(inX, inY, false);
+            onButtonPress(mHUD.setStates(inX, inY, false));
             mMouseMode = MM_DEFAULT;
             break;
         }
@@ -569,4 +570,48 @@ void MapEditorModule::undoAction()
 
     mRedo.push_back(action);
     mUndo.pop_back();
+}
+
+void MapEditorModule::onButtonPress(int inID)
+{
+    switch (inID)
+    {
+        case B_TERRAIN_MODE:
+        case B_TILE_MODE:
+        {
+            switchModes();
+        }
+        case 0:
+        default:
+        {
+            break;
+        }
+    }
+}
+
+void MapEditorModule::switchModes()
+{
+    mEditMode = !mEditMode;
+
+    switch(mEditMode)
+    {
+        case EM_TERRAIN:
+        {
+            mTerrainButton->setVisible(true);
+            mTileButton->setVisible(false);
+            break;
+        }
+
+        case EM_TILE:
+        {
+            mTerrainButton->setVisible(false);
+            mTileButton->setVisible(true);
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
+    }
 }
