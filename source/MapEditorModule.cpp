@@ -73,6 +73,8 @@ void MapEditorModule::onInit()
 {
     mRunning = true;
 
+    SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
+
     glViewport(0, 0, (GLsizei)mDisplay.x, (GLsizei)mDisplay.y);
 
     glMatrixMode(GL_PROJECTION);
@@ -246,6 +248,18 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
                 else
                     undoAction();
             }
+            break;
+        }
+
+        case SDLK_a:
+        {
+            SoundEngine::playBackgroundMusic();
+            break;
+        }
+
+        case SDLK_s:
+        {
+            SoundEngine::stopBackgroundMusic();
             break;
         }
 

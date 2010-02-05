@@ -25,6 +25,7 @@
 #include "TSphere.h"
 #include "TerrainGrid.h"
 #include "MapEditorAction.h"
+#include "SoundEngine.h"
 #include "HUD.h"
 
 #include <SDL_opengl.h>

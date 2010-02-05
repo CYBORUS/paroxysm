@@ -84,7 +84,6 @@ void SoundEngine::loadBackgroundMusic(const char* inFile)
 
 void SoundEngine::playBackgroundMusic()
 {
-    cerr << "playing music" << endl;
     if (!Mix_PlayingMusic())
     {
         /* This begins playing the music - the first argument is a
