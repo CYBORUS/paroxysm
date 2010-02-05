@@ -39,6 +39,7 @@
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
 			<Add library="SDL_mixer" />
+			<Add library="SDL_ttf" />
 			<Add library="SDL" />
 			<Add library="opengl32" />
 			<Add library="glu32" />
@@ -67,12 +68,16 @@
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />
 		<Unit filename="..\Point2D.h" />
+		<Unit filename="..\ScrollList.cpp" />
+		<Unit filename="..\ScrollList.h" />
 		<Unit filename="..\SoundEngine.cpp" />
 		<Unit filename="..\SoundEngine.h" />
 		<Unit filename="..\TSphere.cpp" />
 		<Unit filename="..\TSphere.h" />
 		<Unit filename="..\TerrainGrid.cpp" />
 		<Unit filename="..\TerrainGrid.h" />
+		<Unit filename="..\TextLayer.cpp" />
+		<Unit filename="..\TextLayer.h" />
 		<Unit filename="..\Vector3D.h" />
 		<Unit filename="..\Widget.cpp" />
 		<Unit filename="..\Widget.h" />
