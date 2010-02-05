@@ -3,12 +3,12 @@
 bool MainMenuModule::onLoad()
 {
     Button* b = new Button("map_editor", MAP_EDITOR);
-    b->setLocation(-8.0f, -2.0f);
+    b->setLocation(0.0f, -1.0f);
     b->setSize(8.0f, 2.0f);
     mHUD.addWidget(b);
 
     b = new Button("new_game", NEW_GAME);
-    b->setLocation(-8.0f, 0.0f);
+    b->setLocation(0.0f, 1.0f);
     b->setSize(8.0f, 2.0f);
     mHUD.addWidget(b);
 

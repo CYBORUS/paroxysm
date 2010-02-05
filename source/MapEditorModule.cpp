@@ -87,7 +87,7 @@ void MapEditorModule::onInit()
 
     glGetIntegerv(GL_VIEWPORT, mViewport.array());
 
-    cerr << "\nProjection Matrix: \n" << mProjection << endl;
+    //cerr << "\nProjection Matrix: \n" << mProjection << endl;
     //glLoadIdentity();
 
     glEnable(GL_DEPTH_TEST);

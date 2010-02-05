@@ -20,7 +20,7 @@
 
 #include "Point2D.h"
 
-enum MouseState { OUTSIDE, HOVER, PRESS };
+enum MouseState { OUTSIDE = 0, HOVER = 1, PRESS = 2 };
 
 class Widget
 {
@@ -35,7 +35,7 @@ class Widget
         void setSize(float inX, float inY);
         void set(const Point2D<float>& inLocation,
             const Point2D<float>& inSize);
-        void findPixels(const Point2D<int>& inDisplay, float inRange);
+        virtual void findPixels(const Point2D<int>& inDisplay, float inRange);
         bool isOver(int inX, int inY);
         int getID();
 

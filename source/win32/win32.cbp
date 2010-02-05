@@ -53,6 +53,8 @@
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
 		<Unit filename="..\EditVertexAction.h" />
+		<Unit filename="..\GameModule.cpp" />
+		<Unit filename="..\GameModule.h" />
 		<Unit filename="..\HUD.cpp" />
 		<Unit filename="..\HUD.h" />
 		<Unit filename="..\MainMenuModule.cpp" />
@@ -72,6 +74,8 @@
 		<Unit filename="..\TerrainGrid.cpp" />
 		<Unit filename="..\TerrainGrid.h" />
 		<Unit filename="..\Vector3D.h" />
+		<Unit filename="..\Widget.cpp" />
+		<Unit filename="..\Widget.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>
 			<code_completion />

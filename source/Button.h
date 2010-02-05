@@ -19,7 +19,6 @@
 #define BUTTON_H
 
 #include <SDL_opengl.h>
-#include "Point2D.h"
 #include "Widget.h"
 
 #include <string>
