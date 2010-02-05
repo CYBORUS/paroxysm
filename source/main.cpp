@@ -35,5 +35,6 @@ int main(int argc, char** argv)
     //DisplayEngine::start(new MapEditorModule);
     //DisplayEngine::start(new BlankWindow);
     DisplayEngine::start(new MainMenuModule);
+    SoundEngine::cleanup();
     return 0;
 }

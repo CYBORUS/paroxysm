@@ -19,6 +19,7 @@
 #define WIDGET_H
 
 #include "Point2D.h"
+#include "SoundEngine.h"
 
 enum MouseState { OUTSIDE = 0, HOVER = 1, PRESS = 2 };
 
