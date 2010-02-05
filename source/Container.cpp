@@ -32,6 +32,10 @@ Container::~Container()
 
 void Container::display()
 {
+    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    {
+        if (mWidgets[i]->isVisible()) mWidgets[i]->display();
+    }
 }
 
 void Container::addWidget(Widget* inWidget)

@@ -72,3 +72,8 @@ void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
     mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
     mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
 }
+
+void Widget::setVisible(bool inVisible)
+{
+    mVisible = inVisible;
+}

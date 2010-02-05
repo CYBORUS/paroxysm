@@ -40,6 +40,7 @@ class Widget
         virtual void findPixels(const Point2D<int>& inDisplay, float inRange);
         bool isOver(int inX, int inY);
         bool isVisible();
+        virtual void setVisible(bool inVisible);
         int getID();
 
     protected:
