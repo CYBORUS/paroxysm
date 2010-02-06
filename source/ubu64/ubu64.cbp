@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/ubu64" prefix_auto="1" extension_auto="1" />
+				<Option output="../../paroxysm-ubu64-debug" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../.." />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -68,6 +68,8 @@
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
 		<Unit filename="../Point2D.h" />
+		<Unit filename="../ScrollList.cpp" />
+		<Unit filename="../ScrollList.h" />
 		<Unit filename="../SoundEngine.cpp" />
 		<Unit filename="../SoundEngine.h" />
 		<Unit filename="../TSphere.cpp" />
