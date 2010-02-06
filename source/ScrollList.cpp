@@ -51,17 +51,17 @@ void ScrollList::addListItem(string inText, Surface inImage)
     */
 
     //someRand();
-    typedef boost::uniform_int<int> dist_t;
+    //typedef boost::uniform_int<int> dist_t;
+    typedef boost::normal_distribution<double> dist_t;
     //typedef uniform_real<double> dist_t;
-    dist_t dist(0, 16);
+    dist_t dist(100, 10);
     boost::variate_generator<boost::mt19937&, dist_t> rand_ (mSomeRand, dist);
 
-    cout << "random number? " << rand_() << endl;
-    cout << "random number? " << rand_() << endl;
-    cout << "random number? " << rand_() << endl;
-    cout << "random number? " << rand_() << endl;
-    cout << "random number? " << rand_() << endl;
-    cout << "random number? " << rand_() << endl << endl;
+    for (int i = 0; i < 20; ++i)
+    {
+        cout << "random number? " << (int)rand_() << endl;
+    }
+    cout << endl << endl;
 }
 
 
