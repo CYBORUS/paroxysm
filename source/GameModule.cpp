@@ -2,6 +2,11 @@
 
 bool GameModule::onLoad()
 {
+    Surface someImage;
+    string something;
+    ScrollList* list = new ScrollList(&something, 34);
+    list->addListItem("boogey", someImage);
+
     return true;
 }
 

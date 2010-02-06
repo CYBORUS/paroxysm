@@ -6,6 +6,7 @@
 #include "HUD.h"
 
 #include "Button.h"
+#include "ScrollList.h"
 
 
 #include <SDL_opengl.h>

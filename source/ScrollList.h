@@ -6,9 +6,14 @@
 #include "dirent.h"
 #include "DisplayEngine.h"
 
+#include <boost/filesystem.hpp>
+using namespace boost::filesystem;
+//using boost::filesystem;
+
 #include <string>
 #include <iostream>
 using namespace std;
+
 
 
 class ScrollList : public Widget
