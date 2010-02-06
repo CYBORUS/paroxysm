@@ -8,10 +8,14 @@
 
 #include <boost/filesystem.hpp>
 using namespace boost::filesystem;
-//using boost::filesystem;
+#include <boost/random.hpp>
+using namespace boost;
+//using namespace boost::random;
+
 
 #include <string>
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 
@@ -31,6 +35,9 @@ class ScrollList : public Widget
         //used to provide the creator of this widget
         //information about which selection was clicked
         string* mInfoPointer;
+
+        mt19937 mSomeRand;
+
 };
 
 #endif // SCROLLLIST_H

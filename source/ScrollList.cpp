@@ -4,6 +4,8 @@ ScrollList::ScrollList(string* inInfoPointer, int inID)
 {
     mInfoPointer = inInfoPointer;
     mID = inID;
+
+    mSomeRand = mt19937(time(NULL));
 }
 
 ScrollList::~ScrollList()
@@ -21,6 +23,7 @@ void ScrollList::display()
 ************************************/
 void ScrollList::addListItem(string inText, Surface inImage)
 {
+/*
     string temp = ".";
 
     if (is_directory(temp))
@@ -39,6 +42,26 @@ void ScrollList::addListItem(string inText, Surface inImage)
     {
         cout << (exists(temp) ? "Found: " : "Not found: ") << temp << endl;
     }
+*/
+/*
+    random_device device;
+    double ent = device.entropy();
+    unsigned int number = device();
+    cout << "random number? " << number << " entropy: " << ent << endl;
+    */
+
+    //someRand();
+    typedef boost::uniform_int<int> dist_t;
+    //typedef uniform_real<double> dist_t;
+    dist_t dist(0, 16);
+    boost::variate_generator<boost::mt19937&, dist_t> rand_ (mSomeRand, dist);
+
+    cout << "random number? " << rand_() << endl;
+    cout << "random number? " << rand_() << endl;
+    cout << "random number? " << rand_() << endl;
+    cout << "random number? " << rand_() << endl;
+    cout << "random number? " << rand_() << endl;
+    cout << "random number? " << rand_() << endl << endl;
 }
 
 

@@ -2,7 +2,7 @@
 
 bool GameModule::onLoad()
 {
-    Surface someImage;
+    Surface someImage = NULL;
     string something;
     ScrollList* list = new ScrollList(&something, 34);
     list->addListItem("boogey", someImage);
