@@ -27,11 +27,12 @@ void ScrollList::addListItem(string inText, Surface inImage)
     {
         for (directory_iterator itr(temp); itr != directory_iterator(); ++itr)
         {
-            cout << itr->path().filename() << endl;
+            cout << itr->path().filename() << ' ';
             if (is_regular_file(itr->status()))
             {
-                cout << " [" << file_size(itr->path()) << ']' << endl;
+                cout << " [" << file_size(itr->path()) << ']';
             }
+            cout << endl;
         }
     }
     else
