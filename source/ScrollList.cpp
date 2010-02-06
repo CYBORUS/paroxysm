@@ -54,7 +54,7 @@ void ScrollList::addListItem(string inText, Surface inImage)
     //typedef boost::uniform_int<int> dist_t;
     typedef boost::normal_distribution<double> dist_t;
     //typedef uniform_real<double> dist_t;
-    dist_t dist(100, 10);
+    dist_t dist(100, 20);
     boost::variate_generator<boost::mt19937&, dist_t> rand_ (mSomeRand, dist);
 
     for (int i = 0; i < 20; ++i)
