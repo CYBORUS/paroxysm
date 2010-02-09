@@ -94,7 +94,7 @@ void HUD::display()
 
 int HUD::setStates(int inX, int inY, bool inPress)
 {
-    int outHit = 0;
+    int outHit = -1;
     MouseState hover = inPress ? PRESS : HOVER;
 
     for (unsigned int i = 0; i < mWidgets.size(); ++i)

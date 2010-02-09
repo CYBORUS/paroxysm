@@ -61,16 +61,22 @@ bool MapEditorModule::onLoad()
 
     mHUD.setDisplay(mDisplay);
 
-    mTerrainButton = new Button("terrain", B_TERRAIN_MODE);
-    mTerrainButton->setLocation(MB_POS_X, MB_POS_Y);
-    mTerrainButton->setSize(MB_WIDTH, MB_HEIGHT);
-    mHUD.addWidget(mTerrainButton);
+    mButtons[B_UNDO] = new Button("undo", B_UNDO);
+    mButtons[B_UNDO]->setLocation(-8.0f, -0.75f);
+    mButtons[B_UNDO]->setSize(MB_WIDTH, MB_HEIGHT);
+    mButtons[B_UNDO]->disable();
+    mHUD.addWidget(mButtons[B_UNDO]);
 
-    mTileButton = new Button("tile", B_TILE_MODE);
-    mTileButton->setLocation(MB_POS_X, MB_POS_Y);
-    mTileButton->setSize(MB_WIDTH, MB_HEIGHT);
-    mTileButton->setVisible(false);
-    mHUD.addWidget(mTileButton);
+    mButtons[B_TERRAIN_MODE] = new Button("terrain", B_TERRAIN_MODE);
+    mButtons[B_TERRAIN_MODE]->setLocation(MB_POS_X, MB_POS_Y);
+    mButtons[B_TERRAIN_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
+    mHUD.addWidget(mButtons[B_TERRAIN_MODE]);
+
+    mButtons[B_TILE_MODE] = new Button("tile", B_TILE_MODE);
+    mButtons[B_TILE_MODE]->setLocation(MB_POS_X, MB_POS_Y);
+    mButtons[B_TILE_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
+    mButtons[B_TILE_MODE]->setVisible(false);
+    mHUD.addWidget(mButtons[B_TILE_MODE]);
 
     return true;
 }
@@ -416,7 +422,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         SDL_WarpMouse(mCenter.x, mCenter.y);
         mMouseMode = MM_PANNING;
     }
-    else if (mHUD.setStates(inX, inY, true))
+    else if (mHUD.setStates(inX, inY, true) > -1)
     {
         mMouseMode = MM_BUTTON_PRESS;
     }
@@ -581,7 +587,7 @@ void MapEditorModule::onButtonPress(int inID)
         {
             switchModes();
         }
-        case 0:
+        case -1:
         default:
         {
             break;
@@ -597,15 +603,15 @@ void MapEditorModule::switchModes()
     {
         case EM_TERRAIN:
         {
-            mTerrainButton->setVisible(true);
-            mTileButton->setVisible(false);
+            mButtons[B_TERRAIN_MODE]->setVisible(true);
+            mButtons[B_TILE_MODE]->setVisible(false);
             break;
         }
 
         case EM_TILE:
         {
-            mTerrainButton->setVisible(false);
-            mTileButton->setVisible(true);
+            mButtons[B_TERRAIN_MODE]->setVisible(false);
+            mButtons[B_TILE_MODE]->setVisible(true);
             break;
         }
 

@@ -20,6 +20,7 @@
 Widget::Widget()
 {
     mMouseState = OUTSIDE;
+    mEnabled = true;
     mVisible = true;
 }
 
@@ -76,4 +77,19 @@ void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
 void Widget::setVisible(bool inVisible)
 {
     mVisible = inVisible;
+}
+
+void Widget::enable()
+{
+    mEnabled = true;
+}
+
+void Widget::disable()
+{
+    mEnabled = false;
+}
+
+void Widget::toggle()
+{
+    mEnabled = !mEnabled;
 }

@@ -25,26 +25,28 @@ Button::Button(const char* inKeyword, int inID) : mKeyword(inKeyword)
 {
     mID = inID;
 
-    glGenTextures(3, mTextures);
+    glGenTextures(4, mTextures);
 
     string file;
 
     assemble(file, "_out");
-    DisplayEngine::loadTexture(file.c_str(), mTextures[0]);
+    DisplayEngine::loadTexture(file.c_str(), mTextures[OUTSIDE]);
     assemble(file, "_hover");
-    DisplayEngine::loadTexture(file.c_str(), mTextures[1]);
+    DisplayEngine::loadTexture(file.c_str(), mTextures[HOVER]);
     assemble(file, "_press");
-    DisplayEngine::loadTexture(file.c_str(), mTextures[2]);
+    DisplayEngine::loadTexture(file.c_str(), mTextures[PRESS]);
+    assemble(file, "_disabled");
+    DisplayEngine::loadTexture(file.c_str(), mTextures[3]);
 }
 
 Button::~Button()
 {
-    glDeleteTextures(3, mTextures);
+    glDeleteTextures(4, mTextures);
 }
 
 void Button::display()
 {
-    glBindTexture(GL_TEXTURE_2D, mTextures[mMouseState]);
+    glBindTexture(GL_TEXTURE_2D, mTextures[mEnabled ? mMouseState : 3]);
     glBegin(GL_QUADS);
     {
         glTexCoord2i(0, 1);

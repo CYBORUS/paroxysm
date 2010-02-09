@@ -43,7 +43,12 @@ class Widget
         virtual void setVisible(bool inVisible);
         int getID();
 
+        void enable();
+        void disable();
+        void toggle();
+
     protected:
+        bool mEnabled;
         bool mVisible;
         int mID;
         MouseState mMouseState;
