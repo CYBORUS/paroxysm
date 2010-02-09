@@ -7,6 +7,8 @@ ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int
     mWidth = inWidth;
     mHeight = (int)(inHeight / LINE_HEIGHT) * LINE_HEIGHT;
 
+    mText.loadFont("./assets/misc/DejaVuSans.ttf", 12);
+
     mSomeRand = mt19937(time(NULL));
 
     glGenTextures(1, &mNoImage);
@@ -93,6 +95,11 @@ void ScrollList::addListItem(string inText)
     glGenTextures(1, &texture);
     mList.push_back(texture);
     mImages.push_back(mNoImage);
+}
+
+
+bool ScrollList::loadTextureString()
+{
 }
 
 void ScrollList::onMouseChange(float inX, float inY)

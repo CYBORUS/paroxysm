@@ -34,9 +34,12 @@ class ScrollList : public Widget
         void onMouseChange(float inX, float inY);
         virtual void display();
     protected:
+        bool loadTextureString();
         //used to provide the creator of this widget
         //information about which item is currently selected
         string* mInfoPointer;
+
+        TextLayer mText;
 
         float mWidth;
         float mHeight;
