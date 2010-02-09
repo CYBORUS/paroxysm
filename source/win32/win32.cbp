@@ -89,10 +89,6 @@
 		<Unit filename="..\Vector3D.h" />
 		<Unit filename="..\Widget.cpp" />
 		<Unit filename="..\Widget.h" />
-		<Unit filename="..\dirent.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\dirent.h" />
 		<Unit filename="..\main.cpp" />
 		<Extensions>
 			<code_completion />

@@ -53,6 +53,7 @@ class DisplayEngine
         static SDL_Rect** mModes;
         static unsigned int mNextFrame;
         static unsigned int mCurrentFrame;
+        static bool mMipmapping;
 };
 
 #endif

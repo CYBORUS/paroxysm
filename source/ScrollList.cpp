@@ -1,11 +1,15 @@
 #include "ScrollList.h"
 
-ScrollList::ScrollList(string* inInfoPointer, int inID)
+ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int inID)
 {
     mInfoPointer = inInfoPointer;
     mID = inID;
+    mWidth = inWidth;
+    mHeight = (int)(inHeight / LINE_HEIGHT) * LINE_HEIGHT;
 
     mSomeRand = mt19937(time(NULL));
+
+    glGenTextures(1, &mNoImage);
 }
 
 ScrollList::~ScrollList()
@@ -16,6 +20,13 @@ ScrollList::~ScrollList()
 
 void ScrollList::display()
 {
+    glDeleteTextures(1, &mNoImage);
+
+    for (unsigned int i = 0; i < mImages.size(); ++i)
+    {
+        GLuint texture = mImages[i];
+        glDeleteTextures(1, &texture);
+    }
 }
 
 /***********************************
@@ -23,6 +34,12 @@ void ScrollList::display()
 ************************************/
 void ScrollList::addListItem(string inText, Surface inImage)
 {
+    GLuint texture;
+
+    glGenTextures(1, &texture);
+
+    mList.push_back(texture);
+    mImages.push_back(texture);
 /*
     string temp = ".";
 
@@ -49,7 +66,7 @@ void ScrollList::addListItem(string inText, Surface inImage)
     unsigned int number = device();
     cout << "random number? " << number << " entropy: " << ent << endl;
     */
-
+/*
     //someRand();
     //typedef boost::uniform_int<int> dist_t;
     typedef boost::normal_distribution<double> dist_t;
@@ -62,6 +79,7 @@ void ScrollList::addListItem(string inText, Surface inImage)
         cout << "random number? " << (int)rand_() << endl;
     }
     cout << endl << endl;
+    */
 }
 
 
@@ -70,6 +88,11 @@ void ScrollList::addListItem(string inText, Surface inImage)
 ********************************************/
 void ScrollList::addListItem(string inText)
 {
+    GLuint texture;
+
+    glGenTextures(1, &texture);
+    mList.push_back(texture);
+    mImages.push_back(mNoImage);
 }
 
 void ScrollList::onMouseChange(float inX, float inY)

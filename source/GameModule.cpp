@@ -4,7 +4,7 @@ bool GameModule::onLoad()
 {
     Surface someImage = NULL;
     string something;
-    ScrollList* list = new ScrollList(&something, 34);
+    ScrollList* list = new ScrollList(&something, 2.0f, 5.0f, 34);
     list->addListItem("boogey", someImage);
 
     return true;

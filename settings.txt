@@ -4,3 +4,4 @@ full screen = 0
 terrain file = Xmy_terrain.txt
 terrain cols = 20
 terrain rows = 20
+mipmapping = 1

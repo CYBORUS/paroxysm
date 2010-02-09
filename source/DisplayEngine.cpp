@@ -33,6 +33,7 @@ using namespace std;
 Surface DisplayEngine::mDisplay = NULL;
 Surface DisplayEngine::mWindowIcon = NULL;
 SDL_Rect** DisplayEngine::mModes = NULL;
+bool DisplayEngine::mMipmapping = false;
 
 void DisplayEngine::start(Module* inModule)
 {
@@ -154,6 +155,8 @@ void DisplayEngine::initialize()
     int width = Config::get<int>("display width", 800);
     int height = Config::get<int>("display height", 600);
 
+    mMipmapping = Config::get<bool>("mipmapping", false);
+
     Uint32 flags = SDL_OPENGL;
 
     if (Config::get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
@@ -204,10 +207,12 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     if (inSurface == NULL) return false;
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
+    if (mMipmapping)
+    {
      glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
-
+    }
 
     GLint nOfColors = inSurface->format->BytesPerPixel;
     GLenum tFormat = GL_RGBA;
@@ -235,8 +240,14 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    if (mMipmapping)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    }
+    else
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    }
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
