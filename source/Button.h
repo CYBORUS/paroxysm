@@ -39,7 +39,7 @@ class Button : public Widget
         static string mSuffix;
 
         string mKeyword;
-        GLuint mTextures[3];
+        GLuint mTextures[4];
 };
 
 #endif
