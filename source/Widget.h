@@ -44,6 +44,7 @@ class Widget
         int getID();
 
         void enable();
+        void enable(bool inEnable);
         void disable();
         void toggle();
 

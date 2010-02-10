@@ -84,6 +84,11 @@ void Widget::enable()
     mEnabled = true;
 }
 
+void Widget::enable(bool inEnable)
+{
+    mEnabled = inEnable;
+}
+
 void Widget::disable()
 {
     mEnabled = false;

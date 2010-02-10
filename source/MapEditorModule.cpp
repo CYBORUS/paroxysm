@@ -62,10 +62,16 @@ bool MapEditorModule::onLoad()
     mHUD.setDisplay(mDisplay);
 
     mButtons[B_UNDO] = new Button("undo", B_UNDO);
-    mButtons[B_UNDO]->setLocation(-8.0f, -0.75f);
+    mButtons[B_UNDO]->setLocation(-8.0f, 0.50f);
     mButtons[B_UNDO]->setSize(MB_WIDTH, MB_HEIGHT);
     mButtons[B_UNDO]->disable();
     mHUD.addWidget(mButtons[B_UNDO]);
+
+    mButtons[B_REDO] = new Button("redo", B_REDO);
+    mButtons[B_REDO]->setLocation(-8.0f, -0.75f);
+    mButtons[B_REDO]->setSize(MB_WIDTH, MB_HEIGHT);
+    mButtons[B_REDO]->disable();
+    mHUD.addWidget(mButtons[B_REDO]);
 
     mButtons[B_TERRAIN_MODE] = new Button("terrain", B_TERRAIN_MODE);
     mButtons[B_TERRAIN_MODE]->setLocation(MB_POS_X, MB_POS_Y);
@@ -386,9 +392,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
         case MM_BUTTON_PRESS:
         {
-            if (!mHUD.setStates(inX, inY, true))
-                mMouseMode = MM_DEFAULT;
-
+            mHUD.setStates(inX, inY, true);
             break;
         }
         case MM_DEFAULT:
@@ -554,6 +558,8 @@ void MapEditorModule::doAction()
     mUndo.push_back(mCurrentAction);
     mCurrentAction->execute();
     mCurrentAction = NULL;
+    mButtons[B_UNDO]->enable();
+    mButtons[B_REDO]->disable();
 }
 
 void MapEditorModule::redoAction()
@@ -565,6 +571,8 @@ void MapEditorModule::redoAction()
 
     mUndo.push_back(action);
     mRedo.pop_back();
+    mButtons[B_UNDO]->enable();
+    mButtons[B_REDO]->enable(!mRedo.empty());
 }
 
 void MapEditorModule::undoAction()
@@ -576,6 +584,8 @@ void MapEditorModule::undoAction()
 
     mRedo.push_back(action);
     mUndo.pop_back();
+    mButtons[B_REDO]->enable();
+    mButtons[B_UNDO]->enable(!mUndo.empty());
 }
 
 void MapEditorModule::onButtonPress(int inID)
@@ -587,6 +597,19 @@ void MapEditorModule::onButtonPress(int inID)
         {
             switchModes();
         }
+
+        case B_UNDO:
+        {
+            undoAction();
+            break;
+        }
+
+        case B_REDO:
+        {
+            redoAction();
+            break;
+        }
+
         case -1:
         default:
         {
