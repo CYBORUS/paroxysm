@@ -596,6 +596,7 @@ void MapEditorModule::onButtonPress(int inID)
         case B_TILE_MODE:
         {
             switchModes();
+            break;
         }
 
         case B_UNDO:
