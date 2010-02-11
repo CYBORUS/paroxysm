@@ -5,7 +5,11 @@ bool GameModule::onLoad()
     Surface someImage = NULL;
     string something;
     ScrollList* list = new ScrollList(&something, 2.0f, 5.0f, 34);
+    list->setLocation(0.0f, 0.0f);
+    list->setSize(3.0f, 3.0f);
     list->addListItem("boogey", someImage);
+
+    mHUD.addWidget(list);
 
     return true;
 }

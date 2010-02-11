@@ -7,20 +7,43 @@ ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int
     mWidth = inWidth;
     mHeight = (int)(inHeight / LINE_HEIGHT) * LINE_HEIGHT;
 
-    mText.loadFont("./assets/misc/DejaVuSans.ttf", 12);
+    if (!mText.loadFont("assets/misc/DejaVuSans.ttf", 12))
+    {
+        cerr << "failed to load font file." << endl;
+    }
 
     mSomeRand = mt19937(time(NULL));
 
     glGenTextures(1, &mNoImage);
+
+    mMipmapping = Config::get<bool>("mipmapping", false);
+
+/*
+    GLint nOfColors = DisplayEngine::mDisplay->format->BytesPerPixel;
+    if (nOfColors == 4)
+    {
+        if (DisplayEngine::mDisplay->format->Rmask == 0x000000ff)
+            mFormat = GL_RGBA;
+        else
+            mFormat = GL_BGRA;
+    }
+    else if (nOfColors == 3)
+    {
+        if (DisplayEngine::mDisplay->format->Rmask == 0x000000ff)
+            mFormat = GL_RGB;
+        else
+            mFormat = GL_BGR;
+    }
+    else
+    {
+        cerr << "failed to load texture -- not true color\n";
+    }
+*/
+    cerr << "numLists: " << glGenLists(1) << endl;
+
 }
 
 ScrollList::~ScrollList()
-{
-    //dtor
-}
-
-
-void ScrollList::display()
 {
     glDeleteTextures(1, &mNoImage);
 
@@ -28,6 +51,37 @@ void ScrollList::display()
     {
         GLuint texture = mImages[i];
         glDeleteTextures(1, &texture);
+    }
+
+}
+
+bool something = true;
+void ScrollList::display()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    if (glIsList(mDisplayList))
+    {
+        glCallList(mDisplayList);
+    }
+    else
+    {
+        cerr << "it's not a list" << endl;
+    }
+
+
+/*
+    glPolygonMode(GL_FRONT, GL_LINE);
+
+    glRectf(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0),
+            mLocation.x + (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
+*/
+    if (something)
+    {
+        cerr << "size: " << mSize.x << "," << mSize.y << " \nlocation: " <<
+                mLocation.x << "," << mLocation.y << endl;
+        something = false;
+
     }
 }
 
@@ -39,9 +93,59 @@ void ScrollList::addListItem(string inText, Surface inImage)
     GLuint texture;
 
     glGenTextures(1, &texture);
+    mText.setText(inText.c_str());
+    if (!DisplayEngine::loadTexture(mText.getTextImage(), texture))
+    {
+        cerr << "failed to load texture." << endl;
+        exit(2);
+    }
 
     mList.push_back(texture);
     mImages.push_back(texture);
+
+    glNewList(mDisplayList, GL_COMPILE);
+    {
+        glEnable(GL_TEXTURE_2D);
+        for (int i = 0; i < mList.size(); ++i)
+        {
+            glBindTexture(GL_TEXTURE_2D, mList[i]);
+            glBegin(GL_QUADS);
+            {
+                glTexCoord2i(0, 1);
+                glVertex2f(mLocation.x - (mSize.x / 2.0f),
+                    mLocation.y - (mSize.y / 2.0f));
+                glTexCoord2i(1, 1);
+                glVertex2f(mLocation.x + (mSize.x / 2.0f),
+                    mLocation.y - (mSize.y / 2.0f));
+                glTexCoord2i(1, 0);
+                glVertex2f(mLocation.x + (mSize.x / 2.0f),
+                    mLocation.y + (mSize.y / 2.0f));
+                glTexCoord2i(0, 0);
+                glVertex2f(mLocation.x - (mSize.x / 2.0f),
+                    mLocation.y + (mSize.y / 2.0f));
+            }
+            glEnd();
+        }
+
+        glDisable(GL_TEXTURE_2D);
+
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glBegin(GL_LINE_STRIP);
+        {
+            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
+            glVertex2f(mLocation.x + (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
+            glVertex2f(mLocation.x + (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
+            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
+            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
+        }
+        glEnd();
+
+
+    }
+    glEndList();
+
+
+
 /*
     string temp = ".";
 
@@ -98,8 +202,60 @@ void ScrollList::addListItem(string inText)
 }
 
 
-bool ScrollList::loadTextureString()
+bool ScrollList::loadTextureString(Surface inSurface, GLuint inTexture)
 {
+    if (inSurface == NULL) return false;
+    glBindTexture(GL_TEXTURE_2D, inTexture);
+
+    if (mMipmapping)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
+    }
+
+    GLint nOfColors = inSurface->format->BytesPerPixel;
+    GLenum tFormat = GL_RGBA;
+    if (nOfColors == 4)
+    {
+        if (inSurface->format->Rmask == 0x000000ff)
+            tFormat = GL_RGBA;
+        else
+            tFormat = GL_BGRA;
+    }
+    else if (nOfColors == 3)
+    {
+        if (inSurface->format->Rmask == 0x000000ff)
+            tFormat = GL_RGB;
+        else
+            tFormat = GL_BGR;
+    }
+    else
+    {
+        cerr << "failed to load texture -- not true color\n";
+        SDL_FreeSurface(inSurface);
+        return false;
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
+        0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
+
+    if (mMipmapping)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    }
+    else
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    }
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+
+    return true;
+
 }
 
 void ScrollList::onMouseChange(float inX, float inY)

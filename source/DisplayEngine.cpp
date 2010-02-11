@@ -121,6 +121,7 @@ void DisplayEngine::initialize()
         exit(1);
     }
 
+
     #ifdef __WIN32__
     // redirect output to screen (instead of text files)
     freopen("CON", "w", stdout);

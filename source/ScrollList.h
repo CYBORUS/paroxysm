@@ -34,10 +34,15 @@ class ScrollList : public Widget
         void onMouseChange(float inX, float inY);
         virtual void display();
     protected:
-        bool loadTextureString();
+        bool loadTextureString(Surface inSurface, GLuint inTexture);
         //used to provide the creator of this widget
         //information about which item is currently selected
         string* mInfoPointer;
+
+        Surface mHighlight;
+        GLenum mFormat;
+
+        bool mMipmapping;
 
         TextLayer mText;
 
@@ -45,8 +50,11 @@ class ScrollList : public Widget
         float mHeight;
 
         vector<GLuint> mList;
+        vector<Point2D<float>> mListSizes;
         vector<GLuint> mImages;
+        vector<Point2D<float>> mImageSizes;
         GLuint mNoImage; //used to see when a list item doesn't have an image
+        GLuint mDisplayList;
 
         mt19937 mSomeRand;
 

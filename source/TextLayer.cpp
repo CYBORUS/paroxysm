@@ -20,7 +20,18 @@
 TextLayer::TextLayer()
 {
     mFont = NULL;
+    mSurface = NULL;
     mSize = 0;
+
+    if (!TTF_WasInit() && TTF_Init() == -1)
+    {
+        cerr << "TTF_Init: " << TTF_GetError() << endl;
+    }
+
+    mColor.r = 255;
+    mColor.g = 255;
+    mColor.b = 255;
+    mColor.unused = 255;
 }
 
 TextLayer::~TextLayer()
@@ -36,6 +47,12 @@ bool TextLayer::loadFont(const char* inFile, int inSize)
 {
     mSize = inSize;
     mFont = TTF_OpenFont(inFile, inSize);
+
+    if (mFont == NULL)
+    {
+        cerr << "TTF_OpenFont: " << TTF_GetError() << endl;
+        exit(2);
+    }
     return mFont != NULL;
 }
 
@@ -50,7 +67,10 @@ void TextLayer::setColor(char inRed, char inGreen, char inBlue, char inAlpha)
 void TextLayer::setText(const char* inText)
 {
     mText = inText;
-    SDL_FreeSurface(mSurface);
+    if (mSurface != NULL)
+    {
+        SDL_FreeSurface(mSurface);
+    }
     //surface = TTF_RenderText_Solid(mFont, mText.c_str(), mColor);
     mSurface = TTF_RenderText_Blended(mFont, mText.c_str(), mColor);
 }

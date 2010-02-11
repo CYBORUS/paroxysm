@@ -45,10 +45,11 @@ class DisplayEngine
         static bool loadTexture(Surface inSurface, GLuint inTexture);
         static bool loadTexture(const char* inFile, GLuint inTexture);
 
+        static Surface mDisplay;
+
     private:
         static void cleanup();
 
-        static Surface mDisplay;
         static Surface mWindowIcon;
         static SDL_Rect** mModes;
         static unsigned int mNextFrame;
