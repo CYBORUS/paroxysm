@@ -34,6 +34,14 @@ using namespace std;
 #define NEAR_CP 1.0
 #define FAR_CP 10000.0
 
+struct Mask
+{
+    Uint32 red;
+    Uint32 green;
+    Uint32 blue;
+    Uint32 alpha;
+};
+
 class Module;
 
 class DisplayEngine
@@ -55,6 +63,7 @@ class DisplayEngine
         static unsigned int mNextFrame;
         static unsigned int mCurrentFrame;
         static bool mMipmapping;
+        static Mask mMask;
 };
 
 #endif

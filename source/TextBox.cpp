@@ -40,14 +40,10 @@ void TextBox::display()
     glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_LINE_LOOP);
     {
-        glVertex2f(mLocation.x - (mSize.x / 2.0f),
-            mLocation.y - (mSize.y / 2.0f));
-        glVertex2f(mLocation.x + (mSize.x / 2.0f),
-            mLocation.y - (mSize.y / 2.0f));
-        glVertex2f(mLocation.x + (mSize.x / 2.0f),
-            mLocation.y + (mSize.y / 2.0f));
-        glVertex2f(mLocation.x - (mSize.x / 2.0f),
-            mLocation.y + (mSize.y / 2.0f));
+        glVertex2f(mObjectUL.x, mObjectLR.y);
+        glVertex2f(mObjectLR.x, mObjectLR.y);
+        glVertex2f(mObjectLR.x, mObjectUL.y);
+        glVertex2f(mObjectUL.x, mObjectUL.y);
     }
     glEnd();
 
@@ -70,10 +66,29 @@ void TextBox::display()
 
 void TextBox::keyPress(int inChar)
 {
-    mText += inChar;
+    switch (inChar)
+    {
+        case SDLK_BACKSPACE:
+        {
+            int l = mText.length();
+            if (l > 0)
+            {
+                mText = mText.substr(0, l - 1);
+            }
+
+            break;
+        }
+
+        default:
+        {
+            mText += inChar;
+            break;
+        }
+    }
+
     mTextLayer.setText(mText);
 
     Surface s = mTextLayer.getTextImage();
-    mRatio = float(s->w) / float(s->h);
+    mRatio = s == NULL ? 1.0f : float(s->w) / float(s->h);
     DisplayEngine::loadTexture(s, mTextTexture);
 }

@@ -34,6 +34,7 @@ Surface DisplayEngine::mDisplay = NULL;
 Surface DisplayEngine::mWindowIcon = NULL;
 SDL_Rect** DisplayEngine::mModes = NULL;
 bool DisplayEngine::mMipmapping = false;
+Mask DisplayEngine::mMask;
 
 void DisplayEngine::start(Module* inModule)
 {
@@ -158,6 +159,22 @@ void DisplayEngine::initialize()
 
     mMipmapping = Config::get<bool>("mipmapping", false);
 
+    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    {
+        mMask.red   = 0xff000000;
+        mMask.green = 0x00ff0000;
+        mMask.blue  = 0x0000ff00;
+        mMask.alpha = 0x000000ff;
+    }
+    else
+    {
+        mMask.red   = 0x000000ff;
+        mMask.green = 0x0000ff00;
+        mMask.blue  = 0x00ff0000;
+        mMask.alpha = 0xff000000;
+    }
+
+
     Uint32 flags = SDL_OPENGL;
 
     if (Config::get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
@@ -205,7 +222,20 @@ Surface DisplayEngine::loadImage(const char* inFile)
 
 bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
 {
-    if (inSurface == NULL) return false;
+    bool outSuccess = true;
+    if (inSurface == NULL)
+    {
+        Uint32 flags = SDL_SWSURFACE | SDL_ASYNCBLIT;
+        int bits = 0;
+
+        Surface t;
+        t = SDL_CreateRGBSurface(flags, 1, 1, bits, mMask.red, mMask.green,
+            mMask.blue, mMask.alpha);
+        inSurface = SDL_DisplayFormat(t);
+        SDL_FreeSurface(t);
+        outSuccess = false;
+    }
+
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
     if (mMipmapping)
@@ -255,7 +285,8 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 
-    return true;
+    if (!outSuccess) SDL_FreeSurface(inSurface);
+    return outSuccess;
 }
 
 bool DisplayEngine::loadTexture(const char* inFile, GLuint inTexture)
