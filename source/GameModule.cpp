@@ -5,10 +5,14 @@ bool GameModule::onLoad()
     Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
     string something;
     ScrollList* list = new ScrollList(&something, 2.0f, 5.0f, 34);
-    list->setLocation(0.0f, 0.0f);
+    list->setLocation(-5.0f, 3.0f);
     list->setSize(3.0f, 3.0f);
+    list->setFontSize(18);
     list->addListItem("boogey", someImage);
+    //list->setFontSize(24);
     list->addListItem("Cyborus");
+    list->addListItem("Cdaragorn");
+    list->addListItem("TheBuzzSaw");
 
     mHUD.addWidget(list);
 

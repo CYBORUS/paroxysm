@@ -203,62 +203,14 @@ void ScrollList::addListItem(string inText)
     mImageSizes.push_back(size);
 }
 
-
-bool ScrollList::loadTextureString(Surface inSurface, GLuint inTexture)
+void ScrollList::setFontSize(int inSize)
 {
-    if (inSurface == NULL) return false;
-    glBindTexture(GL_TEXTURE_2D, inTexture);
-
-    if (mMipmapping)
+    if (!mText.loadFont("assets/misc/DejaVuSans.ttf", inSize))
     {
-        glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
+        cerr << "failed to load font file." << endl;
     }
-
-    GLint nOfColors = inSurface->format->BytesPerPixel;
-    GLenum tFormat = GL_RGBA;
-    if (nOfColors == 4)
-    {
-        if (inSurface->format->Rmask == 0x000000ff)
-            tFormat = GL_RGBA;
-        else
-            tFormat = GL_BGRA;
-    }
-    else if (nOfColors == 3)
-    {
-        if (inSurface->format->Rmask == 0x000000ff)
-            tFormat = GL_RGB;
-        else
-            tFormat = GL_BGR;
-    }
-    else
-    {
-        cerr << "failed to load texture -- not true color\n";
-        SDL_FreeSurface(inSurface);
-        return false;
-    }
-
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
-        0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
-
-    if (mMipmapping)
-    {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    }
-    else
-    {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    }
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-
-    return true;
-
 }
+
 
 void ScrollList::onMouseChange(float inX, float inY)
 {
@@ -311,7 +263,6 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
 
             if (mImages[i] != mNoImage)
             {
-                //texHeight = (mImageSizes[i].y * inRange * 2) / inDisplay.y;
                 texWidth = (mImageSizes[i].x * inRange * 2) / inDisplay.x;
                 glBindTexture(GL_TEXTURE_2D, mImages[i]);
                 glBegin(GL_QUADS);

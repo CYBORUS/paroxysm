@@ -31,12 +31,13 @@ class ScrollList : public Widget
         void addListItem(string inText, Surface inImage);
         void addListItem(string inText);
 
+        void setFontSize(int inSize);
+
         void onMouseChange(float inX, float inY);
         virtual void display();
 
         void findPixels(const Point2D<int>& inDisplay, float inRange);
     protected:
-        bool loadTextureString(Surface inSurface, GLuint inTexture);
         //used to provide the creator of this widget
         //information about which item is currently selected
         string* mInfoPointer;
