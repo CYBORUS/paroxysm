@@ -19,10 +19,20 @@
 
 TextBox::TextBox()
 {
+    glGenTextures(1, &mTextTexture);
+    mText = "test";
+    mTextLayer.loadFont("assets/misc/DejaVuSans.ttf", 16);
+    mTextLayer.setColor(0, 255, 128, 255);
+    mTextLayer.setText(mText);
+
+    Surface s = mTextLayer.getTextImage();
+    mRatio = float(s->w) / float(s->h);
+    DisplayEngine::loadTexture(s, mTextTexture);
 }
 
 TextBox::~TextBox()
 {
+    glDeleteTextures(1, &mTextTexture);
 }
 
 void TextBox::display()
@@ -40,4 +50,30 @@ void TextBox::display()
             mLocation.y + (mSize.y / 2.0f));
     }
     glEnd();
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, mTextTexture);
+    glBegin(GL_QUADS);
+    {
+        glTexCoord2i(0, 1);
+        glVertex2f(mObjectUL.x, mObjectLR.y);
+        glTexCoord2i(1, 1);
+        glVertex2f(mObjectLR.x, mObjectLR.y);
+        glTexCoord2i(1, 0);
+        glVertex2f(mObjectLR.x, mObjectUL.y);
+        glTexCoord2i(0, 0);
+        glVertex2f(mObjectUL.x, mObjectUL.y);
+    }
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void TextBox::keyPress(int inChar)
+{
+    mText += inChar;
+    mTextLayer.setText(mText);
+
+    Surface s = mTextLayer.getTextImage();
+    mRatio = float(s->w) / float(s->h);
+    DisplayEngine::loadTexture(s, mTextTexture);
 }

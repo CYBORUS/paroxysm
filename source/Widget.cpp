@@ -37,12 +37,14 @@ void Widget::setLocation(float inX, float inY)
 {
     mLocation.x = inX;
     mLocation.y = inY;
+    findObject();
 }
 
 void Widget::setSize(float inX, float inY)
 {
     mSize.x = inX;
     mSize.y = inY;
+    findObject();
 }
 
 /**************************************************
@@ -58,6 +60,7 @@ void Widget::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
 {
     mLocation = inLocation;
     mSize = inSize;
+    findObject();
 }
 
 void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
@@ -72,6 +75,15 @@ void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
     mPixelUL.y = center.y - int((mLocation.y + (mSize.y / 2.0f)) * ratio);
     mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
     mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
+}
+
+void Widget::findObject()
+{
+    mObjectUL.x = mLocation.x - (mSize.x / 2.0f);
+    mObjectUL.y = mLocation.y + (mSize.y / 2.0f);
+
+    mObjectLR.x = mLocation.x + (mSize.x / 2.0f);
+    mObjectLR.y = mLocation.y - (mSize.y / 2.0f);
 }
 
 void Widget::setVisible(bool inVisible)

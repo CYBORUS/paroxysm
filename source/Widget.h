@@ -38,6 +38,7 @@ class Widget
         void set(const Point2D<float>& inLocation,
             const Point2D<float>& inSize);
         virtual void findPixels(const Point2D<int>& inDisplay, float inRange);
+        virtual void findObject();
         bool isOver(int inX, int inY);
         bool isVisible();
         virtual void setVisible(bool inVisible);
@@ -56,6 +57,8 @@ class Widget
 
         Point2D<float> mLocation;
         Point2D<float> mSize;
+        Point2D<float> mObjectUL;
+        Point2D<float> mObjectLR;
         Point2D<int> mPixelUL;
         Point2D<int> mPixelLR;
 };

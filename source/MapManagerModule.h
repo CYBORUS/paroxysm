@@ -18,10 +18,10 @@
 #ifndef MAPMANAGERMODULE_H
 #define MAPMANAGERMODULE_H
 
+#include "TextBox.h"
 #include "Module.h"
 #include "HUD.h"
 #include "Button.h"
-#include "TextBox.h"
 
 /// button IDs
 #define MMM_NUM_BUTTONS 1
@@ -34,6 +34,8 @@ class MapManagerModule : public Module
         virtual void onInit();
         virtual void onLoop();
         virtual void onCleanup();
+
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
     private:
         HUD mHUD;

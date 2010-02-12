@@ -70,6 +70,19 @@ void TextLayer::setColor(char inRed, char inGreen, char inBlue, char inAlpha)
 void TextLayer::setText(const char* inText)
 {
     mText = inText;
+
+    if (mSurface != NULL)
+    {
+        SDL_FreeSurface(mSurface);
+    }
+    //surface = TTF_RenderText_Solid(mFont, mText.c_str(), mColor);
+    mSurface = TTF_RenderText_Blended(mFont, mText.c_str(), mColor);
+}
+
+void TextLayer::setText(const string& inString)
+{
+    mText = inString;
+
     if (mSurface != NULL)
     {
         SDL_FreeSurface(mSurface);
@@ -81,9 +94,4 @@ void TextLayer::setText(const char* inText)
 string TextLayer::getText()
 {
    return mText;
-}
-
-Surface TextLayer::getTextImage()
-{
-   return mSurface;
 }

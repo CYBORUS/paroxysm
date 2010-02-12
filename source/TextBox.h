@@ -19,11 +19,14 @@
 #define TEXTBOX_H
 
 #include "Widget.h"
+#include "TextLayer.h"
 
 #include <SDL_opengl.h>
 
 #include <string>
 using namespace std;
+
+#define TEXT_OFFSET 0.1f
 
 class TextBox : public Widget
 {
@@ -32,9 +35,13 @@ class TextBox : public Widget
         virtual ~TextBox();
 
         virtual void display();
+        void keyPress(int inChar);
 
     private:
         string mText;
+        TextLayer mTextLayer;
+        GLuint mTextTexture;
+        float mRatio;
 };
 
 #endif

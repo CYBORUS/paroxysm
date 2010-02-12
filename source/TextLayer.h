@@ -35,6 +35,7 @@ class TextLayer
         bool loadFont(const char* inFile, int inSize);
         void setColor(char inRed, char inGreen, char inBlue, char inAlpha);
         void setText(const char* inText);
+        void setText(const string& inString);
         string getText();
         Surface getTextImage();
 
@@ -46,5 +47,10 @@ class TextLayer
 
         Surface mSurface;
 };
+
+inline Surface TextLayer::getTextImage()
+{
+   return mSurface;
+}
 
 #endif

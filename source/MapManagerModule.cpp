@@ -30,7 +30,7 @@ bool MapManagerModule::onLoad()
     mHUD.setDisplay(mDisplay);
 
     mTextBox = new TextBox;
-    mTextBox->setSize(1.0f, 1.0f);
+    mTextBox->setSize(8.0f, 1.0f);
 
     mHUD.addWidget(mTextBox);
 
@@ -50,4 +50,16 @@ void MapManagerModule::onLoop()
 
 void MapManagerModule::onCleanup()
 {
+}
+
+void MapManagerModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch(inSym)
+    {
+        default:
+        {
+            mTextBox->keyPress(inSym);
+            break;
+        }
+    }
 }

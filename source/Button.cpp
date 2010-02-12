@@ -52,17 +52,13 @@ void Button::display()
     glBegin(GL_QUADS);
     {
         glTexCoord2i(0, 1);
-        glVertex2f(mLocation.x - (mSize.x / 2.0f),
-            mLocation.y - (mSize.y / 2.0f));
+        glVertex2f(mObjectUL.x, mObjectLR.y);
         glTexCoord2i(1, 1);
-        glVertex2f(mLocation.x + (mSize.x / 2.0f),
-            mLocation.y - (mSize.y / 2.0f));
+        glVertex2f(mObjectLR.x, mObjectLR.y);
         glTexCoord2i(1, 0);
-        glVertex2f(mLocation.x + (mSize.x / 2.0f),
-            mLocation.y + (mSize.y / 2.0f));
+        glVertex2f(mObjectLR.x, mObjectUL.y);
         glTexCoord2i(0, 0);
-        glVertex2f(mLocation.x - (mSize.x / 2.0f),
-            mLocation.y + (mSize.y / 2.0f));
+        glVertex2f(mObjectUL.x, mObjectUL.y);
     }
     glEnd();
     glDisable(GL_TEXTURE_2D);
