@@ -299,39 +299,51 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
         glEnable(GL_TEXTURE_2D);
         for (unsigned int i = 0; i < mList.size(); ++i)
         {
+            float nextX = startX;
+
+            //we want the height for the image and the text to be the same
             float texHeight = (mListSizes[i].y * inRange * 2) / inDisplay.y;
-            float texWidth = (mListSizes[i].x * inRange * 2) / inDisplay.x;
+
+            //the widths should be different
+            float texWidth;
+
             nextTex = ((mListSizes[i].y + 1) * inRange * 2) / inDisplay.y;
+
+            if (mImages[i] != mNoImage)
+            {
+                //texHeight = (mImageSizes[i].y * inRange * 2) / inDisplay.y;
+                texWidth = (mImageSizes[i].x * inRange * 2) / inDisplay.x;
+                glBindTexture(GL_TEXTURE_2D, mImages[i]);
+                glBegin(GL_QUADS);
+                {
+                    glTexCoord2i(0, 1);
+                    glVertex2f(nextX, startY);
+                    glTexCoord2i(1, 1);
+                    glVertex2f(nextX + texWidth, startY);
+                    glTexCoord2i(1, 0);
+                    glVertex2f(nextX + texWidth, startY + texHeight);
+                    glTexCoord2i(0, 0);
+                    glVertex2f(nextX, startY + texHeight);
+
+                }
+                glEnd();
+
+                nextX += texWidth;
+            }
+
+            texWidth = (mListSizes[i].x * inRange * 2) / inDisplay.x;
 
             glBindTexture(GL_TEXTURE_2D, mList[i]);
             glBegin(GL_QUADS);
             {
-                /*
                 glTexCoord2i(0, 1);
-                glVertex2f(mLocation.x - (mSize.x / 2.0f),
-                    mLocation.y - (mSize.y / 2.0f));
+                glVertex2f(nextX, startY);
                 glTexCoord2i(1, 1);
-                glVertex2f(mLocation.x + (mSize.x / 2.0f),
-                    mLocation.y - (mSize.y / 2.0f));
+                glVertex2f(nextX + texWidth, startY);
                 glTexCoord2i(1, 0);
-                glVertex2f(mLocation.x + (mSize.x / 2.0f),
-                    mLocation.y + (mSize.y / 2.0f));
+                glVertex2f(nextX + texWidth, startY + texHeight);
                 glTexCoord2i(0, 0);
-                glVertex2f(mLocation.x - (mSize.x / 2.0f),
-                    mLocation.y + (mSize.y / 2.0f));
-*/
-                glTexCoord2i(0, 1);
-                glVertex2f(startX,
-                    startY);
-                glTexCoord2i(1, 1);
-                glVertex2f(startX + texWidth,
-                    startY);
-                glTexCoord2i(1, 0);
-                glVertex2f(startX + texWidth,
-                    startY + texHeight);
-                glTexCoord2i(0, 0);
-                glVertex2f(startX,
-                    startY + texHeight);
+                glVertex2f(nextX, startY + texHeight);
 
             }
             glEnd();

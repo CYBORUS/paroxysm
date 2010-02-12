@@ -2,7 +2,7 @@
 
 bool GameModule::onLoad()
 {
-    Surface someImage = NULL;
+    Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
     string something;
     ScrollList* list = new ScrollList(&something, 2.0f, 5.0f, 34);
     list->setLocation(0.0f, 0.0f);
