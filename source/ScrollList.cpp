@@ -39,7 +39,7 @@ ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int
         cerr << "failed to load texture -- not true color\n";
     }
 */
-    cerr << "numLists: " << glGenLists(1) << endl;
+    mDisplayList = glGenLists(1);
 
 }
 
@@ -283,6 +283,11 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
 
     float startX = mLocation.x - (mSize.x / 2.0f);
     float startY = mLocation.y - (mSize.y / 2.0f);
+
+    if (glIsList(mDisplayList))
+    {
+        glDeleteLists(1, mDisplayList);
+    }
 
     glNewList(mDisplayList, GL_COMPILE);
     {
