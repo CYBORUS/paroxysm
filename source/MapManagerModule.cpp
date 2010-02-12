@@ -15,36 +15,22 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEXTLAYER_H
-#define	_TEXTLAYER_H
+#include "MapManagerModule.h"
 
-#include "DisplayEngine.h"
-
-#include <SDL_ttf.h>
-
-#include <string>
-#include <iostream>
-using namespace std;
-
-class TextLayer
+bool MapManagerModule::onLoad()
 {
-    public:
-        TextLayer();
-        virtual ~TextLayer();
+    return true;
+}
 
-        bool loadFont(const char* inFile, int inSize);
-        void setColor(char inRed, char inGreen, char inBlue, char inAlpha);
-        void setText(const char* inText);
-        string getText();
-        Surface getTextImage();
+void MapManagerModule::onInit()
+{
+    mRunning = true;
+}
 
-    protected:
-        SDL_Color mColor;
-        TTF_Font* mFont;
-        int mSize;
-        std::string mText;
+void MapManagerModule::onLoop()
+{
+}
 
-        Surface mSurface;
-};
-
-#endif
+void MapManagerModule::onCleanup()
+{
+}

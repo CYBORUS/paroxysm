@@ -15,36 +15,24 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEXTLAYER_H
-#define	_TEXTLAYER_H
+#ifndef TEXTBOX_H
+#define TEXTBOX_H
 
-#include "DisplayEngine.h"
-
-#include <SDL_ttf.h>
+#include "Widget.h"
 
 #include <string>
-#include <iostream>
 using namespace std;
 
-class TextLayer
+class TextBox : public Widget
 {
     public:
-        TextLayer();
-        virtual ~TextLayer();
+        TextBox();
+        virtual ~TextBox();
 
-        bool loadFont(const char* inFile, int inSize);
-        void setColor(char inRed, char inGreen, char inBlue, char inAlpha);
-        void setText(const char* inText);
-        string getText();
-        Surface getTextImage();
+        virtual void display();
 
-    protected:
-        SDL_Color mColor;
-        TTF_Font* mFont;
-        int mSize;
-        std::string mText;
-
-        Surface mSurface;
+    private:
+        string mText;
 };
 
 #endif

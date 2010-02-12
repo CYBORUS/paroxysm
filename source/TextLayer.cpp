@@ -41,6 +41,8 @@ TextLayer::~TextLayer()
         TTF_CloseFont(mFont);
         mFont = NULL;
     }
+
+    SDL_FreeSurface(mSurface);
 }
 
 bool TextLayer::loadFont(const char* inFile, int inSize)
@@ -53,6 +55,7 @@ bool TextLayer::loadFont(const char* inFile, int inSize)
         cerr << "TTF_OpenFont: " << TTF_GetError() << endl;
         exit(2);
     }
+
     return mFont != NULL;
 }
 
@@ -80,7 +83,7 @@ string TextLayer::getText()
    return mText;
 }
 
-SDL_Surface* TextLayer::getTextImage()
+Surface TextLayer::getTextImage()
 {
    return mSurface;
 }

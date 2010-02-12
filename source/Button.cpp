@@ -46,6 +46,7 @@ Button::~Button()
 
 void Button::display()
 {
+    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mTextures[mEnabled ? mMouseState : 3]);
     glBegin(GL_QUADS);
     {
@@ -63,6 +64,7 @@ void Button::display()
             mLocation.y + (mSize.y / 2.0f));
     }
     glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 void Button::assemble(string& inString, const char* inAdd)

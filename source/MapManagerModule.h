@@ -15,36 +15,28 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEXTLAYER_H
-#define	_TEXTLAYER_H
+#ifndef MAPMANAGERMODULE_H
+#define MAPMANAGERMODULE_H
 
-#include "DisplayEngine.h"
+#include "Module.h"
+#include "HUD.h"
+#include "Button.h"
 
-#include <SDL_ttf.h>
+/// button IDs
+#define MMM_NUM_BUTTONS 1
+#define B_SAVE 0
 
-#include <string>
-#include <iostream>
-using namespace std;
-
-class TextLayer
+class MapManagerModule : public Module
 {
     public:
-        TextLayer();
-        virtual ~TextLayer();
+        virtual bool onLoad();
+        virtual void onInit();
+        virtual void onLoop();
+        virtual void onCleanup();
 
-        bool loadFont(const char* inFile, int inSize);
-        void setColor(char inRed, char inGreen, char inBlue, char inAlpha);
-        void setText(const char* inText);
-        string getText();
-        Surface getTextImage();
-
-    protected:
-        SDL_Color mColor;
-        TTF_Font* mFont;
-        int mSize;
-        std::string mText;
-
-        Surface mSurface;
+    private:
+        HUD mHUD;
+        Button* mButtons[MMM_NUM_BUTTONS];
 };
 
 #endif
