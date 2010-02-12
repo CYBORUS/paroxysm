@@ -8,6 +8,7 @@ bool GameModule::onLoad()
     list->setLocation(0.0f, 0.0f);
     list->setSize(3.0f, 3.0f);
     list->addListItem("boogey", someImage);
+    list->addListItem("Cyborus");
 
     mHUD.addWidget(list);
 

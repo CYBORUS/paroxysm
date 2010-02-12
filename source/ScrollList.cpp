@@ -7,7 +7,7 @@ ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int
     mWidth = inWidth;
     mHeight = (int)(inHeight / LINE_HEIGHT) * LINE_HEIGHT;
 
-    if (!mText.loadFont("assets/misc/DejaVuSans.ttf", 12))
+    if (!mText.loadFont("assets/misc/DejaVuSans.ttf", 24))
     {
         cerr << "failed to load font file." << endl;
     }
@@ -90,6 +90,11 @@ void ScrollList::display()
 ************************************/
 void ScrollList::addListItem(string inText, Surface inImage)
 {
+    if (inImage == NULL)
+    {
+        addListItem(inText);
+        return;
+    }
     GLuint texture;
 
     glGenTextures(1, &texture);
@@ -100,49 +105,28 @@ void ScrollList::addListItem(string inText, Surface inImage)
         exit(2);
     }
 
+    Point2D<float> size;
+
+    size.x = mText.getTextImage()->w;
+    size.y = mText.getTextImage()->h;
+
     mList.push_back(texture);
-    mImages.push_back(texture);
+    mListSizes.push_back(size);
 
-    glNewList(mDisplayList, GL_COMPILE);
+    size.x = inImage->w;
+    size.y = inImage->h;
+
+    glGenTextures(1, &texture);
+
+    if (!DisplayEngine::loadTexture(inImage, texture))
     {
-        glEnable(GL_TEXTURE_2D);
-        for (int i = 0; i < mList.size(); ++i)
-        {
-            glBindTexture(GL_TEXTURE_2D, mList[i]);
-            glBegin(GL_QUADS);
-            {
-                glTexCoord2i(0, 1);
-                glVertex2f(mLocation.x - (mSize.x / 2.0f),
-                    mLocation.y - (mSize.y / 2.0f));
-                glTexCoord2i(1, 1);
-                glVertex2f(mLocation.x + (mSize.x / 2.0f),
-                    mLocation.y - (mSize.y / 2.0f));
-                glTexCoord2i(1, 0);
-                glVertex2f(mLocation.x + (mSize.x / 2.0f),
-                    mLocation.y + (mSize.y / 2.0f));
-                glTexCoord2i(0, 0);
-                glVertex2f(mLocation.x - (mSize.x / 2.0f),
-                    mLocation.y + (mSize.y / 2.0f));
-            }
-            glEnd();
-        }
-
-        glDisable(GL_TEXTURE_2D);
-
-        glColor3f(1.0f, 1.0f, 1.0f);
-        glBegin(GL_LINE_STRIP);
-        {
-            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
-            glVertex2f(mLocation.x + (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
-            glVertex2f(mLocation.x + (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
-            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
-            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
-        }
-        glEnd();
-
-
+        cerr << "failed to load texture." << endl;
+        exit(2);
     }
-    glEndList();
+
+    mImages.push_back(texture);
+    mImageSizes.push_back(size);
+
 
 
 
@@ -197,8 +181,26 @@ void ScrollList::addListItem(string inText)
     GLuint texture;
 
     glGenTextures(1, &texture);
+    mText.setText(inText.c_str());
+    if (!DisplayEngine::loadTexture(mText.getTextImage(), texture))
+    {
+        cerr << "failed to load texture." << endl;
+        exit(2);
+    }
+
+    Point2D<float> size;
+
+    size.x = mText.getTextImage()->w;
+    size.y = mText.getTextImage()->h;
+
     mList.push_back(texture);
+    mListSizes.push_back(size);
+
+    size.x = 0;
+    size.y = 0;
+
     mImages.push_back(mNoImage);
+    mImageSizes.push_back(size);
 }
 
 
@@ -260,4 +262,87 @@ bool ScrollList::loadTextureString(Surface inSurface, GLuint inTexture)
 
 void ScrollList::onMouseChange(float inX, float inY)
 {
+}
+
+/*****************************************
+*   overloaded to calculate all the internal
+*   items in the list
+*******************************************/
+void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
+{
+    Point2D<int> center;
+    center.x = inDisplay.x / 2;
+    center.y = inDisplay.y / 2;
+
+    float ratio = float(center.y) / inRange;
+
+    mPixelUL.x = center.x + int((mLocation.x - (mSize.x / 2.0f)) * ratio);
+    mPixelUL.y = center.y - int((mLocation.y + (mSize.y / 2.0f)) * ratio);
+    mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
+    mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
+
+    float startX = mLocation.x - (mSize.x / 2.0f);
+    float startY = mLocation.y - (mSize.y / 2.0f);
+
+    glNewList(mDisplayList, GL_COMPILE);
+    {
+        glEnable(GL_TEXTURE_2D);
+        for (unsigned int i = 0; i < mList.size(); ++i)
+        {
+            float texHeight = (mListSizes[i].y * inRange * 2) / inDisplay.y;
+            float texWidth = (mListSizes[i].x * inRange * 2) / inDisplay.x;
+            float nextTex = ((mListSizes[i].y + 1) * inRange * 2) / inDisplay.y;
+
+            glBindTexture(GL_TEXTURE_2D, mList[i]);
+            glBegin(GL_QUADS);
+            {
+                /*
+                glTexCoord2i(0, 1);
+                glVertex2f(mLocation.x - (mSize.x / 2.0f),
+                    mLocation.y - (mSize.y / 2.0f));
+                glTexCoord2i(1, 1);
+                glVertex2f(mLocation.x + (mSize.x / 2.0f),
+                    mLocation.y - (mSize.y / 2.0f));
+                glTexCoord2i(1, 0);
+                glVertex2f(mLocation.x + (mSize.x / 2.0f),
+                    mLocation.y + (mSize.y / 2.0f));
+                glTexCoord2i(0, 0);
+                glVertex2f(mLocation.x - (mSize.x / 2.0f),
+                    mLocation.y + (mSize.y / 2.0f));
+*/
+                glTexCoord2i(0, 1);
+                glVertex2f(startX,
+                    startY);
+                glTexCoord2i(1, 1);
+                glVertex2f(startX + texWidth,
+                    startY);
+                glTexCoord2i(1, 0);
+                glVertex2f(startX + texWidth,
+                    startY + texHeight);
+                glTexCoord2i(0, 0);
+                glVertex2f(startX,
+                    startY + texHeight);
+
+            }
+            glEnd();
+            startY += nextTex;
+        }
+
+        glDisable(GL_TEXTURE_2D);
+
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glBegin(GL_LINE_STRIP);
+        {
+            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
+            glVertex2f(mLocation.x + (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
+            glVertex2f(mLocation.x + (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
+            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
+            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
+        }
+        glEnd();
+
+
+    }
+    glEndList();
+
 }

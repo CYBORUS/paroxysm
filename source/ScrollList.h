@@ -33,6 +33,8 @@ class ScrollList : public Widget
 
         void onMouseChange(float inX, float inY);
         virtual void display();
+
+        void findPixels(const Point2D<int>& inDisplay, float inRange);
     protected:
         bool loadTextureString(Surface inSurface, GLuint inTexture);
         //used to provide the creator of this widget
