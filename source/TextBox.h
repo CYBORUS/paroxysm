@@ -20,6 +20,8 @@
 
 #include "Widget.h"
 
+#include <SDL_opengl.h>
+
 #include <string>
 using namespace std;
 

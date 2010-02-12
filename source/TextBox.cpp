@@ -27,5 +27,17 @@ TextBox::~TextBox()
 
 void TextBox::display()
 {
-
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_LINE_LOOP);
+    {
+        glVertex2f(mLocation.x - (mSize.x / 2.0f),
+            mLocation.y - (mSize.y / 2.0f));
+        glVertex2f(mLocation.x + (mSize.x / 2.0f),
+            mLocation.y - (mSize.y / 2.0f));
+        glVertex2f(mLocation.x + (mSize.x / 2.0f),
+            mLocation.y + (mSize.y / 2.0f));
+        glVertex2f(mLocation.x - (mSize.x / 2.0f),
+            mLocation.y + (mSize.y / 2.0f));
+    }
+    glEnd();
 }

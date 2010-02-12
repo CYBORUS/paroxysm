@@ -85,6 +85,9 @@ class MapEditorModule : public Module
         virtual void onFrame();
         virtual void onCleanup();
 
+        virtual bool isDead();
+        virtual Module* next();
+
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onLButtonDown(int inX, int inY);
         virtual void onLButtonUp(int inX, int inY);
@@ -103,6 +106,9 @@ class MapEditorModule : public Module
         void switchModes();
 
         Vector3D<float> selectVertex(int inX, int inY);
+
+        Module* mNextModule;
+        bool mDead;
 
         Point2D<int> mTerrainSize;
         TerrainGrid mTerrainGrid;

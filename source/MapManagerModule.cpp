@@ -19,6 +19,21 @@
 
 bool MapManagerModule::onLoad()
 {
+    Point2D<int> mDisplay;
+    Point2D<int> mCenter;
+
+    mDisplay.x = SDL_GetVideoSurface()->w;
+    mCenter.x = mDisplay.x / 2;
+    mDisplay.y = SDL_GetVideoSurface()->h;
+    mCenter.y = mDisplay.y / 2;
+
+    mHUD.setDisplay(mDisplay);
+
+    mTextBox = new TextBox;
+    mTextBox->setSize(1.0f, 1.0f);
+
+    mHUD.addWidget(mTextBox);
+
     return true;
 }
 
@@ -29,6 +44,8 @@ void MapManagerModule::onInit()
 
 void MapManagerModule::onLoop()
 {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    mHUD.display();
 }
 
 void MapManagerModule::onCleanup()

@@ -48,6 +48,7 @@ void Button::display()
 {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mTextures[mEnabled ? mMouseState : 3]);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_QUADS);
     {
         glTexCoord2i(0, 1);

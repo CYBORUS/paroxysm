@@ -21,6 +21,7 @@
 #include "Module.h"
 #include "HUD.h"
 #include "Button.h"
+#include "TextBox.h"
 
 /// button IDs
 #define MMM_NUM_BUTTONS 1
@@ -37,6 +38,7 @@ class MapManagerModule : public Module
     private:
         HUD mHUD;
         Button* mButtons[MMM_NUM_BUTTONS];
+        TextBox* mTextBox;
 };
 
 #endif

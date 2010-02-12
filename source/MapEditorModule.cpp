@@ -16,6 +16,7 @@
  */
 
 #include "MapEditorModule.h"
+#include "MapManagerModule.h"
 #include "DisplayEngine.h"
 #include "Config.h"
 #include "EditVertexAction.h"
@@ -90,6 +91,8 @@ bool MapEditorModule::onLoad()
 void MapEditorModule::onInit()
 {
     mRunning = true;
+    mDead = true;
+    mNextModule = NULL;
 
     SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
 
@@ -280,6 +283,18 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_s:
         {
             SoundEngine::stopBackgroundMusic();
+            break;
+        }
+
+        case SDLK_m:
+        {
+            if (mMouseMode == MM_DEFAULT)
+            {
+                mNextModule = new MapManagerModule;
+                mDead = false;
+                mRunning = false;
+            }
+
             break;
         }
 
@@ -644,4 +659,14 @@ void MapEditorModule::switchModes()
             break;
         }
     }
+}
+
+bool MapEditorModule::isDead()
+{
+    return mDead;
+}
+
+Module* MapEditorModule::next()
+{
+    return mNextModule;
 }
