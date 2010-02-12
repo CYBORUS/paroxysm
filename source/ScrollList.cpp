@@ -282,7 +282,7 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
     mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
 
     float startX = mLocation.x - (mSize.x / 2.0f);
-    float startY = mLocation.y - (mSize.y / 2.0f);
+    float startY = mLocation.y + (mSize.y / 2.0f);
 
     if (glIsList(mDisplayList))
     {
@@ -291,12 +291,17 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
 
     glNewList(mDisplayList, GL_COMPILE);
     {
+        //we need to adjust the first listItem to put it back into
+        //the box
+        float nextTex = ((mListSizes[0].y + 1) * inRange * 2) / inDisplay.y;
+        startY -= nextTex;
+
         glEnable(GL_TEXTURE_2D);
         for (unsigned int i = 0; i < mList.size(); ++i)
         {
             float texHeight = (mListSizes[i].y * inRange * 2) / inDisplay.y;
             float texWidth = (mListSizes[i].x * inRange * 2) / inDisplay.x;
-            float nextTex = ((mListSizes[i].y + 1) * inRange * 2) / inDisplay.y;
+            nextTex = ((mListSizes[i].y + 1) * inRange * 2) / inDisplay.y;
 
             glBindTexture(GL_TEXTURE_2D, mList[i]);
             glBegin(GL_QUADS);
@@ -330,7 +335,7 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
 
             }
             glEnd();
-            startY += nextTex;
+            startY -= nextTex;
         }
 
         glDisable(GL_TEXTURE_2D);
