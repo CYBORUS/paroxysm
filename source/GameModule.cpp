@@ -7,12 +7,13 @@ bool GameModule::onLoad()
     ScrollList* list = new ScrollList(&something, 2.0f, 5.0f, 34);
     list->setLocation(-5.0f, 3.0f);
     list->setSize(3.0f, 3.0f);
-    list->setFontSize(18);
+    list->setFontSize(20);
     list->addListItem("boogey", someImage);
     //list->setFontSize(24);
     list->addListItem("Cyborus");
     list->addListItem("Cdaragorn");
     list->addListItem("TheBuzzSaw");
+    list->addListItem("They RULE ALL!!!");
 
     mHUD.addWidget(list);
 
@@ -74,3 +75,38 @@ Module* GameModule::next()
 {
     return mNextModule;
 }
+
+
+void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
+    bool inLeft, bool inRight, bool inMiddle)
+{
+    mHUD.setStates(inX, inY, inLeft);
+}
+
+void GameModule::onMouseWheel(bool inUp, bool inDown)
+{
+}
+
+void GameModule::onLButtonDown(int inX, int inY)
+{
+    mHUD.setStates(inX, inY, true);
+}
+
+
+void GameModule::onLButtonUp(int inX, int inY)
+{
+    mHUD.setStates(inX, inY, false);
+}
+
+
+void GameModule::onRButtonDown(int inX, int inY)
+{
+}
+
+
+void GameModule::onRButtonUp(int inX, int inY)
+{
+}
+
+
+

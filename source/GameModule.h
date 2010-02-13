@@ -27,6 +27,13 @@ class GameModule : public Module
         void onCleanup();
         Module* next();
 
+        void onMouseMove(int inX, int inY, int inRelX, int inRelY,
+            bool inLeft, bool inRight, bool inMiddle);
+        void onMouseWheel(bool inUp, bool inDown);
+        void onLButtonDown(int inX, int inY);
+        void onLButtonUp(int inX, int inY);
+        void onRButtonDown(int inX, int inY);
+        void onRButtonUp(int inX, int inY);
 
     protected:
         Module* mNextModule;

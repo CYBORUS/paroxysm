@@ -99,7 +99,11 @@ int HUD::setStates(int inX, int inY, bool inPress)
         MouseState state = (mWidgets[i]->isOver(inX, inY)
             && mWidgets[i]->isVisible()) ? hover : OUTSIDE;
         mWidgets[i]->setState(state);
-        mWidgets[i]->onMouseChange(inX, inY);
+
+        if (state != OUTSIDE)
+        {
+            mWidgets[i]->onMouseChange(inX, inY);
+        }
         if (state != HUD_OUT) outHit = mWidgets[i]->getID();
     }
 

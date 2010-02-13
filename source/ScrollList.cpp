@@ -60,6 +60,7 @@ void ScrollList::display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
+
     if (glIsList(mDisplayList))
     {
         glCallList(mDisplayList);
@@ -83,6 +84,7 @@ void ScrollList::display()
         something = false;
 
     }
+
 }
 
 /***********************************
@@ -212,8 +214,18 @@ void ScrollList::setFontSize(int inSize)
 }
 
 
-void ScrollList::onMouseChange(float inX, float inY)
+void ScrollList::onMouseChange(int inX, int inY)
 {
+    switch(mMouseState)
+    {
+        case PRESS:
+        {
+            break;
+        }
+        default:
+        {
+        }
+    }
 }
 
 /*****************************************
@@ -222,6 +234,8 @@ void ScrollList::onMouseChange(float inX, float inY)
 *******************************************/
 void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
 {
+    mDisplay = inDisplay;
+
     Point2D<int> center;
     center.x = inDisplay.x / 2;
     center.y = inDisplay.y / 2;
@@ -232,6 +246,17 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
     mPixelUL.y = center.y - int((mLocation.y + (mSize.y / 2.0f)) * ratio);
     mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
     mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
+
+    Point2D<int> LLCorner;
+    Point2D<GLsizei> ScissorSize;
+
+    LLCorner.x = mPixelUL.x;
+    LLCorner.y = mDisplay.y - mPixelLR.y;
+
+    ScissorSize.x = mPixelLR.x - mPixelUL.x;
+    ScissorSize.y = mPixelLR.y - mPixelUL.y;
+
+    glScissor(LLCorner.x, LLCorner.y, ScissorSize.x, ScissorSize.y);
 
     float startX = mLocation.x - (mSize.x / 2.0f);
     float startY = mLocation.y + (mSize.y / 2.0f);
@@ -248,6 +273,8 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
         float nextTex = ((mListSizes[0].y + 1) * inRange * 2) / inDisplay.y;
         startY -= nextTex;
 
+        glEnable(GL_SCISSOR_TEST);
+
         glEnable(GL_TEXTURE_2D);
         for (unsigned int i = 0; i < mList.size(); ++i)
         {
@@ -259,7 +286,7 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
             //the widths should be different
             float texWidth;
 
-            nextTex = ((mListSizes[i].y + 1) * inRange * 2) / inDisplay.y;
+            nextTex = ((mListSizes[(i + 1) % mList.size()].y + 1) * inRange * 2) / inDisplay.y;
 
             if (mImages[i] != mNoImage)
             {
@@ -302,6 +329,8 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
         }
 
         glDisable(GL_TEXTURE_2D);
+
+        glDisable(GL_SCISSOR_TEST);
 
         glColor3f(1.0f, 1.0f, 1.0f);
         glBegin(GL_LINE_STRIP);

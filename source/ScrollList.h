@@ -33,7 +33,7 @@ class ScrollList : public Widget
 
         void setFontSize(int inSize);
 
-        void onMouseChange(float inX, float inY);
+        void onMouseChange(int inX, int inY);
         virtual void display();
 
         void findPixels(const Point2D<int>& inDisplay, float inRange);
