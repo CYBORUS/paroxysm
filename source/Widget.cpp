@@ -65,6 +65,8 @@ void Widget::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
 
 void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
 {
+    mDisplay = inDisplay;
+
     Point2D<int> center;
     center.x = inDisplay.x / 2;
     center.y = inDisplay.y / 2;

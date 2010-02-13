@@ -61,6 +61,7 @@ class Widget
         Point2D<float> mObjectLR;
         Point2D<int> mPixelUL;
         Point2D<int> mPixelLR;
+        Point2D<int> mDisplay;
 };
 
 inline bool Widget::isOver(int inX, int inY)

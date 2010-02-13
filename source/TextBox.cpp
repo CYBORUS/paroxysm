@@ -54,9 +54,9 @@ void TextBox::display()
         glTexCoord2i(0, 1);
         glVertex2f(mObjectUL.x, mObjectLR.y);
         glTexCoord2i(1, 1);
-        glVertex2f(mObjectLR.x, mObjectLR.y);
+        glVertex2f(mObjectUL.x + mSize.y * mRatio, mObjectLR.y);
         glTexCoord2i(1, 0);
-        glVertex2f(mObjectLR.x, mObjectUL.y);
+        glVertex2f(mObjectUL.x + mSize.y * mRatio, mObjectUL.y);
         glTexCoord2i(0, 0);
         glVertex2f(mObjectUL.x, mObjectUL.y);
     }
