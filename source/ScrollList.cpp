@@ -397,7 +397,7 @@ void ScrollList::setSelection()
 
     for (int i = 0; i < mSelectedItem; ++i)
     {
-        texHeight = (mListSizes[i].y * mRange * 2) / mDisplay.y;
+        texHeight = ((mListSizes[i].y + 1) * mRange * 2) / mDisplay.y;
         startY -= texHeight;
     }
     texHeight = (mListSizes[mSelectedItem].y * mRange * 2) / mDisplay.y;
