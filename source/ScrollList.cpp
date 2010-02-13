@@ -39,7 +39,8 @@ ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int
         cerr << "failed to load texture -- not true color\n";
     }
 */
-    mDisplayList = glGenLists(1);
+    mScrollList = glGenLists(2);
+    mSelectionBox = mScrollList + 1;
 
 }
 
@@ -61,9 +62,10 @@ void ScrollList::display()
     glClear(GL_COLOR_BUFFER_BIT);
 
 
-    if (glIsList(mDisplayList))
+    if (glIsList(mScrollList))
     {
-        glCallList(mDisplayList);
+        glCallList(mSelectionBox);
+        glCallList(mScrollList);
     }
     else
     {
@@ -129,7 +131,7 @@ void ScrollList::addListItem(string inText, Surface inImage)
     mImages.push_back(texture);
     mImageSizes.push_back(size);
 
-
+    mListText.push_back(inText);
 
 
 /*
@@ -203,6 +205,8 @@ void ScrollList::addListItem(string inText)
 
     mImages.push_back(mNoImage);
     mImageSizes.push_back(size);
+
+    mListText.push_back(inText);
 }
 
 void ScrollList::setFontSize(int inSize)
@@ -220,6 +224,28 @@ void ScrollList::onMouseChange(int inX, int inY)
     {
         case PRESS:
         {
+            int startY = mPixelUL.y;
+            bool found = false;
+
+            for (int i = 0; startY < mPixelLR.y && !found; ++i)
+            {
+                if (startY + mListSizes[i].y >= inY)
+                {
+                    found = true;
+                    mSelectedItem = i;
+                    mSelectedItemStartY = startY;
+                }
+                else
+                {
+                    startY += (int)mListSizes[i].y;
+                }
+            }
+
+            if (found)
+            {
+                *mInfoPointer = mListText[mSelectedItem];
+                setSelection();
+            }
             break;
         }
         default:
@@ -235,6 +261,7 @@ void ScrollList::onMouseChange(int inX, int inY)
 void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
 {
     mDisplay = inDisplay;
+    mRange = inRange;
 
     Point2D<int> center;
     center.x = inDisplay.x / 2;
@@ -258,22 +285,31 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
 
     glScissor(LLCorner.x, LLCorner.y, ScissorSize.x, ScissorSize.y);
 
+    buildScrollList();
+    setSelection();
+}
+
+
+void ScrollList::buildScrollList()
+{
     float startX = mLocation.x - (mSize.x / 2.0f);
     float startY = mLocation.y + (mSize.y / 2.0f);
 
-    if (glIsList(mDisplayList))
+    if (glIsList(mScrollList))
     {
-        glDeleteLists(1, mDisplayList);
+        glDeleteLists(mScrollList, 1);
     }
 
-    glNewList(mDisplayList, GL_COMPILE);
+
+    glNewList(mScrollList, GL_COMPILE);
     {
         //we need to adjust the first listItem to put it back into
         //the box
-        float nextTex = ((mListSizes[0].y + 1) * inRange * 2) / inDisplay.y;
+        float nextTex = ((mListSizes[0].y + 1) * mRange * 2) / mDisplay.y;
         startY -= nextTex;
 
         glEnable(GL_SCISSOR_TEST);
+
 
         glEnable(GL_TEXTURE_2D);
         for (unsigned int i = 0; i < mList.size(); ++i)
@@ -281,16 +317,16 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
             float nextX = startX;
 
             //we want the height for the image and the text to be the same
-            float texHeight = (mListSizes[i].y * inRange * 2) / inDisplay.y;
+            float texHeight = (mListSizes[i].y * mRange * 2) / mDisplay.y;
 
             //the widths should be different
             float texWidth;
 
-            nextTex = ((mListSizes[(i + 1) % mList.size()].y + 1) * inRange * 2) / inDisplay.y;
+            nextTex = ((mListSizes[(i + 1) % mList.size()].y + 1) * mRange * 2) / mDisplay.y;
 
             if (mImages[i] != mNoImage)
             {
-                texWidth = (mImageSizes[i].x * inRange * 2) / inDisplay.x;
+                texWidth = (mImageSizes[i].x * mRange * 2) / mDisplay.x;
                 glBindTexture(GL_TEXTURE_2D, mImages[i]);
                 glBegin(GL_QUADS);
                 {
@@ -309,7 +345,7 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
                 nextX += texWidth;
             }
 
-            texWidth = (mListSizes[i].x * inRange * 2) / inDisplay.x;
+            texWidth = (mListSizes[i].x * mRange * 2) / mDisplay.x;
 
             glBindTexture(GL_TEXTURE_2D, mList[i]);
             glBegin(GL_QUADS);
@@ -347,4 +383,40 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
     }
     glEndList();
 
+
 }
+
+
+void ScrollList::setSelection()
+{
+    glDeleteLists(mSelectionBox, 1);
+
+    float texHeight;
+    float startX = mLocation.x - (mSize.x / 2.0f);
+    float startY = mLocation.y + (mSize.y / 2.0f);
+
+    for (int i = 0; i < mSelectedItem; ++i)
+    {
+        texHeight = (mListSizes[i].y * mRange * 2) / mDisplay.y;
+        startY -= texHeight;
+    }
+    texHeight = (mListSizes[mSelectedItem].y * mRange * 2) / mDisplay.y;
+
+    glNewList(mSelectionBox, GL_COMPILE);
+    {
+        glEnable(GL_SCISSOR_TEST);
+
+        glPushAttrib(GL_CURRENT_BIT);
+        {
+            glColor4f(0.0f, 0.2f, 0.4f, 0.8f);
+            glRectf(startX, startY, startX + mSize.x, startY - texHeight);
+        }
+        glPopAttrib();
+
+        glDisable(GL_SCISSOR_TEST);
+    }
+    glEndList();
+
+}
+
+

@@ -38,12 +38,19 @@ class ScrollList : public Widget
 
         void findPixels(const Point2D<int>& inDisplay, float inRange);
     protected:
+        void buildScrollList();
+        void setSelection();
         //used to provide the creator of this widget
         //information about which item is currently selected
         string* mInfoPointer;
 
         Surface mHighlight;
         GLenum mFormat;
+
+        float mRange;
+
+        int mSelectedItem;
+        int mSelectedItemStartY;
 
         bool mMipmapping;
 
@@ -52,12 +59,14 @@ class ScrollList : public Widget
         float mWidth;
         float mHeight;
 
+        vector<string> mListText;
         vector<GLuint> mList;
         vector<Point2D<float> > mListSizes;
         vector<GLuint> mImages;
         vector<Point2D<float> > mImageSizes;
         GLuint mNoImage; //used to see when a list item doesn't have an image
-        GLuint mDisplayList;
+        GLuint mScrollList;
+        GLuint mSelectionBox;
 
         mt19937 mSomeRand;
 

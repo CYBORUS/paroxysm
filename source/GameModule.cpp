@@ -2,13 +2,12 @@
 
 bool GameModule::onLoad()
 {
-    Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
-    string something;
-    ScrollList* list = new ScrollList(&something, 2.0f, 5.0f, 34);
+    //Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
+    ScrollList* list = new ScrollList(&mSelectedMap, 2.0f, 5.0f, 34);
     list->setLocation(-5.0f, 3.0f);
     list->setSize(3.0f, 3.0f);
     list->setFontSize(20);
-    list->addListItem("boogey", someImage);
+    list->addListItem("boogey");
     //list->setFontSize(24);
     list->addListItem("Cyborus");
     list->addListItem("Cdaragorn");
@@ -90,6 +89,7 @@ void GameModule::onMouseWheel(bool inUp, bool inDown)
 void GameModule::onLButtonDown(int inX, int inY)
 {
     mHUD.setStates(inX, inY, true);
+    cerr << "selected map: " << mSelectedMap << endl;
 }
 
 

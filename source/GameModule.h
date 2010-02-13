@@ -38,6 +38,8 @@ class GameModule : public Module
     protected:
         Module* mNextModule;
 
+        string mSelectedMap;
+
         HUD mHUD;
 
 };
