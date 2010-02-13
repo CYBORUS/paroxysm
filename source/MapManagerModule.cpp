@@ -64,7 +64,7 @@ void MapManagerModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         default:
         {
-            mTextBox->keyPress(inSym);
+            mTextBox->keyPress(inSym, inMod, inUnicode);
             break;
         }
     }

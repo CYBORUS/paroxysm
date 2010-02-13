@@ -64,9 +64,9 @@ void TextBox::display()
     glDisable(GL_TEXTURE_2D);
 }
 
-void TextBox::keyPress(int inChar)
+void TextBox::keyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    switch (inChar)
+    switch (inSym)
     {
         case SDLK_BACKSPACE:
         {
@@ -79,9 +79,21 @@ void TextBox::keyPress(int inChar)
             break;
         }
 
+        case SDLK_LSHIFT:
+        case SDLK_RSHIFT:
+        case SDLK_LCTRL:
+        case SDLK_RCTRL:
+        case SDLK_LALT:
+        case SDLK_RALT:
+        {
+            break;
+        }
+
         default:
         {
-            mText += inChar;
+            int nextChar = inSym;
+            if (inMod & (KMOD_LSHIFT | KMOD_RSHIFT)) nextChar -= 32;
+            mText += nextChar;
             break;
         }
     }

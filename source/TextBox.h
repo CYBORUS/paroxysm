@@ -35,7 +35,7 @@ class TextBox : public Widget
         virtual ~TextBox();
 
         virtual void display();
-        void keyPress(int inChar);
+        void keyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
     private:
         void update();
