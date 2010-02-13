@@ -38,6 +38,8 @@ class TextBox : public Widget
         void keyPress(int inChar);
 
     private:
+        void update();
+
         string mText;
         TextLayer mTextLayer;
         GLuint mTextTexture;
