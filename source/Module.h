@@ -68,6 +68,12 @@ class Module
 
     protected:
         bool mRunning;
+
+    private:
+        void onKD(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        void onKU(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        void onLMBD(int inX, int inY);
+        void onLMBU(int inX, int inY);
 };
 
 inline bool Module::isRunning()

@@ -60,14 +60,14 @@ void Module::onEvent(SDL_Event* inEvent)
 
         case SDL_KEYDOWN:
         {
-            onKeyDown(inEvent->key.keysym.sym, inEvent->key.keysym.mod,
+            onKD(inEvent->key.keysym.sym, inEvent->key.keysym.mod,
                 inEvent->key.keysym.unicode);
             break;
         }
 
         case SDL_KEYUP:
         {
-            onKeyUp(inEvent->key.keysym.sym, inEvent->key.keysym.mod,
+            onKU(inEvent->key.keysym.sym, inEvent->key.keysym.mod,
                 inEvent->key.keysym.unicode);
             break;
         }
@@ -88,7 +88,7 @@ void Module::onEvent(SDL_Event* inEvent)
             {
                 case SDL_BUTTON_LEFT:
                 {
-                    onLButtonDown(inEvent->button.x, inEvent->button.y);
+                    onLMBD(inEvent->button.x, inEvent->button.y);
                     break;
                 }
                 case SDL_BUTTON_RIGHT:
@@ -111,7 +111,7 @@ void Module::onEvent(SDL_Event* inEvent)
             {
                 case SDL_BUTTON_LEFT:
                 {
-                    onLButtonUp(inEvent->button.x, inEvent->button.y);
+                    onLMBU(inEvent->button.x, inEvent->button.y);
                     break;
                 }
                 case SDL_BUTTON_RIGHT:
@@ -211,9 +211,19 @@ void Module::onInputBlur()
 {
 }
 
+void Module::onKD(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    onKeyDown(inSym, inMod, inUnicode);
+}
+
 void Module::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     if (inSym == SDLK_ESCAPE) mRunning = false;
+}
+
+void Module::onKU(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    onKeyUp(inSym, inMod, inUnicode);
 }
 
 void Module::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
@@ -237,8 +247,18 @@ void Module::onMouseWheel(bool inUp, bool inDown)
 {
 }
 
+void Module::onLMBD(int inX, int inY)
+{
+    onLButtonDown(inX, inY);
+}
+
 void Module::onLButtonDown(int inX, int inY)
 {
+}
+
+void Module::onLMBU(int inX, int inY)
+{
+    onLButtonUp(inX, inY);
 }
 
 void Module::onLButtonUp(int inX, int inY)
