@@ -49,6 +49,8 @@ class Widget
         void disable();
         void toggle();
 
+        virtual bool canFocus();
+
     protected:
         bool mEnabled;
         bool mVisible;

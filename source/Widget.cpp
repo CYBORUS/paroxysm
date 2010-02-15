@@ -112,3 +112,8 @@ void Widget::toggle()
 {
     mEnabled = !mEnabled;
 }
+
+bool Widget::canFocus()
+{
+    return false;
+}

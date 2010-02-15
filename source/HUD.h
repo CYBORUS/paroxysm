@@ -44,10 +44,19 @@ class HUD
         void display();
         int setStates(int inX, int inY, bool inPress);
 
+        bool hasFocus();
+
     private:
         vector<Widget*> mWidgets;
         Point2D<int> mDisplay;
         float mRange;
+
+        Widget* mFocusWidget;
 };
+
+inline bool HUD::hasFocus()
+{
+    return (mFocusWidget != NULL);
+}
 
 #endif

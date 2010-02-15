@@ -32,6 +32,8 @@ class ScrollList : public Widget
         void addListItem(string inText);
 
         void setFontSize(int inSize);
+        void setUpArrow(Surface inSurface);
+        void setDownArrow(Surface inSurface);
 
         void onMouseChange(int inX, int inY);
         virtual void display();
@@ -58,6 +60,9 @@ class ScrollList : public Widget
 
         float mWidth;
         float mHeight;
+
+        Surface mUpArrow;
+        Surface mDownArrow;
 
         vector<string> mListText;
         vector<GLuint> mList;

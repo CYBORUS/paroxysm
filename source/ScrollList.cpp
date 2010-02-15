@@ -218,6 +218,18 @@ void ScrollList::setFontSize(int inSize)
 }
 
 
+void ScrollList::setUpArrow(Surface inSurface)
+{
+    mUpArrow = inSurface;
+}
+
+
+void ScrollList::setDownArrow(Surface inSurface)
+{
+    mDownArrow = inSurface;
+}
+
+
 void ScrollList::onMouseChange(int inX, int inY)
 {
     switch(mMouseState)
