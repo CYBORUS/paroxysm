@@ -43,7 +43,7 @@ void HUD::setDisplay(const Point2D<int>& inDisplay, float inRange)
 }
 
 
-void HUD::onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+void HUD::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     if (mFocusWidget != NULL)
     {
