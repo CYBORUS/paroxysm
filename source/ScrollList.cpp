@@ -411,13 +411,12 @@ void ScrollList::buildScrollList()
         glDisable(GL_SCISSOR_TEST);
 
         glColor3f(1.0f, 1.0f, 1.0f);
-        glBegin(GL_LINE_STRIP);
+        glBegin(GL_LINE_LOOP);
         {
             glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
             glVertex2f(mLocation.x + (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
             glVertex2f(mLocation.x + (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
             glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
-            glVertex2f(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0));
         }
         glEnd();
 
