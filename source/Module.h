@@ -20,10 +20,16 @@
 
 #include <SDL.h>
 
+#include "HUD.h"
+
 class Module
 {
     public:
+        Module();
         virtual ~Module();
+
+        void onEvent(SDL_Event* inEvent);
+        bool isRunning();
 
         /// module operation
         virtual bool onLoad() = 0;
@@ -33,10 +39,9 @@ class Module
         virtual void onCleanup() = 0;
         virtual bool isDead();
         virtual Module* next();
-        bool isRunning();
 
+    protected:
         /// input events
-        void onEvent(SDL_Event* inEvent);
         virtual void onInputFocus();
         virtual void onInputBlur();
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
@@ -66,8 +71,11 @@ class Module
         virtual void onUser(Uint8 inType, int inCode, void* inData1,
             void* inData2);
 
-    protected:
+        virtual void onButtonPress(int inID);
+
         bool mRunning;
+        bool mClickHUD;
+        HUD mHUD;
 
     private:
         void onKD(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);

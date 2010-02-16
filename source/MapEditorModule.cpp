@@ -441,10 +441,6 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
         SDL_WarpMouse(mCenter.x, mCenter.y);
         mMouseMode = MM_PANNING;
     }
-    else if (mHUD.setStates(inX, inY, true) > -1)
-    {
-        mMouseMode = MM_BUTTON_PRESS;
-    }
     else if (mEditMode == EM_TERRAIN)
     {
 
@@ -524,12 +520,6 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
             mMouseMode = MM_DEFAULT;
             SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
             SDL_ShowCursor(SDL_ENABLE);
-            break;
-        }
-        case MM_BUTTON_PRESS:
-        {
-            onButtonPress(mHUD.setStates(inX, inY, false));
-            mMouseMode = MM_DEFAULT;
             break;
         }
         default:

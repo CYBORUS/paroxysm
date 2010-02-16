@@ -105,17 +105,9 @@ void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
 }
 
-
-void MainMenuModule::onLButtonDown(int inX, int inY)
+void MainMenuModule::onButtonPress(int inID)
 {
-    mHUD.setStates(inX, inY, true);
-}
-
-void MainMenuModule::onLButtonUp(int inX, int inY)
-{
-    int controlClicked = mHUD.setStates(inX, inY, false);
-
-    switch(controlClicked)
+    switch(inID)
     {
         case MAP_EDITOR:
         {

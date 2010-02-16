@@ -44,17 +44,16 @@ class MainMenuModule : public Module
     protected:
         void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
-        void onLButtonDown(int inX, int inY);
-        void onLButtonUp(int inX, int inY);
 
+        virtual void onButtonPress(int inID);
 
+    private:
         Module* mNextModule;
 
         //GLuint mTextures[NUM_TEXTURES];
         //GLuint mList;
 
         Point2D<int> mDisplay;
-        HUD mHUD;
 
         bool mDead;
 

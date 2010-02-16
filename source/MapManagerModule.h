@@ -35,10 +35,10 @@ class MapManagerModule : public Module
         virtual void onLoop();
         virtual void onCleanup();
 
+    protected:
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
     private:
-        HUD mHUD;
         Button* mButtons[MMM_NUM_BUTTONS];
         TextBox* mTextBox;
 };

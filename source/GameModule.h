@@ -27,6 +27,7 @@ class GameModule : public Module
         void onCleanup();
         Module* next();
 
+    protected:
         void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
         void onMouseWheel(bool inUp, bool inDown);
@@ -35,13 +36,10 @@ class GameModule : public Module
         void onRButtonDown(int inX, int inY);
         void onRButtonUp(int inX, int inY);
 
-    protected:
+    private:
         Module* mNextModule;
-
         string mSelectedMap;
-
-        HUD mHUD;
 
 };
 
-#endif // GAMEMODULE_H
+#endif

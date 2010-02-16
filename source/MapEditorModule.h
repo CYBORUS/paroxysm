@@ -88,6 +88,7 @@ class MapEditorModule : public Module
         virtual bool isDead();
         virtual Module* next();
 
+    protected:
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onLButtonDown(int inX, int inY);
         virtual void onLButtonUp(int inX, int inY);
@@ -102,7 +103,7 @@ class MapEditorModule : public Module
         void undoAction();
         void redoAction();
 
-        void onButtonPress(int inID);
+        virtual void onButtonPress(int inID);
         void switchModes();
 
         Vector3D<float> selectVertex(int inX, int inY);
@@ -137,7 +138,6 @@ class MapEditorModule : public Module
         list<MapEditorAction*> mRedo;
         MapEditorAction* mCurrentAction;
 
-        HUD mHUD;
         Button* mButtons[NUM_BUTTONS];
 };
 

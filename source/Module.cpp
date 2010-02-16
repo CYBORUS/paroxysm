@@ -20,6 +20,12 @@
 #include <iostream>
 using namespace std;
 
+Module::Module()
+{
+    mRunning = true;
+    mClickHUD = false;
+}
+
 Module::~Module()
 {
     // here to prevent compiler warnings in Windows :P
@@ -249,7 +255,10 @@ void Module::onMouseWheel(bool inUp, bool inDown)
 
 void Module::onLMBD(int inX, int inY)
 {
-    onLButtonDown(inX, inY);
+    if (mHUD.setStates(inX, inY, true) > -1)
+        mClickHUD = true;
+    else
+        onLButtonDown(inX, inY);
 }
 
 void Module::onLButtonDown(int inX, int inY)
@@ -258,7 +267,14 @@ void Module::onLButtonDown(int inX, int inY)
 
 void Module::onLMBU(int inX, int inY)
 {
-    onLButtonUp(inX, inY);
+    if (!mClickHUD)
+    {
+        onLButtonUp(inX, inY);
+        return;
+    }
+
+    onButtonPress(mHUD.setStates(inX, inY, false));
+    mClickHUD = false;
 }
 
 void Module::onLButtonUp(int inX, int inY)
@@ -342,5 +358,9 @@ void Module::onLoop()
 }
 
 void Module::onFrame()
+{
+}
+
+void Module::onButtonPress(int inID)
 {
 }
