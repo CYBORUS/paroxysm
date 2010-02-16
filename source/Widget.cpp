@@ -56,7 +56,7 @@ void Widget::onMouseChange(int inX, int inY)
 {
 }
 
-void Widget::onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+void Widget::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
 }
 

@@ -47,7 +47,7 @@ void HUD::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     if (mFocusWidget != NULL)
     {
-        mFocusWidget->onKeyPress(inSym, inMod, inUnicode);
+        mFocusWidget->onKeyDown(inSym, inMod, inUnicode);
     }
 }
 

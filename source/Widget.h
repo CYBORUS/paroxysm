@@ -35,7 +35,7 @@ class Widget
         void setLocation(float inX, float inY);
         void setSize(float inX, float inY);
         virtual void onMouseChange(int inX, int inY);
-        virtual void onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         void set(const Point2D<float>& inLocation,
             const Point2D<float>& inSize);
         virtual void findPixels(const Point2D<int>& inDisplay, float inRange);

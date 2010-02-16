@@ -267,7 +267,7 @@ void ScrollList::onMouseChange(int inX, int inY)
 }
 
 
-void ScrollList::onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+void ScrollList::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
