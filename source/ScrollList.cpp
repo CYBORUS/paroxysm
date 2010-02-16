@@ -266,6 +266,31 @@ void ScrollList::onMouseChange(int inX, int inY)
     }
 }
 
+
+void ScrollList::onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch (inSym)
+    {
+        case SDLK_UP:
+        {
+            --mSelectedItem;
+            if (mSelectedItem < 0)
+            {
+                mSelectedItem = mList.size() - 1;
+            }
+            setSelection();
+            break;
+        }
+        case SDLK_DOWN:
+        {
+            mSelectedItem = (mSelectedItem + 1) % mList.size();
+            setSelection();
+            break;
+        }
+    }
+}
+
+
 /*****************************************
 *   overloaded to calculate all the internal
 *   items in the list

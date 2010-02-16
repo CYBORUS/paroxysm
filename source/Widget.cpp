@@ -56,6 +56,10 @@ void Widget::onMouseChange(int inX, int inY)
 {
 }
 
+void Widget::onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+}
+
 void Widget::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
 {
     mLocation = inLocation;

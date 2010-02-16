@@ -36,6 +36,7 @@ class ScrollList : public Widget
         void setDownArrow(Surface inSurface);
 
         void onMouseChange(int inX, int inY);
+        void onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void display();
 
         void findPixels(const Point2D<int>& inDisplay, float inRange);

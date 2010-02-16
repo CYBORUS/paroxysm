@@ -22,6 +22,8 @@ HUD::HUD()
     mDisplay.x = 1;
     mDisplay.y = 1;
     mRange = 1.0f;
+
+    mFocusWidget = NULL;
 }
 
 HUD::~HUD()
@@ -39,6 +41,16 @@ void HUD::setDisplay(const Point2D<int>& inDisplay, float inRange)
     mRange = inRange;
     findPixels();
 }
+
+
+void HUD::onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    if (mFocusWidget != NULL)
+    {
+        mFocusWidget->onKeyPress(inSym, inMod, inUnicode);
+    }
+}
+
 
 void HUD::addWidget(Widget* inWidget)
 {
@@ -94,6 +106,11 @@ int HUD::setStates(int inX, int inY, bool inPress)
     int outHit = -1;
     MouseState hover = inPress ? PRESS : HOVER;
 
+    if (mFocusWidget != NULL && !mFocusWidget->isOver(inX, inY))
+    {
+        mFocusWidget = NULL;
+    }
+
     for (unsigned int i = 0; i < mWidgets.size(); ++i)
     {
         MouseState state = (mWidgets[i]->isOver(inX, inY)
@@ -103,6 +120,11 @@ int HUD::setStates(int inX, int inY, bool inPress)
         if (state != OUTSIDE)
         {
             mWidgets[i]->onMouseChange(inX, inY);
+
+            if (mWidgets[i]->canFocus() && state == PRESS)
+            {
+                mFocusWidget = mWidgets[i];
+            }
         }
         if (state != HUD_OUT) outHit = mWidgets[i]->getID();
     }

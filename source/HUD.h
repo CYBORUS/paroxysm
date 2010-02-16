@@ -39,6 +39,7 @@ class HUD
 
         void setDisplay(const Point2D<int>& inDisplay,
             float inRange = HUD_RANGE);
+        void onKeyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         void addWidget(Widget* inWidget);
         void findPixels();
         void display();
