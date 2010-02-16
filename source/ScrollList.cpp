@@ -6,6 +6,7 @@ ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int
     mID = inID;
     mWidth = inWidth;
     mHeight = (int)(inHeight / LINE_HEIGHT) * LINE_HEIGHT;
+    mSelectedItem = 0;
 
     if (!mText.loadFont("assets/misc/DejaVuSans.ttf", 24))
     {
@@ -327,6 +328,7 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
     glScissor(LLCorner.x, LLCorner.y, ScissorSize.x, ScissorSize.y);
 
     buildScrollList();
+
     setSelection();
 }
 
@@ -340,7 +342,6 @@ void ScrollList::buildScrollList()
     {
         glDeleteLists(mScrollList, 1);
     }
-
 
     glNewList(mScrollList, GL_COMPILE);
     {
@@ -430,7 +431,10 @@ void ScrollList::buildScrollList()
 
 void ScrollList::setSelection()
 {
-    glDeleteLists(mSelectionBox, 1);
+    if (glIsList(mSelectionBox))
+    {
+        glDeleteLists(mSelectionBox, 1);
+    }
 
     float texHeight;
     float startX = mLocation.x - (mSize.x / 2.0f);

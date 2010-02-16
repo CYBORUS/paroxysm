@@ -15,7 +15,9 @@ bool GameModule::onLoad()
     list->addListItem("TheBuzzSaw");
     list->addListItem("They RULE ALL!!!");
 
+    cerr << "adding widget to mHUD" << endl;
     mHUD.addWidget(list);
+    cerr << "done." << endl;
 
     return true;
 }
