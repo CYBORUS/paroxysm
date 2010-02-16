@@ -57,7 +57,6 @@ ScrollList::~ScrollList()
 
 }
 
-bool something = true;
 void ScrollList::display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -74,20 +73,6 @@ void ScrollList::display()
         cerr << "it's not a list" << endl;
     }
 
-
-/*
-    glPolygonMode(GL_FRONT, GL_LINE);
-
-    glRectf(mLocation.x - (mSize.x / 2.0), mLocation.y - (mSize.y / 2.0),
-            mLocation.x + (mSize.x / 2.0), mLocation.y + (mSize.y / 2.0));
-*/
-    if (something)
-    {
-        cerr << "size: " << mSize.x << "," << mSize.y << " \nlocation: " <<
-                mLocation.x << "," << mLocation.y << endl;
-        something = false;
-
-    }
 
 }
 
