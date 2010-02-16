@@ -39,6 +39,8 @@ class ScrollList : public Widget
         void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void display();
 
+        bool canFocus();
+
         void findPixels(const Point2D<int>& inDisplay, float inRange);
     protected:
         void buildScrollList();

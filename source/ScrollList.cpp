@@ -456,4 +456,7 @@ void ScrollList::setSelection()
 
 }
 
-
+bool ScrollList::canFocus()
+{
+    return true;
+}

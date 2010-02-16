@@ -106,7 +106,7 @@ int HUD::setStates(int inX, int inY, bool inPress)
     int outHit = -1;
     MouseState hover = inPress ? PRESS : HOVER;
 
-    if (mFocusWidget != NULL && !mFocusWidget->isOver(inX, inY))
+    if (mFocusWidget != NULL && !mFocusWidget->isOver(inX, inY) && hover == PRESS)
     {
         mFocusWidget = NULL;
     }

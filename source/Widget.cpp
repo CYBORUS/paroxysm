@@ -58,6 +58,7 @@ void Widget::onMouseChange(int inX, int inY)
 
 void Widget::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
+    cerr << "calling keydown" << endl;
 }
 
 void Widget::set(const Point2D<float>& inLocation, const Point2D<float>& inSize)
