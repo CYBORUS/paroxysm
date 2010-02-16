@@ -7,6 +7,7 @@
 
 #include "Button.h"
 #include "ScrollList.h"
+#include "TextBox.h"
 
 
 #include <SDL_opengl.h>

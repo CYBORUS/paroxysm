@@ -2,22 +2,24 @@
 
 bool GameModule::onLoad()
 {
-    cerr << "loading" << endl;
     //Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
-    ScrollList* list = new ScrollList(&mSelectedMap, 2.0f, 5.0f, 34);
-    list->setLocation(-5.0f, 3.0f);
-    list->setSize(3.0f, 3.0f);
-    list->setFontSize(20);
-    list->addListItem("boogey");
-    //list->setFontSize(24);
-    list->addListItem("Cyborus");
-    list->addListItem("Cdaragorn");
-    list->addListItem("TheBuzzSaw");
-    list->addListItem("They RULE ALL!!!");
+    ScrollList* maps = new ScrollList(&mSelectedMap, 2.0f, 5.0f, 34);
+    maps->setLocation(-5.0f, 3.0f);
+    maps->setSize(3.0f, 3.0f);
+    maps->setFontSize(20);
+    maps->addListItem("boogey");
+    //maps->setFontSize(24);
+    maps->addListItem("Cyborus");
+    maps->addListItem("Cdaragorn");
+    maps->addListItem("TheBuzzSaw");
+    maps->addListItem("They RULE ALL!!!");
 
-    cerr << "adding widget to mHUD" << endl;
-    mHUD.addWidget(list);
-    cerr << "done." << endl;
+    TextBox* typing = new TextBox();
+    typing->setLocation(2.0f, 0.0f);
+    typing->setSize(10.0f, 2.0f);
+
+    mHUD.addWidget(maps);
+    mHUD.addWidget(typing);
 
     return true;
 }
