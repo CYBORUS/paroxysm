@@ -62,6 +62,7 @@ void ScrollList::display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
+    glScissor(mPixelUL.x, mDisplay.y - mPixelLR.y, mPixelLR.x - mPixelUL.x, mPixelLR.y - mPixelUL.y);
 
     if (glIsList(mScrollList))
     {
@@ -325,7 +326,6 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
     ScissorSize.x = mPixelLR.x - mPixelUL.x;
     ScissorSize.y = mPixelLR.y - mPixelUL.y;
 
-    glScissor(LLCorner.x, LLCorner.y, ScissorSize.x, ScissorSize.y);
 
     buildScrollList();
 
