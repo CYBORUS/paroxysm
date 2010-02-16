@@ -219,7 +219,10 @@ void Module::onInputBlur()
 
 void Module::onKD(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    onKeyDown(inSym, inMod, inUnicode);
+    if (mHUD.hasFocus())
+        mHUD.onKeyDown(inSym, inMod, inUnicode);
+    else
+        onKeyDown(inSym, inMod, inUnicode);
 }
 
 void Module::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)

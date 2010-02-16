@@ -51,21 +51,3 @@ void MapManagerModule::onLoop()
 void MapManagerModule::onCleanup()
 {
 }
-
-void MapManagerModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
-{
-    switch(inSym)
-    {
-        case SDLK_ESCAPE:
-        {
-            mRunning = false;
-            break;
-        }
-
-        default:
-        {
-            mTextBox->keyPress(inSym, inMod, inUnicode);
-            break;
-        }
-    }
-}

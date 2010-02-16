@@ -36,7 +36,6 @@ class MapManagerModule : public Module
         virtual void onCleanup();
 
     protected:
-        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
     private:
         Button* mButtons[MMM_NUM_BUTTONS];

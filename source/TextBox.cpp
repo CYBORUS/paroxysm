@@ -108,3 +108,8 @@ void TextBox::update()
     mRatio = s == NULL ? 1.0f : float(s->w) / float(s->h);
     DisplayEngine::loadTexture(s, mTextTexture);
 }
+
+bool TextBox::canFocus()
+{
+    return true;
+}
