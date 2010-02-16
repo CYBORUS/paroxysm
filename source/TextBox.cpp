@@ -64,7 +64,7 @@ void TextBox::display()
     glDisable(GL_TEXTURE_2D);
 }
 
-void TextBox::keyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+void TextBox::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
@@ -85,6 +85,7 @@ void TextBox::keyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_RCTRL:
         case SDLK_LALT:
         case SDLK_RALT:
+        case SDLK_ESCAPE:
         {
             break;
         }

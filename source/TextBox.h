@@ -36,7 +36,7 @@ class TextBox : public Widget
 
         virtual void display();
         virtual bool canFocus();
-        void keyPress(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
     private:
         void update();
