@@ -287,6 +287,10 @@ void ScrollList::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             setSelection();
             break;
         }
+        default:
+        {
+            break;
+        }
     }
 }
 

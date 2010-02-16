@@ -2,6 +2,7 @@
 
 bool GameModule::onLoad()
 {
+    cerr << "loading" << endl;
     //Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
     ScrollList* list = new ScrollList(&mSelectedMap, 2.0f, 5.0f, 34);
     list->setLocation(-5.0f, 3.0f);
