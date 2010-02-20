@@ -49,9 +49,6 @@ class ScrollList : public Widget
         //information about which item is currently selected
         string* mInfoPointer;
 
-        Surface mHighlight;
-        GLenum mFormat;
-
         float mRange;
 
         int mSelectedItem;
@@ -63,9 +60,16 @@ class ScrollList : public Widget
 
         float mWidth;
         float mHeight;
+        //float mListWidth;
+        float mArrowWidth;
+        int mPixelArrowWidth;
+        GLuint mArrows[2];
 
         Surface mUpArrow;
         Surface mDownArrow;
+
+        int mPixelUpArrowBottom; //the bottom of the up arrow
+        int mPixelDownArrowTop; //the top of the down arrow
 
         vector<string> mListText;
         vector<GLuint> mList;

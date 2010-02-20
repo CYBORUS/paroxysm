@@ -12,11 +12,19 @@ bool GameModule::onLoad()
     maps->addListItem("Cyborus");
     maps->addListItem("Cdaragorn");
     maps->addListItem("TheBuzzSaw");
-    maps->addListItem("They RULE ALL!!!");
+    maps->addListItem("They RopopoULE ALL!!!");
+
+    Surface someImage = DisplayEngine::loadImage("assets/images/hud/load_map_up_arrow.png");
+
+    maps->setUpArrow(someImage);
+
+    someImage = DisplayEngine::loadImage("assets/images/hud/load_map_down_arrow.png");
+
+    maps->setDownArrow(someImage);
 
     TextBox* typing = new TextBox();
     typing->setLocation(2.0f, 0.0f);
-    typing->setSize(10.0f, 2.0f);
+    typing->setSize(10.0f, 1.0f);
 
     mHUD.addWidget(maps);
     mHUD.addWidget(typing);

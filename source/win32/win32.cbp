@@ -38,7 +38,7 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
+			<Add option="-W" />
 		</Compiler>
 		<Linker>
 			<Add library="mingw32" />
