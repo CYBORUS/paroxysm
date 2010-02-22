@@ -58,6 +58,8 @@ class DisplayEngine
     private:
         static void cleanup();
 
+        static void printErrors();
+
         static Surface mWindowIcon;
         static SDL_Rect** mModes;
         static unsigned int mNextFrame;

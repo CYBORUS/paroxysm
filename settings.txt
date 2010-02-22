@@ -5,3 +5,4 @@ terrain file = Xmy_terrain.txt
 terrain cols = 20
 terrain rows = 20
 mipmapping = 1
+bits per pixel = 0

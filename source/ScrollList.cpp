@@ -294,11 +294,15 @@ void ScrollList::buildScrollList()
     float startX = mLocation.x - (mSize.x / 2.0f);
     float startY = mLocation.y + (mSize.y / 2.0f);
 
+    //need to find out how to deal with case that y > x
+    float ratio = (float)mDisplay.x / (float)mDisplay.y;
+
+
     mPixelArrowWidth = (mUpArrow->w > mDownArrow->w) ? mUpArrow->w : mDownArrow->w;
 
     //mPixelListWidth = mPixelUL.x - mPixelLR.x - arrowWidth;
     //mListWidth = mSize.x - ((float)mPixelArrowWidth / (float)mDisplay.x * mRange * 2.0f);
-    mArrowWidth = (float)mPixelArrowWidth / (float)mDisplay.x * mRange * 2.0f;
+    mArrowWidth = (float)mPixelArrowWidth / (float)mDisplay.x * mRange * 2.0f * ratio;
     //cerr << "mSize.x: " << mSize.x << " mListWidth: " << mListWidth << endl;
 
     if (glIsList(mScrollList))
@@ -331,7 +335,7 @@ void ScrollList::buildScrollList()
 
             if (mImages[i] != mNoImage)
             {
-                texWidth = (mImageSizes[i].x * mRange * 2) / mDisplay.x;
+                texWidth = (mImageSizes[i].x * mRange * 2 * ratio) / mDisplay.x;
                 glBindTexture(GL_TEXTURE_2D, mImages[i]);
                 glBegin(GL_QUADS);
                 {
@@ -350,7 +354,7 @@ void ScrollList::buildScrollList()
                 nextX += texWidth;
             }
 
-            texWidth = (mListSizes[i].x * mRange * 2) / mDisplay.x;
+            texWidth = (mListSizes[i].x * mRange * 2 * ratio) / mDisplay.x;
 
             glBindTexture(GL_TEXTURE_2D, mList[i]);
             glBegin(GL_QUADS);

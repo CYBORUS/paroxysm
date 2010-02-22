@@ -125,8 +125,8 @@ void DisplayEngine::initialize()
 
     #ifdef __WIN32__
     // redirect output to screen (instead of text files)
-    freopen("CON", "w", stdout);
-    freopen("CON", "w", stderr);
+    //freopen("CON", "w", stdout);
+    //freopen("CON", "w", stderr);
     #endif
 
     // get available full screen modes
@@ -192,6 +192,9 @@ void DisplayEngine::initialize()
     glClear(GL_COLOR_BUFFER_BIT);
 
     SDL_WM_SetCaption("Paroxysm version 0.0.1","Paroxysm");
+
+    string stuff = (char*)glGetString(GL_EXTENSIONS);
+    cerr << "extensions: \n\n" << stuff << endl;
 }
 
 void DisplayEngine::cleanup()
@@ -220,8 +223,61 @@ Surface DisplayEngine::loadImage(const char* inFile)
     return outSurface;
 }
 
+void DisplayEngine::printErrors()
+{
+    GLenum error;
+
+    error = glGetError();
+
+    if (error != GL_NO_ERROR)
+    {
+        cerr << "Opengl Error: ";
+    }
+
+    while (error != GL_NO_ERROR)
+    {
+        switch(error)
+        {
+            case GL_INVALID_ENUM:
+            {
+                cerr << "Invalid enum." << endl;
+            }
+            case GL_INVALID_VALUE:
+            {
+                cerr << "Invalid value." << endl;
+            }
+            case GL_INVALID_OPERATION:
+            {
+                cerr << "Invalid operation." << endl;
+            }
+            case GL_STACK_OVERFLOW:
+            {
+                cerr << "Stack Overflow" << endl;
+            }
+            case GL_STACK_UNDERFLOW:
+            {
+                cerr << "Stack Underflow" << endl;
+            }
+            case GL_OUT_OF_MEMORY:
+            {
+                cerr << "Out of memory." << endl;
+            }
+            case GL_TABLE_TOO_LARGE:
+            {
+                cerr << "Table too large." << endl;
+            }
+        }
+
+        error = glGetError();
+    }
+}
+
 bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
 {
+    cerr << "Pre-texture errors:\n";
+
+    printErrors();
+
     bool outSuccess = true;
     if (inSurface == NULL)
     {
@@ -244,6 +300,21 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
         //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
         //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
     }
+
+    if (mMipmapping)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    }
+    else
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    }
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+
 
     GLint nOfColors = inSurface->format->BytesPerPixel;
     GLenum tFormat = GL_RGBA;
@@ -271,19 +342,9 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
-    if (mMipmapping)
-    {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    }
-    else
-    {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    }
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    cerr << "Post-texture errors:\n";
 
+    printErrors();
 
     if (!outSuccess) SDL_FreeSurface(inSurface);
     return outSuccess;
