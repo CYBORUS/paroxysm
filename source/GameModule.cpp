@@ -5,14 +5,18 @@ bool GameModule::onLoad()
     //Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
     ScrollList* maps = new ScrollList(&mSelectedMap, 2.0f, 5.0f, 34);
     maps->setLocation(-5.0f, 3.0f);
-    maps->setSize(3.0f, 3.0f);
+    maps->setSize(8.0f, 8.0f);
     maps->setFontSize(20);
     maps->addListItem("boogey");
     //maps->setFontSize(24);
     maps->addListItem("Cyborus");
     maps->addListItem("Cdaragorn");
     maps->addListItem("TheBuzzSaw");
-    maps->addListItem("They RopopoULE ALL!!!");
+
+    for (int i = 0; i < 20; ++i)
+    {
+        maps->addListItem("They RopopoULE ALL!!!");
+    }
 
     Surface someImage = DisplayEngine::loadImage("assets/images/hud/load_map_up_arrow.png");
 

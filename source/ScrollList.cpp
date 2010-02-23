@@ -301,15 +301,23 @@ void ScrollList::buildScrollList()
 
 
     mPixelArrowWidth = (mUpArrow->w > mDownArrow->w) ? mUpArrow->w : mDownArrow->w;
-    Point2D<int> arrow;
+    Point2D<int> point;
 
-    arrow.x = mPixelArrowWidth;
-    arrow.y = mUpArrow->h;
+    Point2D<int> center;
+
+    center.x = mDisplay.x / 2;
+    center.y = mDisplay.y / 2;
+
+    point.x = center.x + mPixelArrowWidth - 1;
+    point.y = 0;
 
     //mPixelListWidth = mPixelUL.x - mPixelLR.x - arrowWidth;
     //mListWidth = mSize.x - ((float)mPixelArrowWidth / (float)mDisplay.x * mRange * 2.0f);
-    mArrowWidth = DisplayEngine::convert2DPixelToObject(arrow, mDisplay, mRange).x;//(float)mPixelArrowWidth / (float)mDisplay.x * mRange * 2.0f * ratio;
-    //cerr << "mSize.x: " << mSize.x << " mListWidth: " << mListWidth << endl;
+
+    //all we want is the width of the arrow in object space
+    mArrowWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
+    cerr << "mArrowWidth: " << mArrowWidth << endl;
+
 
     if (glIsList(mScrollList))
     {
@@ -320,8 +328,11 @@ void ScrollList::buildScrollList()
     {
         //we need to adjust the first listItem to put it back into
         //the box
-        float nextTex = ((mListSizes[0].y + 1) * mRange * 2) / mDisplay.y;
+        point.y = center.y - mListSizes[0].y + 1;
+        float nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
         startY -= nextTex;
+
+        cerr << "nextTex: " << nextTex << " startY: " << startY << endl;
 
         glEnable(GL_SCISSOR_TEST);
 
@@ -332,16 +343,20 @@ void ScrollList::buildScrollList()
             float nextX = startX;
 
             //we want the height for the image and the text to be the same
-            float texHeight = (mListSizes[i].y * mRange * 2) / (float)mDisplay.y;
+            point.y = center.y - mListSizes[i].y;
+            float texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
+            cerr << "texHeight: " << texHeight << endl;
 
             //the widths should be different
             float texWidth;
 
-            nextTex = ((mListSizes[(i + 1) % mList.size()].y + 1) * mRange * 2) / mDisplay.y;
+            point.y = center.y - mListSizes[(i + 1) % mList.size()].y - 1;
+            nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
             if (mImages[i] != mNoImage)
             {
-                texWidth = (mImageSizes[i].x * mRange * 2 * ratio) / mDisplay.x;
+                point.x = center.x + mImageSizes[i].x;
+                texWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
                 glBindTexture(GL_TEXTURE_2D, mImages[i]);
                 glBegin(GL_QUADS);
                 {
@@ -360,7 +375,8 @@ void ScrollList::buildScrollList()
                 nextX += texWidth;
             }
 
-            texWidth = (mListSizes[i].x * mRange * 2 * ratio) / mDisplay.x;
+            point.x = center.x + mListSizes[i].x;
+            texWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
 
             glBindTexture(GL_TEXTURE_2D, mList[i]);
             glBegin(GL_QUADS);
