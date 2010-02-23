@@ -33,7 +33,7 @@ class TextLayer
         virtual ~TextLayer();
 
         bool loadFont(const char* inFile, int inSize);
-        void setColor(char inRed, char inGreen, char inBlue, char inAlpha);
+        void setColor(Uint8 inRed, Uint8 inGreen, Uint8 inBlue);
         void setText(const char* inText);
         void setText(const string& inString);
         string getText();

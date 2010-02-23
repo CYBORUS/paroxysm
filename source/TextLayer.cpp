@@ -59,12 +59,11 @@ bool TextLayer::loadFont(const char* inFile, int inSize)
     return mFont != NULL;
 }
 
-void TextLayer::setColor(char inRed, char inGreen, char inBlue, char inAlpha)
+void TextLayer::setColor(Uint8 inRed, Uint8 inGreen, Uint8 inBlue)
 {
     mColor.r = inRed;
     mColor.g = inGreen;
     mColor.b = inBlue;
-    mColor.unused = inAlpha;
 }
 
 void TextLayer::setText(const char* inText)

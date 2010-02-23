@@ -111,16 +111,20 @@ void MainMenuModule::onButtonPress(int inID)
     {
         case MAP_EDITOR:
         {
-            mNextModule = new MapEditorModule();
+            mNextModule = new MapEditorModule;
             mRunning = false;
             mDead = false;
             break;
         }
         case NEW_GAME:
         {
-            mNextModule = new GameModule();
+            mNextModule = new GameModule;
             mRunning = false;
             mDead = false;
+            break;
+        }
+        default:
+        {
             break;
         }
     }

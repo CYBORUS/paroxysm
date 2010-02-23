@@ -28,6 +28,7 @@
 #include "SoundEngine.h"
 #include "HUD.h"
 #include "Button.h"
+#include "TextBox.h"
 
 #include <SDL_opengl.h>
 
@@ -139,6 +140,7 @@ class MapEditorModule : public Module
         MapEditorAction* mCurrentAction;
 
         Button* mButtons[NUM_BUTTONS];
+        TextBox* mSaveBox;
 };
 
 #endif

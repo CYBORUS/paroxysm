@@ -20,9 +20,10 @@
 TextBox::TextBox()
 {
     glGenTextures(1, &mTextTexture);
+    mHideOnEnter = false;
     mText = "test";
     mTextLayer.loadFont("assets/misc/DejaVuSans.ttf", 16);
-    mTextLayer.setColor(0, 255, 128, 255);
+    mTextLayer.setColor(0, 255, 128);
     update();
 }
 
@@ -68,6 +69,7 @@ void TextBox::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
+
         case SDLK_BACKSPACE:
         {
             int l = mText.length();
@@ -79,13 +81,19 @@ void TextBox::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
+        case SDLK_ESCAPE:
+        case SDLK_RETURN:
+        {
+            if (mHideOnEnter) mVisible = false;
+            break;
+        }
+
         case SDLK_LSHIFT:
         case SDLK_RSHIFT:
         case SDLK_LCTRL:
         case SDLK_RCTRL:
         case SDLK_LALT:
         case SDLK_RALT:
-        case SDLK_ESCAPE:
         {
             break;
         }
@@ -113,4 +121,20 @@ void TextBox::update()
 bool TextBox::canFocus()
 {
     return true;
+}
+
+void TextBox::setTextColor(Uint8 inRed, Uint8 inGreen, Uint8 inBlue)
+{
+    mTextLayer.setColor(inRed, inGreen, inBlue);
+}
+
+void TextBox::hideOnEnter(bool inChange)
+{
+    mHideOnEnter = inChange;
+}
+
+void TextBox::setText(const char* inString)
+{
+    mText = inString;
+    update();
 }

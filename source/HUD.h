@@ -44,6 +44,7 @@ class HUD
         void findPixels();
         void display();
         int setStates(int inX, int inY, bool inPress);
+        void setFocus(Widget* inWidget);
 
         bool hasFocus();
 
@@ -57,7 +58,7 @@ class HUD
 
 inline bool HUD::hasFocus()
 {
-    return (mFocusWidget != NULL);
+    return mFocusWidget != NULL && mFocusWidget->isVisible();
 }
 
 #endif

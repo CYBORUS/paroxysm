@@ -131,3 +131,11 @@ int HUD::setStates(int inX, int inY, bool inPress)
 
     return outHit;
 }
+
+void HUD::setFocus(Widget* inWidget)
+{
+    if (inWidget != NULL && inWidget->canFocus())
+    {
+        mFocusWidget = inWidget;
+    }
+}

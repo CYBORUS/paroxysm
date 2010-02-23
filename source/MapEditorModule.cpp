@@ -16,7 +16,6 @@
  */
 
 #include "MapEditorModule.h"
-#include "MapManagerModule.h"
 #include "DisplayEngine.h"
 #include "Config.h"
 #include "EditVertexAction.h"
@@ -84,6 +83,12 @@ bool MapEditorModule::onLoad()
     mButtons[B_TILE_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
     mButtons[B_TILE_MODE]->setVisible(false);
     mHUD.addWidget(mButtons[B_TILE_MODE]);
+
+    mSaveBox = new TextBox;
+    mSaveBox->setSize(8.0f, 1.0f);
+    mSaveBox->setVisible(false);
+    mSaveBox->hideOnEnter(true);
+    mHUD.addWidget(mSaveBox);
 
     return true;
 }
@@ -282,17 +287,15 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_s:
         {
-            SoundEngine::stopBackgroundMusic();
-            break;
-        }
-
-        case SDLK_m:
-        {
-            if (mMouseMode == MM_DEFAULT)
+            if (inMod & (KMOD_LCTRL | KMOD_RCTRL))
             {
-                mNextModule = new MapManagerModule;
-                mDead = false;
-                mRunning = false;
+                mSaveBox->setText("");
+                mHUD.setFocus(mSaveBox);
+                mSaveBox->setVisible(true);
+            }
+            else
+            {
+                SoundEngine::stopBackgroundMusic();
             }
 
             break;
