@@ -20,6 +20,7 @@
 
 #include "Point2D.h"
 #include "SoundEngine.h"
+#include "DisplayEngine.h"
 
 enum MouseState { OUTSIDE = 0, HOVER = 1, PRESS = 2 };
 

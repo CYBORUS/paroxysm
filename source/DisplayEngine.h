@@ -52,6 +52,8 @@ class DisplayEngine
         static Surface loadImage(const char* inFile);
         static bool loadTexture(Surface inSurface, GLuint inTexture);
         static bool loadTexture(const char* inFile, GLuint inTexture);
+        static Point2D<int> convert2DObjectToPixel(Point2D<float> inPoint, Point2D<int> inDisplay, float inRange);
+        static Point2D<float> convert2DPixelToObject(Point2D<int> inPoint, Point2D<int> inDisplay, float inRange);
 
         static Surface mDisplay;
 

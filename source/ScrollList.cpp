@@ -204,6 +204,7 @@ void ScrollList::onMouseChange(int inX, int inY)
     {
         case PRESS:
         {
+            cerr << "pressed: " << inX << ", " << inY << endl;
             int startY = mPixelUL.y;
             bool found = false;
 
@@ -271,16 +272,17 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
     mDisplay = inDisplay;
     mRange = inRange;
 
-    Point2D<int> center;
-    center.x = inDisplay.x / 2;
-    center.y = inDisplay.y / 2;
+    Point2D<float> objectPoint;
 
-    float ratio = float(center.y) / inRange;
+    objectPoint.x = mLocation.x - (mSize.x / 2.0f);
+    objectPoint.y = mLocation.y + (mSize.y / 2.0f);
 
-    mPixelUL.x = center.x + int((mLocation.x - (mSize.x / 2.0f)) * ratio);
-    mPixelUL.y = center.y - int((mLocation.y + (mSize.y / 2.0f)) * ratio);
-    mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
-    mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
+    mPixelUL = DisplayEngine::convert2DObjectToPixel(objectPoint, mDisplay, mRange);
+
+    objectPoint.x = mLocation.x + (mSize.x / 2.0f);
+    objectPoint.y = mLocation.y - (mSize.y / 2.0f);
+
+    mPixelLR = DisplayEngine::convert2DObjectToPixel(objectPoint, mDisplay, mRange);
 
     buildScrollList();
 
@@ -299,10 +301,14 @@ void ScrollList::buildScrollList()
 
 
     mPixelArrowWidth = (mUpArrow->w > mDownArrow->w) ? mUpArrow->w : mDownArrow->w;
+    Point2D<int> arrow;
+
+    arrow.x = mPixelArrowWidth;
+    arrow.y = mUpArrow->h;
 
     //mPixelListWidth = mPixelUL.x - mPixelLR.x - arrowWidth;
     //mListWidth = mSize.x - ((float)mPixelArrowWidth / (float)mDisplay.x * mRange * 2.0f);
-    mArrowWidth = (float)mPixelArrowWidth / (float)mDisplay.x * mRange * 2.0f * ratio;
+    mArrowWidth = DisplayEngine::convert2DPixelToObject(arrow, mDisplay, mRange).x;//(float)mPixelArrowWidth / (float)mDisplay.x * mRange * 2.0f * ratio;
     //cerr << "mSize.x: " << mSize.x << " mListWidth: " << mListWidth << endl;
 
     if (glIsList(mScrollList))

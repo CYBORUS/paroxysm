@@ -72,16 +72,17 @@ void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
 {
     mDisplay = inDisplay;
 
-    Point2D<int> center;
-    center.x = inDisplay.x / 2;
-    center.y = inDisplay.y / 2;
+    Point2D<float> objectPoint;
 
-    float ratio = float(center.y) / inRange;
+    objectPoint.x = mLocation.x - (mSize.x / 2.0f);
+    objectPoint.y = mLocation.y + (mSize.y / 2.0f);
 
-    mPixelUL.x = center.x + int((mLocation.x - (mSize.x / 2.0f)) * ratio);
-    mPixelUL.y = center.y - int((mLocation.y + (mSize.y / 2.0f)) * ratio);
-    mPixelLR.x = mPixelUL.x + int(mSize.x * ratio);
-    mPixelLR.y = mPixelUL.y + int(mSize.y * ratio);
+    mPixelUL = DisplayEngine::convert2DObjectToPixel(objectPoint, mDisplay, inRange);
+
+    objectPoint.x = mLocation.x + (mSize.x / 2.0f);
+    objectPoint.y = mLocation.y - (mSize.y / 2.0f);
+
+    mPixelLR = DisplayEngine::convert2DObjectToPixel(objectPoint, mDisplay, inRange);
 }
 
 void Widget::findObject()
