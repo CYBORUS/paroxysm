@@ -161,6 +161,8 @@ void ScrollList::addListItem(string inText)
     size.x = mText.getTextSize().x;
     size.y = mText.getTextSize().y;
 
+    cerr << "list size: " << size.y << " surface size: " << mText.getTextImage()->h << endl;
+
     mList.push_back(texture);
     mListSizes.push_back(size);
 
@@ -383,6 +385,8 @@ void ScrollList::buildScrollList()
         float nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
         startY -= nextTex;
 
+
+
         glEnable(GL_SCISSOR_TEST);
 
         glEnable(GL_TEXTURE_2D);
@@ -394,6 +398,7 @@ void ScrollList::buildScrollList()
             point.y = center.y - (int)mListSizes[i].y;
             float texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
+            cerr << "height here: " << mListSizes[i].y << endl;
             //the widths should be different
             float texWidth;
 

@@ -86,34 +86,15 @@ void TextLayer::setText(const char* inText)
         return;
     }
 
-    //textSurface = SDL_DisplayFormatAlpha(textSurface);
-
     mTextSize.x = textSurface->w;
     mTextSize.y = textSurface->h;
 
-    SDL_Rect src;
-    SDL_Rect dest;
-
-    src.x = 0;
-    src.y = 0;
-    src.h = textSurface->h;
-    src.w = textSurface->w;
-
-
-    dest.x = 0;
-    dest.y = 0;
-    dest.h = textSurface->h;
-    dest.w = textSurface->w;
 
     int widthPower = int(log(textSurface->w) / log(2.0f)) + 1;
     int heightPower = int(log(textSurface->h) / log(2.0f)) + 1;
 
     widthPower = (int)pow(2.0f, widthPower);
     heightPower = (int)pow(2.0f, heightPower);
-
-
-    cerr << "text dimensions: " << textSurface->w << ", " << textSurface->h << endl;
-    cerr << "widthPower: " << widthPower << " heightPower: " << heightPower << endl;
 
     mSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, widthPower,
                     heightPower, textSurface->format->BitsPerPixel, textSurface->format->Rmask,
@@ -127,11 +108,10 @@ void TextLayer::setText(const char* inText)
         cerr << "blitting error" << endl;
     }
 
-    SDL_SetAlpha(textSurface, SDL_SRCALPHA, textSurface->format->alpha);
+    //SDL_SetAlpha(textSurface, SDL_SRCALPHA, textSurface->format->alpha);
     SDL_SetAlpha(mSurface, SDL_SRCALPHA, textSurface->format->alpha);
 
-    SDL_SaveBMP(textSurface, "textSurface.bmp");
-    SDL_SaveBMP(mSurface, "mSurface.bmp");
+    SDL_FreeSurface(textSurface);
 }
 
 void TextLayer::setText(const string& inString)
