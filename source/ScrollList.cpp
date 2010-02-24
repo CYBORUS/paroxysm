@@ -211,6 +211,7 @@ void ScrollList::onMouseChange(int inX, int inY)
                 point.y = mScrollStart;
 
                 int startY = DisplayEngine::convert2DObjectToPixel(point, mDisplay, mRange).y;
+
                 bool found = false;
 
                 for (int i = 0; startY < mPixelLR.y && !found; ++i)
@@ -223,7 +224,7 @@ void ScrollList::onMouseChange(int inX, int inY)
                     }
                     else
                     {
-                        startY += (int)mListSizes[i].y;
+                        startY += (int)mListSizes[i].y + 1;
                     }
                 }
 
