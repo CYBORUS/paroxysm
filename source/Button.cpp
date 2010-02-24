@@ -85,12 +85,12 @@ void Button::onStateChange()
 {
     if (mEnabled && mVisible && mLastState != mMouseState)
     {
-        mLastState = mMouseState;
         switch (mMouseState)
         {
             case HOVER:
             {
-                SoundEngine::playSound(mHoverSound);
+                if (mLastState != PRESS)
+                    SoundEngine::playSound(mHoverSound);
                 break;
             }
 
@@ -104,5 +104,7 @@ void Button::onStateChange()
             {
             }
         }
+
+        mLastState = mMouseState;
     }
 }
