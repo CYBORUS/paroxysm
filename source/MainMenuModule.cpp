@@ -118,7 +118,7 @@ void MainMenuModule::onButtonPress(int inID)
         }
         case NEW_GAME:
         {
-            mNextModule = new GameModule;
+            mNextModule = new LoadGameModule;
             mRunning = false;
             mDead = false;
             break;

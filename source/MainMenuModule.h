@@ -7,7 +7,7 @@
 #include "HUD.h"
 
 #include "MapEditorModule.h"
-#include "GameModule.h"
+#include "LoadGameModule.h"
 
 #include "Button.h"
 

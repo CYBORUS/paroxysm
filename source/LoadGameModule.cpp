@@ -1,10 +1,10 @@
-#include "GameModule.h"
+#include "LoadGameModule.h"
 
-bool GameModule::onLoad()
+bool LoadGameModule::onLoad()
 {
     ScrollList* maps = new ScrollList(&mSelectedMap, 2.0f, 5.0f, 34);
-    maps->setLocation(-5.0f, 3.0f);
-    maps->setSize(8.0f, 8.0f);
+    maps->setLocation(0.0f, 3.0f);
+    maps->setSize(25.0f, 8.0f);
     maps->setFontSize(20);
 
     string mapsDir = "assets/maps";
@@ -14,7 +14,7 @@ bool GameModule::onLoad()
         for (directory_iterator itr(mapsDir); itr != directory_iterator(); ++itr)
         {
             //cout << itr->path().filename() << ' ';
-            //maps->addListItem(itr->path().filename());
+            maps->addListItem(itr->path().filename());
             if (is_regular_file(itr->status()))
             {
                 //cout << " [" << file_size(itr->path()) << ']';
@@ -25,23 +25,7 @@ bool GameModule::onLoad()
     {
         cout << (exists(mapsDir) ? "Found: " : "Not found: ") << mapsDir << endl;
     }
-/*
-    //Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
-        maps->addListItem("They RopopoULE ALL!!!");
-    maps->addListItem("boogey");
-    //maps->setFontSize(24);
-    maps->addListItem("Cdaragorn");
-    maps->addListItem("Cyborus");
-    maps->addListItem("Cyborus1");
-        maps->addListItem("Cyborus Rules");
 
-    maps->addListItem("TheBuzzSaw");
-
-    for (int i = 0; i < 20; ++i)
-    {
-        maps->addListItem("They RopopoULE ALL!!!");
-    }
-*/
     Surface someImage = DisplayEngine::loadImage("assets/images/hud/load_map_up_arrow.png");
 
     maps->setUpArrow(someImage);
@@ -65,7 +49,7 @@ bool GameModule::onLoad()
     return true;
 }
 
-void GameModule::onInit()
+void LoadGameModule::onInit()
 {
     mRunning = true;
     mNextModule = NULL;
@@ -102,55 +86,55 @@ void GameModule::onInit()
 
 }
 
-void GameModule::onLoop()
+void LoadGameModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     mHUD.display();
 }
 
-void GameModule::onFrame()
+void LoadGameModule::onFrame()
 {
 }
 
-void GameModule::onCleanup()
+void LoadGameModule::onCleanup()
 {
 }
 
-Module* GameModule::next()
+Module* LoadGameModule::next()
 {
     return mNextModule;
 }
 
 
-void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
+void LoadGameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
     mHUD.setStates(inX, inY, inLeft);
 }
 
-void GameModule::onMouseWheel(bool inUp, bool inDown)
+void LoadGameModule::onMouseWheel(bool inUp, bool inDown)
 {
 }
 
-void GameModule::onLButtonDown(int inX, int inY)
+void LoadGameModule::onLButtonDown(int inX, int inY)
 {
     mHUD.setStates(inX, inY, true);
     cerr << "selected map: " << mSelectedMap << endl;
 }
 
 
-void GameModule::onLButtonUp(int inX, int inY)
+void LoadGameModule::onLButtonUp(int inX, int inY)
 {
     mHUD.setStates(inX, inY, false);
 }
 
 
-void GameModule::onRButtonDown(int inX, int inY)
+void LoadGameModule::onRButtonDown(int inX, int inY)
 {
 }
 
 
-void GameModule::onRButtonUp(int inX, int inY)
+void LoadGameModule::onRButtonUp(int inX, int inY)
 {
 }
 

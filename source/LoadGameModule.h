@@ -1,5 +1,5 @@
-#ifndef GAMEMODULE_H
-#define GAMEMODULE_H
+#ifndef LOADGAMEMODULE_H
+#define LOADGAMEMODULE_H
 
 #include "Module.h"
 #include "Point2D.h"
@@ -18,7 +18,7 @@ using namespace std;
 
 #define GAME_RANGE 10.0
 
-class GameModule : public Module
+class LoadGameModule : public Module
 {
     public:
         bool onLoad();
