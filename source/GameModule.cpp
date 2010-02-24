@@ -27,7 +27,7 @@ bool GameModule::onLoad()
     maps->setDownArrow(someImage);
 
     TextBox* typing = new TextBox();
-    typing->setLocation(2.0f, 0.0f);
+    typing->setLocation(2.0f, -3.0f);
     typing->setSize(10.0f, 1.0f);
 
     Point2D<int> display;

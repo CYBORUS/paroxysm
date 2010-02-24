@@ -185,7 +185,6 @@ void ScrollList::setFontSize(int inSize)
 void ScrollList::setUpArrow(Surface inSurface)
 {
     mUpArrow = inSurface;
-    mPixelUpArrowBottom = mPixelUL.y + inSurface->h;
     DisplayEngine::loadTexture(mUpArrow, mArrows[0]);
 }
 
@@ -193,7 +192,6 @@ void ScrollList::setUpArrow(Surface inSurface)
 void ScrollList::setDownArrow(Surface inSurface)
 {
     mDownArrow = inSurface;
-    mPixelDownArrowTop = mPixelLR.y - inSurface->h;
     DisplayEngine::loadTexture(mDownArrow, mArrows[1]);
 }
 
@@ -204,27 +202,39 @@ void ScrollList::onMouseChange(int inX, int inY)
     {
         case PRESS:
         {
-            cerr << "pressed: " << inX << ", " << inY << endl;
-            int startY = mPixelUL.y;
-            bool found = false;
-
-            for (int i = 0; startY < mPixelLR.y && !found; ++i)
+            //check to see that it's within the displayed list
+            //(e.g. they didn't click over the arrows
+            if (inX < (mPixelLR.x - mPixelArrowWidth))
             {
-                if (startY + mListSizes[i].y >= inY)
+                int startY = mPixelUL.y;
+                bool found = false;
+
+                for (int i = 0; startY < mPixelLR.y && !found; ++i)
                 {
-                    found = true;
-                    mSelectedItem = i;
-                    mSelectedItemStartY = startY;
+                    if (startY + mListSizes[i].y >= inY)
+                    {
+                        found = true;
+                        mSelectedItem = i;
+                        mSelectedItemStartY = startY;
+                    }
+                    else
+                    {
+                        startY += (int)mListSizes[i].y;
+                    }
                 }
-                else
+
+                if (found)
                 {
-                    startY += (int)mListSizes[i].y;
+                    setSelection();
                 }
             }
-
-            if (found)
+            else if (inY < mPixelUpArrowBottom)
             {
-                setSelection();
+                cerr << "up arrow" << endl;
+            }
+            else if (inY > mPixelDownArrowTop)
+            {
+                cerr << "down arrow" << endl;
             }
             break;
         }
@@ -318,6 +328,19 @@ void ScrollList::buildScrollList()
     mArrowWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
 
 
+    //setup the arrow dimensions
+    if (mUpArrow != NULL)
+    {
+        mPixelUpArrowBottom = mPixelUL.y + mUpArrow->h;
+    }
+
+    if (mDownArrow != NULL)
+    {
+        mPixelDownArrowTop = mPixelLR.y - mDownArrow->h;
+    }
+
+
+
     if (glIsList(mScrollList))
     {
         glDeleteLists(mScrollList, 1);
@@ -331,10 +354,7 @@ void ScrollList::buildScrollList()
         float nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
         startY -= nextTex;
 
-        cerr << "nextTex: " << nextTex << " startY: " << startY << endl;
-
         glEnable(GL_SCISSOR_TEST);
-
 
         glEnable(GL_TEXTURE_2D);
         for (unsigned int i = 0; i < mList.size(); ++i)
@@ -393,9 +413,54 @@ void ScrollList::buildScrollList()
             startY -= nextTex;
         }
 
-        glDisable(GL_TEXTURE_2D);
-
         glDisable(GL_SCISSOR_TEST);
+
+        //display the up arrow
+        point.x = 0;
+        point.y = center.y - mUpArrow->h;
+
+        Point2D<float> arrowHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange);
+
+        startX = mLocation.x + (mSize.x / 2.0) - mArrowWidth;
+        startY = mLocation.y + (mSize.y / 2.0) - arrowHeight.y;
+
+        glBindTexture(GL_TEXTURE_2D, mArrows[0]);
+        glBegin(GL_QUADS);
+        {
+            glTexCoord2i(0, 1);
+            glVertex2f(startX, startY);
+            glTexCoord2i(1, 1);
+            glVertex2f(startX + mArrowWidth, startY);
+            glTexCoord2i(1, 0);
+            glVertex2f(startX + mArrowWidth, startY + arrowHeight.y);
+            glTexCoord2i(0, 0);
+            glVertex2f(startX, startY + arrowHeight.y);
+        }
+        glEnd();
+
+        //now display the down arrow
+        point.x = 0;
+        point.y = center.y - mDownArrow->h;
+
+        arrowHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange);
+
+        startY = mLocation.y - (mSize.y / 2.0);
+
+        glBindTexture(GL_TEXTURE_2D, mArrows[1]);
+        glBegin(GL_QUADS);
+        {
+            glTexCoord2i(0, 1);
+            glVertex2f(startX, startY);
+            glTexCoord2i(1, 1);
+            glVertex2f(startX + mArrowWidth, startY);
+            glTexCoord2i(1, 0);
+            glVertex2f(startX + mArrowWidth, startY + arrowHeight.y);
+            glTexCoord2i(0, 0);
+            glVertex2f(startX, startY + arrowHeight.y);
+        }
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
 
         glColor3f(1.0f, 1.0f, 1.0f);
         glBegin(GL_LINE_LOOP);
