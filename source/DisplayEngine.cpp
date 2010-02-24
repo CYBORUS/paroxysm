@@ -27,8 +27,8 @@
 #error Do not use SDL_image 1.2.9
 #endif
 
-#include <iostream>
-using namespace std;
+#include <list>
+#include <fstream>
 
 Surface DisplayEngine::mDisplay = NULL;
 Surface DisplayEngine::mWindowIcon = NULL;
@@ -193,30 +193,18 @@ void DisplayEngine::initialize()
 
     SDL_WM_SetCaption("Paroxysm version 0.1.1","Paroxysm");
 
-    cerr << "\n\nVendor: " << (char*)glGetString(GL_VENDOR) << endl;
-    cerr << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
-    cerr << "Opengl Version: " << (char*)glGetString(GL_VERSION) << endl;
-    string stuff = (char*)glGetString(GL_EXTENSIONS);
-    cerr << "\nString size: " << stuff.size() << endl << endl;
-
-    for (unsigned int i = 0; i < stuff.size(); ++i)
+    ofstream logFile;
+    stringstream ss;
+    ss << "assets/logs/ogl-" << time(NULL) << ".txt";
+    //cerr << "logging " << ss.str() << endl;
+    logFile.open(ss.str().c_str(), ios::trunc);
+    if (logFile.fail())
     {
-        unsigned int j;
-        if (stuff.find_first_of(' ', i) != string::npos)
-        {
-            j = stuff.find_first_of(' ', i);
-        }
-        else
-        {
-            j = 0;
-        }
-        cerr << stuff.substr(i, j - i) << endl;
-
-        if (j > i)
-        {
-            i = j;
-        }
+        cerr << "failed to log: " << ss.str() << endl;
+        return;
     }
+    logOpenGL(logFile);
+    logFile.close();
 }
 
 void DisplayEngine::cleanup()
@@ -429,3 +417,30 @@ Point2D<float> DisplayEngine::convert2DPixelToObject(Point2D<int> inPoint,
 
 }
 
+void DisplayEngine::logOpenGL(ostream& inStream)
+{
+    inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;
+    inStream << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
+    inStream << "Opengl Version: " << (char*)glGetString(GL_VERSION) << endl;
+    string stuff = (char*)glGetString(GL_EXTENSIONS);
+    inStream << "\nString size: " << stuff.size() << endl << endl;
+
+    for (unsigned int i = 0; i < stuff.size(); ++i)
+    {
+        unsigned int j;
+        if (stuff.find_first_of(' ', i) != string::npos)
+        {
+            j = stuff.find_first_of(' ', i);
+        }
+        else
+        {
+            j = 0;
+        }
+        inStream << stuff.substr(i, j - i) << endl;
+
+        if (j > i)
+        {
+            i = j;
+        }
+    }
+}
