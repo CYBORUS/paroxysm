@@ -41,6 +41,7 @@ class TextLayer
         Surface getTextImage();
 
         Point2D<int> getTextSize();
+        Point2D<float> getRatio();
 
     protected:
         SDL_Color mColor;

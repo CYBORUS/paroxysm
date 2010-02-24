@@ -139,3 +139,13 @@ Point2D<int> TextLayer::getTextSize()
 {
     return mTextSize;
 }
+
+
+Point2D<float> TextLayer::getRatio()
+{
+    Point2D<float> result;
+    result.x = mSurface->w / (float)mTextSize.x;
+    result.y = mSurface->h / (float)mTextSize.y;
+
+    return result;
+}
