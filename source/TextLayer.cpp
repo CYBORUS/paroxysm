@@ -80,6 +80,12 @@ void TextLayer::setText(const char* inText)
     //textSurface = TTF_RenderText_Solid(mFont, mText.c_str(), mColor);
     textSurface = TTF_RenderText_Blended(mFont, mText.c_str(), mColor);
 
+    if (textSurface == NULL)
+    {
+        mSurface = NULL;
+        return;
+    }
+
     //textSurface = SDL_DisplayFormatAlpha(textSurface);
 
     mTextSize.x = textSurface->w;
@@ -121,7 +127,7 @@ void TextLayer::setText(const char* inText)
         cerr << "blitting error" << endl;
     }
 
-
+    SDL_SetAlpha(textSurface, SDL_SRCALPHA, textSurface->format->alpha);
     SDL_SetAlpha(mSurface, SDL_SRCALPHA, textSurface->format->alpha);
 
     SDL_SaveBMP(textSurface, "textSurface.bmp");
