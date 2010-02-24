@@ -206,7 +206,11 @@ void ScrollList::onMouseChange(int inX, int inY)
             //(e.g. they didn't click over the arrows
             if (inX < (mPixelLR.x - mPixelArrowWidth))
             {
-                int startY = mPixelUL.y;
+                Point2D<float> point;
+                point.x = 0;
+                point.y = mScrollStart;
+
+                int startY = DisplayEngine::convert2DObjectToPixel(point, mDisplay, mRange).y;
                 bool found = false;
 
                 for (int i = 0; startY < mPixelLR.y && !found; ++i)
@@ -230,11 +234,11 @@ void ScrollList::onMouseChange(int inX, int inY)
             }
             else if (inY < mPixelUpArrowBottom)
             {
-                cerr << "up arrow" << endl;
+                scrollUp();
             }
             else if (inY > mPixelDownArrowTop)
             {
-                cerr << "down arrow" << endl;
+                scrollDown();
             }
             break;
         }
@@ -273,6 +277,28 @@ void ScrollList::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 }
 
 
+void ScrollList::scrollUp()
+{
+    mScrollStart -= (mSize.y / 2.0f);
+
+    if (mScrollStart < (mLocation.y + (mSize.y / 2.0f)))
+    {
+        mScrollStart = mLocation.y + (mSize.y / 2.0f);
+    }
+
+    buildScrollList();
+    setSelection();
+}
+
+
+void ScrollList::scrollDown()
+{
+    mScrollStart += (mSize.y / 2.0f);
+
+    buildScrollList();
+    setSelection();
+}
+
 /*****************************************
 *   overloaded to calculate all the internal
 *   items in the list
@@ -281,6 +307,8 @@ void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
 {
     mDisplay = inDisplay;
     mRange = inRange;
+
+    mScrollStart = mLocation.y + (mSize.y / 2.0f);
 
     Point2D<float> objectPoint;
 
@@ -304,7 +332,7 @@ void ScrollList::buildScrollList()
 {
     //set the top left corner in object space
     float startX = mLocation.x - (mSize.x / 2.0f);
-    float startY = mLocation.y + (mSize.y / 2.0f);
+    float startY = mScrollStart;
 
     //need to find out how to deal with case that y > x
     float ratio = (float)mDisplay.x / (float)mDisplay.y;
@@ -491,7 +519,7 @@ void ScrollList::setSelection()
 
     float texHeight;
     float startX = mLocation.x - (mSize.x / 2.0f);
-    float startY = mLocation.y + (mSize.y / 2.0f);
+    float startY = mScrollStart;
 
     for (int i = 0; i < mSelectedItem; ++i)
     {

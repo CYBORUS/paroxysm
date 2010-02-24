@@ -45,11 +45,16 @@ class ScrollList : public Widget
     protected:
         void buildScrollList();
         void setSelection();
+
+        void scrollUp();
+        void scrollDown();
         //used to provide the creator of this widget
         //information about which item is currently selected
         string* mInfoPointer;
 
         float mRange;
+
+        float mScrollStart; //to record where the scrolling is currently
 
         int mSelectedItem;
         int mSelectedItemStartY;
