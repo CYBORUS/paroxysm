@@ -316,7 +316,6 @@ void ScrollList::buildScrollList()
 
     //all we want is the width of the arrow in object space
     mArrowWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
-    cerr << "mArrowWidth: " << mArrowWidth << endl;
 
 
     if (glIsList(mScrollList))
@@ -328,7 +327,7 @@ void ScrollList::buildScrollList()
     {
         //we need to adjust the first listItem to put it back into
         //the box
-        point.y = center.y - mListSizes[0].y + 1;
+        point.y = center.y - (int)mListSizes[0].y + 1;
         float nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
         startY -= nextTex;
 
@@ -343,19 +342,18 @@ void ScrollList::buildScrollList()
             float nextX = startX;
 
             //we want the height for the image and the text to be the same
-            point.y = center.y - mListSizes[i].y;
+            point.y = center.y - (int)mListSizes[i].y;
             float texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
-            cerr << "texHeight: " << texHeight << endl;
 
             //the widths should be different
             float texWidth;
 
-            point.y = center.y - mListSizes[(i + 1) % mList.size()].y - 1;
+            point.y = center.y - int(mListSizes[(i + 1) % mList.size()].y) - 1;
             nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
             if (mImages[i] != mNoImage)
             {
-                point.x = center.x + mImageSizes[i].x;
+                point.x = center.x + (int)mImageSizes[i].x;
                 texWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
                 glBindTexture(GL_TEXTURE_2D, mImages[i]);
                 glBegin(GL_QUADS);
@@ -375,7 +373,7 @@ void ScrollList::buildScrollList()
                 nextX += texWidth;
             }
 
-            point.x = center.x + mListSizes[i].x;
+            point.x = center.x + (int)mListSizes[i].x;
             texWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
 
             glBindTexture(GL_TEXTURE_2D, mList[i]);

@@ -30,6 +30,11 @@ bool GameModule::onLoad()
     typing->setLocation(2.0f, 0.0f);
     typing->setSize(10.0f, 1.0f);
 
+    Point2D<int> display;
+
+    display.x = Config::get<int>("display width", 800);
+    display.y = Config::get<int>("display height", 600);
+
     mHUD.addWidget(maps);
     mHUD.addWidget(typing);
 
@@ -66,8 +71,8 @@ void GameModule::onInit()
     glLoadIdentity();
 
     Point2D<int> display;
-    display.x = 1024;
-    display.y = 768;
+    display.x = w;
+    display.y = h;
 
     mHUD.setDisplay(display, GAME_RANGE);
 

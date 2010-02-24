@@ -15,10 +15,6 @@
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
-				<Linker>
-					<Add library="C:\dev\MingW\lib\boost\libboost_filesystem-mgw34-mt-d.lib" />
-					<Add library="C:\dev\MingW\lib\boost\libboost_system-mgw34-mt-d.lib" />
-				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="..\..\paroxysm-win32" prefix_auto="1" extension_auto="1" />
@@ -32,8 +28,6 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-mwindows" />
-					<Add library="C:\dev\MingW\lib\boost\libboost_filesystem-mgw34-mt.lib" />
-					<Add library="C:\dev\MingW\lib\boost\libboost_system-mgw34-mt.lib" />
 				</Linker>
 			</Target>
 		</Build>
@@ -49,6 +43,8 @@
 			<Add library="SDL" />
 			<Add library="opengl32" />
 			<Add library="glu32" />
+			<Add library="C:\dev\MingW\lib\boost\libboost_filesystem-mgw34-mt.lib" />
+			<Add library="C:\dev\MingW\lib\boost\libboost_system-mgw34-mt.lib" />
 		</Linker>
 		<Unit filename="..\BlankWindow.cpp" />
 		<Unit filename="..\BlankWindow.h" />
@@ -72,8 +68,6 @@
 		<Unit filename="..\MapEditorAction.h" />
 		<Unit filename="..\MapEditorModule.cpp" />
 		<Unit filename="..\MapEditorModule.h" />
-		<Unit filename="..\MapManagerModule.cpp" />
-		<Unit filename="..\MapManagerModule.h" />
 		<Unit filename="..\Matrix.h" />
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />

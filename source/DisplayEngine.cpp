@@ -200,9 +200,13 @@ void DisplayEngine::initialize()
     cerr << "\nString size: " << stuff.size() << endl << endl;
     for (unsigned int i = 0; i < stuff.size(); ++i)
     {
-        int j = stuff.find_first_of(' ', i);
+        unsigned int j = stuff.find_first_of(' ', i);
         cerr << stuff.substr(i, j - i) << endl;
-        i = j;
+
+        if (j > i)
+        {
+            i = j;
+        }
     }
 }
 
@@ -250,30 +254,37 @@ void DisplayEngine::printErrors()
             case GL_INVALID_ENUM:
             {
                 cerr << "Invalid enum." << endl;
+                break;
             }
             case GL_INVALID_VALUE:
             {
                 cerr << "Invalid value." << endl;
+                break;
             }
             case GL_INVALID_OPERATION:
             {
                 cerr << "Invalid operation." << endl;
+                break;
             }
             case GL_STACK_OVERFLOW:
             {
                 cerr << "Stack Overflow" << endl;
+                break;
             }
             case GL_STACK_UNDERFLOW:
             {
                 cerr << "Stack Underflow" << endl;
+                break;
             }
             case GL_OUT_OF_MEMORY:
             {
                 cerr << "Out of memory." << endl;
+                break;
             }
             case GL_TABLE_TOO_LARGE:
             {
                 cerr << "Table too large." << endl;
+                break;
             }
         }
 
