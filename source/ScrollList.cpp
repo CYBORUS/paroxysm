@@ -80,6 +80,7 @@ void ScrollList::addListItem(string inText, Surface inImage)
 
     mList.push_back(texture);
     mListSizes.push_back(size);
+    mSizeRatios.push_back(mText.getRatio());
 
     size.x = inImage->w;
     size.y = inImage->h;
@@ -161,10 +162,9 @@ void ScrollList::addListItem(string inText)
     size.x = mText.getTextSize().x;
     size.y = mText.getTextSize().y;
 
-    cerr << "list size: " << size.y << " surface size: " << mText.getTextImage()->h << endl;
-
     mList.push_back(texture);
     mListSizes.push_back(size);
+    mSizeRatios.push_back(mText.getRatio());
 
     size.x = 0;
     size.y = 0;
@@ -398,7 +398,6 @@ void ScrollList::buildScrollList()
             point.y = center.y - (int)mListSizes[i].y;
             float texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
-            cerr << "height here: " << mListSizes[i].y << endl;
             //the widths should be different
             float texWidth;
 
@@ -412,11 +411,11 @@ void ScrollList::buildScrollList()
                 glBindTexture(GL_TEXTURE_2D, mImages[i]);
                 glBegin(GL_QUADS);
                 {
-                    glTexCoord2i(0, 1);
+                    glTexCoord2f(0, mSizeRatios[i].y);
                     glVertex2f(nextX, startY);
-                    glTexCoord2i(1, 1);
+                    glTexCoord2f(mSizeRatios[i].x, mSizeRatios[i].y);
                     glVertex2f(nextX + texWidth, startY);
-                    glTexCoord2i(1, 0);
+                    glTexCoord2f(mSizeRatios[i].x, 0);
                     glVertex2f(nextX + texWidth, startY + texHeight);
                     glTexCoord2i(0, 0);
                     glVertex2f(nextX, startY + texHeight);
@@ -433,11 +432,11 @@ void ScrollList::buildScrollList()
             glBindTexture(GL_TEXTURE_2D, mList[i]);
             glBegin(GL_QUADS);
             {
-                glTexCoord2i(0, 1);
+                glTexCoord2f(0.0f, mSizeRatios[i].y);
                 glVertex2f(nextX, startY);
-                glTexCoord2i(1, 1);
+                glTexCoord2f(mSizeRatios[i].x, mSizeRatios[i].y);
                 glVertex2f(nextX + texWidth, startY);
-                glTexCoord2i(1, 0);
+                glTexCoord2f(mSizeRatios[i].x, 0);
                 glVertex2f(nextX + texWidth, startY + texHeight);
                 glTexCoord2i(0, 0);
                 glVertex2f(nextX, startY + texHeight);

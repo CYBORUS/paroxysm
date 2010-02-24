@@ -7,10 +7,14 @@ bool GameModule::onLoad()
     maps->setLocation(-5.0f, 3.0f);
     maps->setSize(8.0f, 8.0f);
     maps->setFontSize(20);
+        maps->addListItem("They RopopoULE ALL!!!");
     maps->addListItem("boogey");
     //maps->setFontSize(24);
-    maps->addListItem("Cyborus");
     maps->addListItem("Cdaragorn");
+    maps->addListItem("Cyborus");
+    maps->addListItem("Cyborus1");
+        maps->addListItem("Cyborus Rules");
+
     maps->addListItem("TheBuzzSaw");
 
     for (int i = 0; i < 20; ++i)

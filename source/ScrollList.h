@@ -79,6 +79,7 @@ class ScrollList : public Widget
         vector<string> mListText;
         vector<GLuint> mList;
         vector<Point2D<float> > mListSizes;
+        vector<Point2D<float> > mSizeRatios;
         vector<GLuint> mImages;
         vector<Point2D<float> > mImageSizes;
         GLuint mNoImage; //used to see when a list item doesn't have an image
