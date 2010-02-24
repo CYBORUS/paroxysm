@@ -198,9 +198,18 @@ void DisplayEngine::initialize()
     cerr << "Opengl Version: " << (char*)glGetString(GL_VERSION) << endl;
     string stuff = (char*)glGetString(GL_EXTENSIONS);
     cerr << "\nString size: " << stuff.size() << endl << endl;
+
     for (unsigned int i = 0; i < stuff.size(); ++i)
     {
-        unsigned int j = stuff.find_first_of(' ', i);
+        unsigned int j;
+        if (stuff.find_first_of(' ', i) != string::npos)
+        {
+            j = stuff.find_first_of(' ', i);
+        }
+        else
+        {
+            j = 0;
+        }
         cerr << stuff.substr(i, j - i) << endl;
 
         if (j > i)
