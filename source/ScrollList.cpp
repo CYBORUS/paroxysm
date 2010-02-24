@@ -98,27 +98,6 @@ void ScrollList::addListItem(string inText, Surface inImage)
 
     mListText.push_back(inText);
 
-
-/*
-    string temp = ".";
-
-    if (is_directory(temp))
-    {
-        for (directory_iterator itr(temp); itr != directory_iterator(); ++itr)
-        {
-            cout << itr->path().filename() << ' ';
-            if (is_regular_file(itr->status()))
-            {
-                cout << " [" << file_size(itr->path()) << ']';
-            }
-            cout << endl;
-        }
-    }
-    else
-    {
-        cout << (exists(temp) ? "Found: " : "Not found: ") << temp << endl;
-    }
-*/
 /*
     random_device device;
     double ent = device.entropy();
@@ -216,7 +195,7 @@ void ScrollList::onMouseChange(int inX, int inY)
 
                 bool found = false;
 
-                for (int i = 0; startY < mPixelLR.y && !found; ++i)
+                for (int i = 0; i < (int)mListSizes.size() &&  startY < mPixelLR.y && !found; ++i)
                 {
                     if (startY + mListSizes[i].y >= inY)
                     {
@@ -379,12 +358,16 @@ void ScrollList::buildScrollList()
 
     glNewList(mScrollList, GL_COMPILE);
     {
-        //we need to adjust the first listItem to put it back into
-        //the box
-        point.y = center.y - (int)mListSizes[0].y + 1;
-        float nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
-        startY -= nextTex;
+        float nextTex;
 
+        if (mList.size() > 0)
+        {
+            //we need to adjust the first listItem to put it back into
+            //the box
+            point.y = center.y - (int)mListSizes[0].y + 1;
+            nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
+            startY -= nextTex;
+        }
 
 
         glEnable(GL_SCISSOR_TEST);
@@ -515,6 +498,11 @@ void ScrollList::buildScrollList()
 
 void ScrollList::setSelection()
 {
+    if (mList.size() < 1)
+    {
+        return;
+    }
+
     *mInfoPointer = mListText[mSelectedItem];
 
     if (glIsList(mSelectionBox))

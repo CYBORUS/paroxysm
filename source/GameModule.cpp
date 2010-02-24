@@ -2,11 +2,31 @@
 
 bool GameModule::onLoad()
 {
-    //Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
     ScrollList* maps = new ScrollList(&mSelectedMap, 2.0f, 5.0f, 34);
     maps->setLocation(-5.0f, 3.0f);
     maps->setSize(8.0f, 8.0f);
     maps->setFontSize(20);
+
+    string mapsDir = "assets/maps";
+
+    if (is_directory(mapsDir))
+    {
+        for (directory_iterator itr(mapsDir); itr != directory_iterator(); ++itr)
+        {
+            //cout << itr->path().filename() << ' ';
+            //maps->addListItem(itr->path().filename());
+            if (is_regular_file(itr->status()))
+            {
+                //cout << " [" << file_size(itr->path()) << ']';
+            }
+        }
+    }
+    else
+    {
+        cout << (exists(mapsDir) ? "Found: " : "Not found: ") << mapsDir << endl;
+    }
+/*
+    //Surface someImage = DisplayEngine::loadImage("assets/images/green.png");
         maps->addListItem("They RopopoULE ALL!!!");
     maps->addListItem("boogey");
     //maps->setFontSize(24);
@@ -21,7 +41,7 @@ bool GameModule::onLoad()
     {
         maps->addListItem("They RopopoULE ALL!!!");
     }
-
+*/
     Surface someImage = DisplayEngine::loadImage("assets/images/hud/load_map_up_arrow.png");
 
     maps->setUpArrow(someImage);

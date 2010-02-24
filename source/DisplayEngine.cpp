@@ -35,6 +35,7 @@ Surface DisplayEngine::mWindowIcon = NULL;
 SDL_Rect** DisplayEngine::mModes = NULL;
 bool DisplayEngine::mMipmapping = false;
 Mask DisplayEngine::mMask;
+ofstream DisplayEngine::mLogFile;
 
 void DisplayEngine::start(Module* inModule)
 {
@@ -193,18 +194,16 @@ void DisplayEngine::initialize()
 
     SDL_WM_SetCaption("Paroxysm version 0.1.1","Paroxysm");
 
-    ofstream logFile;
     stringstream ss;
     ss << "assets/logs/ogl-" << time(NULL) << ".txt";
     //cerr << "logging " << ss.str() << endl;
-    logFile.open(ss.str().c_str(), ios::trunc);
-    if (logFile.fail())
+    mLogFile.open(ss.str().c_str(), ios::trunc);
+    if (mLogFile.fail())
     {
         cerr << "failed to log: " << ss.str() << endl;
         return;
     }
-    logOpenGL(logFile);
-    logFile.close();
+    openGLDriverInfo(mLogFile);
 }
 
 void DisplayEngine::cleanup()
@@ -212,6 +211,8 @@ void DisplayEngine::cleanup()
     #ifndef __APPLE__
     //SDL_FreeSurface(mWindowIcon);
     #endif
+
+    mLogFile.close();
 
     SDL_Quit();
 }
@@ -233,7 +234,7 @@ Surface DisplayEngine::loadImage(const char* inFile)
     return outSurface;
 }
 
-void DisplayEngine::printErrors()
+void DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
 {
     GLenum error;
 
@@ -241,7 +242,7 @@ void DisplayEngine::printErrors()
 
     if (error != GL_NO_ERROR)
     {
-        cerr << "Opengl Error: ";
+        inStream << inMessage;
     }
 
     while (error != GL_NO_ERROR)
@@ -250,37 +251,37 @@ void DisplayEngine::printErrors()
         {
             case GL_INVALID_ENUM:
             {
-                cerr << "Invalid enum." << endl;
+                inStream << "Invalid enum." << endl;
                 break;
             }
             case GL_INVALID_VALUE:
             {
-                cerr << "Invalid value." << endl;
+                inStream << "Invalid value." << endl;
                 break;
             }
             case GL_INVALID_OPERATION:
             {
-                cerr << "Invalid operation." << endl;
+                inStream << "Invalid operation." << endl;
                 break;
             }
             case GL_STACK_OVERFLOW:
             {
-                cerr << "Stack Overflow" << endl;
+                inStream << "Stack Overflow" << endl;
                 break;
             }
             case GL_STACK_UNDERFLOW:
             {
-                cerr << "Stack Underflow" << endl;
+                inStream << "Stack Underflow" << endl;
                 break;
             }
             case GL_OUT_OF_MEMORY:
             {
-                cerr << "Out of memory." << endl;
+                inStream << "Out of memory." << endl;
                 break;
             }
             case GL_TABLE_TOO_LARGE:
             {
-                cerr << "Table too large." << endl;
+                inStream << "Table too large." << endl;
                 break;
             }
         }
@@ -291,10 +292,9 @@ void DisplayEngine::printErrors()
 
 bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
 {
-    /*
-    cerr << "Pre-texture errors:\n";
-    printErrors();
-*/
+
+    printErrors("Pre-texture errors:\n", mLogFile);
+
     bool outSuccess = true;
     if (inSurface == NULL)
     {
@@ -359,10 +359,9 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
-/*
-    cerr << "Post-texture errors:\n";
-    printErrors();
-*/
+
+    printErrors("Post-texture errors:\n", mLogFile);
+
 
     if (!outSuccess) SDL_FreeSurface(inSurface);
     return outSuccess;
@@ -417,13 +416,12 @@ Point2D<float> DisplayEngine::convert2DPixelToObject(Point2D<int> inPoint,
 
 }
 
-void DisplayEngine::logOpenGL(ostream& inStream)
+void DisplayEngine::openGLDriverInfo(ostream& inStream)
 {
     inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;
     inStream << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
     inStream << "Opengl Version: " << (char*)glGetString(GL_VERSION) << endl;
     string stuff = (char*)glGetString(GL_EXTENSIONS);
-    inStream << "\nString size: " << stuff.size() << endl << endl;
 
     for (unsigned int i = 0; i < stuff.size(); ++i)
     {

@@ -51,7 +51,7 @@ class DisplayEngine
         static Surface loadImage(const char* inFile);
         static bool loadTexture(Surface inSurface, GLuint inTexture);
         static bool loadTexture(const char* inFile, GLuint inTexture);
-        static void logOpenGL(ostream& inStream);
+        static void openGLDriverInfo(ostream& inStream);
 
         static Point2D<int> convert2DObjectToPixel(Point2D<float> inPoint,
             Point2D<int> inDisplay, float inRange);
@@ -63,7 +63,7 @@ class DisplayEngine
     private:
         static void cleanup();
 
-        static void printErrors();
+        static void printErrors(const char* inMessage, ostream& inStream);
 
         static Surface mWindowIcon;
         static SDL_Rect** mModes;
@@ -71,6 +71,8 @@ class DisplayEngine
         static unsigned int mCurrentFrame;
         static bool mMipmapping;
         static Mask mMask;
+
+        static ofstream mLogFile;
 };
 
 #endif
