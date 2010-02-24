@@ -294,10 +294,10 @@ void DisplayEngine::printErrors()
 
 bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
 {
+    /*
     cerr << "Pre-texture errors:\n";
-
     printErrors();
-
+*/
     bool outSuccess = true;
     if (inSurface == NULL)
     {
@@ -362,9 +362,10 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
+/*
     cerr << "Post-texture errors:\n";
-
     printErrors();
+*/
 
     if (!outSuccess) SDL_FreeSurface(inSurface);
     return outSuccess;

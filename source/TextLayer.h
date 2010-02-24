@@ -24,6 +24,7 @@
 
 #include <string>
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 class TextLayer
@@ -39,11 +40,15 @@ class TextLayer
         string getText();
         Surface getTextImage();
 
+        Point2D<int> getTextSize();
+
     protected:
         SDL_Color mColor;
         TTF_Font* mFont;
         int mSize;
         std::string mText;
+
+        Point2D<int> mTextSize;
 
         Surface mSurface;
 };

@@ -75,8 +75,8 @@ void ScrollList::addListItem(string inText, Surface inImage)
 
     Point2D<float> size;
 
-    size.x = mText.getTextImage()->w;
-    size.y = mText.getTextImage()->h;
+    size.x = mText.getTextSize().x;
+    size.y = mText.getTextSize().y;
 
     mList.push_back(texture);
     mListSizes.push_back(size);
@@ -158,8 +158,8 @@ void ScrollList::addListItem(string inText)
 
     Point2D<float> size;
 
-    size.x = mText.getTextImage()->w;
-    size.y = mText.getTextImage()->h;
+    size.x = mText.getTextSize().x;
+    size.y = mText.getTextSize().y;
 
     mList.push_back(texture);
     mListSizes.push_back(size);

@@ -74,12 +74,66 @@ void TextLayer::setText(const char* inText)
     {
         SDL_FreeSurface(mSurface);
     }
-    //surface = TTF_RenderText_Solid(mFont, mText.c_str(), mColor);
-    mSurface = TTF_RenderText_Blended(mFont, mText.c_str(), mColor);
+
+    Surface textSurface = NULL;
+
+    //textSurface = TTF_RenderText_Solid(mFont, mText.c_str(), mColor);
+    textSurface = TTF_RenderText_Blended(mFont, mText.c_str(), mColor);
+
+    //textSurface = SDL_DisplayFormatAlpha(textSurface);
+
+    mTextSize.x = textSurface->w;
+    mTextSize.y = textSurface->h;
+
+    SDL_Rect src;
+    SDL_Rect dest;
+
+    src.x = 0;
+    src.y = 0;
+    src.h = textSurface->h;
+    src.w = textSurface->w;
+
+
+    dest.x = 0;
+    dest.y = 0;
+    dest.h = textSurface->h;
+    dest.w = textSurface->w;
+
+    int widthPower = int(log(textSurface->w) / log(2.0f)) + 1;
+    int heightPower = int(log(textSurface->h) / log(2.0f)) + 1;
+
+    widthPower = (int)pow(2.0f, widthPower);
+    heightPower = (int)pow(2.0f, heightPower);
+
+
+    cerr << "text dimensions: " << textSurface->w << ", " << textSurface->h << endl;
+    cerr << "widthPower: " << widthPower << " heightPower: " << heightPower << endl;
+
+    mSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, widthPower,
+                    heightPower, textSurface->format->BitsPerPixel, textSurface->format->Rmask,
+                    textSurface->format->Gmask, textSurface->format->Bmask, textSurface->format->Amask);
+
+    SDL_SetAlpha(textSurface, 0, 0x00);
+
+    if (SDL_BlitSurface(textSurface, NULL, mSurface, NULL) != 0)
+    {
+        cerr << "blitting error" << endl;
+    }
+
+    //mSurface = SDL_DisplayFormat(mSurface);
+
+    cerr << "alpha: " << (int)textSurface->format->alpha << endl;
+
+    SDL_SetAlpha(mSurface, SDL_SRCALPHA, textSurface->format->alpha);
+
+    SDL_SaveBMP(textSurface, "textSurface.bmp");
+    SDL_SaveBMP(mSurface, "mSurface.bmp");
 }
 
 void TextLayer::setText(const string& inString)
 {
+    setText(inString.c_str());
+/*
     mText = inString;
 
     if (mSurface != NULL)
@@ -88,9 +142,16 @@ void TextLayer::setText(const string& inString)
     }
     //surface = TTF_RenderText_Solid(mFont, mText.c_str(), mColor);
     mSurface = TTF_RenderText_Blended(mFont, mText.c_str(), mColor);
+    */
 }
 
 string TextLayer::getText()
 {
    return mText;
+}
+
+
+Point2D<int> TextLayer::getTextSize()
+{
+    return mTextSize;
 }
