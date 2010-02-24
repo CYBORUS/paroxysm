@@ -113,16 +113,14 @@ void TextLayer::setText(const char* inText)
                     heightPower, textSurface->format->BitsPerPixel, textSurface->format->Rmask,
                     textSurface->format->Gmask, textSurface->format->Bmask, textSurface->format->Amask);
 
-    SDL_SetAlpha(textSurface, 0, 0x00);
+    SDL_SetAlpha(textSurface, 0, 0xff);
+    SDL_SetAlpha(mSurface, SDL_SRCALPHA, 0x00);
 
     if (SDL_BlitSurface(textSurface, NULL, mSurface, NULL) != 0)
     {
         cerr << "blitting error" << endl;
     }
 
-    //mSurface = SDL_DisplayFormat(mSurface);
-
-    cerr << "alpha: " << (int)textSurface->format->alpha << endl;
 
     SDL_SetAlpha(mSurface, SDL_SRCALPHA, textSurface->format->alpha);
 
