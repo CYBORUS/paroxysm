@@ -33,6 +33,7 @@ class Widget
         virtual void display() = 0;
 
         void setState(MouseState inState);
+        virtual void onStateChange();
         void setLocation(float inX, float inY);
         void setSize(float inX, float inY);
         virtual void onMouseChange(int inX, int inY);

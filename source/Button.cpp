@@ -20,9 +20,18 @@
 
 string Button::mPrefix("assets/images/hud/");
 string Button::mSuffix(".png");
+SoundEffect Button::mHoverSound = NULL;
+SoundEffect Button::mClickSound = NULL;
 
 Button::Button(const char* inKeyword, int inID) : mKeyword(inKeyword)
 {
+    if (mHoverSound == NULL)
+    {
+        mHoverSound = SoundEngine::loadSound("button_hover_1.ogg");
+        mClickSound = SoundEngine::loadSound("button_click_1.ogg");
+    }
+
+    mLastState = OUTSIDE;
     mID = inID;
 
     glGenTextures(4, mTextures);
@@ -72,3 +81,28 @@ void Button::assemble(string& inString, const char* inAdd)
     inString += mSuffix;
 }
 
+void Button::onStateChange()
+{
+    if (mEnabled && mVisible && mLastState != mMouseState)
+    {
+        mLastState = mMouseState;
+        switch (mMouseState)
+        {
+            case HOVER:
+            {
+                SoundEngine::playSound(mHoverSound);
+                break;
+            }
+
+            case PRESS:
+            {
+                SoundEngine::playSound(mClickSound);
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+}

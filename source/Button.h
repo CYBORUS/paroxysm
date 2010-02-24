@@ -20,6 +20,7 @@
 
 #include <SDL_opengl.h>
 #include "Widget.h"
+#include "SoundEngine.h"
 
 #include <string>
 using namespace std;
@@ -31,15 +32,19 @@ class Button : public Widget
         virtual ~Button();
 
         virtual void display();
+        virtual void onStateChange();
 
     private:
         void assemble(string& inString, const char* inAdd);
 
         static string mPrefix;
         static string mSuffix;
+        static SoundEffect mHoverSound;
+        static SoundEffect mClickSound;
 
         string mKeyword;
         GLuint mTextures[4];
+        MouseState mLastState;
 };
 
 #endif

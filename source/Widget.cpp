@@ -31,6 +31,7 @@ Widget::~Widget()
 void Widget::setState(MouseState inState)
 {
     mMouseState = inState;
+    onStateChange();
 }
 
 void Widget::setLocation(float inX, float inY)
@@ -122,4 +123,8 @@ void Widget::toggle()
 bool Widget::canFocus()
 {
     return false;
+}
+
+void Widget::onStateChange()
+{
 }
