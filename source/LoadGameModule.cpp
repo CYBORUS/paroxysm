@@ -41,10 +41,10 @@ bool LoadGameModule::onLoad()
 
 
     Label* info = new Label("Load a Map", LOAD_GAME_LABEL);
-    info->setFontColor(0.2f, 0.1f, 0.8f, 0.8f);
-    info->setFontSize(64);
-    info->setLocation(0.0f, 0.0f);
-    info->setSize(10.0f, 4.0f);
+    info->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
+    info->setFontSize(52);
+    info->setLocation(0.0f, 7.0f);
+    info->setSize(8.0f, 4.0f);
 
     Point2D<int> display;
 
