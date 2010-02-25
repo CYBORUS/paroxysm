@@ -2,13 +2,14 @@
 
 bool LoadGameModule::onLoad()
 {
-    ScrollList* maps = new ScrollList(&mSelectedMap, 2.0f, 5.0f, 34);
+    ScrollList* maps = new ScrollList(&mSelectedMap, 2.0f, 5.0f, MAPLIST);
     maps->setLocation(0.0f, 3.0f);
     maps->setSize(25.0f, 8.0f);
     maps->setFontSize(20);
 
     string mapsDir = "assets/maps";
 
+    //load the list up with all the maps in the maps directory
     if (is_directory(mapsDir))
     {
         for (directory_iterator itr(mapsDir); itr != directory_iterator(); ++itr)
@@ -38,13 +39,21 @@ bool LoadGameModule::onLoad()
     typing->setLocation(2.0f, -3.0f);
     typing->setSize(10.0f, 1.0f);
 
+
+    Label* info = new Label("Load a Map", LOAD_GAME_LABEL);
+    info->setFontColor(0.2f, 0.1f, 0.8f, 0.8f);
+    info->setFontSize(64);
+    info->setLocation(0.0f, 0.0f);
+    info->setSize(10.0f, 4.0f);
+
     Point2D<int> display;
 
     display.x = Config::get<int>("display width", 800);
     display.y = Config::get<int>("display height", 600);
 
-    mHUD.addWidget(maps);
-    mHUD.addWidget(typing);
+    //mHUD.addWidget(maps);
+    //mHUD.addWidget(typing);
+    mHUD.addWidget(info);
 
     return true;
 }

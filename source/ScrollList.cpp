@@ -15,7 +15,7 @@ ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int
         cerr << "failed to load font file." << endl;
     }
 
-    mSomeRand = mt19937(time(NULL));
+    //mSomeRand = mt19937(time(NULL));
 
     glGenTextures(1, &mNoImage);
     glGenTextures(2, mArrows);
@@ -42,7 +42,7 @@ ScrollList::~ScrollList()
 
 void ScrollList::display()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT);
 
     //glScissor(mPixelUL.x, mDisplay.y - mPixelLR.y, mPixelLR.x - mPixelUL.x, mPixelLR.y - mPixelUL.y);
     glScissor(mPixelUL.x, mDisplay.y - mPixelLR.y, mPixelLR.x - mPixelUL.x - mPixelArrowWidth, mPixelLR.y - mPixelUL.y);
@@ -285,24 +285,11 @@ void ScrollList::scrollDown()
 *   overloaded to calculate all the internal
 *   items in the list
 *******************************************/
-void ScrollList::findPixels(const Point2D<int>& inDisplay, float inRange)
+void ScrollList::preProcessing(float inRange)
 {
-    mDisplay = inDisplay;
     mRange = inRange;
 
     mScrollStart = mLocation.y + (mSize.y / 2.0f);
-
-    Point2D<float> objectPoint;
-
-    objectPoint.x = mLocation.x - (mSize.x / 2.0f);
-    objectPoint.y = mLocation.y + (mSize.y / 2.0f);
-
-    mPixelUL = DisplayEngine::convert2DObjectToPixel(objectPoint, mDisplay, mRange);
-
-    objectPoint.x = mLocation.x + (mSize.x / 2.0f);
-    objectPoint.y = mLocation.y - (mSize.y / 2.0f);
-
-    mPixelLR = DisplayEngine::convert2DObjectToPixel(objectPoint, mDisplay, mRange);
 
     buildScrollList();
 

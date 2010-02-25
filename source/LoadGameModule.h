@@ -8,6 +8,7 @@
 #include "Button.h"
 #include "ScrollList.h"
 #include "TextBox.h"
+#include "Label.h"
 
 
 #include <SDL_opengl.h>
@@ -17,6 +18,8 @@
 using namespace std;
 
 #define GAME_RANGE 10.0
+
+enum LoadGameHUD { MAPLIST, LOAD_GAME_LABEL, LOAD_BUTTON };
 
 class LoadGameModule : public Module
 {

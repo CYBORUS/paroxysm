@@ -84,7 +84,22 @@ void Widget::findPixels(const Point2D<int>& inDisplay, float inRange)
     objectPoint.y = mLocation.y - (mSize.y / 2.0f);
 
     mPixelLR = DisplayEngine::convert2DObjectToPixel(objectPoint, mDisplay, inRange);
+
+    preProcessing(inRange);
 }
+
+
+/***************************************
+*   This function can be overloaded in any
+*   inherited class to take care of any
+*   steps that need the widget's location
+*   and size but shouldn't be done every
+*   display call.
+****************************************/
+void Widget::preProcessing(float inRange)
+{
+}
+
 
 void Widget::findObject()
 {

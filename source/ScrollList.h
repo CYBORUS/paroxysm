@@ -3,7 +3,6 @@
 
 #include <SDL_opengl.h>
 #include "Widget.h"
-#include "dirent.h"
 #include "DisplayEngine.h"
 #include "TextLayer.h"
 
@@ -41,7 +40,7 @@ class ScrollList : public Widget
 
         bool canFocus();
 
-        void findPixels(const Point2D<int>& inDisplay, float inRange);
+        void preProcessing(float inRange);
     protected:
         void buildScrollList();
         void setSelection();
@@ -86,7 +85,7 @@ class ScrollList : public Widget
         GLuint mScrollList;
         GLuint mSelectionBox;
 
-        mt19937 mSomeRand;
+        //mt19937 mSomeRand;
 
 };
 
