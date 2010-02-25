@@ -185,8 +185,15 @@ void DisplayEngine::initialize()
 
     #ifndef __APPLE__
     // OSX does not support window icons
-    //mWindowIcon = SDL_LoadBMP("content/icon.bmp");
-    //if (mWindowIcon != NULL) SDL_WM_SetIcon(mWindowIcon, NULL);
+    mWindowIcon = loadImage("./assets/images/icon.bmp");
+    if (mWindowIcon != NULL)
+    {
+        SDL_WM_SetIcon(mWindowIcon, NULL);
+    }
+    else
+    {
+        cerr << "window icon failed" << endl;
+    }
     #endif
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -209,7 +216,7 @@ void DisplayEngine::initialize()
 void DisplayEngine::cleanup()
 {
     #ifndef __APPLE__
-    //SDL_FreeSurface(mWindowIcon);
+    SDL_FreeSurface(mWindowIcon);
     #endif
 
     mLogFile.close();
