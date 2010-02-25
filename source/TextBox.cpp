@@ -24,6 +24,7 @@ TextBox::TextBox()
     mText = "test";
     mTextLayer.loadFont("assets/misc/DejaVuSans.ttf", 16);
     mTextLayer.setColor(0, 255, 128);
+    mLockedIn = false;
     update();
 }
 
@@ -69,7 +70,6 @@ void TextBox::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
-
         case SDLK_BACKSPACE:
         {
             int l = mText.length();
@@ -81,8 +81,12 @@ void TextBox::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
-        case SDLK_ESCAPE:
         case SDLK_RETURN:
+        {
+            mLockedIn = true;
+            // 'break' ommitted intentionally
+        }
+        case SDLK_ESCAPE:
         {
             if (mHideOnEnter) mVisible = false;
             break;
@@ -100,6 +104,7 @@ void TextBox::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         default:
         {
+            mLockedIn = false;
             int nextChar = inSym;
             if (inMod & (KMOD_LSHIFT | KMOD_RSHIFT)) nextChar -= 32;
             mText += nextChar;

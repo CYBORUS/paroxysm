@@ -41,6 +41,7 @@ class TextBox : public Widget
         const string& getText();
         void setText(const char* inString);
         void hideOnEnter(bool inChange);
+        bool isLockedIn();
 
     private:
         void update();
@@ -50,11 +51,23 @@ class TextBox : public Widget
         GLuint mTextTexture;
         float mRatio;
         bool mHideOnEnter;
+        bool mLockedIn;
 };
 
 inline const string& TextBox::getText()
 {
+    mLockedIn = false;
     return mText;
+}
+
+/**
+ * When a text box is "done" taking input, the text is considered to be "locked
+ * in" as the user's final intended input. This is set to true when the user
+ * presses <enter>.
+ */
+inline bool TextBox::isLockedIn()
+{
+    return mLockedIn;
 }
 
 #endif

@@ -56,10 +56,10 @@
 		<Unit filename="../DisplayEngine.h" />
 		<Unit filename="../EditVertexAction.cpp" />
 		<Unit filename="../EditVertexAction.h" />
-		<Unit filename="../GameModule.cpp" />
-		<Unit filename="../GameModule.h" />
 		<Unit filename="../HUD.cpp" />
 		<Unit filename="../HUD.h" />
+		<Unit filename="../LoadGameModule.cpp" />
+		<Unit filename="../LoadGameModule.h" />
 		<Unit filename="../MainMenuModule.cpp" />
 		<Unit filename="../MainMenuModule.h" />
 		<Unit filename="../MapEditorAction.cpp" />

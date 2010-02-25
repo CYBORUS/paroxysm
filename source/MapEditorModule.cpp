@@ -197,8 +197,36 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onFrame()
 {
-    /// There really is no game logic running in the map editor. Virtually
-    /// everything is event-driven (mouse clicks, keystrokes, etc.).
+    if (mSaveBox->isLockedIn())
+    {
+        string f("assets/maps/");
+        string s(mSaveBox->getText());
+        if (s.length() < 1) return;
+
+        size_t x;
+
+        x = s.find_first_of("./\\ ");
+        while (x != string::npos)
+        {
+            s[x] = '_';
+            x = s.find_first_of("./\\ ");
+        }
+
+        f += s;
+        f += ".pmf";
+
+        //cerr << "file: " << f << endl;
+
+        ofstream saveMap;
+        saveMap.open(f.c_str());
+        if (saveMap.fail())
+        {
+            cerr << "failed to save file: " << f << endl;
+            return;
+        }
+        saveMap << mTerrainGrid;
+        saveMap.close();
+    }
 }
 
 void MapEditorModule::onCleanup()
