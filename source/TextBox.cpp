@@ -84,7 +84,7 @@ void TextBox::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_RETURN:
         {
             mLockedIn = true;
-            // 'break' ommitted intentionally
+            // 'break' omitted intentionally
         }
         case SDLK_ESCAPE:
         {
