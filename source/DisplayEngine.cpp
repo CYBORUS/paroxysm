@@ -420,7 +420,7 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
 {
     inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;
     inStream << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
-    inStream << "Opengl Version: " << (char*)glGetString(GL_VERSION) << endl;
+    inStream << "OpenGL Version: " << (char*)glGetString(GL_VERSION) << endl;
     string stuff = (char*)glGetString(GL_EXTENSIONS);
 
     for (unsigned int i = 0; i < stuff.size(); ++i)

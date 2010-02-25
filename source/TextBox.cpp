@@ -22,7 +22,7 @@ TextBox::TextBox()
     glGenTextures(1, &mTextTexture);
     mHideOnEnter = false;
     mText = "test";
-    mTextLayer.loadFont("assets/misc/DejaVuSans.ttf", 16);
+    mTextLayer.loadFont("assets/misc/DejaVuSans.ttf", 24);
     mTextLayer.setColor(0, 255, 128);
     mLockedIn = false;
     update();
@@ -53,11 +53,11 @@ void TextBox::display()
     glBegin(GL_QUADS);
     {
         glTexCoord2i(0, 1);
-        glVertex2f(mObjectUL.x, mObjectLR.y);
+        glVertex2f(mObjectUL.x, mTextLR.y);
         glTexCoord2i(1, 1);
-        glVertex2f(mObjectUL.x + mSize.y * mRatio, mObjectLR.y);
+        glVertex2f(mTextLR.x, mTextLR.y);
         glTexCoord2i(1, 0);
-        glVertex2f(mObjectUL.x + mSize.y * mRatio, mObjectUL.y);
+        glVertex2f(mTextLR.x, mObjectUL.y);
         glTexCoord2i(0, 0);
         glVertex2f(mObjectUL.x, mObjectUL.y);
     }
@@ -118,9 +118,13 @@ void TextBox::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 void TextBox::update()
 {
     mTextLayer.setText(mText);
-    Surface s = mTextLayer.getTextImage();
-    mRatio = s == NULL ? 1.0f : float(s->w) / float(s->h);
-    DisplayEngine::loadTexture(s, mTextTexture);
+    Point2D<int> ts = mTextLayer.getTextSize();
+    mRatio = float(ts.x) / float(ts.y);
+    DisplayEngine::loadTexture(mTextLayer.getTextImage(), mTextTexture);
+    mRatios = mTextLayer.getRatio();
+
+    mTextLR.x = mObjectUL.x + mSize.y * mRatio / mRatios.x;
+    mTextLR.y = mObjectUL.y - (mSize.y / mRatios.y);
 }
 
 bool TextBox::canFocus()

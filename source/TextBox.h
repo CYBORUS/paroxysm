@@ -46,6 +46,9 @@ class TextBox : public Widget
     private:
         void update();
 
+        Point2D<float> mTextLR;
+
+        Point2D<float> mRatios;
         string mText;
         TextLayer mTextLayer;
         GLuint mTextTexture;
