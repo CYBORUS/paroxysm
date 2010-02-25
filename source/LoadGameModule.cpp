@@ -51,8 +51,8 @@ bool LoadGameModule::onLoad()
     display.x = Config::get<int>("display width", 800);
     display.y = Config::get<int>("display height", 600);
 
-    //mHUD.addWidget(maps);
-    //mHUD.addWidget(typing);
+    mHUD.addWidget(maps);
+    mHUD.addWidget(typing);
     mHUD.addWidget(info);
 
     return true;
