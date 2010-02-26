@@ -35,7 +35,7 @@ class TextPic
         TextPic();
         ~TextPic();
 
-        void loadFont(const char* inFile, int inSize);
+        bool loadFont(const char* inFile, int inSize);
         const string& getText() const;
         void setText(const char* inText);
         void setText(const string& inText);

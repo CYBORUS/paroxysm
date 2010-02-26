@@ -10,11 +10,6 @@ ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int
     mUpArrow = NULL;
     mDownArrow = NULL;
 
-    if (!mText.loadFont("assets/misc/DejaVuSans.ttf", 24))
-    {
-        cerr << "failed to load font file." << endl;
-    }
-
     //mSomeRand = mt19937(time(NULL));
 
     glGenTextures(1, &mNoImage);
@@ -65,22 +60,34 @@ void ScrollList::addListItem(string inText, Surface inImage)
     }
     GLuint texture;
 
-    glGenTextures(1, &texture);
-    mText.setText(inText.c_str());
+    TextPic* text = new TextPic();
+
+    if (!text->loadFont("assets/misc/DejaVuSans.ttf", mFontSize))
+    {
+        cerr << "failed to load font file: " << TTF_GetError() << endl;
+    }
+
+    //glGenTextures(1, &texture);
+    text->setText(inText.c_str());
+
+    /*
     if (!DisplayEngine::loadTexture(mText.getTextImage(), texture))
     {
         cerr << "failed to load texture." << endl;
         exit(2);
     }
+    */
 
     Point2D<float> size;
 
-    size.x = mText.getTextSize().x;
-    size.y = mText.getTextSize().y;
+    mText.push_back(*text);
 
-    mList.push_back(texture);
-    mListSizes.push_back(size);
-    mSizeRatios.push_back(mText.getRatio());
+    //size.x = mText.getTextSize().x;
+    //size.y = mText.getTextSize().y;
+
+    //mList.push_back(texture);
+    //mListSizes.push_back(size);
+    //mSizeRatios.push_back(mText.getRatio());
 
     size.x = inImage->w;
     size.y = inImage->h;
@@ -96,7 +103,7 @@ void ScrollList::addListItem(string inText, Surface inImage)
     mImages.push_back(texture);
     mImageSizes.push_back(size);
 
-    mListText.push_back(inText);
+    //mListText.push_back(inText);
 
 /*
     random_device device;
@@ -128,38 +135,48 @@ void ScrollList::addListItem(string inText)
 {
     GLuint texture;
 
-    glGenTextures(1, &texture);
-    mText.setText(inText.c_str());
+    TextPic* text = new TextPic();
+
+    if (!text->loadFont("assets/misc/DejaVuSans.ttf", mFontSize))
+    {
+        cerr << "failed to load font file: " << TTF_GetError() << endl;
+    }
+
+    //glGenTextures(1, &texture);
+    text->setText(inText.c_str());
+
+    /*
     if (!DisplayEngine::loadTexture(mText.getTextImage(), texture))
     {
         cerr << "failed to load texture." << endl;
         exit(2);
     }
+    */
 
     Point2D<float> size;
 
+/*
     size.x = mText.getTextSize().x;
     size.y = mText.getTextSize().y;
 
     mList.push_back(texture);
     mListSizes.push_back(size);
     mSizeRatios.push_back(mText.getRatio());
-
+*/
     size.x = 0;
     size.y = 0;
 
     mImages.push_back(mNoImage);
     mImageSizes.push_back(size);
 
-    mListText.push_back(inText);
+    //mListText.push_back(inText);
+
+    mText.push_back(*text);
 }
 
 void ScrollList::setFontSize(int inSize)
 {
-    if (!mText.loadFont("assets/misc/DejaVuSans.ttf", inSize))
-    {
-        cerr << "failed to load font file." << endl;
-    }
+    mFontSize = inSize;
 }
 
 
@@ -195,9 +212,9 @@ void ScrollList::onMouseChange(int inX, int inY)
 
                 bool found = false;
 
-                for (int i = 0; i < (int)mListSizes.size() &&  startY < mPixelLR.y && !found; ++i)
+                for (int i = 0; i < mText.size() &&  startY < mPixelLR.y && !found; ++i)
                 {
-                    if (startY + mListSizes[i].y >= inY)
+                    if (startY + mText[i].getTextSize().y >= inY)
                     {
                         found = true;
                         mSelectedItem = i;
@@ -205,7 +222,7 @@ void ScrollList::onMouseChange(int inX, int inY)
                     }
                     else
                     {
-                        startY += (int)mListSizes[i].y + 1;
+                        startY += mText[i].getTextSize().y + 1;
                     }
                 }
 
@@ -240,14 +257,14 @@ void ScrollList::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             --mSelectedItem;
             if (mSelectedItem < 0)
             {
-                mSelectedItem = mList.size() - 1;
+                mSelectedItem = mText.size() - 1;
             }
             setSelection();
             break;
         }
         case SDLK_DOWN:
         {
-            mSelectedItem = (mSelectedItem + 1) % mList.size();
+            mSelectedItem = (mSelectedItem + 1) % mText.size();
             setSelection();
             break;
         }
@@ -346,57 +363,59 @@ void ScrollList::buildScrollList()
     glNewList(mScrollList, GL_COMPILE);
     {
         float nextTex;
-
-        if (mList.size() > 0)
+/*
+        if (mText.size() > 0)
         {
             //we need to adjust the first listItem to put it back into
             //the box
-            point.y = center.y - (int)mListSizes[0].y + 1;
+            point.y = center.y - mText[0].getTextSize().y + 1;
             nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
             startY -= nextTex;
         }
-
+*/
 
         glEnable(GL_SCISSOR_TEST);
 
-        glEnable(GL_TEXTURE_2D);
-        for (unsigned int i = 0; i < mList.size(); ++i)
+        for (unsigned int i = 0; i < mText.size(); ++i)
         {
             float nextX = startX;
 
             //we want the height for the image and the text to be the same
-            point.y = center.y - (int)mListSizes[i].y;
+            point.y = center.y - mText[i].getTextSize().y;
             float texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
             //the widths should be different
             float texWidth;
 
-            point.y = center.y - int(mListSizes[(i + 1) % mList.size()].y) - 1;
+            point.y = center.y - (mText[(i + 1) % mText.size()].getTextSize().y) - 1;
             nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
             if (mImages[i] != mNoImage)
             {
                 point.x = center.x + (int)mImageSizes[i].x;
                 texWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
+                glEnable(GL_TEXTURE_2D);
                 glBindTexture(GL_TEXTURE_2D, mImages[i]);
                 glBegin(GL_QUADS);
                 {
-                    glTexCoord2f(0, mSizeRatios[i].y);
+                    glTexCoord2f(0, 1);
                     glVertex2f(nextX, startY);
-                    glTexCoord2f(mSizeRatios[i].x, mSizeRatios[i].y);
+                    glTexCoord2f(1, 1);
                     glVertex2f(nextX + texWidth, startY);
-                    glTexCoord2f(mSizeRatios[i].x, 0);
+                    glTexCoord2f(1, 0);
                     glVertex2f(nextX + texWidth, startY + texHeight);
                     glTexCoord2i(0, 0);
                     glVertex2f(nextX, startY + texHeight);
 
                 }
                 glEnd();
+                glDisable(GL_TEXTURE_2D);
 
                 nextX += texWidth;
             }
 
-            point.x = center.x + (int)mListSizes[i].x;
+            /*
+            point.x = center.x + mText[i].getTextSize().x;
             texWidth = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).x;
 
             glBindTexture(GL_TEXTURE_2D, mList[i]);
@@ -413,6 +432,8 @@ void ScrollList::buildScrollList()
 
             }
             glEnd();
+            */
+            mText[i].draw(nextX, startY, texHeight);
             startY -= nextTex;
         }
 
@@ -485,12 +506,13 @@ void ScrollList::buildScrollList()
 
 void ScrollList::setSelection()
 {
-    if (mList.size() < 1)
+    cerr << "\n\nRange: " << mRange << endl << endl;
+    if (mText.size() < 1)
     {
         return;
     }
 
-    *mInfoPointer = mListText[mSelectedItem];
+    *mInfoPointer = mText[mSelectedItem].getText();
 
     if (glIsList(mSelectionBox))
     {
@@ -503,10 +525,15 @@ void ScrollList::setSelection()
 
     for (int i = 0; i < mSelectedItem; ++i)
     {
-        texHeight = ((mListSizes[i].y + 1) * mRange * 2) / mDisplay.y;
+        Point2D<int> point = mText[i].getTextSize();
+        cerr << "text size: " << point.x << ", " << point.y;
+        point.y += 1;
+        texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
+        cerr << " texHeight: " << texHeight << endl;
         startY -= texHeight;
     }
-    texHeight = (mListSizes[mSelectedItem].y * mRange * 2) / mDisplay.y;
+    cerr << endl << endl;
+    texHeight = DisplayEngine::convert2DPixelToObject(mText[mSelectedItem].getTextSize(), mDisplay, mRange).y;
 
     glNewList(mSelectionBox, GL_COMPILE);
     {

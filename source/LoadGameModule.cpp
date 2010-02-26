@@ -35,7 +35,7 @@ bool LoadGameModule::onLoad()
 
     maps->setDownArrow(someImage);
 
-
+/*
     Label* info = new Label("Load a Map", LOAD_GAME_LABEL);
     info->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
     info->setFontSize(52);
@@ -44,14 +44,14 @@ bool LoadGameModule::onLoad()
 
     mFadeLabel = info;
     mFadeLabel->setFadeRate(0.003f);
-
+*/
     Point2D<int> display;
 
     display.x = Config::get<int>("display width", 800);
     display.y = Config::get<int>("display height", 600);
 
     mHUD.addWidget(maps);
-    mHUD.addWidget(info);
+    //mHUD.addWidget(info);
 
     return true;
 }
@@ -101,7 +101,7 @@ void LoadGameModule::onLoop()
 
 void LoadGameModule::onFrame()
 {
-    mFadeLabel->fade();
+    //mFadeLabel->fade();
 }
 
 void LoadGameModule::onCleanup()

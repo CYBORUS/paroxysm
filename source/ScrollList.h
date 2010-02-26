@@ -5,6 +5,7 @@
 #include "Widget.h"
 #include "DisplayEngine.h"
 #include "TextLayer.h"
+#include "TextPic.h"
 
 #include <boost/filesystem.hpp>
 using namespace boost::filesystem;
@@ -60,7 +61,8 @@ class ScrollList : public Widget
 
         bool mMipmapping;
 
-        TextLayer mText;
+        //TextLayer mText;
+        //TextPic mText;
 
         float mWidth;
         float mHeight;
@@ -75,10 +77,14 @@ class ScrollList : public Widget
         int mPixelUpArrowBottom; //the bottom of the up arrow
         int mPixelDownArrowTop; //the top of the down arrow
 
-        vector<string> mListText;
-        vector<GLuint> mList;
-        vector<Point2D<float> > mListSizes;
-        vector<Point2D<float> > mSizeRatios;
+        vector<TextPic> mText;
+
+        int mFontSize;
+
+        //vector<string> mListText;
+        //vector<GLuint> mList;
+        //vector<Point2D<float> > mListSizes;
+        //vector<Point2D<float> > mSizeRatios;
         vector<GLuint> mImages;
         vector<Point2D<float> > mImageSizes;
         GLuint mNoImage; //used to see when a list item doesn't have an image

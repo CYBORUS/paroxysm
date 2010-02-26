@@ -58,6 +58,8 @@
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
 		<Unit filename="..\EditVertexAction.h" />
+		<Unit filename="..\GameModule.cpp" />
+		<Unit filename="..\GameModule.h" />
 		<Unit filename="..\HUD.cpp" />
 		<Unit filename="..\HUD.h" />
 		<Unit filename="..\Label.cpp" />

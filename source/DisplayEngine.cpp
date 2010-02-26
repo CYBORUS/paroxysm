@@ -424,7 +424,10 @@ Point2D<float> DisplayEngine::convert2DPixelToObject(Point2D<int> inPoint,
 
     center.x = inDisplay.x / 2;
     center.y = inDisplay.y / 2;
-
+/*
+    float ratio = (inDisplay.x < inDisplay.y) ? ((float)center.x / inRange)
+        : ((float)center.y / inRange);
+*/
     float ratio = (inDisplay.x < inDisplay.y) ? (inRange / (float)center.x)
         : (inRange / (float)center.y);
 

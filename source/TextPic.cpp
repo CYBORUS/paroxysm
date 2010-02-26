@@ -40,14 +40,17 @@ TextPic::~TextPic()
     glDeleteTextures(1, &mTexture);
 }
 
-void TextPic::loadFont(const char* inFile, int inSize)
+bool TextPic::loadFont(const char* inFile, int inSize)
 {
     mFont = TTF_OpenFont(inFile, inSize);
 
     if (mFont == NULL)
     {
-        cerr << "-- error on TTF_OpenFont -- " << TTF_GetError() << endl;
-        exit(1);
+        return false;
+    }
+    else
+    {
+        return true;
     }
 }
 
