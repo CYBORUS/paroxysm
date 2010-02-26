@@ -31,6 +31,7 @@ class Vector3D
     public:
         Vector3D<T>();
         Vector3D<T>(const Vector3D<T>& inVector);
+        Vector3D<T>(T inValue);
         Vector3D<T>(T inX, T inY, T inZ);
         Matrix<T> toMatrix() const;
         void set(T inValue);
@@ -77,6 +78,15 @@ Vector3D<T>::Vector3D(const Vector3D<T>& inVector)
     mVector[1] = inVector.mVector[1];
     mVector[2] = inVector.mVector[2];
     mVector[3] = inVector.mVector[3];
+}
+
+template<class T>
+Vector3D<T>::Vector3D(T inValue)
+{
+    mVector[0] = inValue;
+    mVector[1] = inValue;
+    mVector[2] = inValue;
+    mVector[3] = 1;
 }
 
 template<class T>

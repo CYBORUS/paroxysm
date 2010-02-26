@@ -49,7 +49,8 @@ class DisplayEngine
         static void start(Module* inModule);
         static void initialize();
         static Surface loadImage(const char* inFile);
-        static bool loadTexture(Surface inSurface, GLuint inTexture);
+        static bool loadTexture(Surface inSurface, GLuint inTexture,
+            bool inDelete = false);
         static bool loadTexture(const char* inFile, GLuint inTexture);
         static void openGLDriverInfo(ostream& inStream);
 
@@ -57,6 +58,8 @@ class DisplayEngine
             Point2D<int> inDisplay, float inRange);
         static Point2D<float> convert2DPixelToObject(Point2D<int> inPoint,
             Point2D<int> inDisplay, float inRange);
+
+        static int processKey(SDLKey inSym, SDLMod inMod);
 
         static Surface mDisplay;
 

@@ -21,6 +21,7 @@
 
 #include <SDL_opengl.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #if SDL_IMAGE_PATCHLEVEL == 9
 // SDL_image 1.2.9 has a bug that prevents it from loading more than one image.
@@ -123,6 +124,12 @@ void DisplayEngine::initialize()
         exit(1);
     }
 
+    if (TTF_Init() == -1)
+    {
+        cerr << "-- error on TTF_Init -- " << TTF_GetError() << endl;
+        exit(1);
+    }
+
 
     #ifdef __WIN32__
     // redirect output to screen (instead of text files)
@@ -221,6 +228,7 @@ void DisplayEngine::cleanup()
 
     mLogFile.close();
 
+    TTF_Quit();
     SDL_Quit();
 }
 
@@ -300,7 +308,8 @@ void DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
     }
 }
 
-bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
+bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
+    bool inDelete)
 {
 
     printErrors("Pre-texture errors:\n", mLogFile);
@@ -373,7 +382,7 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture)
     printErrors("Post-texture errors:\n", mLogFile);
 
 
-    if (!outSuccess) SDL_FreeSurface(inSurface);
+    if (!outSuccess || inDelete) SDL_FreeSurface(inSurface);
     return outSuccess;
 }
 
@@ -451,4 +460,97 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
             i = j;
         }
     }
+}
+
+int DisplayEngine::processKey(SDLKey inSym, SDLMod inMod)
+{
+    int c = inSym;
+    if (inMod & (KMOD_LSHIFT | KMOD_RSHIFT))
+    {
+        if (c >= 'a' && c <= 'z')
+        {
+            c -= 32;
+        }
+        else
+        {
+            switch (inSym)
+            {
+                case SDLK_1: c = '!'; break;
+                case SDLK_2: c = '@'; break;
+                case SDLK_3: c = '#'; break;
+                case SDLK_4: c = '$'; break;
+                case SDLK_5: c = '%'; break;
+                case SDLK_6: c = '^'; break;
+                case SDLK_7: c = '&'; break;
+                case SDLK_8: c = '*'; break;
+                case SDLK_9: c = '('; break;
+                case SDLK_0: c = ')'; break;
+
+                case SDLK_LEFTBRACKET: c = '{'; break;
+                case SDLK_RIGHTBRACKET: c = '}'; break;
+                case SDLK_SEMICOLON: c = ':'; break;
+                case SDLK_QUOTE: c = '"'; break;
+                case SDLK_COMMA: c = '<'; break;
+                case SDLK_PERIOD: c = '>'; break;
+                case SDLK_SLASH: c = '?'; break;
+                case SDLK_MINUS: c = '_'; break;
+                case SDLK_EQUALS: c = '+'; break;
+                case SDLK_BACKQUOTE: c = '~'; break;
+                case SDLK_BACKSLASH: c = '|'; break;
+                case SDLK_SPACE: c = ' '; break;
+
+                default:
+                {
+                    c = 0;
+                }
+            }
+        }
+    }
+    else if (c < 273 && (c < 160 || c > 255))
+    {
+        switch (inSym)
+        {
+            case SDLK_KP_PLUS: c = '+'; break;
+            case SDLK_KP_DIVIDE: c = '/'; break;
+            case SDLK_KP_MULTIPLY: c = '*'; break;
+            case SDLK_KP_MINUS: c = '-'; break;
+            case SDLK_KP_PERIOD: c = '.'; break;
+
+            case SDLK_KP1:
+            case SDLK_KP2:
+            case SDLK_KP3:
+            case SDLK_KP4:
+            case SDLK_KP5:
+            case SDLK_KP6:
+            case SDLK_KP7:
+            case SDLK_KP8:
+            case SDLK_KP9:
+            case SDLK_KP0:
+            {
+                c -= 208;
+                break;
+            }
+
+            case SDLK_PAUSE:
+            case SDLK_DELETE:
+            case SDLK_BACKSPACE:
+            case SDLK_RETURN:
+            case SDLK_TAB:
+            {
+                // the blacklisted keys :)
+                c = 0;
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+    else
+    {
+        c = 0;
+    }
+
+    return c;
 }

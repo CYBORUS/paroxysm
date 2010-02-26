@@ -19,7 +19,7 @@
 #define TEXTBOX_H
 
 #include "Widget.h"
-#include "TextLayer.h"
+#include "TextPic.h"
 
 #include <SDL_opengl.h>
 
@@ -50,8 +50,7 @@ class TextBox : public Widget
 
         Point2D<float> mRatios;
         string mText;
-        TextLayer mTextLayer;
-        GLuint mTextTexture;
+        TextPic mTextPic;
         float mRatio;
         bool mHideOnEnter;
         bool mLockedIn;
