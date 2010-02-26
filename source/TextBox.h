@@ -31,7 +31,7 @@ using namespace std;
 class TextBox : public Widget
 {
     public:
-        TextBox();
+        TextBox(int inID);
         virtual ~TextBox();
 
         virtual void display();

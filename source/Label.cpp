@@ -58,8 +58,6 @@ void Label::preProcessing(float inRange)
     label.setColor(Uint8(mColor[0] * 255), Uint8(mColor[1] * 255), Uint8(mColor[2] * 255));
     label.setText(mLabelText);
 
-    cerr << "label text: " << mLabelText << endl;
-
     if (!DisplayEngine::loadTexture(label.getTextImage(), mText))
     {
         cerr << "failed to load texture." << endl;
@@ -78,11 +76,6 @@ void Label::preProcessing(float inRange)
 
     float startX = mLocation.x - (mSize.x / 2.0f);
     float startY = mLocation.y + (mSize.y / 2.0f) - texDimensions.y;
-
-    cerr << "start: " << startX << ", " << startY << " dimensions: " << texDimensions.x << ", " << texDimensions.y << endl;
-
-    //float texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, inRange).y;
-
 
     glNewList(mList, GL_COMPILE);
     {

@@ -54,11 +54,12 @@ using namespace std;
 #define EM_TILE 1
 
 /// button IDs
-#define NUM_BUTTONS 4
+#define NUM_BUTTONS 5
 #define B_TERRAIN_MODE 0
 #define B_TILE_MODE 1
 #define B_UNDO 2
 #define B_REDO 3
+#define B_SAVE 4
 
 /// mode button details
 #define MB_POS_X -8.0f

@@ -84,7 +84,7 @@ bool MapEditorModule::onLoad()
     mButtons[B_TILE_MODE]->setVisible(false);
     mHUD.addWidget(mButtons[B_TILE_MODE]);
 
-    mSaveBox = new TextBox;
+    mSaveBox = new TextBox(B_SAVE);
     mSaveBox->setSize(8.0f, 1.0f);
     mSaveBox->setVisible(false);
     mSaveBox->hideOnEnter(true);

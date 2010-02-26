@@ -247,6 +247,8 @@ void DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
 
     error = glGetError();
 
+    //gluErrorString(error) ?
+
     if (error != GL_NO_ERROR)
     {
         inStream << inMessage;
@@ -254,6 +256,7 @@ void DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
 
     while (error != GL_NO_ERROR)
     {
+        inStream << gluErrorString(error) << endl;
         switch(error)
         {
             case GL_INVALID_ENUM:

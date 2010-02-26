@@ -15,9 +15,9 @@ bool LoadGameModule::onLoad()
         for (directory_iterator itr(mapsDir); itr != directory_iterator(); ++itr)
         {
             //cout << itr->path().filename() << ' ';
-            maps->addListItem(itr->path().filename());
             if (is_regular_file(itr->status()))
             {
+                maps->addListItem(itr->path().filename());
                 //cout << " [" << file_size(itr->path()) << ']';
             }
         }
@@ -35,10 +35,6 @@ bool LoadGameModule::onLoad()
 
     maps->setDownArrow(someImage);
 
-    TextBox* typing = new TextBox();
-    typing->setLocation(2.0f, -3.0f);
-    typing->setSize(10.0f, 1.0f);
-
 
     Label* info = new Label("Load a Map", LOAD_GAME_LABEL);
     info->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
@@ -46,13 +42,13 @@ bool LoadGameModule::onLoad()
     info->setLocation(0.0f, 7.0f);
     info->setSize(8.0f, 4.0f);
 
+
     Point2D<int> display;
 
     display.x = Config::get<int>("display width", 800);
     display.y = Config::get<int>("display height", 600);
 
     mHUD.addWidget(maps);
-    mHUD.addWidget(typing);
     mHUD.addWidget(info);
 
     return true;
@@ -128,7 +124,6 @@ void LoadGameModule::onMouseWheel(bool inUp, bool inDown)
 void LoadGameModule::onLButtonDown(int inX, int inY)
 {
     mHUD.setStates(inX, inY, true);
-    cerr << "selected map: " << mSelectedMap << endl;
 }
 
 

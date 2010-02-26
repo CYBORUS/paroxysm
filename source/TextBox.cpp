@@ -17,8 +17,9 @@
 
 #include "TextBox.h"
 
-TextBox::TextBox()
+TextBox::TextBox(int inID)
 {
+    mID = inID;
     glGenTextures(1, &mTextTexture);
     mHideOnEnter = false;
     mText = "test";
