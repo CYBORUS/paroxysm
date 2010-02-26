@@ -88,6 +88,7 @@ bool MapEditorModule::onLoad()
     mSaveBox->setSize(8.0f, 1.0f);
     mSaveBox->setVisible(false);
     mSaveBox->hideOnEnter(true);
+    mSaveBox->setTextColor(Vector3D<float>(0.0f, 0.5f, 1.0f));
     mHUD.addWidget(mSaveBox);
 
     return true;

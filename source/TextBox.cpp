@@ -98,9 +98,9 @@ bool TextBox::canFocus()
     return true;
 }
 
-void TextBox::setTextColor(Uint8 inRed, Uint8 inGreen, Uint8 inBlue)
+void TextBox::setTextColor(const Vector3D<float>& inVector)
 {
-    //mTextLayer.setColor(inRed, inGreen, inBlue);
+    mTextPic.setColor(inVector);
 }
 
 void TextBox::hideOnEnter(bool inChange)

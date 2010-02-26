@@ -37,7 +37,7 @@ class TextBox : public Widget
         virtual void display();
         virtual bool canFocus();
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
-        void setTextColor(Uint8 inRed, Uint8 inGreen, Uint8 inBlue);
+        void setTextColor(const Vector3D<float>& inVector);
         const string& getText();
         void setText(const char* inString);
         void hideOnEnter(bool inChange);
