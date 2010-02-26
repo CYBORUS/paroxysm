@@ -96,10 +96,11 @@ void TextPic::render()
         return;
     }
 
-    Point2D<int> size(textSurface->w, textSurface->h);
+    mTextSize.x = textSurface->w;
+    mTextSize.y = textSurface->h;
 
-    int widthPower = int(log(size.x) / log(2.0f)) + 1;
-    int heightPower = int(log(size.y) / log(2.0f)) + 1;
+    int widthPower = int(log(mTextSize.x) / log(2.0f)) + 1;
+    int heightPower = int(log(mTextSize.y) / log(2.0f)) + 1;
 
     widthPower = (int)pow(2.0f, widthPower);
     heightPower = (int)pow(2.0f, heightPower);
@@ -121,10 +122,10 @@ void TextPic::render()
 
     SDL_FreeSurface(textSurface);
 
-    float ratio = float(size.x) / float(size.y);
+    float ratio = float(mTextSize.x) / float(mTextSize.y);
     Point2D<float> ratios;
-    ratios.x = float(size.x) / (s == NULL ? 1.0f : s->w);
-    ratios.y = float(size.y) / (s == NULL ? 1.0f : s->h);
+    ratios.x = float(mTextSize.x) / (s == NULL ? 1.0f : s->w);
+    ratios.y = float(mTextSize.y) / (s == NULL ? 1.0f : s->h);
     mScales.x = ratio / ratios.x;
     mScales.y = 1.0f / ratios.y;
 

@@ -42,6 +42,7 @@ class TextPic
         void draw(float inX, float inY, float inScale);
         void setQuality(TextQuality inQuality);
         void setColor(const Vector3D<float>& inVector);
+        Point2D<int> getTextSize();
 
     private:
         void render();
@@ -52,6 +53,7 @@ class TextPic
         string mText;
         GLuint mTexture;
         Point2D<float> mScales;
+        Point2D<int> mTextSize;
         TextQuality mQuality;
 };
 
@@ -63,6 +65,11 @@ inline const string& TextPic::getText() const
 inline void TextPic::setQuality(TextQuality inQuality)
 {
     mQuality = inQuality;
+}
+
+inline Point2D<int> TextPic::getTextSize()
+{
+    return mTextSize;
 }
 
 #endif
