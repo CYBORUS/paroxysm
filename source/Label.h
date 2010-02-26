@@ -22,10 +22,20 @@ class Label : public Widget
         void setFontSize(int inFontSize);
         void setFontColor(float inRed, float inGreen, float inBlue, float inAlpha);
 
+        void setFadeRate(float inFade);
+        void fade();
+
         void display();
 
         void preProcessing(float inRange);
     protected:
+        void buildLabel();
+
+        Point2D<float> mTexDimensions;
+        Point2D<float> mSizeRatios;
+
+        float mFadeRate;
+
         GLuint mText;
         GLuint mList;
 

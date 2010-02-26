@@ -42,6 +42,8 @@ bool LoadGameModule::onLoad()
     info->setLocation(0.0f, 7.0f);
     info->setSize(8.0f, 4.0f);
 
+    mFadeLabel = info;
+    mFadeLabel->setFadeRate(0.01f);
 
     Point2D<int> display;
 
@@ -99,6 +101,7 @@ void LoadGameModule::onLoop()
 
 void LoadGameModule::onFrame()
 {
+    mFadeLabel->fade();
 }
 
 void LoadGameModule::onCleanup()

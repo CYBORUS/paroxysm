@@ -44,6 +44,8 @@ class LoadGameModule : public Module
         Module* mNextModule;
         string mSelectedMap;
 
+        Label* mFadeLabel;
+
 };
 
 #endif

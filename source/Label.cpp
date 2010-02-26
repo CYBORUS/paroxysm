@@ -44,6 +44,17 @@ void Label::setFontColor(float inRed, float inGreen, float inBlue, float inAlpha
     mColor[3] = inAlpha;
 }
 
+void Label::setFadeRate(float inFade)
+{
+    mFadeRate = inFade;
+}
+
+void Label::fade()
+{
+    mColor[3] -= mFadeRate;
+
+    buildLabel();
+}
 
 
 void Label::preProcessing(float inRange)
@@ -64,7 +75,7 @@ void Label::preProcessing(float inRange)
         exit(2);
     }
 
-    Point2D<float> sizeRatios = label.getRatio();
+    mSizeRatios = label.getRatio();
 
     Point2D<int> point;
 
@@ -72,10 +83,16 @@ void Label::preProcessing(float inRange)
     point.y = (mDisplay.y / 2) - label.getTextSize().y;
 
 
-    Point2D<float> texDimensions = DisplayEngine::convert2DPixelToObject(point, mDisplay, inRange);
+    mTexDimensions = DisplayEngine::convert2DPixelToObject(point, mDisplay, inRange);
 
+    buildLabel();
+}
+
+
+void Label::buildLabel()
+{
     float startX = mLocation.x - (mSize.x / 2.0f);
-    float startY = mLocation.y + (mSize.y / 2.0f) - texDimensions.y;
+    float startY = mLocation.y + (mSize.y / 2.0f) - mTexDimensions.y;
 
     glNewList(mList, GL_COMPILE);
     {
@@ -88,14 +105,14 @@ void Label::preProcessing(float inRange)
 
         glBegin(GL_QUADS);
         {
-            glTexCoord2f(0.0f, sizeRatios.y);
+            glTexCoord2f(0.0f, mSizeRatios.y);
             glVertex2f(startX, startY);
-            glTexCoord2f(sizeRatios.x, sizeRatios.y);
-            glVertex2f(startX + texDimensions.x, startY);
-            glTexCoord2f(sizeRatios.x, 0);
-            glVertex2f(startX + texDimensions.x, startY + texDimensions.y);
+            glTexCoord2f(mSizeRatios.x, mSizeRatios.y);
+            glVertex2f(startX + mTexDimensions.x, startY);
+            glTexCoord2f(mSizeRatios.x, 0);
+            glVertex2f(startX + mTexDimensions.x, startY + mTexDimensions.y);
             glTexCoord2i(0, 0);
-            glVertex2f(startX, startY + texDimensions.y);
+            glVertex2f(startX, startY + mTexDimensions.y);
 
         }
         glEnd();
@@ -106,5 +123,4 @@ void Label::preProcessing(float inRange)
         glDisable(GL_SCISSOR_TEST);
     }
     glEndList();
-
 }
