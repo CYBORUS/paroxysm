@@ -531,7 +531,6 @@ void ScrollList::setSelection()
         texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
         startY -= texHeight;
     }
-    cerr << endl << endl;
 
     point = mText[mSelectedItem]->getTextSize();
     point.y = (mDisplay.y / 2) - point.y;
