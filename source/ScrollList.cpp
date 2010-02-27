@@ -137,8 +137,6 @@ void ScrollList::addListItem(string inText, Surface inImage)
 ********************************************/
 void ScrollList::addListItem(string inText)
 {
-    GLuint texture;
-
     TextPic* text = new TextPic();
 
     if (!text->loadFont("assets/misc/DejaVuSans.ttf", mFontSize))
@@ -323,10 +321,6 @@ void ScrollList::buildScrollList()
     //set the top left corner in object space
     float startX = mLocation.x - (mSize.x / 2.0f);
     float startY = mScrollStart;
-
-    //need to find out how to deal with case that y > x
-    float ratio = (float)mDisplay.x / (float)mDisplay.y;
-
 
     mPixelArrowWidth = (mUpArrow->w > mDownArrow->w) ? mUpArrow->w : mDownArrow->w;
     Point2D<int> point;

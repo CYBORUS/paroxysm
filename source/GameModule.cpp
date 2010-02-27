@@ -14,6 +14,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
+    return true;
 }
 
 
