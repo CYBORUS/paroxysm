@@ -43,6 +43,7 @@
 			<Add library="GLU" />
 			<Add library="boost_filesystem" />
 			<Add library="boost_system" />
+			<Add library="lua5.1" />
 		</Linker>
 		<Unit filename="../BlankWindow.cpp" />
 		<Unit filename="../BlankWindow.h" />
@@ -64,6 +65,8 @@
 		<Unit filename="../Label.h" />
 		<Unit filename="../LoadGameModule.cpp" />
 		<Unit filename="../LoadGameModule.h" />
+		<Unit filename="../LuaMachine.cpp" />
+		<Unit filename="../LuaMachine.h" />
 		<Unit filename="../MainMenuModule.cpp" />
 		<Unit filename="../MainMenuModule.h" />
 		<Unit filename="../MapEditorAction.cpp" />
