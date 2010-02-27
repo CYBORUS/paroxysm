@@ -523,9 +523,10 @@ void ScrollList::setSelection()
     float startX = mLocation.x - (mSize.x / 2.0f);
     float startY = mScrollStart;
 
+    Point2D<int> point;
     for (int i = 0; i < mSelectedItem; ++i)
     {
-        Point2D<int> point = mText[i]->getTextSize();
+        point = mText[i]->getTextSize();
         cerr << "text size: " << point.x << ", " << point.y;
         point.y = (mDisplay.y / 2) - point.y + 1;
         texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
@@ -533,7 +534,10 @@ void ScrollList::setSelection()
         startY -= texHeight;
     }
     cerr << endl << endl;
-    texHeight = (mDisplay.y / 2) - DisplayEngine::convert2DPixelToObject(mText[mSelectedItem]->getTextSize(), mDisplay, mRange).y;
+
+    point = mText[mSelectedItem]->getTextSize();
+    point.y = (mDisplay.y / 2) - point.y;
+    texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
     cerr << "final texHeight: " << texHeight << endl;
 
