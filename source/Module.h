@@ -21,6 +21,19 @@
 #include <SDL.h>
 
 #include "HUD.h"
+#include "Vector3D.h"
+
+
+
+struct Light
+{
+    Vector3D<GLfloat> ambient;
+    Vector3D<GLfloat> diffuse;
+    Vector3D<GLfloat> specular;
+
+    Vector3D<GLfloat> position;
+    Vector3D<GLfloat> direction;
+};
 
 class Module
 {

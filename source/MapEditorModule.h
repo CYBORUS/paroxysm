@@ -67,16 +67,6 @@ using namespace std;
 #define MB_WIDTH 4.0f
 #define MB_HEIGHT 1.0f
 
-struct Light
-{
-    Vector3D<GLfloat> ambient;
-    Vector3D<GLfloat> diffuse;
-    Vector3D<GLfloat> specular;
-
-    Vector3D<GLfloat> position;
-    Vector3D<GLfloat> direction;
-};
-
 class MapEditorModule : public Module
 {
     public:
