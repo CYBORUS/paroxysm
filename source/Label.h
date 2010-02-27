@@ -45,4 +45,4 @@ class Label : public Widget
         string mLabelText;
 };
 
-#endif // LABEL_H
+#endif

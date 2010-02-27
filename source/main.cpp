@@ -18,8 +18,6 @@
 #include "Config.h"
 #include "DisplayEngine.h"
 #include "SoundEngine.h"
-
-#include "MapEditorModule.h"
 #include "MainMenuModule.h"
 
 int main(int argc, char** argv)
@@ -30,8 +28,6 @@ int main(int argc, char** argv)
 
     Config::outputSettings();
 
-    //DisplayEngine::start(new MapEditorModule);
-    //DisplayEngine::start(new BlankWindow);
     DisplayEngine::start(new MainMenuModule);
     SoundEngine::cleanup();
     return 0;
