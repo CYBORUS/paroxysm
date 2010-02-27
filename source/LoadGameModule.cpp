@@ -45,6 +45,18 @@ bool LoadGameModule::onLoad()
     mFadeLabel = info;
     mFadeLabel->setFadeRate(0.003f);
 
+    Button* buttons = new Button("load_map", LOAD_BUTTON);
+    buttons->setLocation(-8.0, -8.0);
+    buttons->setSize(3.0, 1.0);
+
+    mHUD.addWidget(buttons);
+
+    buttons = new Button("cancel", CANCEL_BUTTON);
+    buttons->setLocation(8.0, -8.0);
+    buttons->setSize(3.0, 1.0);
+
+    mHUD.addWidget(buttons);
+
     Point2D<int> display;
 
     display.x = Config::get<int>("display width", 800);

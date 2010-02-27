@@ -4,7 +4,7 @@
 #include <SDL_opengl.h>
 #include "Widget.h"
 #include "DisplayEngine.h"
-#include "TextLayer.h"
+//#include "TextLayer.h"
 #include "TextPic.h"
 
 #include <boost/filesystem.hpp>

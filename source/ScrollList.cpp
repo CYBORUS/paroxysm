@@ -212,7 +212,7 @@ void ScrollList::onMouseChange(int inX, int inY)
 
                 bool found = false;
 
-                for (int i = 0; i < mText.size() &&  startY < mPixelLR.y && !found; ++i)
+                for (unsigned int i = 0; i < mText.size() &&  startY < mPixelLR.y && !found; ++i)
                 {
                     if (startY + mText[i]->getTextSize().y >= inY)
                     {
