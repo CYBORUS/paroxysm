@@ -439,6 +439,7 @@ void ScrollList::buildScrollList()
 
         glDisable(GL_SCISSOR_TEST);
 
+        glEnable(GL_TEXTURE_2D);
         //display the up arrow
         point.x = 0;
         point.y = center.y - mUpArrow->h;
@@ -506,7 +507,6 @@ void ScrollList::buildScrollList()
 
 void ScrollList::setSelection()
 {
-    cerr << "\n\nRange: " << mRange << endl << endl;
     if (mText.size() < 1)
     {
         return;
@@ -527,10 +527,8 @@ void ScrollList::setSelection()
     for (int i = 0; i < mSelectedItem; ++i)
     {
         point = mText[i]->getTextSize();
-        cerr << "text size: " << point.x << ", " << point.y;
-        point.y = (mDisplay.y / 2) - point.y + 1;
+        point.y = (mDisplay.y / 2) - point.y - 1;
         texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
-        cerr << " texHeight: " << texHeight << endl;
         startY -= texHeight;
     }
     cerr << endl << endl;
@@ -538,8 +536,6 @@ void ScrollList::setSelection()
     point = mText[mSelectedItem]->getTextSize();
     point.y = (mDisplay.y / 2) - point.y;
     texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
-
-    cerr << "final texHeight: " << texHeight << endl;
 
     glNewList(mSelectionBox, GL_COMPILE);
     {
