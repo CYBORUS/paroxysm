@@ -33,6 +33,10 @@ ScrollList::~ScrollList()
         glDeleteTextures(1, &texture);
     }
 
+    for (unsigned int i = 0; i < mText.size(); ++i)
+    {
+        delete mText[i];
+    }
 }
 
 void ScrollList::display()

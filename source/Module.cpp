@@ -247,6 +247,7 @@ void Module::onMouseBlur()
 {
 }
 
+
 void Module::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {

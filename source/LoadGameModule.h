@@ -40,6 +40,8 @@ class LoadGameModule : public Module
         void onRButtonDown(int inX, int inY);
         void onRButtonUp(int inX, int inY);
 
+        void onButtonPress(int inID);
+
     private:
         Module* mNextModule;
         string mSelectedMap;

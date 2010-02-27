@@ -113,7 +113,7 @@ void LoadGameModule::onLoop()
 
 void LoadGameModule::onFrame()
 {
-    mFadeLabel->fade();
+    //mFadeLabel->fade();
 }
 
 void LoadGameModule::onCleanup()
@@ -138,13 +138,11 @@ void LoadGameModule::onMouseWheel(bool inUp, bool inDown)
 
 void LoadGameModule::onLButtonDown(int inX, int inY)
 {
-    mHUD.setStates(inX, inY, true);
 }
 
 
 void LoadGameModule::onLButtonUp(int inX, int inY)
 {
-    mHUD.setStates(inX, inY, false);
 }
 
 
@@ -157,5 +155,20 @@ void LoadGameModule::onRButtonUp(int inX, int inY)
 {
 }
 
+void LoadGameModule::onButtonPress(int inID)
+{
+    switch(inID)
+    {
+        case CANCEL_BUTTON:
+        {
+            mNextModule = NULL;
+            mRunning = false;
+            break;
+        }
+        default:
+        {
+        }
+    }
+}
 
 
