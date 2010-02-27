@@ -76,6 +76,8 @@
 		<Unit filename="../Matrix.h" />
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
+		<Unit filename="../PlainPic.cpp" />
+		<Unit filename="../PlainPic.h" />
 		<Unit filename="../Point2D.h" />
 		<Unit filename="../ScrollList.cpp" />
 		<Unit filename="../ScrollList.h" />

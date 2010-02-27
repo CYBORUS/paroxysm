@@ -1,4 +1,5 @@
 #include "MainMenuModule.h"
+#include "PlainPic.h"
 
 bool MainMenuModule::onLoad()
 {
@@ -11,6 +12,12 @@ bool MainMenuModule::onLoad()
     b->setLocation(0.0f, 1.0f);
     b->setSize(8.0f, 2.0f);
     mHUD.addWidget(b);
+
+    PlainPic* pp = new PlainPic;
+    pp->setImage(DisplayEngine::loadImage("assets/images/title.png"));
+    pp->setLocation(0.0f, 6.0f);
+    pp->setSize(24.0f, 6.0f);
+    mHUD.addWidget(pp);
 
     return true;
 }
