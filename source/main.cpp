@@ -22,8 +22,6 @@
 #include "MapEditorModule.h"
 #include "MainMenuModule.h"
 
-#include "BlankWindow.h"
-
 int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
