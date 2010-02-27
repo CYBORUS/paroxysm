@@ -45,9 +45,8 @@
 			<Add library="glu32" />
 			<Add library="C:\dev\MingW\lib\boost\libboost_filesystem-mgw34-mt.lib" />
 			<Add library="C:\dev\MingW\lib\boost\libboost_system-mgw34-mt.lib" />
+			<Add library="lua51" />
 		</Linker>
-		<Unit filename="..\BlankWindow.cpp" />
-		<Unit filename="..\BlankWindow.h" />
 		<Unit filename="..\Button.cpp" />
 		<Unit filename="..\Button.h" />
 		<Unit filename="..\Config.cpp" />
@@ -66,6 +65,8 @@
 		<Unit filename="..\Label.h" />
 		<Unit filename="..\LoadGameModule.cpp" />
 		<Unit filename="..\LoadGameModule.h" />
+		<Unit filename="..\LuaMachine.cpp" />
+		<Unit filename="..\LuaMachine.h" />
 		<Unit filename="..\MainMenuModule.cpp" />
 		<Unit filename="..\MainMenuModule.h" />
 		<Unit filename="..\MapEditorAction.cpp" />
@@ -75,6 +76,8 @@
 		<Unit filename="..\Matrix.h" />
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />
+		<Unit filename="..\PlainPic.cpp" />
+		<Unit filename="..\PlainPic.h" />
 		<Unit filename="..\Point2D.h" />
 		<Unit filename="..\ScrollList.cpp" />
 		<Unit filename="..\ScrollList.h" />
@@ -88,6 +91,8 @@
 		<Unit filename="..\TextBox.h" />
 		<Unit filename="..\TextLayer.cpp" />
 		<Unit filename="..\TextLayer.h" />
+		<Unit filename="..\TextPic.cpp" />
+		<Unit filename="..\TextPic.h" />
 		<Unit filename="..\Vector3D.h" />
 		<Unit filename="..\Widget.cpp" />
 		<Unit filename="..\Widget.h" />

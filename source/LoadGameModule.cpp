@@ -165,6 +165,13 @@ void LoadGameModule::onButtonPress(int inID)
             mRunning = false;
             break;
         }
+
+        case LOAD_BUTTON:
+        {
+            mNextModule = new GameModule(mSelectedMap.c_str());
+            mRunning = false;
+            break;
+        }
         default:
         {
         }

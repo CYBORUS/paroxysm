@@ -10,6 +10,8 @@
 #include "TextBox.h"
 #include "Label.h"
 
+#include "GameModule.h"
+
 
 #include <SDL_opengl.h>
 

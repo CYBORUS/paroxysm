@@ -15,6 +15,10 @@ class GameModule : public Module
         GameModule(const char* inMapFile);
         virtual ~GameModule();
 
+        bool onLoad();
+        void onInit();
+        void onCleanup();
+
 
     protected:
         TerrainGrid mTerrain;

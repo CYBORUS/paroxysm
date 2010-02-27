@@ -11,3 +11,18 @@ GameModule::~GameModule()
 {
     //dtor
 }
+
+bool GameModule::onLoad()
+{
+}
+
+
+void GameModule::onInit()
+{
+}
+
+
+void GameModule::onCleanup()
+{
+}
+
