@@ -383,8 +383,22 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     switch (mMouseMode)
     {
         case MM_ROTATING:
+        case MM_PANNING:
+        {
+            if (abs(inX - mCenter.x) > 100 || abs(inY - mCenter.y) > 100)
+            {
+                return;
+            }
+            break;
+        }
+    }
+
+    switch (mMouseMode)
+    {
+        case MM_ROTATING:
         {
             lockMouse = true;
+
             mTrackball[1] += static_cast<GLfloat>(inX - mCenter.x) * TRACKBALL_STEP;
             if (mTrackball[1] < -180.0f)
                 mTrackball[1] += 360.0f;

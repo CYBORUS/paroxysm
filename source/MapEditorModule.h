@@ -40,7 +40,7 @@ using namespace std;
 #define VERTEX_DISTANCE 0.0f
 #define TRACKBALL_STEP 1.0f
 #define PANNING_STEP 0.1f
-#define VERTEX_STEP 0.05f
+#define VERTEX_STEP 0.07f
 
 /// mouse mode options
 #define MM_DEFAULT 0

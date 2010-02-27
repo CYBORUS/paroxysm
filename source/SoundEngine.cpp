@@ -31,7 +31,7 @@ int SoundEngine::mMusicVolume = 100;
 
 void SoundEngine::initialize()
 {
-#if SDL_MIXER_PATCHLEVEL > 11
+#if SDL_MIXER_PATCHLEVEL > 15
     // SDL_mixer 1.2.10 introduced Mix_Init() and Mix_Quit()
     int flags = MIX_INIT_MP3 | MIX_INIT_OGG;
 
@@ -210,7 +210,7 @@ void SoundEngine::tankFire(int inAngle, int inDistance)
 
 void SoundEngine::cleanup()
 {
-#if SDL_MIXER_PATCHLEVEL > 11
+#if SDL_MIXER_PATCHLEVEL > 15
     // SDL_mixer 1.2.10 introduced Mix_Init() and Mix_Quit()
     Mix_Quit();
 #endif
