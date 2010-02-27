@@ -77,7 +77,7 @@ class ScrollList : public Widget
         int mPixelUpArrowBottom; //the bottom of the up arrow
         int mPixelDownArrowTop; //the top of the down arrow
 
-        vector<TextPic> mText;
+        vector<TextPic*> mText;
 
         int mFontSize;
 

@@ -80,7 +80,7 @@ void ScrollList::addListItem(string inText, Surface inImage)
 
     Point2D<float> size;
 
-    mText.push_back(*text);
+    mText.push_back(text);
 
     //size.x = mText.getTextSize().x;
     //size.y = mText.getTextSize().y;
@@ -171,7 +171,7 @@ void ScrollList::addListItem(string inText)
 
     //mListText.push_back(inText);
 
-    mText.push_back(*text);
+    mText.push_back(text);
 }
 
 void ScrollList::setFontSize(int inSize)
@@ -214,7 +214,7 @@ void ScrollList::onMouseChange(int inX, int inY)
 
                 for (int i = 0; i < mText.size() &&  startY < mPixelLR.y && !found; ++i)
                 {
-                    if (startY + mText[i].getTextSize().y >= inY)
+                    if (startY + mText[i]->getTextSize().y >= inY)
                     {
                         found = true;
                         mSelectedItem = i;
@@ -222,7 +222,7 @@ void ScrollList::onMouseChange(int inX, int inY)
                     }
                     else
                     {
-                        startY += mText[i].getTextSize().y + 1;
+                        startY += mText[i]->getTextSize().y + 1;
                     }
                 }
 
@@ -381,13 +381,13 @@ void ScrollList::buildScrollList()
             float nextX = startX;
 
             //we want the height for the image and the text to be the same
-            point.y = center.y - mText[i].getTextSize().y;
+            point.y = center.y - mText[i]->getTextSize().y;
             float texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
             //the widths should be different
             float texWidth;
 
-            point.y = center.y - (mText[(i + 1) % mText.size()].getTextSize().y) - 1;
+            point.y = center.y - (mText[(i + 1) % mText.size()]->getTextSize().y) - 1;
             nextTex = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
 
             if (mImages[i] != mNoImage)
@@ -433,7 +433,7 @@ void ScrollList::buildScrollList()
             }
             glEnd();
             */
-            mText[i].draw(nextX, startY, texHeight);
+            mText[i]->draw(nextX, startY, texHeight);
             startY -= nextTex;
         }
 
@@ -512,7 +512,7 @@ void ScrollList::setSelection()
         return;
     }
 
-    *mInfoPointer = mText[mSelectedItem].getText();
+    *mInfoPointer = mText[mSelectedItem]->getText();
 
     if (glIsList(mSelectionBox))
     {
@@ -525,15 +525,17 @@ void ScrollList::setSelection()
 
     for (int i = 0; i < mSelectedItem; ++i)
     {
-        Point2D<int> point = mText[i].getTextSize();
+        Point2D<int> point = mText[i]->getTextSize();
         cerr << "text size: " << point.x << ", " << point.y;
-        point.y += 1;
+        point.y = (mDisplay.y / 2) - point.y + 1;
         texHeight = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange).y;
         cerr << " texHeight: " << texHeight << endl;
         startY -= texHeight;
     }
     cerr << endl << endl;
-    texHeight = DisplayEngine::convert2DPixelToObject(mText[mSelectedItem].getTextSize(), mDisplay, mRange).y;
+    texHeight = (mDisplay.y / 2) - DisplayEngine::convert2DPixelToObject(mText[mSelectedItem]->getTextSize(), mDisplay, mRange).y;
+
+    cerr << "final texHeight: " << texHeight << endl;
 
     glNewList(mSelectionBox, GL_COMPILE);
     {
