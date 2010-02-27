@@ -13,6 +13,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-W" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -24,6 +25,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-W" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
