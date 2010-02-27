@@ -45,8 +45,6 @@
 			<Add library="boost_system" />
 			<Add library="lua5.1" />
 		</Linker>
-		<Unit filename="../BlankWindow.cpp" />
-		<Unit filename="../BlankWindow.h" />
 		<Unit filename="../Button.cpp" />
 		<Unit filename="../Button.h" />
 		<Unit filename="../Config.cpp" />
