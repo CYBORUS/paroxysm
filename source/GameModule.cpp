@@ -8,10 +8,7 @@ GameModule::GameModule(const char* inMapFile)
 
     if (!input.fail())
     {
-        cerr << "loading map: " << inMapFile << endl;
-
         input >> mTerrain;
-        cerr << "done" << endl;
         mTerrainSize.x = mTerrain.getMatrix().cols();
         mTerrainSize.y = mTerrain.getMatrix().rows();
 
