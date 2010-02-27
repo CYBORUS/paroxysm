@@ -2,15 +2,26 @@
 
 GameModule::GameModule(const char* inMapFile)
 {
-    ifstream input(inMapFile);
-    cerr << "loading map: " << inMapFile << endl;
+    string inFile = "assets/maps/";
+    inFile += inMapFile;
+    ifstream input(inFile.c_str());
 
-    input >> mTerrain;
-    cerr << "done" << endl;
-    mTerrainSize.x = mTerrain.getMatrix().cols();
-    mTerrainSize.y = mTerrain.getMatrix().rows();
+    if (!input.fail())
+    {
+        cerr << "loading map: " << inMapFile << endl;
 
-    input.close();
+        input >> mTerrain;
+        cerr << "done" << endl;
+        mTerrainSize.x = mTerrain.getMatrix().cols();
+        mTerrainSize.y = mTerrain.getMatrix().rows();
+
+        input.close();
+    }
+    else
+    {
+        cerr << "failed to open file." << endl;
+        exit(3);
+    }
 }
 
 GameModule::~GameModule()
@@ -66,7 +77,7 @@ void GameModule::onInit()
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
 
-    //glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
 
     mLight.diffuse.set(1.0f);
