@@ -27,7 +27,7 @@ typedef SDL_Surface* Surface;
 #include <iostream>
 using namespace std;
 
-#define ENGINE_FPS 10
+#define ENGINE_FPS 30
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
 #define FIELD_OF_VIEW 30.0
 #define NEAR_CP 1.0
