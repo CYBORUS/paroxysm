@@ -9,30 +9,46 @@ Label::Label(const char* inText, int inID)
     mColor[2] = 1.0f;
     mColor[3] = 1.0f;
 
-    glGenTextures(1, &mText);
+    //glGenTextures(1, &mText);
     mList = glGenLists(1);
 
-    mLabelText = inText;
+    mText = new TextPic();
+
+    setFontSize(mFontSize);
+    setText(inText);
+
+    //mLabelText = inText;
+    //buildLabel();
 }
 
 Label::~Label()
 {
-    glDeleteTextures(1, &mText);
+    //glDeleteTextures(1, &mText);
+    glDeleteLists(mList, 1);
 }
 
 
 void Label::display()
 {
+    float startX = mLocation.x - (mSize.x / 2.0f);
+    float startY = mLocation.y + (mSize.y / 2.0f);// - mTexDimensions.y;
+
     glScissor(mPixelUL.x, mDisplay.y - mPixelLR.y, mPixelLR.x - mPixelUL.x, mPixelLR.y - mPixelUL.y);
-
-    glCallList(mList);
-
+    glEnable(GL_SCISSOR_TEST);
+    mText->draw(startX, startY, mSize.y);
+    glDisable(GL_SCISSOR_TEST);
+    //glCallList(mList);
 
 }
 
 void Label::setFontSize(int inFontSize)
 {
     mFontSize = inFontSize;
+
+    if (!mText->loadFont("assets/misc/DejaVuSans.ttf", mFontSize))
+    {
+        cerr << "failed to load font file." << endl;
+    }
 
 }
 
@@ -42,6 +58,8 @@ void Label::setFontColor(float inRed, float inGreen, float inBlue, float inAlpha
     mColor[1] = inGreen;
     mColor[2] = inBlue;
     mColor[3] = inAlpha;
+
+    mText->setColor(mColor);
 }
 
 void Label::setFadeRate(float inFade)
@@ -52,19 +70,17 @@ void Label::setFadeRate(float inFade)
 void Label::fade()
 {
     mColor[3] -= mFadeRate;
-
-    buildLabel();
+    mText->setColor(mColor);
+    //buildLabel();
 }
 
 
 void Label::preProcessing(float inRange)
 {
+    mRange = inRange;
+    /*
     TextLayer label;
 
-    if (!label.loadFont("assets/misc/DejaVuSans.ttf", mFontSize))
-    {
-        cerr << "failed to load font file." << endl;
-    }
 
     label.setColor(Uint8(mColor[0] * 255), Uint8(mColor[1] * 255), Uint8(mColor[2] * 255));
     label.setText(mLabelText);
@@ -86,17 +102,40 @@ void Label::preProcessing(float inRange)
     mTexDimensions = DisplayEngine::convert2DPixelToObject(point, mDisplay, inRange);
 
     buildLabel();
+    */
+}
+
+
+void Label::setText(const char* inText)
+{
+
+    mText->setText(inText);
+    //Vector3D<float> color(mColor[0], mColor[1], mColor[2]);
+
+    //mText.setColor(color);
+    Point2D<int> point;
+
+    point.x = (mDisplay.x / 2) + mText->getTextSize().x;
+    point.y = (mDisplay.y / 2) - mText->getTextSize().y;
+
+
+    mTexDimensions = DisplayEngine::convert2DPixelToObject(point, mDisplay, mRange);
+
+    //buildLabel();
 }
 
 
 void Label::buildLabel()
 {
     float startX = mLocation.x - (mSize.x / 2.0f);
-    float startY = mLocation.y + (mSize.y / 2.0f) - mTexDimensions.y;
+    float startY = mLocation.y + (mSize.y / 2.0f);// - mTexDimensions.y;
 
     glNewList(mList, GL_COMPILE);
     {
-        glEnable(GL_SCISSOR_TEST);
+        //glEnable(GL_SCISSOR_TEST);
+
+        mText->draw(startX, startY, mSize.y);
+        /*
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, mText);
 
@@ -120,7 +159,8 @@ void Label::buildLabel()
         glPopAttrib();
 
         glDisable(GL_TEXTURE_2D);
-        glDisable(GL_SCISSOR_TEST);
+        */
+        //glDisable(GL_SCISSOR_TEST);
     }
     glEndList();
 }

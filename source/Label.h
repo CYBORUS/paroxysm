@@ -5,6 +5,8 @@
 
 #include <SDL_opengl.h>
 #include "TextLayer.h"
+#include "TextPic.h"
+#include "Vector3D.h"
 
 
 #include <string>
@@ -21,6 +23,7 @@ class Label : public Widget
 
         void setFontSize(int inFontSize);
         void setFontColor(float inRed, float inGreen, float inBlue, float inAlpha);
+        void setText(const char* inText);
 
         void setFadeRate(float inFade);
         void fade();
@@ -36,13 +39,16 @@ class Label : public Widget
 
         float mFadeRate;
 
-        GLuint mText;
+        float mRange;
+        TextPic* mText;
+
+        //GLuint mText;
         GLuint mList;
 
         int mFontSize;
-        float mColor[4];
+        Vector3D<float> mColor;
 
-        string mLabelText;
+        //string mLabelText;
 };
 
 #endif

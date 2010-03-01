@@ -38,22 +38,28 @@ bool LoadGameModule::onLoad()
 
     Label* info = new Label("Load a Map", LOAD_GAME_LABEL);
     info->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
-    info->setFontSize(52);
-    info->setLocation(0.0f, 7.0f);
-    info->setSize(8.0f, 4.0f);
+    info->setFontSize(24);
+    info->setLocation(0.0f, 8.0f);
+    info->setSize(10.0f, 2.0f);
 
     mFadeLabel = info;
     mFadeLabel->setFadeRate(0.003f);
 
+    mFPSLabel = new Label("0", FPS);
+    mFPSLabel->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
+    mFPSLabel->setFontSize(24);
+    mFPSLabel->setLocation(6.0f, -6.0f);
+    mFPSLabel->setSize(3.0f, 1.0f);
+
     Button* buttons = new Button("load_map", LOAD_BUTTON);
     buttons->setLocation(-8.0, -8.0);
-    buttons->setSize(3.0, 1.0);
+    buttons->setSize(3.0, 1.5);
 
     mHUD.addWidget(buttons);
 
     buttons = new Button("cancel", CANCEL_BUTTON);
     buttons->setLocation(8.0, -8.0);
-    buttons->setSize(3.0, 1.0);
+    buttons->setSize(3.0, 1.5);
 
     mHUD.addWidget(buttons);
 
@@ -64,6 +70,7 @@ bool LoadGameModule::onLoad()
 
     mHUD.addWidget(maps);
     mHUD.addWidget(info);
+    mHUD.addWidget(mFPSLabel);
 
     return true;
 }
@@ -72,6 +79,8 @@ void LoadGameModule::onInit()
 {
     mRunning = true;
     mNextModule = NULL;
+    mFPS = 0;
+    mNextSecond = 0;
 
     GLdouble ratio = 0;
     int w = SDL_GetVideoSurface()->w;
@@ -107,6 +116,20 @@ void LoadGameModule::onInit()
 
 void LoadGameModule::onLoop()
 {
+    /*
+    if (SDL_GetTicks() > mNextSecond)
+    {
+        mNextSecond += 1000;
+        stringstream s;
+        s << mFPS << " FPS";
+        mFPSLabel->setText(s.str().c_str());
+        mFPS = 0;
+    }
+    else
+    {
+        ++mFPS;
+    }
+*/
     glClear(GL_COLOR_BUFFER_BIT);
     mHUD.display();
 }
@@ -114,6 +137,15 @@ void LoadGameModule::onLoop()
 void LoadGameModule::onFrame()
 {
     //mFadeLabel->fade();
+
+    if (mFPS != DisplayEngine::mFPS)
+    {
+        mFPS = DisplayEngine::mFPS;
+        stringstream s;
+        s << mFPS << " FPS";
+        mFPSLabel->setText(s.str().c_str());
+    }
+
 }
 
 void LoadGameModule::onCleanup()

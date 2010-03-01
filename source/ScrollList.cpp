@@ -369,12 +369,12 @@ void ScrollList::buildScrollList()
     }
 
 
-
+/*
     if (glIsList(mScrollList))
     {
         glDeleteLists(mScrollList, 1);
     }
-
+*/
     glNewList(mScrollList, GL_COMPILE);
     {
         float nextTex;

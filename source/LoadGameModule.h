@@ -21,7 +21,7 @@ using namespace std;
 
 #define GAME_RANGE 10.0
 
-enum LoadGameHUD { MAPLIST, LOAD_GAME_LABEL, LOAD_BUTTON, CANCEL_BUTTON };
+enum LoadGameHUD { MAPLIST, LOAD_GAME_LABEL, LOAD_BUTTON, CANCEL_BUTTON, FPS };
 
 class LoadGameModule : public Module
 {
@@ -49,7 +49,10 @@ class LoadGameModule : public Module
         string mSelectedMap;
 
         Label* mFadeLabel;
+        Label* mFPSLabel;
 
+        unsigned int mFPS;
+        unsigned int mNextSecond;
 };
 
 #endif

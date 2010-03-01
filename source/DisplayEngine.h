@@ -27,7 +27,7 @@ typedef SDL_Surface* Surface;
 #include <iostream>
 using namespace std;
 
-#define ENGINE_FPS 60
+#define ENGINE_FPS 10
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
 #define FIELD_OF_VIEW 30.0
 #define NEAR_CP 1.0
@@ -62,6 +62,7 @@ class DisplayEngine
         static int processKey(SDLKey inSym, SDLMod inMod);
 
         static Surface mDisplay;
+        static unsigned int mFPS;
 
     private:
         static void cleanup();
@@ -74,6 +75,7 @@ class DisplayEngine
         static unsigned int mCurrentFrame;
         static bool mMipmapping;
         static Mask mMask;
+
 
         static ofstream mLogFile;
 };

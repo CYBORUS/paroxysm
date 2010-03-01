@@ -36,6 +36,7 @@ Surface DisplayEngine::mWindowIcon = NULL;
 SDL_Rect** DisplayEngine::mModes = NULL;
 bool DisplayEngine::mMipmapping = false;
 Mask DisplayEngine::mMask;
+unsigned int DisplayEngine::mFPS = 0;
 ofstream DisplayEngine::mLogFile;
 
 void DisplayEngine::start(Module* inModule)
@@ -67,6 +68,7 @@ void DisplayEngine::start(Module* inModule)
 
         unsigned int nextSecond = SDL_GetTicks() + 1000u;
         int framesPerSecond = 0;
+        mFPS = 0; //setup the frames per second
 
         while (currentModule->isRunning())
         {
@@ -80,9 +82,12 @@ void DisplayEngine::start(Module* inModule)
 
             if (ticks > nextSecond)
             {
-                //cout << framesPerSecond << " frames per second" << endl;
                 nextSecond += 1000u;
+
+                //store the # of frames printed this second
+                mFPS = framesPerSecond;
                 framesPerSecond = 0;
+                //nextSecond = SDL_GetTicks() + 1000u;
             }
 
             if (ticks > nextFrame)
@@ -90,8 +95,7 @@ void DisplayEngine::start(Module* inModule)
                 currentModule->onFrame();
                 nextFrame += FRAME_LENGTH;
             }
-
-            SDL_Delay(1); // prevent CPU abuse
+            SDL_Delay(10); // prevent CPU abuse
         }
 
         Module* deadModule = currentModule;
