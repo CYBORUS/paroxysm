@@ -299,23 +299,58 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
     }
 
     Vector3D<float> clickPoint(tempX, tempY, tempZ);
-
+    Vector3D<float> startVertex = mTerrainGrid.getVertex(0, 0);
+    currentVertex = startVertex;
 
     int numRows = mTerrainGrid.getMatrix().rows();
     int numCols = mTerrainGrid.getMatrix().cols();
 
-    for (int i = 0; i < numRows; ++i)
+    int closestRow = 0;
+    int closestColumn = 0;
+    bool found = false;
+    float startDistance = (currentVertex - clickPoint).length();
+    float closestDistance = startDistance;
+    float currentDistance;
+
+    //first find the closest row
+    for (int i = 1; i < numRows && !found; ++i)
     {
-        for (int j = 0; j < numCols; ++j)
+        currentVertex = mTerrainGrid.getVertex(i, 0);
+
+        if ((currentDistance = (currentVertex - clickPoint).length()) < closestDistance)
         {
-            currentVertex = mTerrainGrid.getVertex(i, j);
-            if ((currentVertex - clickPoint).length() <= (closestMatch - clickPoint).length())
-            {
-                closestMatch = currentVertex;
-            }
+            closestRow = i;
+            closestDistance = currentDistance;
+        }
+        else
+        {
+            found = true;
         }
     }
-    return closestMatch;
+
+    found = false;
+    currentVertex = startVertex;
+    closestDistance = startDistance;
+
+    //then the closest column
+    for (int i = 1; i < numCols && !found; ++i)
+    {
+        currentVertex = mTerrainGrid.getVertex(0, i);
+
+        if ((currentDistance = (currentVertex - clickPoint).length()) < closestDistance)
+        {
+            closestColumn = i;
+            closestDistance = currentDistance;
+        }
+        else
+        {
+            found = true;
+        }
+
+    }
+
+    //closestMatch =
+    return mTerrainGrid.getVertex(closestRow, closestColumn);
 }
 
 
