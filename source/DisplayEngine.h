@@ -19,6 +19,7 @@
 #define _DISPLAYENGINE_H_
 
 #include "Point2D.h"
+#include "LogFile.h"
 
 #include <SDL.h>
 #include <SDL_opengl.h>
@@ -77,7 +78,7 @@ class DisplayEngine
         static Mask mMask;
 
 
-        static ofstream mLogFile;
+        static LogFile mLogFile;
 };
 
 #endif

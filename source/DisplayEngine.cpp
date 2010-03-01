@@ -37,7 +37,7 @@ SDL_Rect** DisplayEngine::mModes = NULL;
 bool DisplayEngine::mMipmapping = false;
 Mask DisplayEngine::mMask;
 unsigned int DisplayEngine::mFPS = 0;
-ofstream DisplayEngine::mLogFile;
+LogFile DisplayEngine::mLogFile("ogl");
 
 void DisplayEngine::start(Module* inModule)
 {
@@ -215,15 +215,6 @@ void DisplayEngine::initialize()
 
     SDL_WM_SetCaption("Paroxysm version 0.1.1","Paroxysm");
 
-    stringstream ss;
-    ss << "assets/logs/ogl-" << time(NULL) << ".txt";
-    //cerr << "logging " << ss.str() << endl;
-    mLogFile.open(ss.str().c_str(), ios::trunc);
-    if (mLogFile.fail())
-    {
-        cerr << "failed to log: " << ss.str() << endl;
-        return;
-    }
     openGLDriverInfo(mLogFile);
 }
 
@@ -232,8 +223,6 @@ void DisplayEngine::cleanup()
     #ifndef __APPLE__
     SDL_FreeSurface(mWindowIcon);
     #endif
-
-    mLogFile.close();
 
     TTF_Quit();
     SDL_Quit();
