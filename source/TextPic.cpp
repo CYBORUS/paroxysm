@@ -70,7 +70,7 @@ void TextPic::setText(const string& inText)
 
 void TextPic::render()
 {
-    Surface textSurface;
+    Surface textSurface = NULL;
 
     switch (mQuality)
     {

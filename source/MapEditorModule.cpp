@@ -31,6 +31,7 @@ bool MapEditorModule::onLoad()
 
     mSceneChanged = true;
 
+/*
     mTerrainSize.x = Config::get<int>("terrain cols", 8);
     mTerrainSize.y = Config::get<int>("terrain rows", 8);
     string terrainFilename = Config::get<string>("terrain file", "_");
@@ -48,6 +49,7 @@ bool MapEditorModule::onLoad()
         mTerrainSize.y = mTerrainGrid.getMatrix().rows();
         terrainFile.close();
     }
+*/
 
     mTrackball[0] = 22.0f;
     mTrackball[2] = 20.0f;
@@ -245,6 +247,13 @@ void MapEditorModule::onCleanup()
     }
 
     SoundEngine::stopBackgroundMusic();
+}
+
+void MapEditorModule::setSize(int inX, int inY)
+{
+    mTerrainSize.x = inX;
+    mTerrainSize.y = inY;
+    mTerrainGrid.create(mTerrainSize.y, mTerrainSize.x);
 }
 
 Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)

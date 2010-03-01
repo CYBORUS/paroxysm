@@ -54,6 +54,8 @@ ScrollList::~ScrollList()
     {
         delete mText[i];
     }
+
+    glDeleteLists(mScrollList, 2);
 }
 
 void ScrollList::display()

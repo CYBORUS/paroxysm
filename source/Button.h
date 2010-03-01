@@ -34,6 +34,7 @@ class Button : public Widget
         virtual void display();
         virtual void onStateChange();
 
+        void preProcessing(float inRange);
     private:
         void assemble(string& inString, const char* inAdd);
 
@@ -45,6 +46,9 @@ class Button : public Widget
         string mKeyword;
         GLuint mTextures[4];
         MouseState mLastState;
+
+        GLfloat mVertices[8];
+        GLfloat mTexCoords[8];
 };
 
 #endif

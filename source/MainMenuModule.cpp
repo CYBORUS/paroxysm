@@ -79,24 +79,6 @@ Module* MainMenuModule::next()
     return mNextModule;
 }
 
-/*
-void MainMenuModule::displayButton(float inX, float inY, float inWidthRange, float inHeightRange, GLuint inTexture)
-{
-    glBindTexture(GL_TEXTURE_2D, inTexture);
-    glBegin(GL_QUADS);
-    {
-        glTexCoord2i(0, 1);
-        glVertex2f(inX - inWidthRange, inY - inHeightRange);
-        glTexCoord2i(1, 1);
-        glVertex2f(inX + inWidthRange, inY - inHeightRange);
-        glTexCoord2i(1, 0);
-        glVertex2f(inX + inWidthRange, inY + inHeightRange);
-        glTexCoord2i(0, 0);
-        glVertex2f(inX - inWidthRange, inY + inHeightRange);
-    }
-    glEnd();
-}
-*/
 
 void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle)
@@ -118,7 +100,7 @@ void MainMenuModule::onButtonPress(int inID)
     {
         case MAP_EDITOR:
         {
-            mNextModule = new MapEditorModule;
+            mNextModule = new LoadMapModule;
             mRunning = false;
             mDead = false;
             break;

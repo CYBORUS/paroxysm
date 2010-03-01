@@ -63,11 +63,6 @@ bool LoadGameModule::onLoad()
 
     mHUD.addWidget(buttons);
 
-    Point2D<int> display;
-
-    display.x = Config::get<int>("display width", 800);
-    display.y = Config::get<int>("display height", 600);
-
     mHUD.addWidget(maps);
     mHUD.addWidget(info);
     mHUD.addWidget(mFPSLabel);
@@ -80,7 +75,6 @@ void LoadGameModule::onInit()
     mRunning = true;
     mNextModule = NULL;
     mFPS = 0;
-    mNextSecond = 0;
 
     GLdouble ratio = 0;
     int w = SDL_GetVideoSurface()->w;

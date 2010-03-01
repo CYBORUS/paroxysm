@@ -26,10 +26,12 @@
 #include <iostream>
 using namespace std;
 
-#define HUD_RANGE 8.0f
+#define HUD_RANGE 10.0f
 #define HUD_OUT 0
 #define HUD_HOVER 1
 #define HUD_PRESS 2
+
+enum HUDControls { MAPLIST, LOAD_GAME_LABEL, LOAD_BUTTON, CANCEL_BUTTON, FPS, GENERIC_LABEL };
 
 class HUD
 {

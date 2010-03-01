@@ -211,6 +211,7 @@ void DisplayEngine::initialize()
     #endif
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     SDL_WM_SetCaption("Paroxysm version 0.1.1","Paroxysm");

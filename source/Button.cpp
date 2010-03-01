@@ -46,6 +46,7 @@ Button::Button(const char* inKeyword, int inID) : mKeyword(inKeyword)
     DisplayEngine::loadTexture(file.c_str(), mTextures[PRESS]);
     assemble(file, "_disabled");
     DisplayEngine::loadTexture(file.c_str(), mTextures[3]);
+
 }
 
 Button::~Button()
@@ -57,7 +58,7 @@ void Button::display()
 {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mTextures[mEnabled ? mMouseState : 3]);
-    glColor3f(1.0f, 1.0f, 1.0f);
+
     glBegin(GL_QUADS);
     {
         glTexCoord2i(0, 1);
@@ -70,6 +71,7 @@ void Button::display()
         glVertex2f(mObjectUL.x, mObjectUL.y);
     }
     glEnd();
+
     glDisable(GL_TEXTURE_2D);
 }
 
@@ -107,4 +109,10 @@ void Button::onStateChange()
 
         mLastState = mMouseState;
     }
+}
+
+
+void Button::preProcessing(float inRange)
+{
+
 }

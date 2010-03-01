@@ -80,6 +80,8 @@ class MapEditorModule : public Module
         virtual bool isDead();
         virtual Module* next();
 
+        void setSize(int inX, int inY);
+
     protected:
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onLButtonDown(int inX, int inY);
