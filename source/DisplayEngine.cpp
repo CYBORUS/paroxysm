@@ -445,22 +445,18 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
     inStream << "OpenGL Version: " << (char*)glGetString(GL_VERSION) << endl;
     string stuff = (char*)glGetString(GL_EXTENSIONS);
 
-    for (unsigned int i = 0; i < stuff.size(); ++i)
+    for (unsigned int i = 0; i < stuff.length(); ++i)
     {
-        unsigned int j;
-        if (stuff.find_first_of(' ', i) != string::npos)
+        unsigned int j = stuff.find_first_of(' ', i);
+        if (j != string::npos)
         {
-            j = stuff.find_first_of(' ', i);
+            inStream << stuff.substr(i, j - i) << endl;
+            i = j;
         }
         else
         {
-            j = 0;
-        }
-        inStream << stuff.substr(i, j - i) << endl;
-
-        if (j > i)
-        {
-            i = j;
+            inStream << stuff.substr(i) << endl;
+            i = stuff.length();
         }
     }
 }
