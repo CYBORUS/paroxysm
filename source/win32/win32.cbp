@@ -24,7 +24,8 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
 					<Add option="-W" />
 				</Compiler>
 				<Linker>
@@ -67,6 +68,10 @@
 		<Unit filename="..\Label.h" />
 		<Unit filename="..\LoadGameModule.cpp" />
 		<Unit filename="..\LoadGameModule.h" />
+		<Unit filename="..\LoadMapModule.cpp" />
+		<Unit filename="..\LoadMapModule.h" />
+		<Unit filename="..\LogFile.cpp" />
+		<Unit filename="..\LogFile.h" />
 		<Unit filename="..\LuaMachine.cpp" />
 		<Unit filename="..\LuaMachine.h" />
 		<Unit filename="..\MainMenuModule.cpp" />
