@@ -100,14 +100,14 @@ void MainMenuModule::onButtonPress(int inID)
     {
         case MAP_EDITOR:
         {
-            //mNextModule = new LoadMapModule;
+            mNextModule = new LoadMapModule;
             mRunning = false;
             mDead = false;
             break;
         }
         case NEW_GAME:
         {
-            //mNextModule = new LoadGameModule;
+            mNextModule = new LoadGameModule;
             mRunning = false;
             mDead = false;
             break;

@@ -93,6 +93,13 @@ bool MapEditorModule::onLoad()
     mSaveBox->setTextColor(Vector3D<float>(0.0f, 0.5f, 1.0f));
     mHUD.addWidget(mSaveBox);
 
+    mFPSLabel = new Label("0", FPS);
+    mFPSLabel->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
+    mFPSLabel->setFontSize(24);
+    mFPSLabel->setLocation(6.0f, -6.0f);
+    mFPSLabel->setSize(3.0f, 1.0f);
+
+    mHUD.addWidget(mFPSLabel);
     return true;
 }
 
@@ -101,6 +108,9 @@ void MapEditorModule::onInit()
     mRunning = true;
     mDead = true;
     mNextModule = NULL;
+
+    mFPS = 0;
+
 
     SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
 
@@ -200,6 +210,14 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onFrame()
 {
+    if (mFPS != DisplayEngine::mFPS)
+    {
+        mFPS = DisplayEngine::mFPS;
+        stringstream s;
+        s << mFPS << " FPS";
+        mFPSLabel->setText(s.str().c_str());
+    }
+
     if (mSaveBox->isLockedIn())
     {
         string f("assets/maps/");

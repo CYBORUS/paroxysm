@@ -29,6 +29,7 @@
 #include "HUD.h"
 #include "Button.h"
 #include "TextBox.h"
+#include "Label.h"
 
 #include <SDL_opengl.h>
 
@@ -134,6 +135,9 @@ class MapEditorModule : public Module
 
         Button* mButtons[NUM_BUTTONS];
         TextBox* mSaveBox;
+
+        Label* mFPSLabel;
+        unsigned int mFPS;
 };
 
 #endif
