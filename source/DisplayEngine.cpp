@@ -74,10 +74,6 @@ void DisplayEngine::start(Module* inModule)
         {
             while (SDL_PollEvent(&event)) currentModule->onEvent(&event);
 
-            currentModule->onLoop();
-            SDL_GL_SwapBuffers();
-            ++framesPerSecond;
-
             unsigned int ticks = SDL_GetTicks();
 
             if (ticks > nextSecond)
@@ -95,7 +91,14 @@ void DisplayEngine::start(Module* inModule)
                 currentModule->onFrame();
                 nextFrame += FRAME_LENGTH;
             }
-            SDL_Delay(10); // prevent CPU abuse
+            else
+            {
+                currentModule->onLoop();
+                SDL_GL_SwapBuffers();
+                ++framesPerSecond;
+            }
+
+            SDL_Delay(1); // prevent CPU abuse
         }
 
         Module* deadModule = currentModule;
