@@ -34,57 +34,77 @@ Button::Button(const char* inKeyword, int inID) : mKeyword(inKeyword)
     mLastState = OUTSIDE;
     mID = inID;
 
-    glGenTextures(4, mTextures);
+    glGenTextures(1, &mTexture);
 
     string file;
 
-    assemble(file, "_out");
-    DisplayEngine::loadTexture(file.c_str(), mTextures[OUTSIDE]);
-    assemble(file, "_hover");
-    DisplayEngine::loadTexture(file.c_str(), mTextures[HOVER]);
-    assemble(file, "_press");
-    DisplayEngine::loadTexture(file.c_str(), mTextures[PRESS]);
-    assemble(file, "_disabled");
-    DisplayEngine::loadTexture(file.c_str(), mTextures[3]);
-
+    assemble(file);
+    DisplayEngine::loadTexture(file.c_str(), mTexture);
+    onStateChange();
 }
 
 Button::~Button()
 {
-    glDeleteTextures(4, mTextures);
+    glDeleteTextures(1, &mTexture);
 }
 
 void Button::display()
 {
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, mTextures[mEnabled ? mMouseState : 3]);
-
+    glBindTexture(GL_TEXTURE_2D, mTexture);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_QUADS);
     {
-        glTexCoord2i(0, 1);
+        glTexCoord2f(0.0f, mCoor.y);
         glVertex2f(mObjectUL.x, mObjectLR.y);
-        glTexCoord2i(1, 1);
+        glTexCoord2f(1.0f, mCoor.y);
         glVertex2f(mObjectLR.x, mObjectLR.y);
-        glTexCoord2i(1, 0);
+        glTexCoord2f(1.0f, mCoor.x);
         glVertex2f(mObjectLR.x, mObjectUL.y);
-        glTexCoord2i(0, 0);
+        glTexCoord2f(0.0f, mCoor.x);
         glVertex2f(mObjectUL.x, mObjectUL.y);
     }
     glEnd();
-
     glDisable(GL_TEXTURE_2D);
 }
 
-void Button::assemble(string& inString, const char* inAdd)
+void Button::assemble(string& inString)
 {
     inString = mPrefix;
     inString += mKeyword;
-    inString += inAdd;
     inString += mSuffix;
 }
 
 void Button::onStateChange()
 {
+    switch (mMouseState)
+    {
+        case OUTSIDE:
+        {
+            mCoor.x = 0.0f;
+            break;
+        }
+
+        case HOVER:
+        {
+            mCoor.x = 0.25f;
+            break;
+        }
+
+        case PRESS:
+        {
+            mCoor.x = 0.5f;
+            break;
+        }
+
+        default:
+        {
+        }
+    }
+
+    if (!mEnabled) mCoor.x = 0.75f;
+    mCoor.y = mCoor.x + 0.25f;
+
     if (mEnabled && mVisible && mLastState != mMouseState)
     {
         switch (mMouseState)

@@ -36,7 +36,7 @@ class Button : public Widget
 
         void preProcessing(float inRange);
     private:
-        void assemble(string& inString, const char* inAdd);
+        void assemble(string& inString);
 
         static string mPrefix;
         static string mSuffix;
@@ -44,11 +44,10 @@ class Button : public Widget
         static SoundEffect mClickSound;
 
         string mKeyword;
-        GLuint mTextures[4];
-        MouseState mLastState;
 
-        GLfloat mVertices[8];
-        GLfloat mTexCoords[8];
+        GLuint mTexture;
+        Point2D<float> mCoor;
+        MouseState mLastState;
 };
 
 #endif
