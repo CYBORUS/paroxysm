@@ -64,14 +64,14 @@ bool MapEditorModule::onLoad()
     mHUD.setDisplay(mDisplay);
 
     mButtons[B_UNDO] = new Button("undo", B_UNDO);
-    mButtons[B_UNDO]->setLocation(-8.0f, 0.50f);
-    mButtons[B_UNDO]->setSize(MB_WIDTH, MB_HEIGHT);
+    mButtons[B_UNDO]->setLocation(-1.0f, 8.0f);
+    mButtons[B_UNDO]->setSize(1.0f, 1.0f);
     mButtons[B_UNDO]->disable();
     mHUD.addWidget(mButtons[B_UNDO]);
 
     mButtons[B_REDO] = new Button("redo", B_REDO);
-    mButtons[B_REDO]->setLocation(-8.0f, -0.75f);
-    mButtons[B_REDO]->setSize(MB_WIDTH, MB_HEIGHT);
+    mButtons[B_REDO]->setLocation(0.25f, 8.0f);
+    mButtons[B_REDO]->setSize(1.0f, 1.0f);
     mButtons[B_REDO]->disable();
     mHUD.addWidget(mButtons[B_REDO]);
 
