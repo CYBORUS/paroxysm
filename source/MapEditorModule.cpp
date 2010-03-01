@@ -75,16 +75,16 @@ bool MapEditorModule::onLoad()
     mButtons[B_REDO]->disable();
     mHUD.addWidget(mButtons[B_REDO]);
 
-    mButtons[B_TERRAIN_MODE] = new Button("terrain", B_TERRAIN_MODE);
-    mButtons[B_TERRAIN_MODE]->setLocation(MB_POS_X, MB_POS_Y);
-    mButtons[B_TERRAIN_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
-    mHUD.addWidget(mButtons[B_TERRAIN_MODE]);
-
-    mButtons[B_TILE_MODE] = new Button("tile", B_TILE_MODE);
-    mButtons[B_TILE_MODE]->setLocation(MB_POS_X, MB_POS_Y);
-    mButtons[B_TILE_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
-    mButtons[B_TILE_MODE]->setVisible(false);
-    mHUD.addWidget(mButtons[B_TILE_MODE]);
+//    mButtons[B_TERRAIN_MODE] = new Button("terrain", B_TERRAIN_MODE);
+//    mButtons[B_TERRAIN_MODE]->setLocation(MB_POS_X, MB_POS_Y);
+//    mButtons[B_TERRAIN_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
+//    mHUD.addWidget(mButtons[B_TERRAIN_MODE]);
+//
+//    mButtons[B_TILE_MODE] = new Button("tile", B_TILE_MODE);
+//    mButtons[B_TILE_MODE]->setLocation(MB_POS_X, MB_POS_Y);
+//    mButtons[B_TILE_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
+//    mButtons[B_TILE_MODE]->setVisible(false);
+//    mHUD.addWidget(mButtons[B_TILE_MODE]);
 
     mSaveBox = new TextBox(B_SAVE);
     mSaveBox->setSize(8.0f, 1.0f);
