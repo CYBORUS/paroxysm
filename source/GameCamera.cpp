@@ -56,3 +56,9 @@ void GameCamera::setPanning(const Vector3D<float>& inVector)
     mFollow = NULL;
     mPanning = inVector;
 }
+
+void GameCamera::zoom(float inOffset)
+{
+    mTrackball[2] += inOffset;
+    if (mTrackball[2] < 0.0f) mTrackball[2] = 0.0f;
+}

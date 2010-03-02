@@ -15,29 +15,16 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GAMECAMERA_H
-#define GAMECAMERA_H
+#include "RobotControl.h"
 
-#include "Tank.h"
-
-class GameCamera
+RobotControl::RobotControl(Tank* inTank) : Control(inTank), mTicks(TICK_RESET)
 {
-    public:
-        GameCamera();
-        ~GameCamera();
+}
 
-        void follow(Tank* inTank);
-        void update();
-        void transform();
-        void setTrackball(const Vector3D<float>& inVector);
-        void setPanning(const Vector3D<float>& inVector);
-        void zoom(float inOffset);
+RobotControl::~RobotControl()
+{
+}
 
-    private:
-        Vector3D<float> mTrackball;
-        Vector3D<float> mPanning;
-
-        Tank* mFollow;
-};
-
-#endif
+void RobotControl::update()
+{
+}

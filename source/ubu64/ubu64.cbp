@@ -87,6 +87,8 @@
 		<Unit filename="../PlayerControl.cpp" />
 		<Unit filename="../PlayerControl.h" />
 		<Unit filename="../Point2D.h" />
+		<Unit filename="../RobotControl.cpp" />
+		<Unit filename="../RobotControl.h" />
 		<Unit filename="../ScrollList.cpp" />
 		<Unit filename="../ScrollList.h" />
 		<Unit filename="../SoundEngine.cpp" />
