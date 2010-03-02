@@ -14,12 +14,16 @@ class Tank
         virtual void display();
         Vector3D<float> getPosition();
 
+        void move(Vector3D<float> inMoveDirection);
+
     protected:
 
         Vector3D<float> mPosition;
         Vector3D<float> mRotation;
 
-        float turretAngle;
+        float mTurretAngle;
+
+        float mTankSpeed;
 };
 
 #endif // TANK_H

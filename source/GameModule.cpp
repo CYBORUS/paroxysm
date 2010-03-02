@@ -36,6 +36,10 @@ GameModule::GameModule(const char* inMapFile)
         cerr << "failed to open file." << endl;
         exit(3);
     }
+
+    addTank(PLAYER_TANK);
+    Vector3D<float> movement(1.0f, 0.0f, 0.5f);
+    mControls[0]->move(movement);
 }
 
 GameModule::~GameModule()
@@ -129,8 +133,11 @@ void GameModule::onLoop()
     glRotatef(mTrackball[0], 1.0f, 0.0f, 0.0f);
     glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
 
-    Vector3D<float> pan = mTank.getPosition();
-    glTranslatef(-pan[0], -pan[1], -pan[2]);
+    if (mTanks.size() > 0)
+    {
+        Vector3D<float> pan = mTanks[0]->getPosition();
+        glTranslatef(-pan[0], -pan[1], -pan[2]);
+    }
 
 
     mTerrain.display();
@@ -145,7 +152,10 @@ void GameModule::onLoop()
     glEnd();
     glPopAttrib();
 
-    mTank.display();
+    for (unsigned int i = 0; i < mTanks.size(); ++i)
+    {
+        mTanks[i]->display();
+    }
 
     glPopMatrix();
 
@@ -155,11 +165,39 @@ void GameModule::onLoop()
 
 void GameModule::onFrame()
 {
+    for (unsigned int i = 0; i < mControls.size(); ++i)
+    {
+        mControls[i]->update();
+    }
 }
 
 void GameModule::onCleanup()
 {
 }
+
+void GameModule::addTank(ControlType inControlType)
+{
+    Tank* tank = new Tank();
+    Control* controls;
+
+    mTanks.push_back(tank);
+
+    switch (inControlType)
+    {
+        case PLAYER_TANK:
+        {
+            controls = new PlayerControl(tank);
+            break;
+        }
+
+        default:
+        {
+        }
+    }
+
+    mControls.push_back(controls);
+}
+
 
 void GameModule::onRButtonDown(int inX, int inY)
 {

@@ -24,11 +24,14 @@
 #include "LuaMachine.h"
 #include "TextBox.h"
 #include "Tank.h"
+#include "Control.h"
+#include "PlayerControl.h"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <vector>
 using namespace std;
 
 class GameModule : public Module
@@ -42,6 +45,8 @@ class GameModule : public Module
         virtual bool onLoad();
         virtual void onInit();
         virtual void onCleanup();
+
+        virtual void addTank(ControlType inControlType);
 
         //static int luaCameraPan(lua_State* inState);
 
@@ -71,7 +76,8 @@ class GameModule : public Module
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;
 
-        Tank mTank;
+        vector<Tank*> mTanks;
+        vector<Control*> mControls;
 };
 
 #endif

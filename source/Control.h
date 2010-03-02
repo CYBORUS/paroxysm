@@ -4,6 +4,8 @@
 #include "Vector3D.h"
 #include "Tank.h"
 
+enum ControlType { PLAYER_TANK, NETWORK_TANK };
+
 class Control
 {
     public:
@@ -11,6 +13,7 @@ class Control
         virtual ~Control();
 
         virtual void update() = 0;
+        virtual void move(Vector3D<float> inMoveDirection);
 
     protected:
         Tank* mTank;

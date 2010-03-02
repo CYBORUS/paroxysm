@@ -5,6 +5,8 @@ Tank::Tank()
     mPosition[0] = 10.0;
     mPosition[1] = 0.5;
     mPosition[2] = 10.0;
+
+    mTankSpeed = 0.05f;
 }
 
 Tank::~Tank()
@@ -72,4 +74,13 @@ void Tank::display()
 Vector3D<float> Tank::getPosition()
 {
     return mPosition;
+}
+
+void Tank::move(Vector3D<float> inMoveDirection)
+{
+    inMoveDirection.normalize();
+
+    inMoveDirection = inMoveDirection * mTankSpeed;
+
+    mPosition += inMoveDirection;
 }
