@@ -39,7 +39,7 @@ void GameCamera::transform()
     glTranslatef(0.0f, 0.0f, -mTrackball[2]);
     glRotatef(mTrackball[0], 1.0f, 0.0f, 0.0f);
     glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
-    glTranslatef(mPanning[0], mPanning[1], mPanning[2]);
+    glTranslatef(-mPanning[0], -mPanning[1], -mPanning[2]);
 }
 
 void GameCamera::follow(Tank* inTank)
