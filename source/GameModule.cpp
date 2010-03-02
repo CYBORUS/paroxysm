@@ -20,6 +20,7 @@
 
 GameCamera* GameModule::luaCamera = NULL;
 vector<Tank*>* GameModule::luaTanks = NULL;
+GameModule* GameModule::luaGM = NULL;
 
 int GameModule::luaCameraPan(lua_State* inState)
 {
@@ -51,6 +52,23 @@ int GameModule::luaCameraPan(lua_State* inState)
     else
     {
         outSuccess = 0;
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
+int GameModule::luaAddTank(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    int num = argc > 0 ? (int)lua_tonumber(inState, 1) : 1;
+    if (num < 1) num = 1;
+    for (int i = 0; i < num; ++i)
+    {
+        cerr << "add tanks " << num << endl;
+        luaGM->addTank(ROBOT_TANK);
     }
 
     lua_pushnumber(inState, outSuccess);
@@ -112,6 +130,7 @@ bool GameModule::onLoad()
     mHUD.addWidget(mLuaConsole);
 
     mLua.addFunction("cameraPan", luaCameraPan);
+    mLua.addFunction("addTank", luaAddTank);
 
     mFPSLabel = new Label("0", FPS);
     mFPSLabel->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
@@ -134,6 +153,7 @@ void GameModule::onInit()
     mMouseMode = MM_DEFAULT;
     luaCamera = &mCamera;
     luaTanks = &mTanks;
+    luaGM = this;
 
     SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
 

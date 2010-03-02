@@ -52,6 +52,8 @@ class GameModule : public Module
 
         /// Lua wiring
         static int luaCameraPan(lua_State* inState);
+        static int luaAddTank(lua_State* inState);
+        static GameModule* luaGM;
         static GameCamera* luaCamera;
         static vector<Tank*>* luaTanks;
 
