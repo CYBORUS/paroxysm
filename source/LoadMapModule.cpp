@@ -93,7 +93,6 @@ bool LoadMapModule::onLoad()
     buttons->setSize(3.0, 1.5);
 
     mHUD.addWidget(buttons);
-    //mHUD.addWidget(info);
 
     return true;
 }

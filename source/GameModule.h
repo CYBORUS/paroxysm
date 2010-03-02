@@ -23,6 +23,7 @@
 #include "Point2D.h"
 #include "LuaMachine.h"
 #include "TextBox.h"
+#include "Tank.h"
 
 #include <iostream>
 #include <fstream>
@@ -69,6 +70,8 @@ class GameModule : public Module
 
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;
+
+        Tank mTank;
 };
 
 #endif

@@ -142,7 +142,9 @@ void GameModule::onLoop()
         glVertex3f(0.0f, 10.0f, 0.0f);
     }
     glEnd();
+    mTank.display();
     glPopAttrib();
+
 
     glPopMatrix();
 
