@@ -78,7 +78,7 @@ GameModule::GameModule(const char* inMapFile)
 
     addTank(PLAYER_TANK);
     Vector3D<float> movement(1.0f, 0.0f, 0.5f);
-    mControls[0]->changeDirection(1.0f);
+    mControls[0]->changeDirection(-1.0f);
     mControls[0]->changeSpeed(1.0f);
 }
 
@@ -111,6 +111,15 @@ bool GameModule::onLoad()
     mHUD.addWidget(mLuaConsole);
 
     mLua.addFunction("cameraPan", luaCameraPan);
+
+    mFPSLabel = new Label("0", FPS);
+    mFPSLabel->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
+    mFPSLabel->setFontSize(24);
+    mFPSLabel->setLocation(6.0f, -6.0f);
+    mFPSLabel->setSize(3.0f, 1.0f);
+
+    mHUD.addWidget(mFPSLabel);
+
 
     return true;
 }
@@ -212,6 +221,15 @@ void GameModule::onFrame()
     {
         mLua.runCommand(mLuaConsole->getText().c_str());
     }
+
+    if (mFPS != DisplayEngine::mFPS)
+    {
+        mFPS = DisplayEngine::mFPS;
+        stringstream s;
+        s << mFPS << " FPS";
+        mFPSLabel->setText(s.str().c_str());
+    }
+
 }
 
 void GameModule::onCleanup()

@@ -27,6 +27,7 @@
 #include "Control.h"
 #include "PlayerControl.h"
 #include "GameCamera.h"
+#include "Label.h"
 
 #include <iostream>
 #include <fstream>
@@ -83,6 +84,9 @@ class GameModule : public Module
 
         vector<Tank*> mTanks;
         vector<Control*> mControls;
+
+        Label* mFPSLabel;
+        unsigned int mFPS;
 };
 
 #endif
