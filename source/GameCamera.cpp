@@ -30,7 +30,6 @@ void GameCamera::update()
     if (mFollow != NULL)
     {
         mPanning = mFollow->getPosition();
-        mPanning.negate();
     }
 }
 
