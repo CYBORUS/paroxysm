@@ -31,26 +31,6 @@ bool MapEditorModule::onLoad()
 
     mSceneChanged = true;
 
-/*
-    mTerrainSize.x = Config::get<int>("terrain cols", 8);
-    mTerrainSize.y = Config::get<int>("terrain rows", 8);
-    string terrainFilename = Config::get<string>("terrain file", "_");
-    ifstream terrainFile(terrainFilename.c_str());
-    if (terrainFile.fail())
-    {
-        cerr << "no terrain file: " << terrainFilename << endl;
-        mTerrainGrid.create(mTerrainSize.y, mTerrainSize.x);
-    }
-    else
-    {
-        //hello
-        terrainFile >> mTerrainGrid;
-        mTerrainSize.x = mTerrainGrid.getMatrix().cols();
-        mTerrainSize.y = mTerrainGrid.getMatrix().rows();
-        terrainFile.close();
-    }
-*/
-
     mTrackball[0] = 22.0f;
     mTrackball[2] = 20.0f;
     mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
@@ -569,55 +549,12 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
     }
     else if (mEditMode == EM_TERRAIN)
     {
-
-
-/*
-        //this math works, and is proven to produce exactly the same results
-        //as opengl's math does
-        cerr << "modelMatrix: \n" << mModelView.transposed() << endl;
-
-        Matrix<float> transform(4);
-        Matrix<float> translateZ(4);
-        Matrix<float> translateRest(4);
-        Matrix<float> rotateX(4);
-        Matrix<float> rotateY(4);
-
-        translateZ(2, 3) = -mTrackball[2];
-
-        translateRest(0,3) = mPanning[0];
-        translateRest(1,3) = mPanning[1];
-        translateRest(2,3) = mPanning[2];
-
-        float cosRotation = cos(TO_RADIANS(mTrackball[0]));
-        float sinRotation = sin(TO_RADIANS(mTrackball[0]));
-
-        rotateX(1,1) = cosRotation;
-        rotateX(2,2) = cosRotation;
-        rotateX(1,2) = -sinRotation;
-        rotateX(2,1) = sinRotation;
-
-        cosRotation = cos(TO_RADIANS(mTrackball[1]));
-        sinRotation = sin(TO_RADIANS(mTrackball[1]));
-
-        rotateY(0,0) = cosRotation;
-        rotateY(0,2) = sinRotation;
-        rotateY(2,0) = -sinRotation;
-        rotateY(2,2) = cosRotation;
-
-        transform = translateZ * rotateX * rotateY * translateRest;
-
-        cerr << "\nTransformation matrix: \n" << transform << endl;
-*/
-
-
         mClickedVertex = selectVertex(inX, inY);
         EditVertexAction* eva = new EditVertexAction(&mTerrainGrid);
         eva->setBefore((int)mClickedVertex[2], (int)mClickedVertex[0],
             mClickedVertex[1]);
         eva->setAfter(mClickedVertex[1]);
         mCurrentAction = eva;
-
-        //mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1], mClickedVertex[2]);
 
         SDL_ShowCursor(SDL_DISABLE);
         mOldMouse.x = inX;

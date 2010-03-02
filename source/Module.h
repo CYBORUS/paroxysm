@@ -23,7 +23,15 @@
 #include "HUD.h"
 #include "Vector3D.h"
 
+/// mouse mode options
+#define MM_DEFAULT 0
+#define MM_PANNING 1
+#define MM_ROTATING 2
+#define MM_EDITING_VERTEX 3
+#define MM_BUTTON_PRESS 4
 
+#define TRACKBALL_STEP 1.0f
+#define PANNING_STEP 0.1f
 
 struct Light
 {
