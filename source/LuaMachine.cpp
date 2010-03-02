@@ -21,7 +21,7 @@ LogFile LuaMachine::mLogFile("lua");
 
 LuaMachine::LuaMachine() : mLuaState(luaL_newstate())
 {
-    luaL_openlibs(mLuaState); // massive security hole
+    //luaL_openlibs(mLuaState); // massive security hole
 }
 
 LuaMachine::~LuaMachine()
