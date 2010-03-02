@@ -16,8 +16,12 @@
  */
 
 #include "RobotControl.h"
+#include <boost/random.hpp>
 
-RobotControl::RobotControl(Tank* inTank) : Control(inTank), mTicks(TICK_RESET)
+#include <ctime>
+
+RobotControl::RobotControl(Tank* inTank) : Control(inTank), mTicks(1),
+    mTurn(0.0f), mSpeed(0.0f)
 {
 }
 
@@ -27,4 +31,24 @@ RobotControl::~RobotControl()
 
 void RobotControl::update()
 {
+    --mTicks;
+
+    if (mTicks < 1)
+    {
+        mTicks = TICK_RESET;
+        mSpeed = randFloat(0.1f, 1.0f);
+        mTurn = randFloat(-1.0f, 1.0f);
+    }
+
+    mTank->changeSpeed(mSpeed);
+    mTank->changeDirection(mTurn);
+}
+
+float RobotControl::randFloat(float min, float max)
+{
+    boost::mt19937 rng(time(NULL));
+    boost::uniform_real<float> u(min, max);
+    boost::variate_generator<boost::mt19937&, boost::uniform_real<float> >
+        gen(rng, u);
+    return gen();
 }

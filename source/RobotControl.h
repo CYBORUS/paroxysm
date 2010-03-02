@@ -31,7 +31,11 @@ class RobotControl : public Control
         virtual void update();
 
     private:
+        static float randFloat(float min, float max);
+
         int mTicks;
+        float mTurn;
+        float mSpeed;
 };
 
 #endif

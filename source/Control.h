@@ -21,7 +21,7 @@
 #include "Vector3D.h"
 #include "Tank.h"
 
-enum ControlType { PLAYER_TANK, NETWORK_TANK };
+enum ControlType { PLAYER_TANK, NETWORK_TANK, ROBOT_TANK };
 
 class Control
 {

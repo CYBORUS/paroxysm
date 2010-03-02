@@ -16,6 +16,7 @@
  */
 
 #include "GameModule.h"
+#include "RobotControl.h"
 
 GameCamera* GameModule::luaCamera = NULL;
 vector<Tank*>* GameModule::luaTanks = NULL;
@@ -77,6 +78,7 @@ GameModule::GameModule(const char* inMapFile)
     }
 
     addTank(PLAYER_TANK);
+    addTank(ROBOT_TANK);
     //mControls[0]->changeDirection(-0.5f);
     //mControls[0]->changeSpeed(1.0f);
 }
@@ -233,6 +235,8 @@ void GameModule::onFrame()
 
 void GameModule::onCleanup()
 {
+    for (unsigned int i = 0; i < mTanks.size(); ++i)
+        delete mTanks[i];
 }
 
 void GameModule::addTank(ControlType inControlType)
@@ -247,6 +251,12 @@ void GameModule::addTank(ControlType inControlType)
         case PLAYER_TANK:
         {
             controls = new PlayerControl(tank);
+            break;
+        }
+
+        case ROBOT_TANK:
+        {
+            controls = new RobotControl(tank);
             break;
         }
 
