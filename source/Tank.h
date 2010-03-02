@@ -17,6 +17,7 @@ class Tank
 
         virtual void display();
         Vector3D<float> getPosition();
+        void setPosition(Vector3D<float> inPosition);
         void changeDirection(float inDirection);
         void changeSpeed(float inSpeed);
 

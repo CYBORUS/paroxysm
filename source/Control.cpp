@@ -27,6 +27,11 @@ Control::~Control()
     //dtor
 }
 
+void Control::setPosition(Vector3d<float> inPosition)
+{
+    mTank->setPosition(inPosition);
+}
+
 void Control::changeDirection(float inDirection)
 {
     mTank->changeDirection(inDirection);

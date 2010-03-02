@@ -83,6 +83,11 @@ Vector3D<float> Tank::getPosition()
     return mPosition;
 }
 
+void Tank::setPosition(Vector3D<float> inPosition)
+{
+    mPosition = inPosition;
+}
+
 void Tank::move()
 {
     mRotation[1] += mCurrentRotationRate;
