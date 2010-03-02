@@ -16,9 +16,10 @@
  */
 
 #include "RobotControl.h"
-#include <boost/random.hpp>
 
 #include <ctime>
+
+boost::mt19937 RobotControl::mRng(time(NULL));
 
 RobotControl::RobotControl(Tank* inTank) : Control(inTank), mTicks(1),
     mTurn(0.0f), mSpeed(0.0f)
@@ -47,9 +48,8 @@ void RobotControl::update()
 
 float RobotControl::randFloat(float min, float max)
 {
-    boost::mt19937 rng(time(NULL));
     boost::uniform_real<float> u(min, max);
     boost::variate_generator<boost::mt19937&, boost::uniform_real<float> >
-        gen(rng, u);
+        gen(mRng, u);
     return gen();
 }

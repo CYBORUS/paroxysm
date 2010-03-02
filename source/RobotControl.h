@@ -20,6 +20,8 @@
 
 #include "Control.h"
 
+#include <boost/random.hpp>
+
 #define TICK_RESET 15
 
 class RobotControl : public Control
@@ -32,6 +34,7 @@ class RobotControl : public Control
 
     private:
         static float randFloat(float min, float max);
+        static boost::mt19937 mRng;
 
         int mTicks;
         float mTurn;

@@ -67,7 +67,6 @@ int GameModule::luaAddTank(lua_State* inState)
     if (num < 1) num = 1;
     for (int i = 0; i < num; ++i)
     {
-        cerr << "add tanks " << num << endl;
         luaGM->addTank(ROBOT_TANK);
     }
 
