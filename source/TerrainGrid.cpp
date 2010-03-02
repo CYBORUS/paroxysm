@@ -516,6 +516,103 @@ Vector3D<float> TerrainGrid::getVertex(int inRow, int inCol)
     return outVector;
 }
 
+float TerrainGrid::findHeight(float inX, float inZ)
+{
+    int x = int(inX);
+    int z = int(inZ);
+    int slant = ((z % 2) + (x % 2)) % 2;
+
+    if (x < 0 || x >= mHeights.cols() || z < 0 || z >= mHeights.rows())
+        return 0.0f;
+
+    float xTest = inX - float(x);
+    float zTest = inZ - float(z);
+
+    int quadrant;
+
+    if (xTest + zTest < 1.0f)
+    {
+        if (xTest - zTest > 0.0f)
+            quadrant = 1; // north
+        else
+            quadrant = 2; // west
+    }
+    else
+    {
+        if (xTest - zTest < 0.0f)
+            quadrant = 3; // south
+        else
+            quadrant = 4; // east
+    }
+
+    float outHeight = 0.0f;
+
+    if (!slant)
+    {
+        switch (quadrant)
+        {
+            case 1:
+            case 2:
+            {
+                float a = linearInterpolate(mHeights(z, x), mHeights(z, x + 1),
+                    xTest);
+                float b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x),
+                    zTest);
+                outHeight = (a + b) / 2.0f;
+                break;
+            }
+
+            case 3:
+            case 4:
+            {
+                float a = linearInterpolate(mHeights(z + 1, x),
+                    mHeights(z + 1, x + 1), xTest);
+                float b = linearInterpolate(mHeights(z, x + 1),
+                    mHeights(z + 1, x + 1), zTest);
+                outHeight = (a + b) / 2.0f;
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+    else
+    {
+        switch (quadrant)
+        {
+            case 1:
+            case 4:
+            {
+                float a = linearInterpolate(mHeights(z, x), mHeights(z, x + 1),
+                    xTest);
+                float b = linearInterpolate(mHeights(z, x + 1),
+                    mHeights(z + 1, x + 1), zTest);
+                outHeight = (a + b) / 2.0f;
+                break;
+            }
+
+            case 2:
+            case 3:
+            {
+                float a = linearInterpolate(mHeights(z, x), mHeights(z + 1, x),
+                    xTest);
+                float b = linearInterpolate(mHeights(z + 1, x),
+                    mHeights(z + 1, x + 1), zTest);
+                outHeight = (a + b) / 2.0f;
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+
+    return outHeight;
+}
+
 istream& operator>>(istream& inStream, TerrainGrid& inGrid)
 {
     inStream >> inGrid.mHeights;

@@ -45,6 +45,7 @@ class TerrainGrid
         Vector3D<float> getVertex(int inRow, int inCol);
         const Matrix<float>& getMatrix() const;
         void findNormal(int inRow, int inCol);
+        float findHeight(float inX, float inZ);
 
         friend istream& operator>>(istream& inStream, TerrainGrid& inGrid);
         friend ostream& operator<<(ostream& inStream,
