@@ -8,6 +8,9 @@ Tank::Tank()
 
     mTankSpeed = 0.1f;
     mTankTurnRate = 2.0f;
+
+    mCurrentMoveRate = 0;
+    mCurrentRotationRate = 0;
 }
 
 Tank::~Tank()

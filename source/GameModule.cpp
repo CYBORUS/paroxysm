@@ -178,13 +178,14 @@ void GameModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glPushMatrix();
+    mCamera.transform();
+
     glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
     glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
     glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
     glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
-    glPushMatrix();
 
-    mCamera.transform();
 
     mTerrain.display();
 
@@ -429,4 +430,17 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         {
         }
     }
+}
+
+
+void GameModule::onMouseWheel(bool inUp, bool inDown)
+{
+    if (inUp)
+        mTrackball[2] -= TRACKBALL_STEP;
+    else if (inDown)
+        mTrackball[2] += TRACKBALL_STEP;
+
+    if (mTrackball[2] < 0.0f) mTrackball[2] = 0.0f;
+
+    mCamera.setTrackball(mTrackball);
 }

@@ -62,6 +62,7 @@ class GameModule : public Module
             bool inLeft, bool inRight, bool inMiddle);
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onMouseWheel(bool inUp, bool inDown);
 
         LuaMachine mLua;
         TextBox* mLuaConsole;
