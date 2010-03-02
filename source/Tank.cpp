@@ -16,41 +16,53 @@ void Tank::display()
     float a = 0.5;
     glPushMatrix();
     {
-        glScalef(10.0f, 5.0f, 10.0f);
-        //glTranslatef(10.0f, 0.0f, 10.0f);
-        glBegin(GL_QUADS);
+        glPushAttrib(GL_LIGHTING_BIT);
         {
-            glVertex3f(-a, -a, a);
-            glVertex3f(-a, a, a);
-            glVertex3f(a, a, a);
-            glVertex3f(a, -a, a);
+            glEnable(GL_LIGHTING);
+            //glDisable(GL_COLOR_MATERIAL);
+            glTranslatef(10.0f, 0.5f, 10.0f);
+            glScalef(1.5f, 1.0f, 1.5f);
+            glBegin(GL_QUADS);
+            {
+                glNormal3f(0.0f, 0.0f, 1.0f);
+                glVertex3f(-a, -a, a);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, a, a);
+                glVertex3f(-a, a, a);
 
-            glVertex3f(a, -a, a);
-            glVertex3f(a, -a, -a);
-            glVertex3f(a, a, -a);
-            glVertex3f(a, a, a);
+                glNormal3f(1.0f, 0.0f, 0.0f);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, -a, -a);
+                glVertex3f(a, a, -a);
+                glVertex3f(a, a, a);
 
-            glVertex3f(a, -a, -a);
-            glVertex3f(-a, -a, -a);
-            glVertex3f(-a, a, -a);
-            glVertex3f(a, a, -a);
+                glNormal3f(0.0f, 0.0f, -1.0f);
+                glVertex3f(a, -a, -a);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(-a, a, -a);
+                glVertex3f(a, a, -a);
 
-            glVertex3f(-a, -a, -a);
-            glVertex3f(-a, -a, a);
-            glVertex3f(-a, a, a);
-            glVertex3f(-a, a, -a);
+                glNormal3f(-1.0f, 0.0f, 0.0f);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(-a, -a, a);
+                glVertex3f(-a, a, a);
+                glVertex3f(-a, a, -a);
 
-            glVertex3f(-a, a, a);
-            glVertex3f(a, a, a);
-            glVertex3f(a, a, -a);
-            glVertex3f(-a, a, -a);
+                glNormal3f(0.0f, 1.0f, 0.0f);
+                glVertex3f(-a, a, a);
+                glVertex3f(a, a, a);
+                glVertex3f(a, a, -a);
+                glVertex3f(-a, a, -a);
 
-            glVertex3f(-a, -a, a);
-            glVertex3f(a, -a, a);
-            glVertex3f(a, -a, -a);
-            glVertex3f(-a, -a, -a);
+                glNormal3f(0.0f, -1.0f, 0.0f);
+                glVertex3f(-a, -a, a);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, -a, -a);
+                glVertex3f(-a, -a, -a);
+            }
+            glEnd();
         }
-        glEnd();
+        glPopAttrib();
     }
     glPopMatrix();
 }
