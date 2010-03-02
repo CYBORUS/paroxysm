@@ -42,6 +42,7 @@ void RobotControl::update()
 
     mTank->changeSpeed(mSpeed);
     mTank->changeDirection(mTurn);
+    mTank->move();
 }
 
 float RobotControl::randFloat(float min, float max)
