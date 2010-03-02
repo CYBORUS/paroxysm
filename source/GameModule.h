@@ -26,6 +26,7 @@
 #include "Tank.h"
 #include "Control.h"
 #include "PlayerControl.h"
+#include "GameCamera.h"
 
 #include <iostream>
 #include <fstream>
@@ -59,6 +60,7 @@ class GameModule : public Module
 
         LuaMachine mLua;
         TextBox* mLuaConsole;
+        GameCamera mCamera;
 
         TerrainGrid mTerrain;
 

@@ -52,6 +52,8 @@ bool GameModule::onLoad()
     mTrackball[2] = 20.0f;
     mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
     mPanning[2] = static_cast<GLfloat>(mTerrainSize.y) / -2.0f;
+    mCamera.setTrackball(mTrackball);
+    mCamera.follow(mTanks[0]);
 
     mDisplay.x = SDL_GetVideoSurface()->w;
     mCenter.x = mDisplay.x / 2;
@@ -129,16 +131,7 @@ void GameModule::onLoop()
     glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
     glPushMatrix();
 
-    glTranslatef(0.0f, 0.0f, -mTrackball[2]);
-    glRotatef(mTrackball[0], 1.0f, 0.0f, 0.0f);
-    glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
-
-    if (mTanks.size() > 0)
-    {
-        Vector3D<float> pan = mTanks[0]->getPosition();
-        glTranslatef(-pan[0], -pan[1], -pan[2]);
-    }
-
+    mCamera.transform();
 
     mTerrain.display();
 
@@ -165,6 +158,8 @@ void GameModule::onLoop()
 
 void GameModule::onFrame()
 {
+    mCamera.update();
+
     for (unsigned int i = 0; i < mControls.size(); ++i)
     {
         mControls[i]->update();
@@ -257,6 +252,8 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 mTrackball[0] += 360.0f;
             else if (mTrackball[0] > 180.0f)
                 mTrackball[0] -= 360.0f;
+
+            mCamera.setTrackball(mTrackball);
             break;
         }
         case MM_PANNING:
