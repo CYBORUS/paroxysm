@@ -56,6 +56,8 @@
 		<Unit filename="..\Config.h" />
 		<Unit filename="..\Container.cpp" />
 		<Unit filename="..\Container.h" />
+		<Unit filename="..\Control.cpp" />
+		<Unit filename="..\Control.h" />
 		<Unit filename="..\DisplayEngine.cpp" />
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
@@ -92,6 +94,8 @@
 		<Unit filename="..\SoundEngine.h" />
 		<Unit filename="..\TSphere.cpp" />
 		<Unit filename="..\TSphere.h" />
+		<Unit filename="..\Tank.cpp" />
+		<Unit filename="..\Tank.h" />
 		<Unit filename="..\TerrainGrid.cpp" />
 		<Unit filename="..\TerrainGrid.h" />
 		<Unit filename="..\TextBox.cpp" />
