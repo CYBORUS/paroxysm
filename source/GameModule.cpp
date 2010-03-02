@@ -31,7 +31,7 @@ int GameModule::luaCameraPan(lua_State* inState)
     }
     else if (argc == 1)
     {
-        int index = lua_tonumber(inState, 1);
+        unsigned int index = (unsigned int)lua_tonumber(inState, 1);
         if (index >= luaTanks->size())
         {
             outSuccess = 0;
@@ -413,6 +413,10 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         {
             mControls[0]->changeSpeed(0.0f);
             break;
+        }
+
+        default:
+        {
         }
     }
 }
