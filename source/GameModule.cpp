@@ -129,7 +129,8 @@ void GameModule::onLoop()
     glRotatef(mTrackball[0], 1.0f, 0.0f, 0.0f);
     glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
 
-    glTranslatef(mPanning[0], mPanning[1], mPanning[2]);
+    Vector3D<float> pan = mTank.getPosition();
+    glTranslatef(-pan[0], -pan[1], -pan[2]);
 
 
     mTerrain.display();
@@ -142,9 +143,9 @@ void GameModule::onLoop()
         glVertex3f(0.0f, 10.0f, 0.0f);
     }
     glEnd();
-    mTank.display();
     glPopAttrib();
 
+    mTank.display();
 
     glPopMatrix();
 

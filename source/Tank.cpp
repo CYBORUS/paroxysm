@@ -2,7 +2,9 @@
 
 Tank::Tank()
 {
-    //ctor
+    mPosition[0] = 10.0;
+    mPosition[1] = 0.5;
+    mPosition[2] = 10.0;
 }
 
 Tank::~Tank()
@@ -20,7 +22,7 @@ void Tank::display()
         {
             glEnable(GL_LIGHTING);
             //glDisable(GL_COLOR_MATERIAL);
-            glTranslatef(10.0f, 0.5f, 10.0f);
+            glTranslatef(mPosition[0], mPosition[1], mPosition[2]);
             glScalef(1.5f, 1.0f, 1.5f);
             glBegin(GL_QUADS);
             {
@@ -65,4 +67,9 @@ void Tank::display()
         glPopAttrib();
     }
     glPopMatrix();
+}
+
+Vector3D<float> Tank::getPosition()
+{
+    return mPosition;
 }

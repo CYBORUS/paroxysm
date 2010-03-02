@@ -12,14 +12,12 @@ class Tank
         virtual ~Tank();
 
         virtual void display();
-
+        Vector3D<float> getPosition();
 
     protected:
 
-
-        float mRotateX;
-        float mRotateY;
-        float mRotateZ;
+        Vector3D<float> mPosition;
+        Vector3D<float> mRotation;
 
         float turretAngle;
 };
