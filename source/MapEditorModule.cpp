@@ -276,7 +276,9 @@ void MapEditorModule::setSize(int inX, int inY)
 
 void MapEditorModule::loadMapFile(const char* inFile)
 {
-    ifstream input(inFile);
+    string base = "assets/maps/";
+    base += inFile;
+    ifstream input(base.c_str());
 
     if (!input.fail())
     {

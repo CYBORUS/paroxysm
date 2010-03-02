@@ -31,6 +31,13 @@ bool LoadMapModule::onLoad()
 
     mHUD.addWidget(mMapSize[1]);
 
+    Button* buttons = new Button("create", CREATE_BUTTON);
+    buttons->setLocation(0.0f, 4.0f);
+    buttons->setSize(3.0f, 1.5f);
+
+    mHUD.addWidget(buttons);
+
+
     info = new Label("or Load an Existing One", GENERIC_LABEL);
     info->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
     info->setFontSize(64);
@@ -74,7 +81,8 @@ bool LoadMapModule::onLoad()
 
     mHUD.addWidget(maps);
 
-    Button* buttons = new Button("load_map", LOAD_BUTTON);
+
+    buttons = new Button("load_map", LOAD_BUTTON);
     buttons->setLocation(-8.0, -8.0);
     buttons->setSize(3.0, 1.5);
 
@@ -184,7 +192,7 @@ void LoadMapModule::onButtonPress(int inID)
             break;
         }
 
-        case LOAD_BUTTON:
+        case CREATE_BUTTON:
         {
             MapEditorModule* map = new MapEditorModule();
             int width = atoi(mMapSize[0]->getText().c_str());
@@ -204,6 +212,16 @@ void LoadMapModule::onButtonPress(int inID)
             mRunning = false;
             break;
         }
+
+        case LOAD_BUTTON:
+        {
+            MapEditorModule* map = new MapEditorModule();
+            map->loadMapFile(mSelectedMap.c_str());
+            mNextModule = map;
+            mRunning = false;
+            break;
+        }
+
         default:
         {
         }
