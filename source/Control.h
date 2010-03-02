@@ -13,12 +13,11 @@ class Control
         virtual ~Control();
 
         virtual void update() = 0;
-        virtual void move(Vector3D<float> inMoveDirection);
+        virtual void changeDirection(float inDirection);
+        virtual void changeSpeed(float inSpeed);
 
     protected:
         Tank* mTank;
-        Vector3D<float> mMovementVector;
-        Vector3D<float> mRotationVector;
 };
 
 #endif // CONTROL_H

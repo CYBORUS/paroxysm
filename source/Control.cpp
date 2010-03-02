@@ -10,7 +10,12 @@ Control::~Control()
     //dtor
 }
 
-void Control::move(Vector3D<float> inMoveDirection)
+void Control::changeDirection(float inDirection)
 {
-    mMovementVector = inMoveDirection;
+    mTank->changeDirection(inDirection);
+}
+
+void Control::changeSpeed(float inSpeed)
+{
+    mTank->changeSpeed(inSpeed);
 }

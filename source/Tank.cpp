@@ -2,11 +2,12 @@
 
 Tank::Tank()
 {
-    mPosition[0] = 10.0;
+    mPosition[0] = 0.0;
     mPosition[1] = 0.5;
-    mPosition[2] = 10.0;
+    mPosition[2] = 0.0;
 
-    mTankSpeed = 0.05f;
+    mTankSpeed = 0.1f;
+    mTankTurnRate = 2.0f;
 }
 
 Tank::~Tank()
@@ -25,6 +26,9 @@ void Tank::display()
             glEnable(GL_LIGHTING);
             //glDisable(GL_COLOR_MATERIAL);
             glTranslatef(mPosition[0], mPosition[1], mPosition[2]);
+            glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
+            glRotatef(mRotation[0], 1.0f, 0.0f, 0.0f);
+            glRotatef(mRotation[2], 0.0f, 0.0f, 1.0f);
             glScalef(1.5f, 1.0f, 1.5f);
             glBegin(GL_QUADS);
             {
@@ -76,11 +80,35 @@ Vector3D<float> Tank::getPosition()
     return mPosition;
 }
 
-void Tank::move(Vector3D<float> inMoveDirection)
+void Tank::move()
 {
-    inMoveDirection.normalize();
+    mRotation[1] += mCurrentRotationRate;
+    changeMovementVector();
+    mPosition += mMovementVector;
+}
 
-    inMoveDirection = inMoveDirection * mTankSpeed;
+/******************************************************
+*   Tells the tank which way to turn
+*
+*   inDirection: a float between -1.0 and 1.0 indicating
+*       turn direction and magnitude relative to the
+*       tanks maximum turn rate.
+*******************************************************/
+void Tank::changeDirection(float inDirection)
+{
+    mCurrentRotationRate = inDirection * mTankTurnRate;
+    //changeMovementVector();
+}
 
-    mPosition += inMoveDirection;
+
+void Tank::changeSpeed(float inSpeed)
+{
+    mCurrentMoveRate = inSpeed * mTankSpeed;
+    //changeMovementVector();
+}
+
+void Tank::changeMovementVector()
+{
+    mMovementVector[0] = sin(TO_RADIANS(mRotation[1])) * mCurrentMoveRate;
+    mMovementVector[2] = cos(TO_RADIANS(mRotation[1])) * mCurrentMoveRate;
 }

@@ -78,7 +78,8 @@ GameModule::GameModule(const char* inMapFile)
 
     addTank(PLAYER_TANK);
     Vector3D<float> movement(1.0f, 0.0f, 0.5f);
-    mControls[0]->move(movement);
+    mControls[0]->changeDirection(1.0f);
+    mControls[0]->changeSpeed(1.0f);
 }
 
 GameModule::~GameModule()

@@ -5,6 +5,10 @@
 
 #include "Vector3D.h"
 
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
 class Tank
 {
     public:
@@ -13,17 +17,25 @@ class Tank
 
         virtual void display();
         Vector3D<float> getPosition();
+        void changeDirection(float inDirection);
+        void changeSpeed(float inSpeed);
 
-        void move(Vector3D<float> inMoveDirection);
+        void move();
 
     protected:
+        void changeMovementVector();
 
         Vector3D<float> mPosition;
         Vector3D<float> mRotation;
+        Vector3D<float> mMovementVector;
 
         float mTurretAngle;
 
         float mTankSpeed;
+        float mTankTurnRate;
+
+        float mCurrentMoveRate;
+        float mCurrentRotationRate;
 };
 
 #endif // TANK_H
