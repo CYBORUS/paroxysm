@@ -24,10 +24,10 @@
 //#include "TextLayer.h"
 #include "TextPic.h"
 
-#include <boost/filesystem.hpp>
-using namespace boost::filesystem;
-#include <boost/random.hpp>
-using namespace boost;
+
+
+//#include <boost/random.hpp>
+//using namespace boost;
 
 
 #include <string>
@@ -42,7 +42,7 @@ using namespace std;
 class ScrollList : public Widget
 {
     public:
-        ScrollList(string* inInfoPointer, float inWidth, float inHeight, int inID);
+        ScrollList(string* inInfoPointer, int inID);
         virtual ~ScrollList();
 
         void addListItem(string inText, Surface inImage);
@@ -81,8 +81,8 @@ class ScrollList : public Widget
         //TextLayer mText;
         //TextPic mText;
 
-        float mWidth;
-        float mHeight;
+        //float mWidth;
+        //float mHeight;
         //float mListWidth;
         float mArrowWidth;
         int mPixelArrowWidth;

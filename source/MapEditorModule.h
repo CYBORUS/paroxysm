@@ -82,6 +82,7 @@ class MapEditorModule : public Module
         virtual Module* next();
 
         void setSize(int inX, int inY);
+        void loadMapFile(const char* inFile);
 
     protected:
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);

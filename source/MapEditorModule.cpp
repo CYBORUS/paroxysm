@@ -274,9 +274,26 @@ void MapEditorModule::setSize(int inX, int inY)
     mTerrainGrid.create(mTerrainSize.y, mTerrainSize.x);
 }
 
+void MapEditorModule::loadMapFile(const char* inFile)
+{
+    ifstream input(inFile);
+
+    if (!input.fail())
+    {
+        input >> mTerrainGrid;
+        mTerrainSize.x = mTerrainGrid.getMatrix().cols();
+        mTerrainSize.y = mTerrainGrid.getMatrix().rows();
+        input.close();
+    }
+    else
+    {
+        cerr << "failed to open input file." << endl;
+    }
+}
+
+
 Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
 {
-    Vector3D<float> closestMatch;
     Vector3D<float> currentVertex;
 
     GLdouble tempX = 0;
@@ -286,9 +303,9 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
     GLfloat depthZ = 0;
 
     //we have to invert the y axis because of opengl's viewport
-    int newY = -(inY - Config::get("display height", 600));
+    int newY = -(inY - SDL_GetVideoSurface()->h);
 
-    //read the depth buffer to determine the z coordinate at the clicked
+    //read the depth buffer to determine the z coordinate at the input
     //x,y coordinates
     glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
 
@@ -349,7 +366,6 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
 
     }
 
-    //closestMatch =
     return mTerrainGrid.getVertex(closestRow, closestColumn);
 }
 

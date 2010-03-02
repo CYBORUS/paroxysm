@@ -12,6 +12,8 @@
 
 #include "GameModule.h"
 
+#include <boost/filesystem.hpp>
+using namespace boost::filesystem;
 
 #include <SDL_opengl.h>
 

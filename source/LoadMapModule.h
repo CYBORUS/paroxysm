@@ -9,8 +9,12 @@
 #include "ScrollList.h"
 #include "TextBox.h"
 #include "Label.h"
+#include "ScrollList.h"
 
 #include "MapEditorModule.h"
+
+#include <boost/filesystem.hpp>
+using namespace boost::filesystem;
 
 #include <iostream>
 #include <cstdlib>
@@ -43,6 +47,8 @@ class LoadMapModule : public Module
         Module* mNextModule;
 
         TextBox* mMapSize[2];
+
+        string mSelectedMap;
 };
 
 #endif // LOADMAPMODULE_H

@@ -2,11 +2,11 @@
 
 bool LoadMapModule::onLoad()
 {
-    Label* info = new Label("Load a Map", LOAD_GAME_LABEL);
+    Label* info = new Label("Create a New Map", GENERIC_LABEL);
     info->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
     info->setFontSize(64);
     info->setLocation(0.0f, 8.0f);
-    info->setSize(10.0f, 2.0f);
+    info->setSize(15.5f, 2.0f);
 
     mMapSize[0] = new TextBox(X_SIZE);
     mMapSize[0]->setLocation(-1.5f, 6.0f);
@@ -31,13 +31,49 @@ bool LoadMapModule::onLoad()
 
     mHUD.addWidget(mMapSize[1]);
 
-/*
-    mFPSLabel = new Label("0", FPS);
-    mFPSLabel->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
-    mFPSLabel->setFontSize(24);
-    mFPSLabel->setLocation(6.0f, -6.0f);
-    mFPSLabel->setSize(3.0f, 1.0f);
-*/
+    info = new Label("or Load an Existing One", GENERIC_LABEL);
+    info->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
+    info->setFontSize(64);
+    info->setLocation(0.0f, 0.0f);
+    info->setSize(20.0f, 2.0f);
+
+    mHUD.addWidget(info);
+
+    ScrollList* maps = new ScrollList(&mSelectedMap, MAPLIST);
+    maps->setLocation(0.0f, -4.0f);
+    maps->setSize(20.0f, 5.0f);
+    maps->setFontSize(20);
+
+    string mapsDir = "assets/maps";
+
+    //load the list up with all the maps in the maps directory
+    if (is_directory(mapsDir))
+    {
+        for (directory_iterator itr(mapsDir); itr != directory_iterator(); ++itr)
+        {
+            //cout << itr->path().filename() << ' ';
+            if (is_regular_file(itr->status()))
+            {
+                maps->addListItem(itr->path().filename());
+                //cout << " [" << file_size(itr->path()) << ']';
+            }
+        }
+    }
+    else
+    {
+        cout << (exists(mapsDir) ? "Found: " : "Not found: ") << mapsDir << endl;
+    }
+
+    Surface someImage = DisplayEngine::loadImage("assets/images/hud/load_map_up_arrow.png");
+
+    maps->setUpArrow(someImage);
+
+    someImage = DisplayEngine::loadImage("assets/images/hud/load_map_down_arrow.png");
+
+    maps->setDownArrow(someImage);
+
+    mHUD.addWidget(maps);
+
     Button* buttons = new Button("load_map", LOAD_BUTTON);
     buttons->setLocation(-8.0, -8.0);
     buttons->setSize(3.0, 1.5);
@@ -151,7 +187,19 @@ void LoadMapModule::onButtonPress(int inID)
         case LOAD_BUTTON:
         {
             MapEditorModule* map = new MapEditorModule();
-            map->setSize(atoi(mMapSize[0]->getText().c_str()), atoi(mMapSize[1]->getText().c_str()));
+            int width = atoi(mMapSize[0]->getText().c_str());
+            int height = atoi(mMapSize[1]->getText().c_str());
+
+            if (width <= 0)
+            {
+                width = 10;
+            }
+
+            if (height <= 0)
+            {
+                height = 10;
+            }
+            map->setSize(width, height);
             mNextModule = map;
             mRunning = false;
             break;

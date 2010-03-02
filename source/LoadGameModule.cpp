@@ -2,7 +2,7 @@
 
 bool LoadGameModule::onLoad()
 {
-    ScrollList* maps = new ScrollList(&mSelectedMap, 2.0f, 5.0f, MAPLIST);
+    ScrollList* maps = new ScrollList(&mSelectedMap, MAPLIST);
     maps->setLocation(0.0f, 3.0f);
     maps->setSize(25.0f, 8.0f);
     maps->setFontSize(20);

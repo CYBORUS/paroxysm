@@ -17,12 +17,12 @@
 
 #include "ScrollList.h"
 
-ScrollList::ScrollList(string* inInfoPointer, float inWidth, float inHeight, int inID)
+ScrollList::ScrollList(string* inInfoPointer, int inID)
 {
     mInfoPointer = inInfoPointer;
     mID = inID;
-    mWidth = inWidth;
-    mHeight = inHeight;//(int)(inHeight / LINE_HEIGHT) * LINE_HEIGHT;
+    //mWidth = inWidth;
+    //mHeight = inHeight;//(int)(inHeight / LINE_HEIGHT) * LINE_HEIGHT;
     mSelectedItem = 0;
     mUpArrow = NULL;
     mDownArrow = NULL;
