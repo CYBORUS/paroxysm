@@ -77,9 +77,8 @@ GameModule::GameModule(const char* inMapFile)
     }
 
     addTank(PLAYER_TANK);
-    Vector3D<float> movement(1.0f, 0.0f, 0.5f);
-    mControls[0]->changeDirection(-1.0f);
-    mControls[0]->changeSpeed(1.0f);
+    //mControls[0]->changeDirection(-0.5f);
+    //mControls[0]->changeSpeed(1.0f);
 }
 
 GameModule::~GameModule()
@@ -369,8 +368,51 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
+        case SDLK_a:
+        {
+            mControls[0]->changeDirection(1.0f);
+            break;
+        }
+
+        case SDLK_w:
+        {
+            mControls[0]->changeSpeed(1.0f);
+            break;
+        }
+
+        case SDLK_d:
+        {
+            mControls[0]->changeDirection(-1.0f);
+            break;
+        }
+
+        case SDLK_s:
+        {
+            mControls[0]->changeSpeed(-1.0f);
+            break;
+        }
+
         default:
         {
+        }
+    }
+}
+
+void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch(inSym)
+    {
+        case SDLK_a:
+        case SDLK_d:
+        {
+            mControls[0]->changeDirection(0.0f);
+            break;
+        }
+        case SDLK_w:
+        case SDLK_s:
+        {
+            mControls[0]->changeSpeed(0.0f);
+            break;
         }
     }
 }

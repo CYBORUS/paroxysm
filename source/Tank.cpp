@@ -2,9 +2,9 @@
 
 Tank::Tank()
 {
-    mPosition[0] = 0.0;
+    mPosition[0] = 10.0;
     mPosition[1] = 0.5;
-    mPosition[2] = 0.0;
+    mPosition[2] = 10.0;
 
     mTankSpeed = 0.1f;
     mTankTurnRate = 2.0f;
