@@ -51,3 +51,9 @@ void GameCamera::setTrackball(const Vector3D<float>& inVector)
 {
     mTrackball = inVector;
 }
+
+void GameCamera::setPanning(const Vector3D<float>& inVector)
+{
+    mFollow = NULL;
+    mPanning = inVector;
+}

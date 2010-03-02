@@ -49,7 +49,10 @@ class GameModule : public Module
 
         virtual void addTank(ControlType inControlType);
 
-        //static int luaCameraPan(lua_State* inState);
+        /// Lua wiring
+        static int luaCameraPan(lua_State* inState);
+        static GameCamera* luaCamera;
+        static vector<Tank*>* luaTanks;
 
     protected:
         virtual void onRButtonDown(int inX, int inY);

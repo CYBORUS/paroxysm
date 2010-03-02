@@ -30,6 +30,7 @@ class GameCamera
         void update();
         void transform();
         void setTrackball(const Vector3D<float>& inVector);
+        void setPanning(const Vector3D<float>& inVector);
 
     private:
         Vector3D<float> mTrackball;

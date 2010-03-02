@@ -17,6 +17,45 @@
 
 #include "GameModule.h"
 
+GameCamera* GameModule::luaCamera = NULL;
+vector<Tank*>* GameModule::luaTanks = NULL;
+
+int GameModule::luaCameraPan(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    if (argc == 0)
+    {
+        luaCamera->follow(NULL);
+    }
+    else if (argc == 1)
+    {
+        int index = lua_tonumber(inState, 1);
+        if (index >= luaTanks->size())
+        {
+            outSuccess = 0;
+        }
+        else
+        {
+            luaCamera->follow(luaTanks[0][index]);
+        }
+    }
+    else if (argc > 1)
+    {
+        Vector3D<float> p(lua_tonumber(inState, 1), 0.0f,
+            lua_tonumber(inState, 2));
+        luaCamera->setPanning(p);
+    }
+    else
+    {
+        outSuccess = 0;
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
 GameModule::GameModule(const char* inMapFile)
 {
     string inFile = "assets/maps/";
@@ -69,7 +108,8 @@ bool GameModule::onLoad()
     mLuaConsole->hideOnEnter(true);
     mLuaConsole->setVisible(false);
     mHUD.addWidget(mLuaConsole);
-    //mLua.addFunction("cameraPan", luaCameraPan);
+
+    mLua.addFunction("cameraPan", luaCameraPan);
 
     return true;
 }
@@ -81,6 +121,8 @@ void GameModule::onInit()
     mDead = true;
     mNextModule = NULL;
     mMouseMode = MM_DEFAULT;
+    luaCamera = &mCamera;
+    luaTanks = &mTanks;
 
     SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
 
@@ -163,6 +205,11 @@ void GameModule::onFrame()
     for (unsigned int i = 0; i < mControls.size(); ++i)
     {
         mControls[i]->update();
+    }
+
+    if (mLuaConsole->isLockedIn())
+    {
+        mLua.runCommand(mLuaConsole->getText().c_str());
     }
 }
 
