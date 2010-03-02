@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
 
 class LogFile
@@ -30,13 +31,11 @@ class LogFile
 
         operator ofstream&();
 
+        void addLine(const string& inText);
         void addLine(const char* inText);
 
     protected:
         ofstream mStream;
-
-    private:
-        string mTimestamp;
 };
 
 inline LogFile::operator ofstream&()

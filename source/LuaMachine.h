@@ -18,9 +18,12 @@
 #ifndef _LUAMACHINE_H_
 #define _LUAMACHINE_H_
 
+#include "LogFile.h"
+
 #include <lua.hpp>
 
 #include <iostream>
+#include <string>
 using namespace std;
 
 class LuaMachine
@@ -35,10 +38,13 @@ class LuaMachine
 
     private:
         void execute();
-        void reportErrors(ostream& inStream);
+        void reportErrors();
+
+        static LogFile mLogFile;
 
         lua_State* mLuaState;
         int mStatus;
+        string mError;
 };
 
 inline void LuaMachine::regFunc(const char* inName, lua_CFunction inFunction)

@@ -17,8 +17,6 @@
 
 #include "LogFile.h"
 
-#include <string>
-
 LogFile::LogFile(const char* inTitle)
 {
     char buffer[15];
@@ -26,12 +24,11 @@ LogFile::LogFile(const char* inTitle)
     time(&rawtime);
     tm* timeinfo = localtime(&rawtime);
     strftime(buffer, 15, "%Y%m%d%H%M%S", timeinfo);
-    mTimestamp = buffer;
 
     string s("assets/logs/");
     s += inTitle;
     s += '-';
-    s += mTimestamp;
+    s += buffer;
     s += ".txt";
 
     mStream.open(s.c_str());
@@ -43,6 +40,11 @@ LogFile::~LogFile()
 }
 
 void LogFile::addLine(const char* inText)
+{
+    mStream << inText << endl;
+}
+
+void LogFile::addLine(const string& inText)
 {
     mStream << inText << endl;
 }
