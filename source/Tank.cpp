@@ -144,7 +144,7 @@ void Tank::move()
     changeMovementVector();
     mPosition += mMovementVector;
 
-    mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
+    mPosition[1] = 0.5;//mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
 
     if (mPosition[0] < 1)
     {
@@ -209,7 +209,7 @@ void Tank::setupModelview()
 
     mTranslate(0, 3) = mPosition[0];
     //mTranslate(1, 3) = 0.5;
-    mTranslate(1, 3) = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
+    mTranslate(1, 3) = 0.5;//mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
     mTranslate(2, 3) = mPosition[2];
 
     //cerr << "mTranslate: \n" << mTranslate << endl;
