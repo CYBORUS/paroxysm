@@ -74,6 +74,26 @@ int GameModule::luaAddTank(lua_State* inState)
     return 1;
 }
 
+int GameModule::luaGetHeight(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    if (argc < 2)
+    {
+        outSuccess = 2;
+    }
+    else
+    {
+        float x = lua_tonumber(inState, 1);
+        float z = lua_tonumber(inState, 2);
+        luaGM->getHeight(x, z);
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
 GameModule::GameModule(const char* inMapFile)
 {
     string inFile = "assets/maps/";
@@ -130,6 +150,7 @@ bool GameModule::onLoad()
 
     mLua.addFunction("cameraPan", luaCameraPan);
     mLua.addFunction("addTank", luaAddTank);
+    mLua.addFunction("getHeight", luaGetHeight);
 
     mFPSLabel = new Label("0", FPS);
     mFPSLabel->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
@@ -462,4 +483,10 @@ void GameModule::onMouseWheel(bool inUp, bool inDown)
     if (mTrackball[2] < 0.0f) mTrackball[2] = 0.0f;
 
     mCamera.setTrackball(mTrackball);
+}
+
+void GameModule::getHeight(float inX, float inZ)
+{
+    cerr << "getHeight at " << inX << ", " << inZ << ": "
+        << mTerrain.findHeight(inX, inZ) << endl;
 }

@@ -53,6 +53,7 @@ class GameModule : public Module
         /// Lua wiring
         static int luaCameraPan(lua_State* inState);
         static int luaAddTank(lua_State* inState);
+        static int luaGetHeight(lua_State* inState);
         static GameModule* luaGM;
         static GameCamera* luaCamera;
         static vector<Tank*>* luaTanks;
@@ -65,6 +66,8 @@ class GameModule : public Module
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onMouseWheel(bool inUp, bool inDown);
+
+        void getHeight(float inX, float inZ);
 
         LuaMachine mLua;
         TextBox* mLuaConsole;
