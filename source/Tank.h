@@ -6,6 +6,7 @@
 #include "Vector3D.h"
 #include "TerrainGrid.h"
 #include "Matrix.h"
+#include "TSphere.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -61,6 +62,8 @@ class Tank
 
         float mCurrentMoveRate;
         float mCurrentRotationRate;
+
+        TSphere mSphere;
 };
 
 #endif // TANK_H

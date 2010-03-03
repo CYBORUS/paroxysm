@@ -562,7 +562,7 @@ void ScrollList::setSelection()
         glPushAttrib(GL_CURRENT_BIT);
         {
             glColor4f(0.0f, 0.2f, 0.4f, 0.8f);
-            glRectf(startX, startY, startX + mSize.x, startY - texHeight);
+            glRectf(startX + mSize.x, startY - texHeight, startX, startY);
         }
         glPopAttrib();
 

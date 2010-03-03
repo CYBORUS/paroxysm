@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-Tank::Tank(TerrainGrid* inTerrain)
+Tank::Tank(TerrainGrid* inTerrain) : mRotateY(4), mModelview(4), mTranslate(4)
 {
     mTerrain = inTerrain;
     mTerrainWidth = mTerrain->getMatrix().cols();
@@ -86,6 +86,24 @@ void Tank::display()
         glPopAttrib();
     }
     glPopMatrix();
+
+    glPushMatrix();
+    {
+        //glLoadIdentity();
+        glPushAttrib(GL_LIGHTING);
+        {
+            glDisable(GL_LIGHTING);
+
+            glTranslatef(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
+            //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
+            glScalef(100.0f, 100.0f, 100.0f);
+            mSphere.display();
+        }
+        glPopAttrib();
+    }
+    glPopMatrix();
+
+    //cerr << "transformed front left: " << mTransformedFrontLeftControl << endl;
 }
 
 Vector3D<float> Tank::getPosition()
@@ -104,6 +122,8 @@ void Tank::move()
     changeMovementVector();
     mPosition += mMovementVector;
 
+    mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
+
     if (mPosition[0] < 1)
     {
         mPosition[0] = 1;
@@ -121,6 +141,9 @@ void Tank::move()
     {
         mPosition[2] = mTerrainHeight - 2;
     }
+
+    setupModelview();
+    transformControlPoints();
 }
 
 /******************************************************
@@ -163,9 +186,34 @@ void Tank::setupModelview()
     mRotateY(2, 0) = -ySin;
     mRotateY(2, 2) = yCos;
 
-    mTranslate(0, 3) = mPosition[0];
+    mTranslate(0, 3) = mPosition[0] + 0.75;
+    mTranslate(1, 3) = mTerrain->findHeight(mTranslate(0, 3), mTranslate(2, 3));
+    mTranslate(2, 3) = mPosition[2] + 0.75;
+
+    //cerr << "mTranslate: \n" << mTranslate << endl;
+    //cerr << "mRotateY: \n" << mRotateY << endl;
+    //exit(4);
+
+    mModelview = mTranslate;// * mRotateY;
 }
 
 void Tank::transformControlPoints()
 {
+    Vector3D<float> mDefault;
+    /*
+    mTransformedBackLeftControl = mBackLeftControl;
+    mTransformedBackRightControl = mBackRightControl;
+    mTransformedFrontLeftControl = mFrontLeftControl;
+    mTransformedFrontRightControl = mFrontRightControl;
+*/
+    mTransformedBackLeftControl = mDefault;
+    mTransformedBackRightControl = mDefault;
+    mTransformedFrontLeftControl = mDefault;
+    mTransformedFrontRightControl = mDefault;
+
+
+    mTransformedBackLeftControl.processMatrix(mModelview);
+    mTransformedBackRightControl.processMatrix(mModelview);
+    mTransformedFrontLeftControl.processMatrix(mModelview);
+    mTransformedFrontRightControl.processMatrix(mModelview);
 }
