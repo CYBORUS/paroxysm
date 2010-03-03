@@ -62,6 +62,8 @@
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
 		<Unit filename="..\EditVertexAction.h" />
+		<Unit filename="..\GameCamera.cpp" />
+		<Unit filename="..\GameCamera.h" />
 		<Unit filename="..\GameModule.cpp" />
 		<Unit filename="..\GameModule.h" />
 		<Unit filename="..\HUD.cpp" />
@@ -87,7 +89,11 @@
 		<Unit filename="..\Module.h" />
 		<Unit filename="..\PlainPic.cpp" />
 		<Unit filename="..\PlainPic.h" />
+		<Unit filename="..\PlayerControl.cpp" />
+		<Unit filename="..\PlayerControl.h" />
 		<Unit filename="..\Point2D.h" />
+		<Unit filename="..\RobotControl.cpp" />
+		<Unit filename="..\RobotControl.h" />
 		<Unit filename="..\ScrollList.cpp" />
 		<Unit filename="..\ScrollList.h" />
 		<Unit filename="..\SoundEngine.cpp" />

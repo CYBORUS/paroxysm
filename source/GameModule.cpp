@@ -116,8 +116,6 @@ GameModule::GameModule(const char* inMapFile)
 
     addTank(PLAYER_TANK);
     addTank(ROBOT_TANK);
-    //mControls[0]->changeDirection(-0.5f);
-    //mControls[0]->changeSpeed(1.0f);
 }
 
 GameModule::~GameModule()
@@ -195,7 +193,7 @@ void GameModule::onInit()
     //glLoadIdentity();
 
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
 
@@ -282,7 +280,7 @@ void GameModule::onCleanup()
 
 void GameModule::addTank(ControlType inControlType)
 {
-    Tank* tank = new Tank();
+    Tank* tank = new Tank(&mTerrain);
     Control* controls;
 
     mTanks.push_back(tank);
@@ -364,10 +362,10 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 mTrackball[1] -= 360.0f;
 
             mTrackball[0] += static_cast<GLfloat>(inY - mCenter.y) * TRACKBALL_STEP;
-            if (mTrackball[0] < -180.0f)
-                mTrackball[0] += 360.0f;
+            if (mTrackball[0] < 0.0f)
+                mTrackball[0] = 0.0f;
             else if (mTrackball[0] > 180.0f)
-                mTrackball[0] -= 360.0f;
+                mTrackball[0] = 180.0f;
 
             mCamera.setTrackball(mTrackball);
             break;
