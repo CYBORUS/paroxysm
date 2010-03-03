@@ -30,10 +30,10 @@ GLuint TSphere::mTIndices[20][3] =
      {3, 10, 7}, {10, 6, 7}, {6, 11, 7}, {6, 0, 11}, {6, 1, 0},
      {10, 1, 6}, {11, 0, 9}, {2, 11, 9}, {5, 2, 9}, {11, 2, 7}};
 
-TSphere::TSphere()
+TSphere::TSphere() : mScale(1.0, 1.0, 1.0)
 {
     mFill = true;
-
+    mColor[0].set(1.0f, 1.0f, 1.0f);
     mDetail = 1;
 
     mID = glGenLists(1);
@@ -41,9 +41,10 @@ TSphere::TSphere()
 
     glNewList(mID, GL_COMPILE);
     {
-        glPushAttrib(GL_CURRENT_BIT);
-        {
-            glColor3f(1.0f, 1.0f, 1.0f);
+        //glPushAttrib(GL_CURRENT_BIT);
+        //{
+            //glColor3f(1.0f, 1.0f, 1.0f);
+            //glColor3fv(mColor[0].array());
             glBegin(GL_TRIANGLES);
             for (int i = 0; i < 20; ++i)
             {
@@ -51,8 +52,8 @@ TSphere::TSphere()
                     &mVData[mTIndices[i][0]][0], mDetail);
             }
             glEnd();
-        }
-        glPopAttrib();
+        //}
+        //glPopAttrib();
     }
     glEndList();
 }
@@ -64,23 +65,16 @@ TSphere::~TSphere()
 
 void TSphere::display()
 {
-
-    glPushAttrib(GL_POLYGON_BIT);
+    glPushAttrib(GL_CURRENT_BIT);
     {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-        glPushAttrib(GL_LIGHTING_BIT);
+        glColor3fv(mColor[0].array());
+        glPushMatrix();
         {
-            glDisable(GL_LIGHTING);
-            glPushMatrix();
-            {
-                glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
-                glScalef(0.01f, 0.01f, 0.01f);
-                glCallList(mID);
-            }
-            glPopMatrix();
+            glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
+            glScalef(mScale[0], mScale[1], mScale[2]);
+            glCallList(mID);
         }
-        glPopAttrib();
+        glPopMatrix();
     }
     glPopAttrib();
 }
@@ -140,4 +134,14 @@ void TSphere::swapColor()
 {
     mCurrentColor = 1 - mCurrentColor;
     glColor3fv(mColor[mCurrentColor].array());
+}
+
+void TSphere::setColor(float inR, float inG, float inB)
+{
+    mColor[0].set(inR, inG, inB);
+}
+
+void TSphere::setScale(float inX, float inY, float inZ)
+{
+    mScale.set(inX, inY, inZ);
 }

@@ -25,6 +25,7 @@ bool MapEditorModule::onLoad()
     mMouseMode = MM_DEFAULT;
     mEditMode = EM_TERRAIN;
     mCurrentAction = NULL;
+    mSphere.setScale(0.01, 0.01, 0.01);
 
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
@@ -169,13 +170,15 @@ void MapEditorModule::onLoop()
 
     // reference Y-axis
     glPushAttrib(GL_LIGHTING_BIT);
-    glDisable(GL_LIGHTING);
-    glBegin(GL_LINES);
     {
-        glVertex3f(0.0f, 0.0f, 0.0f);
-        glVertex3f(0.0f, 10.0f, 0.0f);
+        glDisable(GL_LIGHTING);
+        glBegin(GL_LINES);
+        {
+            glVertex3f(0.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 10.0f, 0.0f);
+        }
+        glEnd();
     }
-    glEnd();
     glPopAttrib();
 
     if (mEditMode == EM_TERRAIN)

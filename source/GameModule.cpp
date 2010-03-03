@@ -450,6 +450,8 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         default:
         {
+            cerr << "position: " << mTanks[0]->getPosition() << endl;
+            cerr << "mRotateY: \n" << mTanks[0]->getRotateY() << endl;
         }
     }
 }

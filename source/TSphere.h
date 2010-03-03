@@ -31,6 +31,8 @@ class TSphere
         void display();
 
         void moveSphere(float inX, float inY, float inZ);
+        void setColor(float inR, float inG, float inB);
+        void setScale(float inX, float inY, float inZ);
 
     private:
         void swapColor();
@@ -41,6 +43,7 @@ class TSphere
 
         bool mFill;
         Vector3D<float> mColor[2];
+        Vector3D<float> mScale;
         short mCurrentColor;
         int mDetail;
         GLuint mID;

@@ -283,14 +283,20 @@ inline T* Vector3D<T>::array()
 template<class T>
 void Vector3D<T>::processMatrix(const Matrix<T>& inMatrix)
 {
-    mVector[0] = mVector[0] * inMatrix[0] + mVector[1] * inMatrix[1]
+    Vector3D<T> result;
+    result[0] = mVector[0] * inMatrix[0] + mVector[1] * inMatrix[1]
         + mVector[2] * inMatrix[2] + mVector[3] * inMatrix[3];
-    mVector[1] = mVector[0] * inMatrix[4] + mVector[1] * inMatrix[5]
+    result[1] = mVector[0] * inMatrix[4] + mVector[1] * inMatrix[5]
         + mVector[2] * inMatrix[6] + mVector[3] * inMatrix[7];
-    mVector[2] = mVector[0] * inMatrix[8] + mVector[1] * inMatrix[9]
+    result[2] = mVector[0] * inMatrix[8] + mVector[1] * inMatrix[9]
         + mVector[2] * inMatrix[10] + mVector[3] * inMatrix[11];
-    mVector[3] = mVector[0] * inMatrix[12] + mVector[1] * inMatrix[13]
+    result[3] = mVector[0] * inMatrix[12] + mVector[1] * inMatrix[13]
         + mVector[2] * inMatrix[14] + mVector[3] * inMatrix[15];
+
+    mVector[0] = result[0];
+    mVector[1] = result[1];
+    mVector[2] = result[2];
+    mVector[3] = result[3];
 }
 
 template<class T>

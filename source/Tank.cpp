@@ -9,16 +9,18 @@ Tank::Tank(TerrainGrid* inTerrain) : mRotateY(4), mModelview(4), mTranslate(4)
     mPosition[1] = 0.5;
     mPosition[2] = mTerrainHeight / 2;
 
-    mTankSpeed = 0.1f;
-    mTankTurnRate = 2.0f;
+    mTankSpeed = 0.2f;
+    mTankTurnRate = 4.0f;
 
     mCurrentMoveRate = 0;
     mCurrentRotationRate = 0;
 
-    mFrontLeftControl.set(mPosition[0] - 0.75f, 0.0f, mPosition[2] - 0.75f);
-    mFrontRightControl.set(mPosition[0] + 0.75f, 0.0f, mPosition[2] - 0.75f);
-    mBackLeftControl.set(mPosition[0] - 0.75f, 0.0f, mPosition[2] + 0.75f);
-    mBackRightControl.set(mPosition[0] + 0.75f, 0.0f, mPosition[2] + 0.75f);
+    mFrontLeftControl.set(0 + 0.75f, -0.5f, 0 + 0.75f);
+    mFrontRightControl.set(0 - 0.75f, -0.5f, 0 + 0.75f);
+    mBackLeftControl.set(0 + 0.75f, -0.5f, 0 - 0.75f);
+    mBackRightControl.set(0 - 0.75f, -0.5f, 0 - 0.75f);
+
+    mSphere.setScale(0.1, 0.1, 0.1);
 }
 
 Tank::~Tank()
@@ -30,79 +32,99 @@ Tank::~Tank()
 void Tank::display()
 {
     float a = 0.5;
-    glPushMatrix();
+    glPushAttrib(GL_LIGHTING_BIT);
     {
-        glPushAttrib(GL_LIGHTING_BIT);
+        glPushAttrib(GL_POLYGON_BIT);
         {
-            glEnable(GL_LIGHTING);
-            //glDisable(GL_COLOR_MATERIAL);
-            glTranslatef(mPosition[0], mPosition[1], mPosition[2]);
-            glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
-            glRotatef(mRotation[0], 1.0f, 0.0f, 0.0f);
-            glRotatef(mRotation[2], 0.0f, 0.0f, 1.0f);
-            glScalef(0.5f, 0.25f, 0.5f);
-
-            glBegin(GL_QUADS);
-            {
-                glNormal3f(0.0f, 0.0f, 1.0f);
-                glVertex3f(-a, -a, a);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, a, a);
-                glVertex3f(-a, a, a);
-
-                glNormal3f(1.0f, 0.0f, 0.0f);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, -a, -a);
-                glVertex3f(a, a, -a);
-                glVertex3f(a, a, a);
-
-                glNormal3f(0.0f, 0.0f, -1.0f);
-                glVertex3f(a, -a, -a);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(-a, a, -a);
-                glVertex3f(a, a, -a);
-
-                glNormal3f(-1.0f, 0.0f, 0.0f);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(-a, -a, a);
-                glVertex3f(-a, a, a);
-                glVertex3f(-a, a, -a);
-
-                glNormal3f(0.0f, 1.0f, 0.0f);
-                glVertex3f(-a, a, a);
-                glVertex3f(a, a, a);
-                glVertex3f(a, a, -a);
-                glVertex3f(-a, a, -a);
-
-                glNormal3f(0.0f, -1.0f, 0.0f);
-                glVertex3f(-a, -a, a);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, -a, -a);
-                glVertex3f(-a, -a, -a);
-            }
-            glEnd();
-
-        }
-        glPopAttrib();
-    }
-    glPopMatrix();
-
-    glPushMatrix();
-    {
-        //glLoadIdentity();
-        glPushAttrib(GL_LIGHTING);
-        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            //glEnable(GL_LIGHTING);
             glDisable(GL_LIGHTING);
 
-            glTranslatef(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
+            glPushMatrix();
+            {
+                //glDisable(GL_COLOR_MATERIAL);
+                glTranslatef(mPosition[0], mPosition[1], mPosition[2]);
+                glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
+                glRotatef(mRotation[0], 1.0f, 0.0f, 0.0f);
+                glRotatef(mRotation[2], 0.0f, 0.0f, 1.0f);
+                glScalef(1.5f, 1.0f, 1.5f);
+
+                glBegin(GL_QUADS);
+                {
+                    glNormal3f(0.0f, 0.0f, 1.0f);
+                    glVertex3f(-a, -a, a);
+                    glVertex3f(a, -a, a);
+                    glVertex3f(a, a, a);
+                    glVertex3f(-a, a, a);
+
+                    glNormal3f(1.0f, 0.0f, 0.0f);
+                    glVertex3f(a, -a, a);
+                    glVertex3f(a, -a, -a);
+                    glVertex3f(a, a, -a);
+                    glVertex3f(a, a, a);
+
+                    glNormal3f(0.0f, 0.0f, -1.0f);
+                    glVertex3f(a, -a, -a);
+                    glVertex3f(-a, -a, -a);
+                    glVertex3f(-a, a, -a);
+                    glVertex3f(a, a, -a);
+
+                    glNormal3f(-1.0f, 0.0f, 0.0f);
+                    glVertex3f(-a, -a, -a);
+                    glVertex3f(-a, -a, a);
+                    glVertex3f(-a, a, a);
+                    glVertex3f(-a, a, -a);
+
+                    glNormal3f(0.0f, 1.0f, 0.0f);
+                    glVertex3f(-a, a, a);
+                    glVertex3f(a, a, a);
+                    glVertex3f(a, a, -a);
+                    glVertex3f(-a, a, -a);
+
+                    glNormal3f(0.0f, -1.0f, 0.0f);
+                    glVertex3f(-a, -a, a);
+                    glVertex3f(a, -a, a);
+                    glVertex3f(a, -a, -a);
+                    glVertex3f(-a, -a, -a);
+                }
+                glEnd();
+
+            }
+            glPopMatrix();
+
+
+            mSphere.moveSphere(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
+            //glTranslatef(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
             //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
-            glScalef(10.0f, 10.0f, 10.0f);
+            //glScalef(10.0f, 10.0f, 10.0f);
+            mSphere.setColor(1.0, 1.0, 1.0);
             mSphere.display();
+
+            mSphere.moveSphere(mTransformedFrontRightControl[0], mTransformedFrontRightControl[1], mTransformedFrontRightControl[2]);
+            //glTranslatef(mTransformedFrontRightControl[0], mTransformedFrontRightControl[1], mTransformedFrontRightControl[2]);
+            //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
+            //glScalef(10.0f, 10.0f, 10.0f);
+            mSphere.setColor(1.0f, 0.0f, 0.0f);
+            mSphere.display();
+
+            mSphere.moveSphere(mTransformedBackLeftControl[0], mTransformedBackLeftControl[1], mTransformedBackLeftControl[2]);
+            //glTranslatef(mTransformedBackLeftControl[0], mTransformedBackLeftControl[1], mTransformedBackLeftControl[2]);
+            //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
+            //glScalef(10.0f, 10.0f, 10.0f);
+            mSphere.setColor(0.0, 1.0, 0.0);
+            mSphere.display();
+
+            mSphere.moveSphere(mTransformedBackRightControl[0], mTransformedBackRightControl[1], mTransformedBackRightControl[2]);
+            //glTranslatef(mTransformedBackRightControl[0], mTransformedBackRightControl[1], mTransformedBackRightControl[2]);
+            //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
+            //glScalef(10.0f, 10.0f, 10.0f);
+            mSphere.setColor(0.0, 0.0, 1.0);
+            mSphere.display();
+
         }
         glPopAttrib();
     }
-    glPopMatrix();
-
+    glPopAttrib();
     //cerr << "transformed front left: " << mTransformedFrontLeftControl << endl;
 }
 
@@ -122,7 +144,7 @@ void Tank::move()
     changeMovementVector();
     mPosition += mMovementVector;
 
-    mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.125;
+    mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
 
     if (mPosition[0] < 1)
     {
@@ -142,7 +164,6 @@ void Tank::move()
         mPosition[2] = mTerrainHeight - 2;
     }
 
-    setupModelview();
     transformControlPoints();
 }
 
@@ -186,9 +207,10 @@ void Tank::setupModelview()
     mRotateY(2, 0) = -ySin;
     mRotateY(2, 2) = yCos;
 
-    mTranslate(0, 3) = mPosition[0] + 0.75;
-    mTranslate(1, 3) = mTerrain->findHeight(mTranslate(0, 3), mTranslate(2, 3));
-    mTranslate(2, 3) = mPosition[2] + 0.75;
+    mTranslate(0, 3) = mPosition[0];
+    //mTranslate(1, 3) = 0.5;
+    mTranslate(1, 3) = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
+    mTranslate(2, 3) = mPosition[2];
 
     //cerr << "mTranslate: \n" << mTranslate << endl;
     //cerr << "mRotateY: \n" << mRotateY << endl;
@@ -199,21 +221,58 @@ void Tank::setupModelview()
 
 void Tank::transformControlPoints()
 {
-    Vector3D<float> mDefault;
-    /*
+    //setupModelview();
+    //Vector3D<float> mDefault;
+
     mTransformedBackLeftControl = mBackLeftControl;
     mTransformedBackRightControl = mBackRightControl;
     mTransformedFrontLeftControl = mFrontLeftControl;
     mTransformedFrontRightControl = mFrontRightControl;
-*/
+/*
     mTransformedBackLeftControl = mDefault;
     mTransformedBackRightControl = mDefault;
     mTransformedFrontLeftControl = mDefault;
     mTransformedFrontRightControl = mDefault;
-
-
+*/
+/*
     mTransformedBackLeftControl.processMatrix(mModelview);
     mTransformedBackRightControl.processMatrix(mModelview);
     mTransformedFrontLeftControl.processMatrix(mModelview);
     mTransformedFrontRightControl.processMatrix(mModelview);
+*/
+
+    float ySin = sin(TO_RADIANS(mRotation[1]));
+    float yCos = cos(TO_RADIANS(mRotation[1]));
+    //float pos = mTerrain->findHeight(mPosition[0], mPosition[1]) + 0.5;
+
+    mTransformedFrontLeftControl[0] = mFrontLeftControl[0] * yCos + mFrontLeftControl[2] * ySin;
+    mTransformedFrontLeftControl[2] = mFrontLeftControl[0] * -ySin + mFrontLeftControl[2] * yCos;
+    mTransformedFrontLeftControl[0] += mPosition[0];
+    mTransformedFrontLeftControl[2] += mPosition[2];
+    mTransformedFrontLeftControl[1] += mTerrain->findHeight(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[2]) + 0.5;
+
+    mTransformedFrontRightControl[0] = mFrontRightControl[0] * yCos + mFrontRightControl[2] * ySin;
+    mTransformedFrontRightControl[2] = mFrontRightControl[0] * -ySin + mFrontRightControl[2] * yCos;
+    mTransformedFrontRightControl[0] += mPosition[0];
+    mTransformedFrontRightControl[2] += mPosition[2];
+    mTransformedFrontRightControl[1] += mTerrain->findHeight(mTransformedFrontRightControl[0], mTransformedFrontRightControl[2]) + 0.5;
+
+    mTransformedBackLeftControl[0] = mBackLeftControl[0] * yCos + mBackLeftControl[2] * ySin;
+    mTransformedBackLeftControl[2] = mBackLeftControl[0] * -ySin + mBackLeftControl[2] * yCos;
+    mTransformedBackLeftControl[0] += mPosition[0];
+    mTransformedBackLeftControl[2] += mPosition[2];
+    mTransformedBackLeftControl[1] += mTerrain->findHeight(mTransformedBackLeftControl[0], mTransformedBackLeftControl[2]) + 0.5;
+
+    mTransformedBackRightControl[0] = mBackRightControl[0] * yCos + mBackRightControl[2] * ySin;
+    mTransformedBackRightControl[2] = mBackRightControl[0] * -ySin + mBackRightControl[2] * yCos;
+    mTransformedBackRightControl[0] += mPosition[0];
+    mTransformedBackRightControl[2] += mPosition[2];
+    mTransformedBackRightControl[1] += mTerrain->findHeight(mTransformedBackRightControl[0], mTransformedBackRightControl[2]) + 0.5;
+
+
+}
+
+Matrix<float> Tank::getRotateY()
+{
+    return mModelview;
 }
