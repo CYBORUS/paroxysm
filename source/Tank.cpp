@@ -40,7 +40,7 @@ void Tank::display()
             glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
             glRotatef(mRotation[0], 1.0f, 0.0f, 0.0f);
             glRotatef(mRotation[2], 0.0f, 0.0f, 1.0f);
-            glScalef(1.5f, 1.0f, 1.5f);
+            glScalef(0.5f, 0.25f, 0.5f);
 
             glBegin(GL_QUADS);
             {
@@ -96,7 +96,7 @@ void Tank::display()
 
             glTranslatef(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
             //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
-            glScalef(100.0f, 100.0f, 100.0f);
+            glScalef(10.0f, 10.0f, 10.0f);
             mSphere.display();
         }
         glPopAttrib();
@@ -122,7 +122,7 @@ void Tank::move()
     changeMovementVector();
     mPosition += mMovementVector;
 
-    mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
+    mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.125;
 
     if (mPosition[0] < 1)
     {
@@ -194,7 +194,7 @@ void Tank::setupModelview()
     //cerr << "mRotateY: \n" << mRotateY << endl;
     //exit(4);
 
-    mModelview = mTranslate;// * mRotateY;
+    mModelview = mTranslate * mRotateY;
 }
 
 void Tank::transformControlPoints()
