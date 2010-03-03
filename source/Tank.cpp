@@ -152,11 +152,18 @@ void Tank::changeMovementVector()
 
 void Tank::setupModelview()
 {
-    float xSin = sin(TO_RADIANS(mRotation[0]));
-    float xCos = cos(TO_RADIANS(mRotation[0]));
+    //float xSin = sin(TO_RADIANS(mRotation[0]));
+    //float xCos = cos(TO_RADIANS(mRotation[0]));
     float ySin = sin(TO_RADIANS(mRotation[1]));
     float yCos = cos(TO_RADIANS(mRotation[1]));
     //float zSin =
+
+    mRotateY(0, 0) = yCos;
+    mRotateY(0, 2) = ySin;
+    mRotateY(2, 0) = -ySin;
+    mRotateY(2, 2) = yCos;
+
+    mTranslate(0, 3) = mPosition[0];
 }
 
 void Tank::transformControlPoints()

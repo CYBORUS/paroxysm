@@ -531,10 +531,12 @@ void ScrollList::setSelection()
 
     *mInfoPointer = mText[mSelectedItem]->getText();
 
+/*
     if (glIsList(mSelectionBox))
     {
         glDeleteLists(mSelectionBox, 1);
     }
+    */
 
     float texHeight;
     float startX = mLocation.x - (mSize.x / 2.0f);

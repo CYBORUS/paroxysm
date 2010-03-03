@@ -275,7 +275,14 @@ void GameModule::onFrame()
 void GameModule::onCleanup()
 {
     for (unsigned int i = 0; i < mTanks.size(); ++i)
+    {
         delete mTanks[i];
+    }
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_LIGHTING);
+
 }
 
 void GameModule::addTank(ControlType inControlType)
