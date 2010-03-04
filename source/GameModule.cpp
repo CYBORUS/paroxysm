@@ -448,10 +448,54 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
-        default:
+        case SDLK_n:
+        {
+            cerr << "Total number of tanks currently on map: " << mTanks.size() << endl;
+            break;
+        }
+
+        case SDLK_k:
         {
             cerr << "position: " << mTanks[0]->getPosition() << endl;
-            cerr << "mRotateY: \n" << mTanks[0]->getRotateY() << endl;
+            Vector3D<float> point = mTanks[0]->getControlPoint();
+
+            float inX = point[0];
+            float inZ = point[2];
+            int x = int(inX);
+            int z = int(inZ);
+
+            //determine which direction the slant on each tile is
+            int slant = ((z % 2) + (x % 2)) % 2;
+
+            //determine where we are on an individual tile
+            float xTest = inX - float(x);
+            float zTest = inZ - float(z);
+
+            int quadrant;
+
+            if (xTest + zTest < 1.0f)
+            {
+                if (xTest - zTest > 0.0f)
+                    quadrant = 1; // north
+                else
+                    quadrant = 2; // west
+            }
+            else
+            {
+                if (xTest - zTest < 0.0f)
+                    quadrant = 3; // south
+                else
+                    quadrant = 4; // east
+            }
+
+            cerr << "slant: " << slant << " quadrant: " << quadrant << endl;
+            cerr << "xTest: " << xTest << " zTest: " << zTest << " x,z: " << x << ", " << z << endl << endl;
+
+            break;
+        }
+
+        default:
+        {
         }
     }
 }

@@ -25,6 +25,8 @@ class Tank
         void changeDirection(float inDirection);
         void changeSpeed(float inSpeed);
 
+        Vector3D<float> getControlPoint();
+
         void move();
 
     protected:

@@ -128,6 +128,8 @@ void TerrainGrid::create()
 
 void TerrainGrid::display()
 {
+    //glPushAttrib(GL_POLYGON_BIT);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_TEXTURE_2D);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
@@ -144,6 +146,7 @@ void TerrainGrid::display()
     glDisable(GL_TEXTURE_2D);
 
     //displayNormals();
+    //glPopAttrib();
 }
 
 void TerrainGrid::displayNormals()
@@ -520,11 +523,15 @@ float TerrainGrid::findHeight(float inX, float inZ)
 {
     int x = int(inX);
     int z = int(inZ);
+
+    //determine which direction the slant on each tile is
     int slant = ((z % 2) + (x % 2)) % 2;
 
+    //we're outside the bounds of the terrain
     if (x < 0 || x >= mHeights.cols() || z < 0 || z >= mHeights.rows())
         return 0.0f;
 
+    //determine where we are on an individual tile
     float xTest = inX - float(x);
     float zTest = inZ - float(z);
 
@@ -546,7 +553,12 @@ float TerrainGrid::findHeight(float inX, float inZ)
     }
 
     float outHeight = 0.0f;
+    float a;
+    float b;
+    float t;
 
+    //kelly's
+    /*
     if (!slant)
     {
         switch (quadrant)
@@ -554,7 +566,7 @@ float TerrainGrid::findHeight(float inX, float inZ)
             case 1:
             case 2:
             {
-                float a = linearInterpolate(mHeights(z, x), mHeights(z, x + 1),
+                a = linearInterpolate(mHeights(z, x), mHeights(z, x + 1),
                     xTest);
                 float b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x),
                     zTest);
@@ -565,7 +577,7 @@ float TerrainGrid::findHeight(float inX, float inZ)
             case 3:
             case 4:
             {
-                float a = linearInterpolate(mHeights(z + 1, x),
+                a = linearInterpolate(mHeights(z + 1, x),
                     mHeights(z + 1, x + 1), xTest);
                 float b = linearInterpolate(mHeights(z, x + 1),
                     mHeights(z + 1, x + 1), zTest);
@@ -585,7 +597,7 @@ float TerrainGrid::findHeight(float inX, float inZ)
             case 1:
             case 4:
             {
-                float a = linearInterpolate(mHeights(z, x), mHeights(z, x + 1),
+                a = linearInterpolate(mHeights(z, x), mHeights(z, x + 1),
                     xTest);
                 float b = linearInterpolate(mHeights(z, x + 1),
                     mHeights(z + 1, x + 1), zTest);
@@ -596,10 +608,12 @@ float TerrainGrid::findHeight(float inX, float inZ)
             case 2:
             case 3:
             {
-                float a = linearInterpolate(mHeights(z, x), mHeights(z + 1, x),
+                //a = linearInterpolate(mHeights(z, x), mHeights(z + 1, x),
+                    //xTest);
+                a = linearInterpolate(mHeights(z + 1, x), mHeights(z + 1, x + 1),
                     xTest);
-                float b = linearInterpolate(mHeights(z + 1, x),
-                    mHeights(z + 1, x + 1), zTest);
+                float b = linearInterpolate(mHeights(z, x),
+                    mHeights(z + 1, x), zTest);
                 outHeight = (a + b) / 2.0f;
                 break;
             }
@@ -609,6 +623,83 @@ float TerrainGrid::findHeight(float inX, float inZ)
             }
         }
     }
+    */
+
+    //mine
+    if (!slant)
+    {
+        switch (quadrant)
+        {
+            case 1:
+            case 2:
+            {
+                a = linearInterpolate(mHeights(z, x), mHeights(z, x + 1),
+                    xTest);
+                b = linearInterpolate(mHeights(z + 1, x), mHeights(z, x + 1),
+                    xTest);
+                t = zTest / (1.0f - xTest); //need to deal with the divide by 0 case
+                //outHeight = linearInterpolate(a, b, zTest);
+
+                break;
+            }
+
+            case 3:
+            case 4:
+            {
+                a = linearInterpolate(mHeights(z + 1, x),
+                    mHeights(z + 1, x + 1), xTest);
+                b = linearInterpolate(mHeights(z + 1, x), mHeights(z, x + 1),
+                    xTest);
+                //outHeight = linearInterpolate(a, b, zTest);
+
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+    else
+    {
+        switch (quadrant)
+        {
+            case 1:
+            case 4:
+            {
+                a = linearInterpolate(mHeights(z, x), mHeights(z, x + 1),
+                    xTest);
+                b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
+                    xTest);
+                //outHeight = linearInterpolate(a, b, zTest);
+
+                break;
+            }
+
+            case 2:
+            case 3:
+            {
+                a = linearInterpolate(mHeights(z + 1, x), mHeights(z + 1, x + 1),
+                    xTest);
+                b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
+                    xTest);
+                //outHeight = linearInterpolate(a, b, zTest);
+
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+    if (t > 1)
+    {
+        cerr << "error: t = " << t << endl;
+    }
+    //float t = zTest - (1.0f - xTest);
+    outHeight = linearInterpolate(a, b, t);
+    //end mine
 
     return outHeight;
 }

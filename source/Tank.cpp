@@ -9,7 +9,7 @@ Tank::Tank(TerrainGrid* inTerrain) : mRotateY(4), mModelview(4), mTranslate(4)
     mPosition[1] = 0.5;
     mPosition[2] = mTerrainHeight / 2;
 
-    mTankSpeed = 0.2f;
+    mTankSpeed = 0.05f;
     mTankTurnRate = 4.0f;
 
     mCurrentMoveRate = 0;
@@ -136,6 +136,11 @@ Vector3D<float> Tank::getPosition()
 void Tank::setPosition(Vector3D<float> inPosition)
 {
     mPosition = inPosition;
+}
+
+Vector3D<float> Tank::getControlPoint()
+{
+    return mTransformedFrontLeftControl;
 }
 
 void Tank::move()
