@@ -581,6 +581,7 @@ float TerrainGrid::findHeight(float inX, float inZ)
                     mHeights(z + 1, x + 1), xTest);
                 b = linearInterpolate(mHeights(z + 1, x), mHeights(z, x + 1),
                     xTest);
+                t = (zTest - (1.0 - xTest)) / xTest; //again, possible divide by zero
                 //outHeight = linearInterpolate(a, b, zTest);
 
                 break;
@@ -602,6 +603,7 @@ float TerrainGrid::findHeight(float inX, float inZ)
                     xTest);
                 b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
                     xTest);
+                t = zTest / xTest;
                 //outHeight = linearInterpolate(a, b, zTest);
 
                 break;
@@ -610,10 +612,11 @@ float TerrainGrid::findHeight(float inX, float inZ)
             case WEST:
             case SOUTH:
             {
-                a = linearInterpolate(mHeights(z + 1, x), mHeights(z + 1, x + 1),
+                a = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
                     xTest);
-                b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
+                b = linearInterpolate(mHeights(z + 1, x), mHeights(z + 1, x + 1),
                     xTest);
+                t = (1.0 - zTest) / (1.0 - xTest);
                 //outHeight = linearInterpolate(a, b, zTest);
 
                 break;
