@@ -554,9 +554,9 @@ float TerrainGrid::findHeight(float inX, float inZ)
             quadrant = EAST; // east (4)
     }
 
-    float a;
-    float b;
-    float t;
+    float a = 0.0f;
+    float b = 0.0f;
+    float t = 0.0f;
 
     if (!slant)
     {

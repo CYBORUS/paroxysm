@@ -25,7 +25,7 @@ bool MapEditorModule::onLoad()
     mMouseMode = MM_DEFAULT;
     mEditMode = EM_TERRAIN;
     mCurrentAction = NULL;
-    mSphere.setScale(0.01, 0.01, 0.01);
+    mSphere.setScale(0.05, 0.05, 0.05);
 
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);

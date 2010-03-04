@@ -74,6 +74,7 @@ class GameModule : public Module
         GameCamera mCamera;
 
         TerrainGrid mTerrain;
+        GLuint mTerrainDisplay;
 
         bool mDead;
         Module* mNextModule;

@@ -158,6 +158,33 @@ bool GameModule::onLoad()
 
     mHUD.addWidget(mFPSLabel);
 
+    mTerrainDisplay = glGenLists(1);
+
+    glNewList(mTerrainDisplay, GL_COMPILE);
+    {
+        /*
+        glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
+        glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
+        glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
+*/
+
+        mTerrain.display();
+
+        glPushAttrib(GL_LIGHTING_BIT);
+        glDisable(GL_LIGHTING);
+        glBegin(GL_LINES);
+        {
+            glVertex3f(0.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 10.0f, 0.0f);
+        }
+        glEnd();
+        glPopAttrib();
+
+
+    }
+    glEndList();
+
 
     return true;
 }
@@ -193,7 +220,7 @@ void GameModule::onInit()
     //glLoadIdentity();
 
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
 
@@ -225,8 +252,9 @@ void GameModule::onLoop()
     glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
 
 
-    mTerrain.display();
-
+    //mTerrain.display();
+    glCallList(mTerrainDisplay);
+/*
     glPushAttrib(GL_LIGHTING_BIT);
     glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
@@ -236,7 +264,7 @@ void GameModule::onLoop()
     }
     glEnd();
     glPopAttrib();
-
+*/
     for (unsigned int i = 0; i < mTanks.size(); ++i)
     {
         mTanks[i]->display();
@@ -369,10 +397,10 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 mTrackball[1] -= 360.0f;
 
             mTrackball[0] += static_cast<GLfloat>(inY - mCenter.y) * TRACKBALL_STEP;
-            if (mTrackball[0] < -180.0f)
-                mTrackball[0] += 360.0f;
-            else if (mTrackball[0] > 360.0f)
-                mTrackball[0] -= 360.0f;
+            if (mTrackball[0] < 0.0f)
+                mTrackball[0] = 0.0f;
+            else if (mTrackball[0] > 180.0f)
+                mTrackball[0] = 180.0f;
 
             mCamera.setTrackball(mTrackball);
             break;
