@@ -612,9 +612,9 @@ float TerrainGrid::findHeight(float inX, float inZ)
             case WEST:
             case SOUTH:
             {
-                a = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
+                a = linearInterpolate(mHeights(z + 1, x), mHeights(z + 1, x + 1),
                     xTest);
-                b = linearInterpolate(mHeights(z + 1, x), mHeights(z + 1, x + 1),
+                b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
                     xTest);
                 t = (1.0 - zTest) / (1.0 - xTest);
                 //outHeight = linearInterpolate(a, b, zTest);
