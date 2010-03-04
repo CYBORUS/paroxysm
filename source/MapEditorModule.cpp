@@ -145,10 +145,6 @@ void MapEditorModule::onLoop()
 */
     // purposefully left outside the camera control to illustrate the changing
     // light patterns
-    glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
-    glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
-    glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
     glPushMatrix();
 
     glTranslatef(0.0f, 0.0f, -mTrackball[2]);
@@ -156,6 +152,11 @@ void MapEditorModule::onLoop()
     glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
 
     glTranslatef(mPanning[0], mPanning[1], mPanning[2]);
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
+    glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
+    glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
 
     if (mSceneChanged)
     {

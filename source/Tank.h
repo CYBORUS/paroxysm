@@ -61,7 +61,14 @@ class Tank
 
         float mTurretAngle;
 
-        Point2D<float> mTankSize;
+        Vector3D<float> mTankSize;
+
+        Vector3D<float> mHeadCenter;
+        Vector3D<float> mHeadRotation;
+        Vector3D<float> mHeadSize;
+
+        Vector3D<float> mTurretCenter;
+        Vector3D<float> mTurretSize;
 
         float mTankSpeed;
         float mTankTurnRate;
