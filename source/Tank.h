@@ -61,6 +61,8 @@ class Tank
 
         float mTurretAngle;
 
+        Point2D<float> mTankSize;
+
         float mTankSpeed;
         float mTankTurnRate;
 
