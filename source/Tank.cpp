@@ -9,7 +9,7 @@ Tank::Tank(TerrainGrid* inTerrain)
     mPosition[1] = 0.5;
     mPosition[2] = mTerrainHeight / 2;
 
-    mTankSpeed = 0.05f;
+    mTankSpeed = 0.2f;
     mTankTurnRate = 4.0f;
 
     mCurrentMoveRate = 0;
