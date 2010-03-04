@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-Tank::Tank(TerrainGrid* inTerrain) : mRotateY(4), mModelview(4), mTranslate(4)
+Tank::Tank(TerrainGrid* inTerrain) : mModelview(4), mRotateY(4), mTranslate(4)
 {
     mTerrain = inTerrain;
     mTerrainWidth = mTerrain->getMatrix().cols();
