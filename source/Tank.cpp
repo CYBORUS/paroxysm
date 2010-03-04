@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-Tank::Tank(TerrainGrid* inTerrain) : mModelview(4), mRotateY(4), mTranslate(4)
+Tank::Tank(TerrainGrid* inTerrain)
 {
     mTerrain = inTerrain;
     mTerrainWidth = mTerrain->getMatrix().cols();
@@ -92,7 +92,7 @@ void Tank::display()
             }
             glPopMatrix();
 
-
+/*
             mSphere.moveSphere(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
             //glTranslatef(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
             //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
@@ -120,7 +120,7 @@ void Tank::display()
             //glScalef(10.0f, 10.0f, 10.0f);
             mSphere.setColor(0.0, 0.0, 1.0);
             mSphere.display();
-
+*/
         }
         glPopAttrib();
     }
@@ -149,7 +149,7 @@ void Tank::move()
     changeMovementVector();
     mPosition += mMovementVector;
 
-    mPosition[1] = 0.5;//mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
+    mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + 0.5;
 
     if (mPosition[0] < 1)
     {
@@ -198,7 +198,7 @@ void Tank::changeMovementVector()
     mMovementVector[2] = cos(TO_RADIANS(mRotation[1])) * mCurrentMoveRate;
 }
 
-
+/*
 void Tank::setupModelview()
 {
     //float xSin = sin(TO_RADIANS(mRotation[0]));
@@ -223,6 +223,7 @@ void Tank::setupModelview()
 
     mModelview = mTranslate * mRotateY;
 }
+*/
 
 void Tank::transformControlPoints()
 {
@@ -275,9 +276,4 @@ void Tank::transformControlPoints()
     mTransformedBackRightControl[1] += mTerrain->findHeight(mTransformedBackRightControl[0], mTransformedBackRightControl[2]) + 0.5;
 
 
-}
-
-Matrix<float> Tank::getRotateY()
-{
-    return mModelview;
 }

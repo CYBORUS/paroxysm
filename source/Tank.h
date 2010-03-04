@@ -20,7 +20,6 @@ class Tank
 
         virtual void display();
         Vector3D<float> getPosition();
-        Matrix<float> getRotateY();
         void setPosition(Vector3D<float> inPosition);
         void changeDirection(float inDirection);
         void changeSpeed(float inSpeed);
@@ -31,7 +30,7 @@ class Tank
 
     protected:
         void changeMovementVector();
-        void setupModelview();
+        //void setupModelview();
         void transformControlPoints();
 
         TerrainGrid* mTerrain;
@@ -52,11 +51,13 @@ class Tank
         Vector3D<float> mTransformedBackLeftControl;
         Vector3D<float> mTransformedBackRightControl;
 
+/*
         Matrix<float> mModelview;
         Matrix<float> mRotateX;
         Matrix<float> mRotateY;
         Matrix<float> mRotateZ;
         Matrix<float> mTranslate;
+*/
 
         float mTurretAngle;
 

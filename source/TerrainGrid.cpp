@@ -527,9 +527,11 @@ float TerrainGrid::findHeight(float inX, float inZ)
     //determine which direction the slant on each tile is
     int slant = ((z % 2) + (x % 2)) % 2;
 
+/*
     //we're outside the bounds of the terrain
     if (x < 0 || x >= mHeights.cols() || z < 0 || z >= mHeights.rows())
         return 0.0f;
+*/
 
     //determine where we are on an individual tile
     float xTest = inX - float(x);
@@ -552,7 +554,6 @@ float TerrainGrid::findHeight(float inX, float inZ)
             quadrant = EAST; // east (4)
     }
 
-    float outHeight = 0.0f;
     float a;
     float b;
     float t;
@@ -569,8 +570,6 @@ float TerrainGrid::findHeight(float inX, float inZ)
                 b = linearInterpolate(mHeights(z + 1, x), mHeights(z, x + 1),
                     xTest);
                 t = zTest / (1.0f - xTest); //need to deal with the divide by 0 case
-                //outHeight = linearInterpolate(a, b, zTest);
-
                 break;
             }
 
@@ -582,8 +581,6 @@ float TerrainGrid::findHeight(float inX, float inZ)
                 b = linearInterpolate(mHeights(z + 1, x),
                     mHeights(z + 1, x + 1), xTest);
                 t = (zTest - (1.0 - xTest)) / xTest; //again, possible divide by zero
-                //outHeight = linearInterpolate(a, b, zTest);
-
                 break;
             }
 
@@ -604,8 +601,6 @@ float TerrainGrid::findHeight(float inX, float inZ)
                 b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
                     xTest);
                 t = zTest / xTest;
-                //outHeight = linearInterpolate(a, b, zTest);
-
                 break;
             }
 
@@ -617,8 +612,6 @@ float TerrainGrid::findHeight(float inX, float inZ)
                 b = linearInterpolate(mHeights(z, x), mHeights(z + 1, x + 1),
                     xTest);
                 t = (1.0 - zTest) / (1.0 - xTest);
-                //outHeight = linearInterpolate(a, b, zTest);
-
                 break;
             }
 
@@ -627,15 +620,8 @@ float TerrainGrid::findHeight(float inX, float inZ)
             }
         }
     }
-    if (t > 1)
-    {
-        cerr << "error: t = " << t << endl;
-    }
-    //float t = zTest - (1.0f - xTest);
-    outHeight = linearInterpolate(a, b, t);
-    //end mine
 
-    return outHeight;
+    return linearInterpolate(a, b, t);
 }
 
 istream& operator>>(istream& inStream, TerrainGrid& inGrid)
