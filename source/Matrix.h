@@ -40,8 +40,6 @@ class Matrix
         int lastRow() const;
         int lastCol() const;
         bool square() const;
-        T at(int inIndex) const;
-        T at(int inRow, int inCol) const;
         int toIndex(int inRow, int inCol) const;
         void set(int inRow, int inCol, T inValue);
         T determinant() const;
@@ -60,7 +58,8 @@ class Matrix
         Matrix<T>& operator/=(const T inValue);
         T& operator()(int inRow, int inCol);
         T operator()(int inRow, int inCol) const;
-        T& operator[](int inIndex) const;
+        T& operator[](int inIndex);
+        T operator[](int inIndex) const;
         bool operator==(const Matrix<T>& inMatrix) const;
         bool operator!=(const Matrix<T>& inMatrix) const;
         const Matrix<T> operator+(const Matrix<T>& inMatrix) const;
@@ -74,6 +73,7 @@ class Matrix
 
     private:
         void copy(const Matrix<T>& inMatrix);
+        T at(int inRow, int inCol) const;
 
         int mRows;
         int mCols;
@@ -84,14 +84,15 @@ class Matrix
 template<class T>
 Matrix<T>::Matrix()
 {
-    srand(time(NULL));
-    int edge = rand() % 8 + 2;
-    mRows = edge;
-    mCols = edge;
-    mSize = edge * edge;
+    // produces a square matrix
+    mRows = 4;
+    mCols = 4;
+    mSize = mRows * mCols;
     mMatrix = new T[mSize];
 
-    for (int i = 0; i < mSize; ++i) mMatrix[i] = rand() % 10;
+    // default to identity matrix
+    for (int i = 0; i < mSize; ++i)
+        mMatrix[i] = (i % (mCols + 1) == 0 ? 1 : 0);
 }
 
 template<class T>
@@ -179,29 +180,14 @@ void Matrix<T>::copy(const Matrix<T>& inMatrix)
 }
 
 template<class T>
-void Matrix<T>::set(int inRow, int inCol, T inValue)
+inline void Matrix<T>::set(int inRow, int inCol, T inValue)
 {
-    if (inRow < 0 || inCol < 0) return;
-
-    inRow %= mRows;
-    inCol %= mCols;
     mMatrix[(inRow * mCols) + inCol] = inValue;
 }
 
 template<class T>
-T Matrix<T>::at(int inIndex) const
+inline T Matrix<T>::at(int inRow, int inCol) const
 {
-    if (inIndex < 0 || inIndex >= mSize) inIndex = 0;
-    return mMatrix[inIndex];
-}
-
-template<class T>
-T Matrix<T>::at(int inRow, int inCol) const
-{
-    if (inRow < 0 || inCol < 0) return 0;
-
-    inRow %= mRows;
-    inCol %= mCols;
     return mMatrix[(inRow * mCols) + inCol];
 }
 
@@ -388,12 +374,8 @@ Matrix<T>& Matrix<T>::operator/=(const T inValue)
 }
 
 template<class T>
-T& Matrix<T>::operator()(int inRow, int inCol)
+inline T& Matrix<T>::operator()(int inRow, int inCol)
 {
-    if (inRow < 0 || inCol < 0) return mMatrix[0];
-
-    inRow %= mRows;
-    inCol %= mCols;
     return mMatrix[(inRow * mCols) + inCol];
 }
 
@@ -408,9 +390,14 @@ T Matrix<T>::operator()(int inRow, int inCol) const
 }
 
 template<class T>
-T& Matrix<T>::operator[](int inIndex) const
+inline T& Matrix<T>::operator[](int inIndex)
 {
-    if (inIndex < 0 || inIndex >= mSize) inIndex = 0;
+    return mMatrix[inIndex];
+}
+
+template<class T>
+inline T Matrix<T>::operator[](int inIndex) const
+{
     return mMatrix[inIndex];
 }
 

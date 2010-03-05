@@ -80,6 +80,8 @@
 		<Unit filename="../MapEditorModule.cpp" />
 		<Unit filename="../MapEditorModule.h" />
 		<Unit filename="../Matrix.h" />
+		<Unit filename="../Model3D.cpp" />
+		<Unit filename="../Model3D.h" />
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
 		<Unit filename="../PlainPic.cpp" />
