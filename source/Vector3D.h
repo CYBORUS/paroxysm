@@ -22,6 +22,7 @@
 #include "Matrix.h"
 
 #define PI 3.141592654
+#define PI_HALVES PI / 2.0
 #define TO_RADIANS(n) ((n) * PI / 180.0)
 #define TO_DEGREES(n) (n * 180.0 / PI)
 #define PSEUDO_ZERO 0.000001

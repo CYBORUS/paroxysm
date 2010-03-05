@@ -278,6 +278,7 @@ void GameModule::onLoop()
 void GameModule::onFrame()
 {
     mCamera.update();
+    mSceneChanged = true;
 
     for (unsigned int i = 0; i < mControls.size(); ++i)
     {
@@ -449,10 +450,15 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
         case MM_DEFAULT:
         {
+
             Vector3D<float> hoverPoint = findMouseObjectPoint(inX, inY);
             //cerr << "hoverPoint: " << hoverPoint << endl;
             //mSphere.moveSphere(hoverVertex[0], hoverVertex[1], hoverVertex[2]);
-            float angle = atan(hoverPoint[0] / hoverPoint[2]);
+            Vector3D<float> relative;
+            Vector3D<float> tankPos = mTanks[0]->getPosition();
+            relative[0] = hoverPoint[0] - tankPos[0];
+            relative[2] = hoverPoint[2] - tankPos[2];
+            float angle = -atan2(relative[2], relative[0]) + PI_HALVES;
 
             mTanks[0]->setTurretDirection(TO_DEGREES(angle));
 
@@ -559,6 +565,7 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         {
         }
     }
+    mSceneChanged = true;
 }
 
 void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
@@ -595,7 +602,6 @@ void GameModule::onMouseWheel(bool inUp, bool inDown)
     if (mTrackball[2] < 0.0f) mTrackball[2] = 0.0f;
 
     mCamera.setTrackball(mTrackball);
-    mSceneChanged = true;
 }
 
 void GameModule::getHeight(float inX, float inZ)

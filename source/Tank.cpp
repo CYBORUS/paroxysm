@@ -100,7 +100,7 @@ void Tank::display()
                 glPopMatrix();
 
                 glTranslatef(mHeadCenter[0], mHeadCenter[1], mHeadCenter[2]);
-                glRotatef(mHeadRotation, 0.0f, 1.0f, 0.0f);
+                glRotatef(mHeadRotation - mRotation[1], 0.0f, 1.0f, 0.0f);
 
                 glPushMatrix();
                 {
