@@ -184,7 +184,17 @@ void MapEditorModule::onLoop()
 
     if (mEditMode == EM_TERRAIN)
     {
-        mSphere.display();
+        glPushAttrib(GL_POLYGON_BIT);
+        {
+            glPushAttrib(GL_LIGHTING_BIT);
+            {
+                glDisable(GL_LIGHTING);
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                mSphere.display();
+            }
+            glPopAttrib();
+        }
+        glPopAttrib();
     }
 
     glPopMatrix();

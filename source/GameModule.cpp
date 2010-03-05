@@ -561,6 +561,18 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
+        case SDLK_q:
+        {
+            mTanks[0]->modifyTurretRotation(true, 1.0f);
+            break;
+        }
+
+        case SDLK_e:
+        {
+            mTanks[0]->modifyTurretRotation(true, -1.0f);
+            break;
+        }
+
         default:
         {
         }
@@ -582,6 +594,18 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_s:
         {
             mControls[0]->changeSpeed(0.0f);
+            break;
+        }
+
+        case SDLK_q:
+        {
+            mTanks[0]->modifyTurretRotation(false, 0.0f);
+            break;
+        }
+
+        case SDLK_e:
+        {
+            mTanks[0]->modifyTurretRotation(false, 0.0f);
             break;
         }
 

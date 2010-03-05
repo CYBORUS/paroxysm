@@ -23,6 +23,7 @@ class Tank
         void setPosition(Vector3D<float> inPosition);
         void rotateTurret(float inRotation);
         void setTurretDirection(float inRotation);
+        void modifyTurretRotation(bool inRotate, float inRotation);
         void changeDirection(float inDirection);
         void changeSpeed(float inSpeed);
 
@@ -71,6 +72,9 @@ class Tank
         float mHeadTargetDirection;
         float mHeadRotationDirection; //whether to turn left or right
         Vector3D<float> mHeadSize;
+
+        bool mTurretConstantRotate;
+        bool mAIRotateCalled;
 
         Vector3D<float> mTurretCenter;
         Vector3D<float> mTurretSize;

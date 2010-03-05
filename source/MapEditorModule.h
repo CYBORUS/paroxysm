@@ -39,7 +39,7 @@
 using namespace std;
 
 #define VERTEX_DISTANCE 0.0f
-#define VERTEX_STEP 0.07f
+#define VERTEX_STEP 0.1f
 
 /// edit mode options
 #define EM_TERRAIN 0

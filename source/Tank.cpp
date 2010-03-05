@@ -14,6 +14,9 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5), mHeadCenter(0.0, 
     mTankTurnRate = 4.0f;
     mHeadRotationRate = 4.0f;
 
+    mTurretConstantRotate = false;
+    mAIRotateCalled = false;
+
     mCurrentMoveRate = 0;
     mCurrentRotationRate = 0;
     mHeadRotationDirection = 0;
@@ -244,6 +247,7 @@ void Tank::setPosition(Vector3D<float> inPosition)
 
 void Tank::rotateTurret(float inRotation)
 {
+    mAIRotateCalled = true;
     mHeadTargetDirection = inRotation;
 
     if (mHeadTargetDirection >= mHeadRotation)
@@ -259,6 +263,18 @@ void Tank::rotateTurret(float inRotation)
 void Tank::setTurretDirection(float inRotation)
 {
     mHeadRotation = inRotation;
+}
+
+void Tank::modifyTurretRotation(bool inRotate, float inRotation)
+{
+    mTurretConstantRotate = inRotate;
+
+    mHeadRotationDirection = mHeadRotationRate;
+
+    if (inRotation < 0)
+    {
+        mHeadRotationDirection = -mHeadRotationRate;
+    }
 }
 
 Vector3D<float> Tank::getControlPoint()
@@ -279,37 +295,37 @@ Vector3D<float> Tank::getControlPoint()
 void Tank::move()
 {
     mRotation[1] += mCurrentRotationRate;
-    changeMovementVector();
-    mPosition += mMovementVector;
 
-    if (abs(mHeadRotation - mHeadTargetDirection) < mHeadRotationRate)
-    {
-        mHeadRotation = mHeadTargetDirection;
-        mHeadTargetDirection = 0;
-    }
-    else
+    float ySin = sin(TO_RADIANS(mRotation[1]));
+    float yCos = cos(TO_RADIANS(mRotation[1]));
+
+    mMovementVector[0] = ySin * mCurrentMoveRate;
+    mMovementVector[2] = yCos * mCurrentMoveRate;
+
+    Vector3D<float> newPosition = mPosition + mMovementVector;
+
+
+    //changeMovementVector();
+
+    if (mTurretConstantRotate)
     {
         mHeadRotation += mHeadRotationDirection;
-        mHeadTargetDirection -= mHeadRotationRate;
     }
 
-    if (mPosition[0] < 1)
+    if (mAIRotateCalled)
     {
-        mPosition[0] = 1;
-    }
-    else if (mPosition[0] > mTerrainWidth - 2)
-    {
-        mPosition[0] = mTerrainWidth - 2;
+        if (abs(mHeadRotation - mHeadTargetDirection) < mHeadRotationRate)
+        {
+            mHeadRotation = mHeadTargetDirection;
+            mHeadTargetDirection = mHeadRotation;
+        }
+        else
+        {
+            mHeadRotation += mHeadRotationDirection;
+            mHeadTargetDirection -= mHeadRotationRate;
+        }
     }
 
-    if (mPosition[2] < 1)
-    {
-        mPosition[2] = 1;
-    }
-    else if (mPosition[2] > mTerrainHeight - 2)
-    {
-        mPosition[2] = mTerrainHeight - 2;
-    }
 
     //transformControlPoints();
 
@@ -320,13 +336,11 @@ void Tank::move()
     mTransformedFrontLeftControl = mFrontLeftControl;
     mTransformedFrontRightControl = mFrontRightControl;
 
-    float ySin = sin(TO_RADIANS(mRotation[1]));
-    float yCos = cos(TO_RADIANS(mRotation[1]));
 
     mTransformedFrontLeftControl[0] = mFrontLeftControl[0] * yCos + mFrontLeftControl[2] * ySin;
     mTransformedFrontLeftControl[2] = mFrontLeftControl[0] * -ySin + mFrontLeftControl[2] * yCos;
-    mTransformedFrontLeftControl[0] += mPosition[0];
-    mTransformedFrontLeftControl[2] += mPosition[2];
+    mTransformedFrontLeftControl[0] += newPosition[0];
+    mTransformedFrontLeftControl[2] += newPosition[2];
     mTransformedFrontLeftControl[1] += mTerrain->findHeight(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[2]) + mTankSize[1] / 2.0;
     float highestControlPoint = mTransformedFrontLeftControl[1];
     float lowestControlPoint = mTransformedFrontLeftControl[1];
@@ -334,8 +348,8 @@ void Tank::move()
 
     mTransformedFrontRightControl[0] = mFrontRightControl[0] * yCos + mFrontRightControl[2] * ySin;
     mTransformedFrontRightControl[2] = mFrontRightControl[0] * -ySin + mFrontRightControl[2] * yCos;
-    mTransformedFrontRightControl[0] += mPosition[0];
-    mTransformedFrontRightControl[2] += mPosition[2];
+    mTransformedFrontRightControl[0] += newPosition[0];
+    mTransformedFrontRightControl[2] += newPosition[2];
     mTransformedFrontRightControl[1] += mTerrain->findHeight(mTransformedFrontRightControl[0], mTransformedFrontRightControl[2]) + mTankSize[1] / 2.0;
     if (mTransformedFrontRightControl[1] > highestControlPoint)
     {
@@ -348,8 +362,8 @@ void Tank::move()
 
     mTransformedBackLeftControl[0] = mBackLeftControl[0] * yCos + mBackLeftControl[2] * ySin;
     mTransformedBackLeftControl[2] = mBackLeftControl[0] * -ySin + mBackLeftControl[2] * yCos;
-    mTransformedBackLeftControl[0] += mPosition[0];
-    mTransformedBackLeftControl[2] += mPosition[2];
+    mTransformedBackLeftControl[0] += newPosition[0];
+    mTransformedBackLeftControl[2] += newPosition[2];
     mTransformedBackLeftControl[1] += mTerrain->findHeight(mTransformedBackLeftControl[0], mTransformedBackLeftControl[2]) + mTankSize[1] / 2.0;
     if ( mTransformedBackLeftControl[1] > highestControlPoint)
     {
@@ -362,8 +376,8 @@ void Tank::move()
 
     mTransformedBackRightControl[0] = mBackRightControl[0] * yCos + mBackRightControl[2] * ySin;
     mTransformedBackRightControl[2] = mBackRightControl[0] * -ySin + mBackRightControl[2] * yCos;
-    mTransformedBackRightControl[0] += mPosition[0];
-    mTransformedBackRightControl[2] += mPosition[2];
+    mTransformedBackRightControl[0] += newPosition[0];
+    mTransformedBackRightControl[2] += newPosition[2];
     mTransformedBackRightControl[1] += mTerrain->findHeight(mTransformedBackRightControl[0], mTransformedBackRightControl[2]) + mTankSize[1] / 2.0;
     if ( mTransformedBackRightControl[1] > highestControlPoint)
     {
@@ -387,6 +401,29 @@ void Tank::move()
     //set the position to the highest of the four control points
     //mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + mTankSize.y / 2.0;
     mPosition[1] = (highestControlPoint + lowestControlPoint) / 2.0 + mTankSize[1] / 2.0;
+
+
+
+    mPosition += mMovementVector;
+
+    if (mPosition[0] < 1)
+    {
+        mPosition[0] = 1;
+    }
+    else if (mPosition[0] > mTerrainWidth - 2)
+    {
+        mPosition[0] = mTerrainWidth - 2;
+    }
+
+    if (mPosition[2] < 1)
+    {
+        mPosition[2] = 1;
+    }
+    else if (mPosition[2] > mTerrainHeight - 2)
+    {
+        mPosition[2] = mTerrainHeight - 2;
+    }
+
 }
 
 /******************************************************
