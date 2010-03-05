@@ -15,6 +15,7 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5), mHeadCenter(0.0, 
 
     mCurrentMoveRate = 0;
     mCurrentRotationRate = 0;
+    mHeadRotation = 0;
 
     mFrontLeftControl.set(0 + 0.75f, -0.5f, 0 + 0.75f);
     mFrontRightControl.set(0 - 0.75f, -0.5f, 0 + 0.75f);
@@ -97,9 +98,7 @@ void Tank::display()
                 glPopMatrix();
 
                 glTranslatef(mHeadCenter[0], mHeadCenter[1], mHeadCenter[2]);
-                glRotatef(mHeadRotation[1], 0.0f, 1.0f, 0.0f);
-                glRotatef(mHeadRotation[0], 1.0f, 0.0f, 0.0f);
-                glRotatef(mHeadRotation[2], 0.0f, 0.0f, 1.0f);
+                glRotatef(mHeadRotation, 0.0f, 1.0f, 0.0f);
 
                 glPushMatrix();
                 {
@@ -241,6 +240,11 @@ void Tank::setPosition(Vector3D<float> inPosition)
     mPosition = inPosition;
 }
 
+void Tank::rotateTurret(float inRotation)
+{
+    mHeadRotation = inRotation;
+}
+
 Vector3D<float> Tank::getControlPoint()
 {
     return mTransformedFrontLeftControl;
@@ -261,6 +265,7 @@ void Tank::move()
     mRotation[1] += mCurrentRotationRate;
     changeMovementVector();
     mPosition += mMovementVector;
+
 
 
     if (mPosition[0] < 1)

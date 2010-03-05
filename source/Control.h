@@ -33,9 +33,19 @@ class Control
         virtual void setPosition(Vector3D<float> inPosition);
         virtual void changeDirection(float inDirection);
         virtual void changeSpeed(float inSpeed);
+        virtual void stepTurretRotation();
+        virtual void setTurretRotation(float inRotation);
 
     protected:
         Tank* mTank;
+
+        //AI turrets have to move differently than player turrets,
+        //these controls are meant to provide that functionality
+        float mHeadRotation;
+        float mHeadRotationRate;
+        float mHeadTargetDirection;
+        float mHeadRotationDirection; //whether to turn left or right
+
 };
 
 #endif

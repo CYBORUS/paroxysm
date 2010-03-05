@@ -39,6 +39,8 @@ class RobotControl : public Control
         int mTicks;
         float mTurn;
         float mSpeed;
+
+        float headRotation;
 };
 
 #endif

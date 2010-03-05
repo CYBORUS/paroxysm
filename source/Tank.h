@@ -21,6 +21,7 @@ class Tank
         virtual void display();
         Vector3D<float> getPosition();
         void setPosition(Vector3D<float> inPosition);
+        void rotateTurret(float inRotation);
         void changeDirection(float inDirection);
         void changeSpeed(float inSpeed);
 
@@ -64,7 +65,7 @@ class Tank
         Vector3D<float> mTankSize;
 
         Vector3D<float> mHeadCenter;
-        Vector3D<float> mHeadRotation;
+        float mHeadRotation;
         Vector3D<float> mHeadSize;
 
         Vector3D<float> mTurretCenter;
