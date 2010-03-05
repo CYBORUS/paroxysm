@@ -67,6 +67,8 @@ class GameModule : public Module
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onMouseWheel(bool inUp, bool inDown);
 
+        inline Vector3D<float> findMouseObjectPoint(int inX, int inY);
+
         void getHeight(float inX, float inZ);
 
         LuaMachine mLua;
@@ -75,6 +77,12 @@ class GameModule : public Module
 
         TerrainGrid mTerrain;
         GLuint mTerrainDisplay;
+
+        Matrix<GLdouble> mModelView;
+        Vector3D<GLint> mViewport;
+        Matrix<GLdouble> mProjection;
+        bool mSceneChanged;
+
 
         bool mDead;
         Module* mNextModule;

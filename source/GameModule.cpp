@@ -116,6 +116,7 @@ GameModule::GameModule(const char* inMapFile)
 
     addTank(PLAYER_TANK);
     addTank(ROBOT_TANK);
+
 }
 
 GameModule::~GameModule()
@@ -124,6 +125,9 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
+    mProjection = Matrix<GLdouble>(4);
+    mModelView = Matrix<GLdouble>(4);
+
     mTrackball[0] = 22.0f;
     mTrackball[2] = 20.0f;
     mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
@@ -162,13 +166,6 @@ bool GameModule::onLoad()
 
     glNewList(mTerrainDisplay, GL_COMPILE);
     {
-        /*
-        glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
-        glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
-        glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
-*/
-
         mTerrain.display();
 
         glPushAttrib(GL_LIGHTING_BIT);
@@ -199,6 +196,7 @@ void GameModule::onInit()
     luaCamera = &mCamera;
     luaTanks = &mTanks;
     luaGM = this;
+    mSceneChanged = true;
 
     SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
 
@@ -211,13 +209,9 @@ void GameModule::onInit()
 
     glMatrixMode(GL_MODELVIEW);
 
-    //glGetDoublev(GL_PROJECTION_MATRIX, mProjection.array());
-    //mProjection.transpose();
+    glGetDoublev(GL_PROJECTION_MATRIX, mProjection.array());
+    glGetIntegerv(GL_VIEWPORT, mViewport.array());
 
-    //glGetIntegerv(GL_VIEWPORT, mViewport.array());
-
-    //cerr << "\nProjection Matrix: \n" << mProjection << endl;
-    //glLoadIdentity();
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -251,6 +245,11 @@ void GameModule::onLoop()
     glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
     glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
 
+    if (mSceneChanged)
+    {
+        glGetDoublev(GL_MODELVIEW_MATRIX, mModelView.array());
+        mSceneChanged = false;
+    }
 
     //mTerrain.display();
     glCallList(mTerrainDisplay);
@@ -343,6 +342,33 @@ void GameModule::addTank(ControlType inControlType)
 }
 
 
+Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
+{
+
+    GLdouble tempX = 0;
+    GLdouble tempY = 0;
+    GLdouble tempZ = 0;
+
+    GLfloat depthZ = 0;
+
+    //we have to invert the y axis because of opengl's viewport
+    int newY = SDL_GetVideoSurface()->h - inY;
+
+    //read the depth buffer to determine the z coordinate at the input
+    //x,y coordinates
+    glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
+
+    //now let the glu library do the math for us :)
+    if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView.array(), mProjection.array(), mViewport.array(), &tempX, &tempY, &tempZ) == GL_FALSE)
+    {
+        cerr << "gluUnProject failed." << endl;
+    }
+
+    Vector3D<float> currentVertex((float)tempX, (float)tempY, (float)tempZ);
+    return currentVertex;
+}
+
+
 void GameModule::onRButtonDown(int inX, int inY)
 {
     if (mMouseMode == MM_DEFAULT)
@@ -362,7 +388,7 @@ void GameModule::onRButtonUp(int inX, int inY)
         mMouseMode = MM_DEFAULT;
         SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
         SDL_ShowCursor(SDL_ENABLE);
-        //mSceneChanged = true;
+        mSceneChanged = true;
     }
 }
 
@@ -423,6 +449,13 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         }
         case MM_DEFAULT:
         {
+            Vector3D<float> hoverPoint = findMouseObjectPoint(inX, inY);
+            //cerr << "hoverPoint: " << hoverPoint << endl;
+            //mSphere.moveSphere(hoverVertex[0], hoverVertex[1], hoverVertex[2]);
+            float angle = atan(hoverPoint[0] / hoverPoint[2]);
+
+            mTanks[0]->setTurretDirection(TO_DEGREES(angle));
+
             mHUD.setStates(inX, inY, false);
             break;
         }
@@ -562,6 +595,7 @@ void GameModule::onMouseWheel(bool inUp, bool inDown)
     if (mTrackball[2] < 0.0f) mTrackball[2] = 0.0f;
 
     mCamera.setTrackball(mTrackball);
+    mSceneChanged = true;
 }
 
 void GameModule::getHeight(float inX, float inZ)

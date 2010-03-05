@@ -26,7 +26,6 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5), mHeadCenter(0.0, 
     mBackRightControl.set(0 - 0.75f, -0.5f, 0 - 0.75f);
 
     mSphere.setScale(0.1, 0.1, 0.1);
-
 }
 
 Tank::~Tank()

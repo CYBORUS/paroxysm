@@ -289,7 +289,7 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
     GLfloat depthZ = 0;
 
     //we have to invert the y axis because of opengl's viewport
-    int newY = -(inY - SDL_GetVideoSurface()->h);
+    int newY = SDL_GetVideoSurface()->h - inY;
 
     //read the depth buffer to determine the z coordinate at the input
     //x,y coordinates
