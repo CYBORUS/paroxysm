@@ -21,9 +21,7 @@ Control::Control(Tank* inTank)
 {
     mTank = inTank;
 
-    mHeadRotationRate = 4.0f;
-    mHeadRotationDirection = 0;
-    mHeadTargetDirection = 0;
+
 }
 
 Control::~Control()
@@ -31,35 +29,6 @@ Control::~Control()
     //dtor
 }
 
-void Control::setTurretRotation(float inRotation)
-{
-    mHeadTargetDirection = inRotation;
-
-    if (mHeadTargetDirection >= mHeadRotation)
-    {
-        mHeadRotationDirection = mHeadRotationRate;
-    }
-    else
-    {
-        mHeadRotationDirection = -mHeadRotationRate;
-    }
-}
-
-void Control::stepTurretRotation()
-{
-    if ( abs(mHeadRotation - mHeadTargetDirection) < mHeadRotationRate)
-    {
-        mHeadRotation = mHeadTargetDirection;
-        mHeadTargetDirection = 0;
-    }
-    else
-    {
-        mHeadRotation += mHeadRotationDirection;
-        mHeadTargetDirection -= mHeadRotationRate;
-    }
-
-    mTank->rotateTurret(mHeadRotation);
-}
 
 void Control::setPosition(Vector3D<float> inPosition)
 {

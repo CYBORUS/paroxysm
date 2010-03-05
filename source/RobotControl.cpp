@@ -40,12 +40,12 @@ void RobotControl::update()
         mSpeed = randFloat(0.1f, 1.0f);
         mTurn = randFloat(-1.0f, 1.0f);
         headRotation = randFloat(0.0f, 360.0f);
-        setTurretRotation(headRotation);
+
+        mTank->rotateTurret(headRotation);
         mTank->changeSpeed(mSpeed);
         mTank->changeDirection(mTurn);
     }
 
-    stepTurretRotation();
     mTank->move();
 }
 

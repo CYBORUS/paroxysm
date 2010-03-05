@@ -12,9 +12,12 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5), mHeadCenter(0.0, 
 
     mTankSpeed = 0.15f;
     mTankTurnRate = 4.0f;
+    mHeadRotationRate = 4.0f;
 
     mCurrentMoveRate = 0;
     mCurrentRotationRate = 0;
+    mHeadRotationDirection = 0;
+    mHeadTargetDirection = 0;
     mHeadRotation = 0;
 
     mFrontLeftControl.set(0 + 0.75f, -0.5f, 0 + 0.75f);
@@ -242,6 +245,20 @@ void Tank::setPosition(Vector3D<float> inPosition)
 
 void Tank::rotateTurret(float inRotation)
 {
+    mHeadTargetDirection = inRotation;
+
+    if (mHeadTargetDirection >= mHeadRotation)
+    {
+        mHeadRotationDirection = mHeadRotationRate;
+    }
+    else
+    {
+        mHeadRotationDirection = -mHeadRotationRate;
+    }
+}
+
+void Tank::setTurretDirection(float inRotation)
+{
     mHeadRotation = inRotation;
 }
 
@@ -266,7 +283,16 @@ void Tank::move()
     changeMovementVector();
     mPosition += mMovementVector;
 
-
+    if (abs(mHeadRotation - mHeadTargetDirection) < mHeadRotationRate)
+    {
+        mHeadRotation = mHeadTargetDirection;
+        mHeadTargetDirection = 0;
+    }
+    else
+    {
+        mHeadRotation += mHeadRotationDirection;
+        mHeadTargetDirection -= mHeadRotationRate;
+    }
 
     if (mPosition[0] < 1)
     {
