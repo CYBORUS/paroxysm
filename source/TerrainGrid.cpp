@@ -23,11 +23,14 @@ using namespace std;
 
 TerrainGrid::TerrainGrid() : mNumIndices(0)
 {
+    glGenBuffers(4, mVertexBuffers);
 }
 
 TerrainGrid::~TerrainGrid()
 {
     destroy();
+
+    glDeleteBuffers(4, mVertexBuffers);
 }
 
 void TerrainGrid::save(const char* inFile)
@@ -124,10 +127,23 @@ void TerrainGrid::create()
     mTexture = DisplayEngine::loadImage("./assets/images/green.png");
     if (!DisplayEngine::loadTexture(mTexture, mTextureIndex))
         cerr << "Error loading texture!" << endl;
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices * 3, mVertices, GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices * 3, mNormals, GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[TEXTURE_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices * 3, mTextureCoordinates, GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * numVertices, mIndices, GL_DYNAMIC_DRAW);
 }
 
 void TerrainGrid::display()
 {
+    /*
     //glPushAttrib(GL_POLYGON_BIT);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_TEXTURE_2D);
@@ -143,6 +159,25 @@ void TerrainGrid::display()
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
+    glDisable(GL_TEXTURE_2D);
+    */
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, mTextureIndex);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
+    glVertexPointer(3, GL_FLOAT, 0, 0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
+    glNormalPointer(GL_FLOAT, 0, 0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[TEXTURE_DATA]);
+    glTexCoordPointer(2, GL_FLOAT, 0, 0);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
+    glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT, 0);
+
+
     glDisable(GL_TEXTURE_2D);
 
     //displayNormals();

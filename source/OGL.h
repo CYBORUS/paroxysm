@@ -16,7 +16,9 @@
 #include <gl.h>
 #include <glu.h>
 #else
+#include "glee.h"
 #include <GL/gl.h>
+#include <GL/glext.h>
 #include <GL/glu.h>
 #endif
 

@@ -21,6 +21,7 @@
 #include "Matrix.h"
 #include "Vector3D.h"
 #include "DisplayEngine.h"
+#define GL_GLEXT_PROTOTYPES
 
 #include "OGL.h"
 
@@ -28,6 +29,11 @@
 using namespace std;
 
 #define HEIGHT_SCALE 0.5f
+
+#define VERTEX_DATA 0
+#define NORMAL_DATA 1
+#define TEXTURE_DATA 2
+#define INDEX_DATA 3
 
 class TerrainGrid
 {
@@ -62,6 +68,8 @@ class TerrainGrid
         GLsizei mNumIndices;
         Surface mTexture;
         GLuint mTextureIndex;
+
+        GLuint mVertexBuffers[4];
 };
 
 inline const Matrix<float>& TerrainGrid::getMatrix() const

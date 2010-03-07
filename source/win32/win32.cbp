@@ -62,6 +62,10 @@
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
 		<Unit filename="..\EditVertexAction.h" />
+		<Unit filename="..\GLee.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\GLee.h" />
 		<Unit filename="..\GameCamera.cpp" />
 		<Unit filename="..\GameCamera.h" />
 		<Unit filename="..\GameModule.cpp" />
@@ -85,8 +89,11 @@
 		<Unit filename="..\MapEditorModule.cpp" />
 		<Unit filename="..\MapEditorModule.h" />
 		<Unit filename="..\Matrix.h" />
+		<Unit filename="..\Model3D.cpp" />
+		<Unit filename="..\Model3D.h" />
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />
+		<Unit filename="..\OGL.h" />
 		<Unit filename="..\PlainPic.cpp" />
 		<Unit filename="..\PlainPic.h" />
 		<Unit filename="..\PlayerControl.cpp" />

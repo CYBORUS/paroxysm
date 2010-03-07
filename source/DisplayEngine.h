@@ -22,6 +22,8 @@
 #include "LogFile.h"
 
 #include <SDL.h>
+
+
 #include "OGL.h"
 typedef SDL_Surface* Surface;
 
