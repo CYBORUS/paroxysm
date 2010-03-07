@@ -18,7 +18,7 @@
 #ifndef TSPHERE_H
 #define TSPHERE_H
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 
 #include "Vector3D.h"
 

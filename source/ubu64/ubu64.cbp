@@ -84,6 +84,7 @@
 		<Unit filename="../Model3D.h" />
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
+		<Unit filename="../OGL.h" />
 		<Unit filename="../PlainPic.cpp" />
 		<Unit filename="../PlainPic.h" />
 		<Unit filename="../PlayerControl.cpp" />

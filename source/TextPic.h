@@ -22,7 +22,7 @@
 #include "Point2D.h"
 
 #include <SDL_ttf.h>
-#include <SDL_opengl.h>
+#include "OGL.h"
 
 #include <string>
 using namespace std;

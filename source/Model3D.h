@@ -18,7 +18,7 @@
 #ifndef MODEL3D_H
 #define MODEL3D_H
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 
 #include <string>
 #include <vector>

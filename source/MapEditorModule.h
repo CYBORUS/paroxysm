@@ -31,7 +31,7 @@
 #include "TextBox.h"
 #include "Label.h"
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 
 #include <cmath>
 #include <fstream>

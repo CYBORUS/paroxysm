@@ -12,7 +12,7 @@
 
 #include "Button.h"
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 
 #include <sstream>
 #include <iostream>

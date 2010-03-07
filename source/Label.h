@@ -3,7 +3,7 @@
 
 #include "Widget.h"
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 #include "TextLayer.h"
 #include "TextPic.h"
 #include "Vector3D.h"

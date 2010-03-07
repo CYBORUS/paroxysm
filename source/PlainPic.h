@@ -21,7 +21,7 @@
 #include "Widget.h"
 #include "DisplayEngine.h"
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 
 class PlainPic : public Widget
 {

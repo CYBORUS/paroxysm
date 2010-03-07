@@ -18,7 +18,7 @@
 #ifndef SCROLLLIST_H
 #define SCROLLLIST_H
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 #include "Widget.h"
 #include "DisplayEngine.h"
 //#include "TextLayer.h"

@@ -21,7 +21,7 @@
 #include "Widget.h"
 #include "TextPic.h"
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 
 #include <string>
 using namespace std;

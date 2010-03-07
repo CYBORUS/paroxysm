@@ -22,7 +22,7 @@
 #include "LogFile.h"
 
 #include <SDL.h>
-#include <SDL_opengl.h>
+#include "OGL.h"
 typedef SDL_Surface* Surface;
 
 #include <iostream>

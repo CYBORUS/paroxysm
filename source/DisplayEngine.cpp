@@ -19,7 +19,7 @@
 #include "Module.h"
 #include "Config.h"
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 

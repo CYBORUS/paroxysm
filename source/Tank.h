@@ -1,7 +1,7 @@
 #ifndef TANK_H
 #define TANK_H
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 
 #include "Vector3D.h"
 #include "TerrainGrid.h"

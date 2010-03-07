@@ -18,7 +18,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <SDL_opengl.h>
+#include "OGL.h"
 #include "Widget.h"
 #include "SoundEngine.h"
 
