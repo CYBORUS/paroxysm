@@ -23,14 +23,14 @@ using namespace std;
 
 TerrainGrid::TerrainGrid() : mNumIndices(0)
 {
-    glGenBuffers(4, mVertexBuffers);
+    //glGenBuffers(4, mVertexBuffers);
 }
 
 TerrainGrid::~TerrainGrid()
 {
     destroy();
 
-    glDeleteBuffers(4, mVertexBuffers);
+    //glDeleteBuffers(4, mVertexBuffers);
 }
 
 void TerrainGrid::save(const char* inFile)
@@ -127,7 +127,7 @@ void TerrainGrid::create()
     mTexture = DisplayEngine::loadImage("./assets/images/green.png");
     if (!DisplayEngine::loadTexture(mTexture, mTextureIndex))
         cerr << "Error loading texture!" << endl;
-
+/*
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices * 3, mVertices, GL_DYNAMIC_DRAW);
 
@@ -139,13 +139,15 @@ void TerrainGrid::create()
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * numVertices, mIndices, GL_DYNAMIC_DRAW);
+    */
 }
 
 void TerrainGrid::display()
 {
-    /*
+
     //glPushAttrib(GL_POLYGON_BIT);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
     glEnable(GL_TEXTURE_2D);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
@@ -156,11 +158,17 @@ void TerrainGrid::display()
     glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordinates);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
         mIndices);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
+    //glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    //glDisableClientState(GL_NORMAL_ARRAY);
+    //glDisableClientState(GL_VERTEX_ARRAY);
     glDisable(GL_TEXTURE_2D);
-    */
+    glPopClientAttrib();
+
+/*
+    glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mTextureIndex);
@@ -179,7 +187,8 @@ void TerrainGrid::display()
 
 
     glDisable(GL_TEXTURE_2D);
-
+    glPopClientAttrib();
+*/
     //displayNormals();
     //glPopAttrib();
 }
