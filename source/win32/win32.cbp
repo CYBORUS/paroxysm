@@ -44,6 +44,7 @@
 			<Add library="SDL_mixer" />
 			<Add library="SDL_ttf" />
 			<Add library="SDL" />
+			<Add library="Glee" />
 			<Add library="opengl32" />
 			<Add library="glu32" />
 			<Add library="C:\dev\MingW\lib\boost\libboost_filesystem-mgw34-mt.lib" />
@@ -62,10 +63,6 @@
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
 		<Unit filename="..\EditVertexAction.h" />
-		<Unit filename="..\GLee.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\GLee.h" />
 		<Unit filename="..\GameCamera.cpp" />
 		<Unit filename="..\GameCamera.h" />
 		<Unit filename="..\GameModule.cpp" />
