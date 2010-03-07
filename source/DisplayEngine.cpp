@@ -35,7 +35,7 @@ Surface DisplayEngine::mDisplay = NULL;
 Surface DisplayEngine::mWindowIcon = NULL;
 SDL_Rect** DisplayEngine::mModes = NULL;
 bool DisplayEngine::mMipmapping = false;
-Mask DisplayEngine::mMask;
+ColorMask DisplayEngine::mMask;
 unsigned int DisplayEngine::mFPS = 0;
 LogFile DisplayEngine::mLogFile("ogl");
 
@@ -217,6 +217,8 @@ void DisplayEngine::initialize()
     SDL_WM_SetCaption("Paroxysm version 0.1.1","Paroxysm");
 
     openGLDriverInfo(mLogFile);
+
+    //glGenBuffers(4, NULL); // test VBO
 }
 
 void DisplayEngine::cleanup()
