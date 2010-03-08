@@ -1,7 +1,25 @@
+/**
+ *  This file is part of "Paroxysm".
+ *
+ *  "Paroxysm" is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  "Paroxysm" is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "Tank.h"
 
-Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5), mHeadCenter(0.0, 0.75, 0.0),
-    mHeadSize(0.75, 0.5, 0.75), mTurretCenter(0.0, 0.0, 0.75), mTurretSize(0.25, 0.25, 0.75)
+Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5),
+    mHeadCenter(0.0, 0.75, 0.0), mHeadSize(0.75, 0.5, 0.75),
+    mTurretCenter(0.0, 0.0, 0.75), mTurretSize(0.25, 0.25, 0.75)
 {
     mTerrain = inTerrain;
     mTerrainWidth = mTerrain->getMatrix().cols();
@@ -150,7 +168,8 @@ void Tank::display()
                 }
                 glPopMatrix();
 
-                glTranslatef(mTurretCenter[0], mTurretCenter[1], mTurretCenter[2]);
+                glTranslatef(mTurretCenter[0], mTurretCenter[1],
+                    mTurretCenter[2]);
 
                 glPushMatrix();
                 {
@@ -341,16 +360,20 @@ void Tank::move()
     mTransformedFrontLeftControl[2] = mFrontLeftControl[0] * -ySin + mFrontLeftControl[2] * yCos;
     mTransformedFrontLeftControl[0] += newPosition[0];
     mTransformedFrontLeftControl[2] += newPosition[2];
-    mTransformedFrontLeftControl[1] += mTerrain->findHeight(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[2]) + mTankSize[1] / 2.0;
+    mTransformedFrontLeftControl[1]
+        += mTerrain->findHeight(mTransformedFrontLeftControl[0],
+        mTransformedFrontLeftControl[2]) + mTankSize[1] / 2.0;
     float highestControlPoint = mTransformedFrontLeftControl[1];
     float lowestControlPoint = mTransformedFrontLeftControl[1];
-
 
     mTransformedFrontRightControl[0] = mFrontRightControl[0] * yCos + mFrontRightControl[2] * ySin;
     mTransformedFrontRightControl[2] = mFrontRightControl[0] * -ySin + mFrontRightControl[2] * yCos;
     mTransformedFrontRightControl[0] += newPosition[0];
     mTransformedFrontRightControl[2] += newPosition[2];
-    mTransformedFrontRightControl[1] += mTerrain->findHeight(mTransformedFrontRightControl[0], mTransformedFrontRightControl[2]) + mTankSize[1] / 2.0;
+    mTransformedFrontRightControl[1]
+        += mTerrain->findHeight(mTransformedFrontRightControl[0],
+        mTransformedFrontRightControl[2]) + mTankSize[1] / 2.0;
+
     if (mTransformedFrontRightControl[1] > highestControlPoint)
     {
         highestControlPoint = mTransformedFrontRightControl[1];
@@ -360,11 +383,16 @@ void Tank::move()
         lowestControlPoint = mTransformedFrontRightControl[1];
     }
 
-    mTransformedBackLeftControl[0] = mBackLeftControl[0] * yCos + mBackLeftControl[2] * ySin;
-    mTransformedBackLeftControl[2] = mBackLeftControl[0] * -ySin + mBackLeftControl[2] * yCos;
+    mTransformedBackLeftControl[0] = mBackLeftControl[0] * yCos
+        + mBackLeftControl[2] * ySin;
+    mTransformedBackLeftControl[2] = mBackLeftControl[0] * -ySin
+        + mBackLeftControl[2] * yCos;
     mTransformedBackLeftControl[0] += newPosition[0];
     mTransformedBackLeftControl[2] += newPosition[2];
-    mTransformedBackLeftControl[1] += mTerrain->findHeight(mTransformedBackLeftControl[0], mTransformedBackLeftControl[2]) + mTankSize[1] / 2.0;
+    mTransformedBackLeftControl[1]
+        += mTerrain->findHeight(mTransformedBackLeftControl[0],
+        mTransformedBackLeftControl[2]) + mTankSize[1] / 2.0;
+
     if ( mTransformedBackLeftControl[1] > highestControlPoint)
     {
         highestControlPoint = mTransformedBackLeftControl[1];
@@ -378,8 +406,11 @@ void Tank::move()
     mTransformedBackRightControl[2] = mBackRightControl[0] * -ySin + mBackRightControl[2] * yCos;
     mTransformedBackRightControl[0] += newPosition[0];
     mTransformedBackRightControl[2] += newPosition[2];
-    mTransformedBackRightControl[1] += mTerrain->findHeight(mTransformedBackRightControl[0], mTransformedBackRightControl[2]) + mTankSize[1] / 2.0;
-    if ( mTransformedBackRightControl[1] > highestControlPoint)
+    mTransformedBackRightControl[1]
+        += mTerrain->findHeight(mTransformedBackRightControl[0],
+        mTransformedBackRightControl[2]) + mTankSize[1] / 2.0;
+
+    if (mTransformedBackRightControl[1] > highestControlPoint)
     {
         highestControlPoint = mTransformedBackRightControl[1];
     }
@@ -391,18 +422,19 @@ void Tank::move()
     //use the transformed control points to determine what angle the tank should sit at
     float zFront = atan((mTransformedFrontLeftControl[1] - mTransformedFrontRightControl[1]) / mTankSize[0]);
     float zBack = atan((mTransformedBackLeftControl[1] - mTransformedBackRightControl[1]) / mTankSize[0]);
-    mRotation[2] = (abs(zFront) > abs(zBack)) ? TO_DEGREES(zFront) : TO_DEGREES(zBack);
+    mRotation[2] = (abs(zFront) > abs(zBack)) ? TO_DEGREES(zFront)
+        : TO_DEGREES(zBack);
 
     float xLeft = atan(( mTransformedBackLeftControl[1] - mTransformedFrontLeftControl[1]) / mTankSize[0]);
     float xRight = atan(( mTransformedBackRightControl[1] - mTransformedFrontRightControl[1]) / mTankSize[0]);
-    mRotation[0] = (abs(xLeft) > abs(xRight)) ? TO_DEGREES(xLeft) : TO_DEGREES(xRight);
+    mRotation[0] = (abs(xLeft) > abs(xRight)) ? TO_DEGREES(xLeft)
+        : TO_DEGREES(xRight);
     //cerr << "mRotation: " << mRotation << endl;
 
     //set the position to the highest of the four control points
     //mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + mTankSize.y / 2.0;
-    mPosition[1] = (highestControlPoint + lowestControlPoint) / 2.0 + mTankSize[1] / 2.0;
-
-
+    mPosition[1] = (highestControlPoint + lowestControlPoint) / 2.0
+        + mTankSize[1] / 2.0;
 
     mPosition += mMovementVector;
 
@@ -492,29 +524,43 @@ void Tank::transformControlPoints()
     float ySin = sin(TO_RADIANS(mRotation[1]));
     float yCos = cos(TO_RADIANS(mRotation[1]));
 
-    mTransformedFrontLeftControl[0] = mFrontLeftControl[0] * yCos + mFrontLeftControl[2] * ySin;
-    mTransformedFrontLeftControl[2] = mFrontLeftControl[0] * -ySin + mFrontLeftControl[2] * yCos;
+    mTransformedFrontLeftControl[0] = mFrontLeftControl[0] * yCos
+        + mFrontLeftControl[2] * ySin;
+    mTransformedFrontLeftControl[2] = mFrontLeftControl[0] * -ySin
+        + mFrontLeftControl[2] * yCos;
     mTransformedFrontLeftControl[0] += mPosition[0];
     mTransformedFrontLeftControl[2] += mPosition[2];
-    mTransformedFrontLeftControl[1] += mTerrain->findHeight(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[2]) + 0.5;
+    mTransformedFrontLeftControl[1]
+        += mTerrain->findHeight(mTransformedFrontLeftControl[0],
+        mTransformedFrontLeftControl[2]) + 0.5;
 
-    mTransformedFrontRightControl[0] = mFrontRightControl[0] * yCos + mFrontRightControl[2] * ySin;
-    mTransformedFrontRightControl[2] = mFrontRightControl[0] * -ySin + mFrontRightControl[2] * yCos;
+    mTransformedFrontRightControl[0] = mFrontRightControl[0] * yCos
+        + mFrontRightControl[2] * ySin;
+    mTransformedFrontRightControl[2] = mFrontRightControl[0] * -ySin
+        + mFrontRightControl[2] * yCos;
     mTransformedFrontRightControl[0] += mPosition[0];
     mTransformedFrontRightControl[2] += mPosition[2];
-    mTransformedFrontRightControl[1] += mTerrain->findHeight(mTransformedFrontRightControl[0], mTransformedFrontRightControl[2]) + 0.5;
+    mTransformedFrontRightControl[1]
+        += mTerrain->findHeight(mTransformedFrontRightControl[0],
+        mTransformedFrontRightControl[2]) + 0.5;
 
-    mTransformedBackLeftControl[0] = mBackLeftControl[0] * yCos + mBackLeftControl[2] * ySin;
-    mTransformedBackLeftControl[2] = mBackLeftControl[0] * -ySin + mBackLeftControl[2] * yCos;
+    mTransformedBackLeftControl[0] = mBackLeftControl[0] * yCos
+        + mBackLeftControl[2] * ySin;
+    mTransformedBackLeftControl[2] = mBackLeftControl[0] * -ySin
+        + mBackLeftControl[2] * yCos;
     mTransformedBackLeftControl[0] += mPosition[0];
     mTransformedBackLeftControl[2] += mPosition[2];
-    mTransformedBackLeftControl[1] += mTerrain->findHeight(mTransformedBackLeftControl[0], mTransformedBackLeftControl[2]) + 0.5;
+    mTransformedBackLeftControl[1]
+        += mTerrain->findHeight(mTransformedBackLeftControl[0],
+        mTransformedBackLeftControl[2]) + 0.5;
 
-    mTransformedBackRightControl[0] = mBackRightControl[0] * yCos + mBackRightControl[2] * ySin;
-    mTransformedBackRightControl[2] = mBackRightControl[0] * -ySin + mBackRightControl[2] * yCos;
+    mTransformedBackRightControl[0] = mBackRightControl[0] * yCos
+        + mBackRightControl[2] * ySin;
+    mTransformedBackRightControl[2] = mBackRightControl[0] * -ySin
+        + mBackRightControl[2] * yCos;
     mTransformedBackRightControl[0] += mPosition[0];
     mTransformedBackRightControl[2] += mPosition[2];
-    mTransformedBackRightControl[1] += mTerrain->findHeight(mTransformedBackRightControl[0], mTransformedBackRightControl[2]) + 0.5;
-
-
+    mTransformedBackRightControl[1]
+        += mTerrain->findHeight(mTransformedBackRightControl[0],
+        mTransformedBackRightControl[2]) + 0.5;
 }
