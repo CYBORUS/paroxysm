@@ -125,7 +125,7 @@ void DisplayEngine::initialize()
 {
     putenv((char*)"SDL_VIDEO_CENTERED=1");
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
     {
         cerr << "error on SDL_Init" << endl;
         exit(1);
@@ -162,12 +162,134 @@ void DisplayEngine::initialize()
             cout << "  " << mModes[i]->w << " x " << mModes[i]->h << endl;
     }
 
-    cerr << "SDL_GL_ACCELERATED_VISUAL -- "
-        << SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1) << endl;
-    cerr << "SDL_GL_DOUBLEBUFFER -- "
-        << SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1) << endl;
-    //cerr << "SDL_GL_DEPTH_SIZE -- "
-        //<< SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16) << endl;
+    stringstream logStream;
+
+    int setting;
+    /**
+     *  All of the SDL OpenGL settings need to be changed from outside the
+     *  program. Difficulties with ATI graphics cards seem to result from
+     *  improper settings here. This is will allow anyone to tweak settings
+     *  appropriately. If the setting file specifies a negative value, its
+     *  respective setting is not even set.
+     *
+     *  The attributes are all listed at
+     *  http://www.libsdl.org/cgi/docwiki.cgi/SDL_GLattr
+     */
+
+    logStream << "setting SDL OpenGL settings (0 indicates success)" << endl
+        << endl;
+
+    setting = Config::get<int>("SDL_GL_RED_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_RED_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_RED_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_GREEN_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_GREEN_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_BLUE_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_BLUE_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_ALPHA_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_ALPHA_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_BUFFER_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_BUFFER_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_DOUBLEBUFFER", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_DOUBLEBUFFER -- "
+            << SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_DEPTH_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_DEPTH_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_STENCIL_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_STENCIL_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_ACCUM_RED_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_ACCUM_RED_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_ACCUM_GREEN_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_ACCUM_GREEN_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_ACCUM_BLUE_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_ACCUM_BLUE_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_ACCUM_ALPHA_SIZE", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_ACCUM_ALPHA_SIZE -- "
+            << SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_STEREO", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_STEREO -- "
+            << SDL_GL_SetAttribute(SDL_GL_STEREO, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_MULTISAMPLEBUFFERS", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_MULTISAMPLEBUFFERS -- "
+            << SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_MULTISAMPLESAMPLES", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_MULTISAMPLESAMPLES -- "
+            << SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, setting) << endl;
+    }
+
+    setting = Config::get<int>("SDL_GL_ACCELERATED_VISUAL", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_ACCELERATED_VISUAL -- "
+            << SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, setting) << endl;
+    }
 
     int width = Config::get<int>("display width", 800);
     int height = Config::get<int>("display height", 600);
@@ -195,7 +317,45 @@ void DisplayEngine::initialize()
     if (Config::get<int>("full screen", 0) == 1) flags |= SDL_FULLSCREEN;
 
     mDisplay = SDL_SetVideoMode(width, height,
-        Config::get<int>("bits per pixel", 32), flags);
+        Config::get<int>("bits per pixel", 24), flags);
+
+    logStream << endl << "current SDL OpenGL settings" << endl << endl;
+
+    int value;
+
+    SDL_GL_GetAttribute(SDL_GL_RED_SIZE, &value);
+    logStream << "SDL_GL_RED_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_GREEN_SIZE, &value);
+    logStream << "SDL_GL_GREEN_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_BLUE_SIZE, &value);
+    logStream << "SDL_GL_BLUE_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_ALPHA_SIZE, &value);
+    logStream << "SDL_GL_ALPHA_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_BUFFER_SIZE, &value);
+    logStream << "SDL_GL_BUFFER_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &value);
+    logStream << "SDL_GL_DOUBLEBUFFER : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &value);
+    logStream << "SDL_GL_DEPTH_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &value);
+    logStream << "SDL_GL_STENCIL_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_ACCUM_RED_SIZE, &value);
+    logStream << "SDL_GL_ACCUM_RED_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_ACCUM_GREEN_SIZE, &value);
+    logStream << "SDL_GL_ACCUM_GREEN_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_ACCUM_BLUE_SIZE, &value);
+    logStream << "SDL_GL_ACCUM_BLUE_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, &value);
+    logStream << "SDL_GL_ACCUM_ALPHA_SIZE : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_STEREO, &value);
+    logStream << "SDL_GL_STEREO : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_MULTISAMPLEBUFFERS, &value);
+    logStream << "SDL_GL_MULTISAMPLEBUFFERS : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &value);
+    logStream << "SDL_GL_MULTISAMPLESAMPLES : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_ACCELERATED_VISUAL, &value);
+    logStream << "SDL_GL_ACCELERATED_VISUAL : " << value << endl;
+    mLogFile.addLine(logStream.str());
 
     #ifndef __APPLE__
     // OSX does not support window icons
@@ -217,8 +377,6 @@ void DisplayEngine::initialize()
     SDL_WM_SetCaption("Paroxysm version 0.1.1","Paroxysm");
 
     openGLDriverInfo(mLogFile);
-
-    //glGenBuffers(4, NULL); // test VBO
 }
 
 void DisplayEngine::cleanup()
@@ -451,6 +609,8 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
     inStream << "Vendor: " << (char*)glGetString(GL_VENDOR) << endl;
     inStream << "Renderer: " << (char*)glGetString(GL_RENDERER) << endl;
     inStream << "OpenGL Version: " << (char*)glGetString(GL_VERSION) << endl;
+    inStream << "\n---[ EXTENSIONS ]---" << endl;
+
     string stuff = (char*)glGetString(GL_EXTENSIONS);
 
     for (unsigned int i = 0; i < stuff.length(); ++i)
@@ -467,6 +627,7 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
             i = stuff.length();
         }
     }
+    inStream << endl;
 }
 
 int DisplayEngine::processKey(SDLKey inSym, SDLMod inMod)
