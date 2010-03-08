@@ -34,7 +34,7 @@ using namespace std;
 #define FRAME_LENGTH (1000 / ENGINE_FPS)
 #define FIELD_OF_VIEW 30.0
 #define NEAR_CP 1.0
-#define FAR_CP 100.0
+#define FAR_CP 10000.0
 
 struct ColorMask
 {

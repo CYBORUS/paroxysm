@@ -66,6 +66,7 @@ class TerrainGrid
         GLfloat* mTextureCoordinates;
         GLuint* mIndices;
         GLsizei mNumIndices;
+        GLuint mNumVerticesX3;
         Surface mTexture;
         GLuint mTextureIndex;
 
