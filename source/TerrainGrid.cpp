@@ -129,17 +129,16 @@ void TerrainGrid::create()
         cerr << "Error loading texture!" << endl;
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices * 3, mVertices, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices, mVertices, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices * 3, mNormals, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices, mNormals, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[TEXTURE_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices * 3, mTextureCoordinates, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVertices / 3 * 2, mTextureCoordinates, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * numVertices * 3, mIndices, GL_DYNAMIC_DRAW);
-
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, mIndices, GL_DYNAMIC_DRAW);
 }
 
 void TerrainGrid::display()
@@ -165,12 +164,13 @@ void TerrainGrid::display()
     glPopClientAttrib();
 */
 
-    glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
+
+    glEnable(GL_TEXTURE_2D);
+    glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mTextureIndex);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
@@ -185,9 +185,9 @@ void TerrainGrid::display()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT, 0);
 
+    glPopClientAttrib();
 
     glDisable(GL_TEXTURE_2D);
-    glPopClientAttrib();
 
     //displayNormals();
     //glPopAttrib();
