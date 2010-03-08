@@ -251,8 +251,8 @@ void GameModule::onLoop()
         mSceneChanged = false;
     }
 
-    //mTerrain.display();
-    glCallList(mTerrainDisplay);
+    mTerrain.display();
+    //glCallList(mTerrainDisplay);
 /*
     glPushAttrib(GL_LIGHTING_BIT);
     glDisable(GL_LIGHTING);
