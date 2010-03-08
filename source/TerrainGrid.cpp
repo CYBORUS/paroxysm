@@ -231,11 +231,27 @@ void TerrainGrid::set(int inRow, int inCol, float inHeight, bool inFindNormal)
 {
     mHeights(inRow, inCol) = inHeight;
 
+    //glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
+    //GLfloat* vertex = (GLfloat*)glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
+    GLfloat vertex[3];
+    if (vertex == NULL)
+    {
+        cerr << "error: " << gluErrorString(glGetError()) << endl;
+    }
+
     int k = mHeights.toIndex(inRow, inCol) * 3;
+
+
     mVertices[k] = static_cast<GLfloat>(inCol);
     mVertices[k + 1] = inHeight;
     mVertices[k + 2] = static_cast<GLfloat>(inRow);
 
+
+    vertex[0] = static_cast<GLfloat>(inCol);
+    vertex[1] = inHeight;
+    vertex[2] = static_cast<GLfloat>(inRow);
+
+    glUnmapBuffer(GL_ARRAY_BUFFER);
     if (inFindNormal)
     {
         findNormal(inRow, inCol);
@@ -279,13 +295,15 @@ void TerrainGrid::set(int inRow, int inCol, float inHeight, bool inFindNormal)
         {
             findNormal(inRow, inCol + 1);
         }
+
+        glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
+        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * k, sizeof(GLfloat) * 3, vertex);
+
+        //glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
+        //glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mNormals, GL_DYNAMIC_DRAW);
+
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mVertices, GL_DYNAMIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mNormals, GL_DYNAMIC_DRAW);
 }
 
 void TerrainGrid::findNormal(int inRow, int inCol)
