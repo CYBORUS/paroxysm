@@ -76,7 +76,6 @@ class GameModule : public Module
         GameCamera mCamera;
 
         TerrainGrid mTerrain;
-        GLuint mTerrainDisplay;
 
         Matrix<GLdouble> mModelView;
         Vector3D<GLint> mViewport;

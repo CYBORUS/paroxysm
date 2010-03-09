@@ -116,7 +116,6 @@ GameModule::GameModule(const char* inMapFile)
 
     addTank(PLAYER_TANK);
     addTank(ROBOT_TANK);
-
 }
 
 GameModule::~GameModule()
@@ -161,27 +160,6 @@ bool GameModule::onLoad()
     mFPSLabel->setSize(3.0f, 1.0f);
 
     mHUD.addWidget(mFPSLabel);
-
-    mTerrainDisplay = glGenLists(1);
-
-    glNewList(mTerrainDisplay, GL_COMPILE);
-    {
-        mTerrain.display();
-
-        glPushAttrib(GL_LIGHTING_BIT);
-        glDisable(GL_LIGHTING);
-        glBegin(GL_LINES);
-        {
-            glVertex3f(0.0f, 0.0f, 0.0f);
-            glVertex3f(0.0f, 10.0f, 0.0f);
-        }
-        glEnd();
-        glPopAttrib();
-
-
-    }
-    glEndList();
-
 
     return true;
 }
@@ -252,7 +230,6 @@ void GameModule::onLoop()
     }
 
     mTerrain.display();
-    //glCallList(mTerrainDisplay);
 
     glPushAttrib(GL_LIGHTING_BIT);
     glDisable(GL_LIGHTING);
