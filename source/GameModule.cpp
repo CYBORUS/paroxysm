@@ -98,7 +98,10 @@ GameModule::GameModule(const char* inMapFile)
 {
     string inFile = "assets/maps/";
     inFile += inMapFile;
-    ifstream input(inFile.c_str());
+
+    ifstream input;
+    input.clear();
+    input.open(inFile.c_str());
 
     if (!input.fail())
     {
@@ -110,7 +113,15 @@ GameModule::GameModule(const char* inMapFile)
     }
     else
     {
-        cerr << "failed to open file." << endl;
+        if ((input.rdstate() & ifstream::failbit) != 0)
+        {
+            cerr << "error opening file: " << inMapFile << endl;
+        }
+        else
+        {
+            cerr << "badbit flipped." << endl;
+        }
+        //cerr << "failed to open file: " << inMapFile << endl;
         exit(3);
     }
 
@@ -192,7 +203,7 @@ void GameModule::onInit()
 
 
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
 

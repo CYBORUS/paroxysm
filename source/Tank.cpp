@@ -171,15 +171,15 @@ void Tank::display()
             glScalef(mTankSize[0], mTankSize[1], mTankSize[2]);
 
 /*
-    glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-    glEnableClientState(GL_VERTEX_ARRAY);
+            glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+            glEnableClientState(GL_VERTEX_ARRAY);
 
             glVertexPointer(3, GL_FLOAT, 0, mBaseRect);
             //glNormalPointer(GL_FLOAT, 0, mBaseRectNormals);
             //glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordinates);
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
                 mBaseRectIndices);
-    glPopClientAttrib();
+            glPopClientAttrib();
 */
 
             //glBindTexture(GL_TEXTURE_2D, mTextureIndex);

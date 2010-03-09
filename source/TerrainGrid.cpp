@@ -167,6 +167,8 @@ void TerrainGrid::display()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT, 0);
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glPopClientAttrib();
 
     glDisable(GL_TEXTURE_2D);
