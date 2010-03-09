@@ -515,13 +515,25 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
-        0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
     if (mMipmapping)
     {
-        glGenerateMipmap(GL_TEXTURE_2D);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+        if (!GLEE_ARB_framebuffer_object && !GLEE_EXT_framebuffer_object)
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+        }
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
+        0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
+
+    if (mMipmapping && (GLEE_ARB_framebuffer_object || GLEE_EXT_framebuffer_object))
+    {
+        cerr << "generating mipmaps" << endl;
+        glGenerateMipmap(GL_TEXTURE_2D);
+            //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     }
 
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
