@@ -58,7 +58,7 @@ void TextPic::setText(const char* inText)
 {
     if (mText == inText) return;
     mText = inText;
-    mText += ' ';
+    if (mText.length() < 1) mText = ' ';
     render();
 }
 
@@ -66,7 +66,7 @@ void TextPic::setText(const string& inText)
 {
     if (mText == inText) return;
     mText = inText;
-    mText += ' ';
+    if (mText.length() < 1) mText = ' ';
     render();
 }
 

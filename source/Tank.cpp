@@ -157,7 +157,7 @@ void Tank::display()
     //glEnableClientState(GL_NORMAL_ARRAY);
     //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    float a = 0.5;
+    //float a = 0.5;
     glPushMatrix();
     {
         //glDisable(GL_COLOR_MATERIAL);

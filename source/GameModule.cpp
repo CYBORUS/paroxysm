@@ -115,7 +115,7 @@ GameModule::GameModule(const char* inMapFile)
     {
         if ((input.rdstate() & ifstream::failbit) != 0)
         {
-            cerr << "error opening file: " << inMapFile << endl;
+            cerr << "error opening file: " << inFile << endl;
         }
         else
         {
