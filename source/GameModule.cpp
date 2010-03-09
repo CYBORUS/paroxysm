@@ -263,7 +263,7 @@ void GameModule::onLoop()
     }
     glEnd();
     glPopAttrib();
-
+/*
     glPushAttrib(GL_LIGHTING_BIT);
     {
         glPushAttrib(GL_POLYGON_BIT);
@@ -272,15 +272,17 @@ void GameModule::onLoop()
             //glEnable(GL_LIGHTING);
             glDisable(GL_LIGHTING);
 
-
+*/
             for (unsigned int i = 0; i < mTanks.size(); ++i)
             {
                 mTanks[i]->display();
             }
+            /*
         }
         glPopAttrib();
     }
     glPopAttrib();
+    */
 
     glPopMatrix();
 

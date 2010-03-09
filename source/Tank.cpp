@@ -47,21 +47,21 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5),
     mBackRightControl.set(0 - 0.75f, -0.5f, 0 - 0.75f);
 
     mSphere.setScale(0.1, 0.1, 0.1);
-/*
+
     glGenBuffers(4, mBody);
     glGenBuffers(4, mHead);
     glGenBuffers(4, mTurret);
 
 
     float a = 0.5;
-    GLfloat baseRect[24] = {-a, a, a, //0
-                            a, a, a, //3
-                            a, a, -a, //6
-                            -a, a, -a, //9
-                            -a, -a, a, //12
-                            a, -a, a, //15
-                            a, -a, -a, //18
-                            -a, -a, -a}; //21
+    GLfloat baseRect[24] = {-a, a, a, //0 0
+                            a, a, a, //1 3
+                            a, a, -a, //2 6
+                            -a, a, -a, //3 9
+                            -a, -a, a, //4 12
+                            a, -a, a, //5 15
+                            a, -a, -a, //6 18
+                            -a, -a, -a}; //7 21
 
     //mBaseRect = new GLfloat[24];
 
@@ -92,12 +92,12 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5),
 
     mNumIndices = 24;
 
-    GLuint indices[24] = {12, 15, 3, 0,
-                         15, 18, 6, 3,
-                         18, 21, 9, 6,
-                         21, 12, 0, 9,
-                         0, 3, 6, 9,
-                         12, 21, 18, 15};
+    GLuint indices[24] = {4, 5, 1, 0,
+                         5, 6, 2, 1,
+                         6, 7, 3, 2,
+                         7, 4, 0, 3,
+                         0, 1, 2, 3,
+                         4, 7, 6, 5};
 
     //mBaseRectIndices = new GLuint[mNumIndices];
 
@@ -105,6 +105,7 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5),
     {
         mBaseRectIndices[i] = indices[i];
     }
+
 
 
     glBindBuffer(GL_ARRAY_BUFFER, mBody[VERTEX_DATA]);
@@ -142,7 +143,7 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5),
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTurret[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
-*/
+
 }
 
 Tank::~Tank()
@@ -153,8 +154,6 @@ Tank::~Tank()
 
 void Tank::display()
 {
-    //glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-    //glEnableClientState(GL_VERTEX_ARRAY);
     //glEnableClientState(GL_NORMAL_ARRAY);
     //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -170,15 +169,27 @@ void Tank::display()
         glPushMatrix();
         {
             glScalef(mTankSize[0], mTankSize[1], mTankSize[2]);
+
 /*
+    glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+    glEnableClientState(GL_VERTEX_ARRAY);
+
             glVertexPointer(3, GL_FLOAT, 0, mBaseRect);
-            glNormalPointer(GL_FLOAT, 0, mBaseRectNormals);
+            //glNormalPointer(GL_FLOAT, 0, mBaseRectNormals);
             //glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordinates);
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
                 mBaseRectIndices);
+    glPopClientAttrib();
 */
-/*
+
             //glBindTexture(GL_TEXTURE_2D, mTextureIndex);
+            glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glEnableClientState(GL_NORMAL_ARRAY);
+
+
+
+            glVertexPointer(3, GL_FLOAT, 0, mBaseRect);
 
             glBindBuffer(GL_ARRAY_BUFFER, mBody[VERTEX_DATA]);
             glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -191,9 +202,10 @@ void Tank::display()
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBody[INDEX_DATA]);
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-*/
 
 
+
+/*
             glBegin(GL_QUADS);
             {
                 glNormal3f(0.0f, 0.0f, 1.0f);
@@ -233,6 +245,7 @@ void Tank::display()
                 glVertex3f(a, -a, a);
             }
             glEnd();
+*/
         }
         glPopMatrix();
 
@@ -246,7 +259,7 @@ void Tank::display()
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
                 mBaseRectIndices);
 */
-/*
+
             glBindBuffer(GL_ARRAY_BUFFER, mHead[VERTEX_DATA]);
             glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -258,9 +271,9 @@ void Tank::display()
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mHead[INDEX_DATA]);
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-*/
 
 
+/*
             glBegin(GL_QUADS);
             {
                 glNormal3f(0.0f, 0.0f, 1.0f);
@@ -280,10 +293,7 @@ void Tank::display()
                 glVertex3f(-a, -a, -a);
                 glVertex3f(-a, a, -a);
                 glVertex3f(a, a, -a);
-/*
-                glTranslatef(mTurretCenter[0], mTurretCenter[1],
-                    mTurretCenter[2]);
-*/
+
                 glNormal3f(-1.0f, 0.0f, 0.0f);
                 glVertex3f(-a, -a, -a);
                 glVertex3f(-a, -a, a);
@@ -303,6 +313,7 @@ void Tank::display()
                 glVertex3f(a, -a, a);
             }
             glEnd();
+*/
         }
         glPopMatrix();
 
@@ -315,7 +326,7 @@ void Tank::display()
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
                 mBaseRectIndices);
 */
-/*
+
             glBindBuffer(GL_ARRAY_BUFFER, mTurret[VERTEX_DATA]);
             glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -327,9 +338,9 @@ void Tank::display()
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTurret[INDEX_DATA]);
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-*/
 
 
+/*
             glBegin(GL_QUADS);
             {
                 glNormal3f(0.0f, 0.0f, 1.0f);
@@ -369,12 +380,13 @@ void Tank::display()
                 glVertex3f(a, -a, a);
             }
             glEnd();
+*/
+            glPopClientAttrib();
         }
         glPopMatrix();
     }
     glPopMatrix();
 
-    //glPopClientAttrib();
 
 /*
             mSphere.moveSphere(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
