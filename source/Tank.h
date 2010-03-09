@@ -20,6 +20,7 @@
 
 #include "OGL.h"
 
+#include "Entity.h"
 #include "Vector3D.h"
 #include "TerrainGrid.h"
 #include "Matrix.h"
@@ -31,7 +32,7 @@
 #include <cstdlib>
 using namespace std;
 
-class Tank
+class Tank : public Entity
 {
     public:
         Tank(TerrainGrid* inTerrain);

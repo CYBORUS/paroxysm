@@ -92,6 +92,7 @@ int GameModule::luaGetHeight(lua_State* inState)
 
     lua_pushnumber(inState, outSuccess);
     return 1;
+
 }
 
 GameModule::GameModule(const char* inMapFile)
