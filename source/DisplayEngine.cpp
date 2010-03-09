@@ -485,7 +485,6 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
         outSuccess = false;
     }
 
-    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
     GLint nOfColors = inSurface->format->BytesPerPixel;
@@ -526,9 +525,6 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     }
 
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glDisable(GL_TEXTURE_2D);
-
 
     printErrors("Post-texture errors:\n", mLogFile);
 
