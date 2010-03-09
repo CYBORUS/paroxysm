@@ -63,7 +63,7 @@ class TerrainGrid
         Matrix<float> mHeights;
         GLfloat* mVertices;
         GLfloat* mNormals;
-        GLfloat* mTextureCoordinates;
+        GLint* mTextureCoordinates;
         GLuint* mIndices;
         GLsizei mNumIndices;
         GLuint mNumVerticesX3;

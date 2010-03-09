@@ -69,7 +69,7 @@ void TerrainGrid::create()
     destroy();
 
     mNumIndices = (mHeights.rows() - 1) * (mHeights.cols() - 1) * 6;
-    mTextureCoordinates = new GLfloat[mHeights.size() * 2];
+    mTextureCoordinates = new GLint[mHeights.size() * 2];
     mIndices = new GLuint[mNumIndices];
 
     int t = 0;
@@ -124,7 +124,7 @@ void TerrainGrid::create()
         GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[TEXTURE_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3 / 3 * 2,
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * mNumVerticesX3 / 3 * 2,
         mTextureCoordinates, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
@@ -162,7 +162,7 @@ void TerrainGrid::display()
     glNormalPointer(GL_FLOAT, 0, 0);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[TEXTURE_DATA]);
-    glTexCoordPointer(2, GL_FLOAT, 0, 0);
+    glTexCoordPointer(2, GL_INT, 0, 0);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
     glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT, 0);
