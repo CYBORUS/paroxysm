@@ -57,12 +57,13 @@ Model3D::Model3D(const char* inFile)
         }
         else if (key == "vn")
         {
-            for (int i = 0; i < 3; ++i)
-            {
-                GLfloat p;
-                ss >> p;
-                mNormals.push_back(p);
-            }
+            Vector3D<GLfloat> v;
+
+            for (int i = 0; i < 3; ++i) ss >> v[i];
+
+            v.normalize();
+
+            for (int i = 0; i < 3; ++i) mNormals.push_back(v[i]);
         }
         else if (key == "vt")
         {
@@ -75,10 +76,10 @@ Model3D::Model3D(const char* inFile)
         }
         else if (key == "f")
         {
-            Vector3D<float> v;
+            Vector3D<GLfloat> v;
 
             int i; // keep the count outside the for loop
-            for (i = 0; !ss.fail() && !ss.eof(); ++i)
+            for (i = 0; i < 4 && !ss.fail() && !ss.eof(); ++i)
             {
                 ss >> v[i];
             }

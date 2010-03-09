@@ -114,17 +114,22 @@ void TerrainGrid::create()
             mTextureCoordinates[k + 1] = i % 2;
         }
     }
+
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mVertices, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mVertices,
+        GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mNormals, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mNormals,
+        GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[TEXTURE_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3 / 3 * 2, mTextureCoordinates, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3 / 3 * 2,
+        mTextureCoordinates, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, mIndices, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices,
+        mIndices, GL_DYNAMIC_DRAW);
 
     for (int i = 0; i < mHeights.rows(); ++i)
     {
@@ -142,28 +147,6 @@ void TerrainGrid::create()
 
 void TerrainGrid::display()
 {
-/*
-    //glPushAttrib(GL_POLYGON_BIT);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
-    glEnable(GL_TEXTURE_2D);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glBindTexture(GL_TEXTURE_2D, mTextureIndex);
-    glVertexPointer(3, GL_FLOAT, 0, mVertices);
-    glNormalPointer(GL_FLOAT, 0, mNormals);
-    glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordinates);
-    glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_INT,
-        mIndices);
-    //glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    //glDisableClientState(GL_NORMAL_ARRAY);
-    //glDisableClientState(GL_VERTEX_ARRAY);
-    glDisable(GL_TEXTURE_2D);
-    glPopClientAttrib();
-*/
-
-
     glEnable(GL_TEXTURE_2D);
     glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -189,7 +172,6 @@ void TerrainGrid::display()
     glDisable(GL_TEXTURE_2D);
 
     //displayNormals();
-    //glPopAttrib();
 }
 
 void TerrainGrid::displayNormals()
@@ -231,7 +213,7 @@ void TerrainGrid::set(int inRow, int inCol, float inHeight, bool inFindNormal)
     mHeights(inRow, inCol) = inHeight;
 
     GLfloat vertex[3];
-    GLfloat vertexNormal[3];
+    //GLfloat vertexNormal[3];
 
     int k = mHeights.toIndex(inRow, inCol) * 3;
 
