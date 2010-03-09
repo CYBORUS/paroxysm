@@ -34,7 +34,7 @@
 Surface DisplayEngine::mDisplay = NULL;
 Surface DisplayEngine::mWindowIcon = NULL;
 SDL_Rect** DisplayEngine::mModes = NULL;
-bool DisplayEngine::mMipmapping = false;
+int DisplayEngine::mMipmapping = 0;
 ColorMask DisplayEngine::mMask;
 unsigned int DisplayEngine::mFPS = 0;
 LogFile DisplayEngine::mLogFile("ogl");
@@ -294,7 +294,7 @@ void DisplayEngine::initialize()
     int width = Config::get<int>("display width", 800);
     int height = Config::get<int>("display height", 600);
 
-    mMipmapping = Config::get<bool>("mipmapping", false);
+    mMipmapping = Config::get<int>("mipmapping", 0);
 
     if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     {
@@ -516,24 +516,20 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    if (mMipmapping)
+    if (mMipmapping == 2)
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-        if (!GLEE_ARB_framebuffer_object && !GLEE_EXT_framebuffer_object)
-        {
-            glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-        }
+        glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
     }
 
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
-    if (mMipmapping && (GLEE_ARB_framebuffer_object || GLEE_EXT_framebuffer_object))
+    if (mMipmapping == 1)
     {
         cerr << "generating mipmaps" << endl;
         glGenerateMipmap(GL_TEXTURE_2D);
-            //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     }
 
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
