@@ -527,7 +527,6 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
 
     if (mMipmapping == 1)
     {
-        cerr << "generating mipmaps" << endl;
         glGenerateMipmap(GL_TEXTURE_2D);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     }
