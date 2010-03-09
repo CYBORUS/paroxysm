@@ -47,6 +47,102 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5),
     mBackRightControl.set(0 - 0.75f, -0.5f, 0 - 0.75f);
 
     mSphere.setScale(0.1, 0.1, 0.1);
+/*
+    glGenBuffers(4, mBody);
+    glGenBuffers(4, mHead);
+    glGenBuffers(4, mTurret);
+
+
+    float a = 0.5;
+    GLfloat baseRect[24] = {-a, a, a, //0
+                            a, a, a, //3
+                            a, a, -a, //6
+                            -a, a, -a, //9
+                            -a, -a, a, //12
+                            a, -a, a, //15
+                            a, -a, -a, //18
+                            -a, -a, -a}; //21
+
+    //mBaseRect = new GLfloat[24];
+
+    for (int i = 0; i < 24; ++i)
+    {
+        mBaseRect[i] = baseRect[i];
+    }
+
+    Vector3D<GLfloat> nextNormal;
+    GLfloat normals[24];
+
+    //mBaseRectNormals = new GLfloat[24];
+    for (int i = 0; i < 24; i += 3)
+    {
+        nextNormal.set(baseRect[i], baseRect[i + 1], baseRect[i + 2]);
+        nextNormal.normalize();
+        mBaseRectNormals[i] = nextNormal[0];
+        mBaseRectNormals[i + 1] = nextNormal[1];
+        mBaseRectNormals[i + 2] = nextNormal[2];
+
+        normals[i] = nextNormal[0];
+        normals[i + 1] = nextNormal[1];
+        normals[i + 2] = nextNormal[2];
+
+    }
+
+    //mBaseRectNormals = normals;
+
+    mNumIndices = 24;
+
+    GLuint indices[24] = {12, 15, 3, 0,
+                         15, 18, 6, 3,
+                         18, 21, 9, 6,
+                         21, 12, 0, 9,
+                         0, 3, 6, 9,
+                         12, 21, 18, 15};
+
+    //mBaseRectIndices = new GLuint[mNumIndices];
+
+    for (int i = 0; i < mNumIndices; ++i)
+    {
+        mBaseRectIndices[i] = indices[i];
+    }
+
+
+    glBindBuffer(GL_ARRAY_BUFFER, mBody[VERTEX_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, baseRect, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mBody[NORMAL_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, normals, GL_STATIC_DRAW);
+
+//    glBindBuffer(GL_ARRAY_BUFFER, mBody[TEXTURE_DATA]);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3 / 3 * 2, mTextureCoordinates, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBody[INDEX_DATA]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mHead[VERTEX_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, baseRect, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mHead[NORMAL_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, normals, GL_STATIC_DRAW);
+
+//    glBindBuffer(GL_ARRAY_BUFFER, mBody[TEXTURE_DATA]);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3 / 3 * 2, mTextureCoordinates, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mHead[INDEX_DATA]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mTurret[VERTEX_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, baseRect, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mTurret[NORMAL_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, normals, GL_STATIC_DRAW);
+
+//    glBindBuffer(GL_ARRAY_BUFFER, mBody[TEXTURE_DATA]);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3 / 3 * 2, mTextureCoordinates, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTurret[INDEX_DATA]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
+*/
 }
 
 Tank::~Tank()
@@ -57,166 +153,228 @@ Tank::~Tank()
 
 void Tank::display()
 {
+    //glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    //glEnableClientState(GL_NORMAL_ARRAY);
+    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
     float a = 0.5;
-    glPushAttrib(GL_LIGHTING_BIT);
+    glPushMatrix();
     {
-        glPushAttrib(GL_POLYGON_BIT);
+        //glDisable(GL_COLOR_MATERIAL);
+        glTranslatef(mPosition[0], mPosition[1], mPosition[2]);
+        glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
+        glRotatef(mRotation[0], 1.0f, 0.0f, 0.0f);
+        glRotatef(mRotation[2], 0.0f, 0.0f, 1.0f);
+
+        glPushMatrix();
         {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            //glEnable(GL_LIGHTING);
-            glDisable(GL_LIGHTING);
+            glScalef(mTankSize[0], mTankSize[1], mTankSize[2]);
+/*
+            glVertexPointer(3, GL_FLOAT, 0, mBaseRect);
+            glNormalPointer(GL_FLOAT, 0, mBaseRectNormals);
+            //glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordinates);
+            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
+                mBaseRectIndices);
+*/
+/*
+            //glBindTexture(GL_TEXTURE_2D, mTextureIndex);
 
-            glPushMatrix();
+            glBindBuffer(GL_ARRAY_BUFFER, mBody[VERTEX_DATA]);
+            glVertexPointer(3, GL_FLOAT, 0, 0);
+
+            glBindBuffer(GL_ARRAY_BUFFER, mBody[NORMAL_DATA]);
+            glNormalPointer(GL_FLOAT, 0, 0);
+
+            //glBindBuffer(GL_ARRAY_BUFFER, mBody[TEXTURE_DATA]);
+            //glTexCoordPointer(2, GL_FLOAT, 0, 0);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBody[INDEX_DATA]);
+            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
+*/
+
+
+            glBegin(GL_QUADS);
             {
-                //glDisable(GL_COLOR_MATERIAL);
-                glTranslatef(mPosition[0], mPosition[1], mPosition[2]);
-                glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
-                glRotatef(mRotation[0], 1.0f, 0.0f, 0.0f);
-                glRotatef(mRotation[2], 0.0f, 0.0f, 1.0f);
+                glNormal3f(0.0f, 0.0f, 1.0f);
+                glVertex3f(-a, -a, a);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, a, a);
+                glVertex3f(-a, a, a);
 
-                glPushMatrix();
-                {
-                    glScalef(mTankSize[0], mTankSize[1], mTankSize[2]);
+                glNormal3f(1.0f, 0.0f, 0.0f);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, -a, -a);
+                glVertex3f(a, a, -a);
+                glVertex3f(a, a, a);
 
-                    glBegin(GL_QUADS);
-                    {
-                        glNormal3f(0.0f, 0.0f, 1.0f);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(a, -a, a);
-                        glVertex3f(a, a, a);
-                        glVertex3f(-a, a, a);
+                glNormal3f(0.0f, 0.0f, -1.0f);
+                glVertex3f(a, -a, -a);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(-a, a, -a);
+                glVertex3f(a, a, -a);
 
-                        glNormal3f(1.0f, 0.0f, 0.0f);
-                        glVertex3f(a, -a, a);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(a, a, -a);
-                        glVertex3f(a, a, a);
+                glNormal3f(-1.0f, 0.0f, 0.0f);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(-a, -a, a);
+                glVertex3f(-a, a, a);
+                glVertex3f(-a, a, -a);
 
-                        glNormal3f(0.0f, 0.0f, -1.0f);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(-a, a, -a);
-                        glVertex3f(a, a, -a);
+                glNormal3f(0.0f, 1.0f, 0.0f);
+                glVertex3f(-a, a, a);
+                glVertex3f(a, a, a);
+                glVertex3f(a, a, -a);
+                glVertex3f(-a, a, -a);
 
-                        glNormal3f(-1.0f, 0.0f, 0.0f);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(-a, a, a);
-                        glVertex3f(-a, a, -a);
+                glNormal3f(0.0f, -1.0f, 0.0f);
+                glVertex3f(-a, -a, a);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(a, -a, -a);
+                glVertex3f(a, -a, a);
+            }
+            glEnd();
+        }
+        glPopMatrix();
 
-                        glNormal3f(0.0f, 1.0f, 0.0f);
-                        glVertex3f(-a, a, a);
-                        glVertex3f(a, a, a);
-                        glVertex3f(a, a, -a);
-                        glVertex3f(-a, a, -a);
+        glTranslatef(mHeadCenter[0], mHeadCenter[1], mHeadCenter[2]);
+        glRotatef(mHeadRotation - mRotation[1], 0.0f, 1.0f, 0.0f);
 
-                        glNormal3f(0.0f, -1.0f, 0.0f);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(a, -a, a);
-                    }
-                    glEnd();
-                }
-                glPopMatrix();
+        glPushMatrix();
+        {
+            glScalef(mHeadSize[0], mHeadSize[1], mHeadSize[2]);
+/*
+            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
+                mBaseRectIndices);
+*/
+/*
+            glBindBuffer(GL_ARRAY_BUFFER, mHead[VERTEX_DATA]);
+            glVertexPointer(3, GL_FLOAT, 0, 0);
 
-                glTranslatef(mHeadCenter[0], mHeadCenter[1], mHeadCenter[2]);
-                glRotatef(mHeadRotation - mRotation[1], 0.0f, 1.0f, 0.0f);
+            glBindBuffer(GL_ARRAY_BUFFER, mHead[NORMAL_DATA]);
+            glNormalPointer(GL_FLOAT, 0, 0);
 
-                glPushMatrix();
-                {
-                    glScalef(mHeadSize[0], mHeadSize[1], mHeadSize[2]);
-                    glBegin(GL_QUADS);
-                    {
-                        glNormal3f(0.0f, 0.0f, 1.0f);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(a, -a, a);
-                        glVertex3f(a, a, a);
-                        glVertex3f(-a, a, a);
+            //glBindBuffer(GL_ARRAY_BUFFER, mHead[TEXTURE_DATA]);
+            //glTexCoordPointer(2, GL_FLOAT, 0, 0);
 
-                        glNormal3f(1.0f, 0.0f, 0.0f);
-                        glVertex3f(a, -a, a);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(a, a, -a);
-                        glVertex3f(a, a, a);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mHead[INDEX_DATA]);
+            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
+*/
 
-                        glNormal3f(0.0f, 0.0f, -1.0f);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(-a, a, -a);
-                        glVertex3f(a, a, -a);
 
-                        glNormal3f(-1.0f, 0.0f, 0.0f);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(-a, a, a);
-                        glVertex3f(-a, a, -a);
+            glBegin(GL_QUADS);
+            {
+                glNormal3f(0.0f, 0.0f, 1.0f);
+                glVertex3f(-a, -a, a);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, a, a);
+                glVertex3f(-a, a, a);
 
-                        glNormal3f(0.0f, 1.0f, 0.0f);
-                        glVertex3f(-a, a, a);
-                        glVertex3f(a, a, a);
-                        glVertex3f(a, a, -a);
-                        glVertex3f(-a, a, -a);
+                glNormal3f(1.0f, 0.0f, 0.0f);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, -a, -a);
+                glVertex3f(a, a, -a);
+                glVertex3f(a, a, a);
 
-                        glNormal3f(0.0f, -1.0f, 0.0f);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(a, -a, a);
-                    }
-                    glEnd();
-                }
-                glPopMatrix();
-
+                glNormal3f(0.0f, 0.0f, -1.0f);
+                glVertex3f(a, -a, -a);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(-a, a, -a);
+                glVertex3f(a, a, -a);
+/*
                 glTranslatef(mTurretCenter[0], mTurretCenter[1],
                     mTurretCenter[2]);
+*/
+                glNormal3f(-1.0f, 0.0f, 0.0f);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(-a, -a, a);
+                glVertex3f(-a, a, a);
+                glVertex3f(-a, a, -a);
 
-                glPushMatrix();
-                {
-                    glScalef(mTurretSize[0], mTurretSize[1], mTurretSize[2]);
-                    glBegin(GL_QUADS);
-                    {
-                        glNormal3f(0.0f, 0.0f, 1.0f);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(a, -a, a);
-                        glVertex3f(a, a, a);
-                        glVertex3f(-a, a, a);
+                glNormal3f(0.0f, 1.0f, 0.0f);
+                glVertex3f(-a, a, a);
+                glVertex3f(a, a, a);
+                glVertex3f(a, a, -a);
+                glVertex3f(-a, a, -a);
 
-                        glNormal3f(1.0f, 0.0f, 0.0f);
-                        glVertex3f(a, -a, a);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(a, a, -a);
-                        glVertex3f(a, a, a);
-
-                        glNormal3f(0.0f, 0.0f, -1.0f);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(-a, a, -a);
-                        glVertex3f(a, a, -a);
-
-                        glNormal3f(-1.0f, 0.0f, 0.0f);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(-a, a, a);
-                        glVertex3f(-a, a, -a);
-
-                        glNormal3f(0.0f, 1.0f, 0.0f);
-                        glVertex3f(-a, a, a);
-                        glVertex3f(a, a, a);
-                        glVertex3f(a, a, -a);
-                        glVertex3f(-a, a, -a);
-
-                        glNormal3f(0.0f, -1.0f, 0.0f);
-                        glVertex3f(-a, -a, a);
-                        glVertex3f(-a, -a, -a);
-                        glVertex3f(a, -a, -a);
-                        glVertex3f(a, -a, a);
-                    }
-                    glEnd();
-                }
-                glPopMatrix();
+                glNormal3f(0.0f, -1.0f, 0.0f);
+                glVertex3f(-a, -a, a);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(a, -a, -a);
+                glVertex3f(a, -a, a);
             }
-            glPopMatrix();
+            glEnd();
+        }
+        glPopMatrix();
+
+        glTranslatef(mTurretCenter[0], mTurretCenter[1], mTurretCenter[2]);
+
+        glPushMatrix();
+        {
+            glScalef(mTurretSize[0], mTurretSize[1], mTurretSize[2]);
+/*
+            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
+                mBaseRectIndices);
+*/
+/*
+            glBindBuffer(GL_ARRAY_BUFFER, mTurret[VERTEX_DATA]);
+            glVertexPointer(3, GL_FLOAT, 0, 0);
+
+            glBindBuffer(GL_ARRAY_BUFFER, mTurret[NORMAL_DATA]);
+            glNormalPointer(GL_FLOAT, 0, 0);
+
+            //glBindBuffer(GL_ARRAY_BUFFER, mTurret[TEXTURE_DATA]);
+            //glTexCoordPointer(2, GL_FLOAT, 0, 0);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTurret[INDEX_DATA]);
+            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
+*/
+
+
+            glBegin(GL_QUADS);
+            {
+                glNormal3f(0.0f, 0.0f, 1.0f);
+                glVertex3f(-a, -a, a);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, a, a);
+                glVertex3f(-a, a, a);
+
+                glNormal3f(1.0f, 0.0f, 0.0f);
+                glVertex3f(a, -a, a);
+                glVertex3f(a, -a, -a);
+                glVertex3f(a, a, -a);
+                glVertex3f(a, a, a);
+
+                glNormal3f(0.0f, 0.0f, -1.0f);
+                glVertex3f(a, -a, -a);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(-a, a, -a);
+                glVertex3f(a, a, -a);
+
+                glNormal3f(-1.0f, 0.0f, 0.0f);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(-a, -a, a);
+                glVertex3f(-a, a, a);
+                glVertex3f(-a, a, -a);
+
+                glNormal3f(0.0f, 1.0f, 0.0f);
+                glVertex3f(-a, a, a);
+                glVertex3f(a, a, a);
+                glVertex3f(a, a, -a);
+                glVertex3f(-a, a, -a);
+
+                glNormal3f(0.0f, -1.0f, 0.0f);
+                glVertex3f(-a, -a, a);
+                glVertex3f(-a, -a, -a);
+                glVertex3f(a, -a, -a);
+                glVertex3f(a, -a, a);
+            }
+            glEnd();
+        }
+        glPopMatrix();
+    }
+    glPopMatrix();
+
+    //glPopClientAttrib();
 
 /*
             mSphere.moveSphere(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
@@ -247,10 +405,7 @@ void Tank::display()
             mSphere.setColor(0.0, 0.0, 1.0);
             mSphere.display();
 */
-        }
-        glPopAttrib();
-    }
-    glPopAttrib();
+
     //cerr << "transformed front left: " << mTransformedFrontLeftControl << endl;
 }
 

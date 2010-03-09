@@ -30,10 +30,6 @@ using namespace std;
 
 #define HEIGHT_SCALE 0.5f
 
-#define VERTEX_DATA 0
-#define NORMAL_DATA 1
-#define TEXTURE_DATA 2
-#define INDEX_DATA 3
 
 class TerrainGrid
 {

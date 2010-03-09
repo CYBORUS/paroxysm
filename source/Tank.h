@@ -25,6 +25,8 @@
 #include "Matrix.h"
 #include "TSphere.h"
 
+#include "DisplayEngine.h"
+
 #include <iostream>
 #include <cstdlib>
 using namespace std;
@@ -78,6 +80,16 @@ class Tank
         Matrix<float> mRotateZ;
         Matrix<float> mTranslate;
 */
+        //to hold the buffers for drawing each of the
+        //three tank parts
+        GLuint mBody[4];
+        GLuint mHead[4];
+        GLuint mTurret[4];
+
+        GLfloat mBaseRect[24];
+        GLfloat mBaseRectNormals[24];
+        GLuint mBaseRectIndices[24];
+        GLsizei mNumIndices;
 
         float mTurretAngle;
 

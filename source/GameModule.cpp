@@ -214,7 +214,7 @@ void GameModule::onInit()
 
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
 
@@ -253,7 +253,7 @@ void GameModule::onLoop()
 
     mTerrain.display();
     //glCallList(mTerrainDisplay);
-/*
+
     glPushAttrib(GL_LIGHTING_BIT);
     glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
@@ -263,11 +263,24 @@ void GameModule::onLoop()
     }
     glEnd();
     glPopAttrib();
-*/
-    for (unsigned int i = 0; i < mTanks.size(); ++i)
+
+    glPushAttrib(GL_LIGHTING_BIT);
     {
-        mTanks[i]->display();
+        glPushAttrib(GL_POLYGON_BIT);
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            //glEnable(GL_LIGHTING);
+            glDisable(GL_LIGHTING);
+
+
+            for (unsigned int i = 0; i < mTanks.size(); ++i)
+            {
+                mTanks[i]->display();
+            }
+        }
+        glPopAttrib();
     }
+    glPopAttrib();
 
     glPopMatrix();
 

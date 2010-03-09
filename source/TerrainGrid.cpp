@@ -270,6 +270,7 @@ void TerrainGrid::set(int inRow, int inCol, float inHeight, bool inFindNormal)
         vertex[1] = mVertices[k + 1];
         vertex[2] = mVertices[k + 2];
 
+        //send the new vertex data to the video card
         glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
         glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * k, sizeof(GLfloat) * 3, vertex);
     }

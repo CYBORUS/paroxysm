@@ -36,6 +36,12 @@ using namespace std;
 #define NEAR_CP 1.0
 #define FAR_CP 10000.0
 
+#define VERTEX_DATA 0
+#define NORMAL_DATA 1
+#define TEXTURE_DATA 2
+#define INDEX_DATA 3
+
+
 struct ColorMask
 {
     Uint32 red;
