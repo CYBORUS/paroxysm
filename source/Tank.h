@@ -49,7 +49,7 @@ class Tank : public Entity
 
         Vector3D<float> getControlPoint();
 
-        void move();
+        virtual void move();
 
     protected:
         void changeMovementVector();
@@ -59,8 +59,6 @@ class Tank : public Entity
         TerrainGrid* mTerrain;
         int mTerrainWidth;
         int mTerrainHeight;
-        Vector3D<float> mRotation;
-        Vector3D<float> mMovementVector;
 
         //these four points control collision with the terrain
         Vector3D<float> mFrontLeftControl;
@@ -117,4 +115,4 @@ class Tank : public Entity
         TSphere mSphere;
 };
 
-#endif // TANK_H
+#endif

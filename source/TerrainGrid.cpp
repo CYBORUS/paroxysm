@@ -16,6 +16,7 @@
  */
 
 #include "TerrainGrid.h"
+#include "Config.h"
 
 #include <vector>
 #include <fstream>
@@ -23,6 +24,7 @@ using namespace std;
 
 TerrainGrid::TerrainGrid() : mNumIndices(0)
 {
+    mFriction = Config::get<float>("friction", 0.5f);
     glGenBuffers(4, mVertexBuffers);
 }
 

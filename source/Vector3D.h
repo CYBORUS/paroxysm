@@ -21,7 +21,7 @@
 #include <cmath>
 #include "Matrix.h"
 
-#define PI 3.141592654
+#define PI 3.141592653589793238462643383
 #define PI_HALVES PI / 2.0
 #define TO_RADIANS(n) ((n) * PI / 180.0)
 #define TO_DEGREES(n) ((n) * 180.0 / PI)
@@ -39,6 +39,7 @@ class Vector3D
         void set(T inValue);
         void set(T inX, T inY, T inZ);
         T get(int inIndex) const;
+        void normalizeTo(float inLength);
         void normalize();
         const Vector3D<T> normalized() const;
         bool isZero() const;
@@ -47,9 +48,11 @@ class Vector3D
         const Vector3D<T> negated() const;
         void processMatrix(const Matrix<T>& inMatrix);
 
+        Vector3D<T>& operator=(T inValue);
         Vector3D<T>& operator=(const Vector3D<T>& inVector);
         Vector3D<T>& operator+=(const Vector3D<T>& inVector);
         Vector3D<T>& operator-=(const Vector3D<T>& inVector);
+        Vector3D<T>& operator*=(T inValue);
         const Vector3D<T> operator+(const Vector3D<T>& inVector) const;
         const Vector3D<T> operator-(const Vector3D<T>& inVector) const;
         const Vector3D<T> operator-() const;
@@ -129,6 +132,17 @@ void Vector3D<T>::set(T inX, T inY, T inZ)
 }
 
 template<class T>
+void Vector3D<T>::normalizeTo(float inLength)
+{
+    T length = sqrt((mVector[0] * mVector[0]) + (mVector[1] * mVector[1]) +
+        (mVector[2] * mVector[2]));
+    if (fabs(length) < PSEUDO_ZERO) return;
+    mVector[0] *= (inLength / length);
+    mVector[1] *= (inLength / length);
+    mVector[2] *= (inLength / length);
+}
+
+template<class T>
 void Vector3D<T>::normalize()
 {
     T length = sqrt((mVector[0] * mVector[0]) + (mVector[1] * mVector[1]) +
@@ -171,6 +185,15 @@ inline float Vector3D<T>::length() const
 }
 
 template<class T>
+Vector3D<T>& Vector3D<T>::operator=(T inValue)
+{
+    mVector[0] = inValue;
+    mVector[1] = inValue;
+    mVector[2] = inValue;
+    return *this;
+}
+
+template<class T>
 Vector3D<T>& Vector3D<T>::operator=(const Vector3D<T>& inVector)
 {
     mVector[0] = inVector.mVector[0];
@@ -195,6 +218,15 @@ Vector3D<T>& Vector3D<T>::operator-=(const Vector3D<T>& inVector)
     mVector[0] -= inVector.mVector[0];
     mVector[1] -= inVector.mVector[1];
     mVector[2] -= inVector.mVector[2];
+    return *this;
+}
+
+template<class T>
+Vector3D<T>& Vector3D<T>::operator*=(T inValue)
+{
+    mVector[0] *= inValue;
+    mVector[1] *= inValue;
+    mVector[2] *= inValue;
     return *this;
 }
 

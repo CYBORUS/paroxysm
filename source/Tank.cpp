@@ -488,10 +488,12 @@ void Tank::move()
     float ySin = sin(TO_RADIANS(mRotation[1]));
     float yCos = cos(TO_RADIANS(mRotation[1]));
 
-    mMovementVector[0] = ySin * mCurrentMoveRate;
-    mMovementVector[2] = yCos * mCurrentMoveRate;
+    Vector3D<float> driveMomentum;
 
-    Vector3D<float> newPosition = mPosition + mMovementVector;
+    driveMomentum[0] = ySin * mCurrentMoveRate;
+    driveMomentum[2] = yCos * mCurrentMoveRate;
+
+    Vector3D<float> newPosition = mPosition + driveMomentum;
 
 
     //changeMovementVector();
@@ -608,7 +610,21 @@ void Tank::move()
 
     mPreviousPosition = mPosition;
 
-    mPosition += mMovementVector;
+    float friction = mTerrain->getFriction(mPosition[0], mPosition[2]);
+
+    driveMomentum *= friction;
+    mMomentum *= (1.0f - friction);
+    if (mMomentum.isZero()) mMomentum.set(0.0f);
+
+    float magnitude = mMomentum.length();
+    mMomentum += driveMomentum;
+    if (mMomentum.length() > mCurrentMoveRate)
+    {
+        mMomentum.normalizeTo(magnitude > mCurrentMoveRate ? magnitude
+            : mCurrentMoveRate);
+    }
+
+    mPosition += mMomentum;
 
     if (mPosition[0] < 1)
     {
@@ -652,8 +668,8 @@ void Tank::changeSpeed(float inSpeed)
 
 void Tank::changeMovementVector()
 {
-    mMovementVector[0] = sin(TO_RADIANS(mRotation[1])) * mCurrentMoveRate;
-    mMovementVector[2] = cos(TO_RADIANS(mRotation[1])) * mCurrentMoveRate;
+    mMomentum[0] = sin(TO_RADIANS(mRotation[1])) * mCurrentMoveRate;
+    mMomentum[2] = cos(TO_RADIANS(mRotation[1])) * mCurrentMoveRate;
 }
 
 /*

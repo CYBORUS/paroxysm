@@ -48,6 +48,7 @@ class TerrainGrid
         const Matrix<float>& getMatrix() const;
         void findNormal(int inRow, int inCol);
         float findHeight(float inX, float inZ);
+        float getFriction(float inX, float inZ);
 
         friend istream& operator>>(istream& inStream, TerrainGrid& inGrid);
         friend ostream& operator<<(ostream& inStream,
@@ -55,6 +56,8 @@ class TerrainGrid
 
     private:
         void displayNormals();
+
+        float mFriction;
 
         Matrix<float> mHeights;
         GLfloat* mVertices;
@@ -72,6 +75,11 @@ class TerrainGrid
 inline const Matrix<float>& TerrainGrid::getMatrix() const
 {
     return mHeights;
+}
+
+inline float TerrainGrid::getFriction(float inX, float inZ)
+{
+    return mFriction;
 }
 
 #endif
