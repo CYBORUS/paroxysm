@@ -50,6 +50,8 @@ class TerrainGrid
         float findHeight(float inX, float inZ);
         float getFriction(float inX, float inZ);
 
+        void setFriction(float inFriction); // strictly for debugging
+
         friend istream& operator>>(istream& inStream, TerrainGrid& inGrid);
         friend ostream& operator<<(ostream& inStream,
             const TerrainGrid& inGrid);
@@ -80,6 +82,11 @@ inline const Matrix<float>& TerrainGrid::getMatrix() const
 inline float TerrainGrid::getFriction(float inX, float inZ)
 {
     return mFriction;
+}
+
+inline void TerrainGrid::setFriction(float inFriction)
+{
+    mFriction = inFriction;
 }
 
 #endif

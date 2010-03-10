@@ -88,7 +88,7 @@ int GameModule::luaGetHeight(lua_State* inState)
 
     if (argc < 2)
     {
-        outSuccess = 2;
+        outSuccess = 0;
     }
     else
     {
@@ -99,7 +99,25 @@ int GameModule::luaGetHeight(lua_State* inState)
 
     lua_pushnumber(inState, outSuccess);
     return 1;
+}
 
+int GameModule::luaSetFriction(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    if (argc < 1)
+    {
+        outSuccess = 0;
+    }
+    else
+    {
+        float f = lua_tonumber(inState, 1);
+        luaTG->setFriction(f);
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
 }
 
 GameModule::GameModule(const char* inMapFile)
@@ -171,6 +189,7 @@ bool GameModule::onLoad()
     mLua.addFunction("cameraPan", luaCameraPan);
     mLua.addFunction("addTank", luaAddTank);
     mLua.addFunction("getHeight", luaGetHeight);
+    mLua.addFunction("setFriction", luaSetFriction);
 
     mFPSLabel = new Label("0", FPS);
     mFPSLabel->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
