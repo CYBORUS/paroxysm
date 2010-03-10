@@ -611,6 +611,7 @@ void Tank::move()
     mPreviousPosition = mPosition;
 
     float friction = mTerrain->getFriction(mPosition[0], mPosition[2]);
+    float cmr = fabs(mCurrentMoveRate);
 
     driveMomentum *= friction;
     mMomentum *= (1.0f - friction);
@@ -618,10 +619,9 @@ void Tank::move()
 
     float magnitude = mMomentum.length();
     mMomentum += driveMomentum;
-    if (mMomentum.length() > mCurrentMoveRate)
+    if (mMomentum.length() > cmr)
     {
-        mMomentum.normalizeTo(magnitude > mCurrentMoveRate ? magnitude
-            : mCurrentMoveRate);
+        mMomentum.normalizeTo(magnitude > cmr ? magnitude : cmr);
     }
 
     mPosition += mMomentum;
