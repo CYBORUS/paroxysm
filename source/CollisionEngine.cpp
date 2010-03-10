@@ -9,8 +9,6 @@ void CollisionEngine::addEntity(Entity* inEntity)
 
 void CollisionEngine::checkCollisions()
 {
-    mCollisions.clear();
-
     for (unsigned int i = 0; i < mEntities.size() - 1; ++i)
     {
         for (unsigned int j = i + 1; j < mEntities.size(); ++j)

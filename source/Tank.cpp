@@ -160,7 +160,7 @@ void Tank::onCollision(Entity* inCollidedWith)
     {
         Tank* t = (Tank*)inCollidedWith;
         mPosition = mPreviousPosition;
-        t->mPosition = t->mPreviousPosition;
+        //t->mPosition = t->mPreviousPosition;
     }
 }
 
