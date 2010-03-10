@@ -16,6 +16,7 @@
  */
 
 #include "TSphere.h"
+#include "DisplayEngine.h"
 
 #define IX 0.525731112119133606
 #define IZ 0.850650808352039932
@@ -30,37 +31,37 @@ GLuint TSphere::mTIndices[20][3] =
      {3, 10, 7}, {10, 6, 7}, {6, 11, 7}, {6, 0, 11}, {6, 1, 0},
      {10, 1, 6}, {11, 0, 9}, {2, 11, 9}, {5, 2, 9}, {11, 2, 7}};
 
-TSphere::TSphere() : mScale(1.0, 1.0, 1.0)
+TSphere::TSphere(int inDetail) : mScale(1.0, 1.0, 1.0), mDetail(inDetail)
 {
     mFill = true;
     mColor[0].set(1.0f, 1.0f, 1.0f);
-    mDetail = 1;
 
-    mID = glGenLists(1);
+    glGenBuffers(3, mVertexBuffers);
+
     mCurrentColor = 1;
 
-    glNewList(mID, GL_COMPILE);
+    for (int i = 0; i < 20; ++i)
     {
-        //glPushAttrib(GL_CURRENT_BIT);
-        //{
-            //glColor3f(1.0f, 1.0f, 1.0f);
-            //glColor3fv(mColor[0].array());
-            glBegin(GL_TRIANGLES);
-            for (int i = 0; i < 20; ++i)
-            {
-                subdivide(&mVData[mTIndices[i][2]][0], &mVData[mTIndices[i][1]][0],
-                    &mVData[mTIndices[i][0]][0], mDetail);
-            }
-            glEnd();
-        //}
-        //glPopAttrib();
+        subdivide(&mVData[mTIndices[i][2]][0], &mVData[mTIndices[i][1]][0],
+            &mVData[mTIndices[i][0]][0], mDetail);
     }
-    glEndList();
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mVertices.size(),
+        &mVertices[0], GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mVertices.size(),
+        &mVertices[0], GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mIndices.size(),
+        &mIndices[0], GL_DYNAMIC_DRAW);
 }
 
 TSphere::~TSphere()
 {
-    glDeleteLists(mID, 1);
+    glDeleteBuffers(3, mVertexBuffers);
 }
 
 void TSphere::display()
@@ -72,7 +73,23 @@ void TSphere::display()
         {
             glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
             glScalef(mScale[0], mScale[1], mScale[2]);
-            glCallList(mID);
+
+            glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glEnableClientState(GL_NORMAL_ARRAY);
+
+            glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
+            glVertexPointer(3, GL_FLOAT, 0, 0);
+
+            glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
+            glNormalPointer(GL_FLOAT, 0, 0);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
+            glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            glPopClientAttrib();
         }
         glPopMatrix();
     }
@@ -88,12 +105,14 @@ void TSphere::moveSphere(float inX, float inY, float inZ)
 
 void TSphere::drawTriangle(float* inA, float* inB, float* inC)
 {
-    glNormal3fv(inA);
-    glVertex3fv(inA);
-    glNormal3fv(inC);
-    glVertex3fv(inC);
-    glNormal3fv(inB);
-    glVertex3fv(inB);
+    mIndices.push_back(mVertices.size() / 3u);
+    for (int i = 0; i < 3; ++i) mVertices.push_back(inA[i]);
+
+    mIndices.push_back(mVertices.size() / 3u);
+    for (int i = 0; i < 3; ++i) mVertices.push_back(inC[i]);
+
+    mIndices.push_back(mVertices.size() / 3u);
+    for (int i = 0; i < 3; ++i) mVertices.push_back(inB[i]);
 }
 
 void TSphere::drawTriangle(Vector3D<float>& inA, Vector3D<float>& inB,

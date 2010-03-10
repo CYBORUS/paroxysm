@@ -38,9 +38,8 @@ using namespace std;
 
 #define VERTEX_DATA 0
 #define NORMAL_DATA 1
-#define TEXTURE_DATA 2
-#define INDEX_DATA 3
-
+#define INDEX_DATA 2
+#define TEXTURE_DATA 3
 
 struct ColorMask
 {

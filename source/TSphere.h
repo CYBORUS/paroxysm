@@ -19,13 +19,14 @@
 #define TSPHERE_H
 
 #include "OGL.h"
-
 #include "Vector3D.h"
+
+#include <vector>
 
 class TSphere
 {
     public:
-        TSphere();
+        TSphere(int inDetail = 1);
         ~TSphere();
 
         void display();
@@ -46,10 +47,13 @@ class TSphere
         Vector3D<float> mScale;
         short mCurrentColor;
         int mDetail;
-        GLuint mID;
         static GLfloat mVData[12][3];
         static GLuint mTIndices[20][3];
         Vector3D<float> mTranslation;
+
+        GLuint mVertexBuffers[3];
+        vector<GLuint> mIndices;
+        vector<GLfloat> mVertices;
         //Vector3D<double>** mRows;
 };
 
