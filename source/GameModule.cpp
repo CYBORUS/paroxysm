@@ -70,8 +70,10 @@ int GameModule::luaAddTank(lua_State* inState)
     for (int i = 0; i < num; ++i)
     {
         Vector3D<float> pos;
-        pos[0] = MathEngine::supremeRandom(1.0f, 20.0f);
-        pos[2] = MathEngine::supremeRandom(1.0f, 20.0f);
+        pos[0] = MathEngine::supremeRandom<float>(1.0f,
+            luaTG->getMatrix().lastCol());
+        pos[2] = MathEngine::supremeRandom<float>(1.0f,
+            luaTG->getMatrix().lastRow());
         luaGM->addTank(ROBOT_TANK, pos);
     }
 
