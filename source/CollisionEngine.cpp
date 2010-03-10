@@ -44,27 +44,29 @@ void CollisionEngine::checkCollisions()
         itSecond = itFirst;
         ++itSecond;
 
+        Entity* first = *itFirst;
         for (; itSecond != mEntities.end(); ++itSecond)
         {
-            if (abs((*itFirst)->getPosition()[0] - (*itSecond)->getPosition()[0]) > mLargestRadius)
+            Entity* second = *itSecond;
+            if (abs(first->getPosition()[0] - second->getPosition()[0]) > mLargestRadius)
             {
                 break;
             }
 
-            float distance = ((*itFirst)->getPosition() - (*itSecond)->getPosition()).length();
+            float distance = (first->getPosition() - second->getPosition()).length();
 
-            if (distance < (*itFirst)->getRadius() + (*itSecond)->getRadius())
+            if (distance < first->getRadius() + second->getRadius())
             {
-                (*itFirst)->onCollision((*itSecond));
+                first->onCollision(second);
             }
 
             //after we've had one of the two objects deal with it's collision, test to see if there's still a collision
-            distance = ((*itFirst)->getPosition() - (*itSecond)->getPosition()).length();
+            distance = (first->getPosition() - second->getPosition()).length();
 
-            if (distance < (*itFirst)->getRadius() + (*itSecond)->getRadius())
+            if (distance < first->getRadius() + second->getRadius())
             {
                 //if there is still a collision, call the second objects collision method
-                (*itSecond)->onCollision((*itFirst));
+                second->onCollision(first);
             }
         }
     }
