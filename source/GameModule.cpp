@@ -16,6 +16,7 @@
  */
 
 #include "GameModule.h"
+#include "MathEngine.h"
 #include "RobotControl.h"
 
 GameCamera* GameModule::luaCamera = NULL;
@@ -67,6 +68,9 @@ int GameModule::luaAddTank(lua_State* inState)
     if (num < 1) num = 1;
     for (int i = 0; i < num; ++i)
     {
+        Vector3D<float> pos;
+        pos[0] = MathEngine::supremeRandom(1.0f, 20.0f);
+        pos[2] = MathEngine::supremeRandom(1.0f, 20.0f);
         luaGM->addTank(ROBOT_TANK);
     }
 
@@ -319,7 +323,8 @@ void GameModule::onCleanup()
 
 }
 
-void GameModule::addTank(ControlType inControlType, Vector3D<float> inPosition)
+void GameModule::addTank(ControlType inControlType,
+    const Vector3D<float>& inPosition)
 {
     Tank* tank = new Tank(&mTerrain);
     tank->setPosition(inPosition);
@@ -350,39 +355,6 @@ void GameModule::addTank(ControlType inControlType, Vector3D<float> inPosition)
 
     mControls.push_back(controls);
 }
-
-
-void GameModule::addTank(ControlType inControlType)
-{
-    Tank* tank = new Tank(&mTerrain);
-    CollisionEngine::addEntity(tank);
-
-    Control* controls;
-
-    mTanks.push_back(tank);
-
-    switch (inControlType)
-    {
-        case PLAYER_TANK:
-        {
-            controls = new PlayerControl(tank);
-            break;
-        }
-
-        case ROBOT_TANK:
-        {
-            controls = new RobotControl(tank);
-            break;
-        }
-
-        default:
-        {
-        }
-    }
-
-    mControls.push_back(controls);
-}
-
 
 Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
 {

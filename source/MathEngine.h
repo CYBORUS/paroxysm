@@ -15,27 +15,27 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROBOTCONTROL_H
-#define ROBOTCONTROL_H
+#ifndef MATHENGINE_H
+#define MATHENGINE_H
 
-#include "Control.h"
+#include <boost/random.hpp>
 
-#define TICK_RESET 15
-
-class RobotControl : public Control
+class MathEngine
 {
     public:
-        RobotControl(Tank* inTank);
-        virtual ~RobotControl();
-
-        virtual void update();
+        template<class T> static T supremeRandom(T min, T max);
 
     private:
-        int mTicks;
-        float mTurn;
-        float mSpeed;
-
-        float headRotation;
+        static boost::mt19937 mSeed;
 };
+
+template<class T>
+T MathEngine::supremeRandom(T min, T max)
+{
+    boost::uniform_real<T> u(min, max);
+    boost::variate_generator<boost::mt19937&, boost::uniform_real<T> >
+        outValue(mSeed, u);
+    return outValue();
+}
 
 #endif

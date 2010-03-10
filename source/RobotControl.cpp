@@ -16,10 +16,9 @@
  */
 
 #include "RobotControl.h"
+#include "MathEngine.h"
 
 #include <ctime>
-
-boost::mt19937 RobotControl::mRng(time(NULL));
 
 RobotControl::RobotControl(Tank* inTank) : Control(inTank), mTicks(1),
     mTurn(0.0f), mSpeed(0.0f)
@@ -37,9 +36,9 @@ void RobotControl::update()
     if (mTicks < 1)
     {
         mTicks = TICK_RESET;
-        mSpeed = randFloat(0.1f, 1.0f);
-        mTurn = randFloat(-1.0f, 1.0f);
-        headRotation = randFloat(0.0f, 360.0f);
+        mSpeed = MathEngine::supremeRandom<float>(0.1f, 1.0f);
+        mTurn = MathEngine::supremeRandom<float>(-1.0f, 1.0f);
+        headRotation = MathEngine::supremeRandom<float>(0.0f, 360.0f);
 
         mTank->rotateTurret(headRotation);
         mTank->changeSpeed(mSpeed);
@@ -47,12 +46,4 @@ void RobotControl::update()
     }
 
     mTank->move();
-}
-
-float RobotControl::randFloat(float min, float max)
-{
-    boost::uniform_real<float> u(min, max);
-    boost::variate_generator<boost::mt19937&, boost::uniform_real<float> >
-        gen(mRng, u);
-    return gen();
 }

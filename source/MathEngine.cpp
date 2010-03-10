@@ -15,27 +15,7 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROBOTCONTROL_H
-#define ROBOTCONTROL_H
+#include "MathEngine.h"
+#include <ctime>
 
-#include "Control.h"
-
-#define TICK_RESET 15
-
-class RobotControl : public Control
-{
-    public:
-        RobotControl(Tank* inTank);
-        virtual ~RobotControl();
-
-        virtual void update();
-
-    private:
-        int mTicks;
-        float mTurn;
-        float mSpeed;
-
-        float headRotation;
-};
-
-#endif
+boost::mt19937 MathEngine::mSeed(time(NULL));

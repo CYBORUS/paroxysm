@@ -50,8 +50,8 @@ class GameModule : public Module
         virtual void onInit();
         virtual void onCleanup();
 
-        virtual void addTank(ControlType inControlType);
-        void addTank(ControlType inControlType, Vector3D<float> inPosition);
+        void addTank(ControlType inControlType,
+            const Vector3D<float>& inPosition = Vector3D<float>(10.0f));
 
         /// Lua wiring
         static int luaCameraPan(lua_State* inState);

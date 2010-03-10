@@ -33,8 +33,8 @@ class Vector3D
     public:
         Vector3D<T>();
         Vector3D<T>(const Vector3D<T>& inVector);
-        Vector3D<T>(T inValue);
-        Vector3D<T>(T inX, T inY, T inZ);
+        explicit Vector3D<T>(T inValue);
+        explicit Vector3D<T>(T inX, T inY, T inZ);
         Matrix<T> toMatrix() const;
         void set(T inValue);
         void set(T inX, T inY, T inZ);

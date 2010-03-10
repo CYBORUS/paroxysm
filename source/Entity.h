@@ -17,7 +17,7 @@ class Entity
         float getRadius();
 
         Vector3D<float> getPosition();
-        void setPosition(Vector3D<float> inPosition);
+        void setPosition(const Vector3D<float>& inPosition);
 
         EntityType getWhatIAm();
     protected:

@@ -30,7 +30,7 @@ class Control
         virtual ~Control();
 
         virtual void update() = 0;
-        virtual void setPosition(Vector3D<float> inPosition);
+        virtual void setPosition(const Vector3D<float>& inPosition);
         virtual void changeDirection(float inDirection);
         virtual void changeSpeed(float inSpeed);
 

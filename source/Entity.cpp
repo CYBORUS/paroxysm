@@ -25,7 +25,7 @@ Vector3D<float> Entity::getPosition()
     return mPosition;
 }
 
-void Entity::setPosition(Vector3D<float> inPosition)
+void Entity::setPosition(const Vector3D<float>& inPosition)
 {
     mPosition = inPosition;
 }

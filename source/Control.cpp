@@ -30,7 +30,7 @@ Control::~Control()
 }
 
 
-void Control::setPosition(Vector3D<float> inPosition)
+void Control::setPosition(const Vector3D<float>& inPosition)
 {
     mTank->setPosition(inPosition);
 }
