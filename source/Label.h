@@ -4,7 +4,6 @@
 #include "Widget.h"
 
 #include "OGL.h"
-#include "TextLayer.h"
 #include "TextPic.h"
 #include "Vector3D.h"
 

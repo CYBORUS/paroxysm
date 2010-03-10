@@ -21,7 +21,6 @@
 #include "OGL.h"
 #include "Widget.h"
 #include "DisplayEngine.h"
-//#include "TextLayer.h"
 #include "TextPic.h"
 
 
@@ -78,7 +77,6 @@ class ScrollList : public Widget
 
         bool mMipmapping;
 
-        //TextLayer mText;
         //TextPic mText;
 
         //float mWidth;

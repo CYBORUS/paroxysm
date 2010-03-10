@@ -112,8 +112,6 @@
 		<Unit filename="../TerrainGrid.h" />
 		<Unit filename="../TextBox.cpp" />
 		<Unit filename="../TextBox.h" />
-		<Unit filename="../TextLayer.cpp" />
-		<Unit filename="../TextLayer.h" />
 		<Unit filename="../TextPic.cpp" />
 		<Unit filename="../TextPic.h" />
 		<Unit filename="../Vector3D.h" />

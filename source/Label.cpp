@@ -78,31 +78,6 @@ void Label::fade()
 void Label::preProcessing(float inRange)
 {
     mRange = inRange;
-    /*
-    TextLayer label;
-
-
-    label.setColor(Uint8(mColor[0] * 255), Uint8(mColor[1] * 255), Uint8(mColor[2] * 255));
-    label.setText(mLabelText);
-
-    if (!DisplayEngine::loadTexture(label.getTextImage(), mText))
-    {
-        cerr << "failed to load texture." << endl;
-        exit(2);
-    }
-
-    mSizeRatios = label.getRatio();
-
-    Point2D<int> point;
-
-    point.x = (mDisplay.x / 2) + label.getTextSize().x;
-    point.y = (mDisplay.y / 2) - label.getTextSize().y;
-
-
-    mTexDimensions = DisplayEngine::convert2DPixelToObject(point, mDisplay, inRange);
-
-    buildLabel();
-    */
 }
 
 
