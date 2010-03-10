@@ -227,14 +227,6 @@ void GameModule::onLoop()
 {
     CollisionEngine::checkCollisions();
 
-    if (CollisionEngine::mCollisions.size() > 0)
-    {
-        for (int i = 0; i < CollisionEngine::mCollisions.size(); ++i)
-        {
-            cerr << "Collision!";
-        }
-    }
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
