@@ -22,6 +22,7 @@
 GameCamera* GameModule::luaCamera = NULL;
 vector<Tank*>* GameModule::luaTanks = NULL;
 GameModule* GameModule::luaGM = NULL;
+TerrainGrid* GameModule::luaTG = NULL;
 
 int GameModule::luaCameraPan(lua_State* inState)
 {
@@ -71,7 +72,7 @@ int GameModule::luaAddTank(lua_State* inState)
         Vector3D<float> pos;
         pos[0] = MathEngine::supremeRandom(1.0f, 20.0f);
         pos[2] = MathEngine::supremeRandom(1.0f, 20.0f);
-        luaGM->addTank(ROBOT_TANK);
+        luaGM->addTank(ROBOT_TANK, pos);
     }
 
     lua_pushnumber(inState, outSuccess);
@@ -189,6 +190,7 @@ void GameModule::onInit()
     mMouseMode = MM_DEFAULT;
     luaCamera = &mCamera;
     luaTanks = &mTanks;
+    luaTG = &mTerrain;
     luaGM = this;
     mSceneChanged = true;
 

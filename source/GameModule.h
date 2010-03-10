@@ -57,6 +57,7 @@ class GameModule : public Module
         static int luaCameraPan(lua_State* inState);
         static int luaAddTank(lua_State* inState);
         static int luaGetHeight(lua_State* inState);
+        static TerrainGrid* luaTG;
         static GameModule* luaGM;
         static GameCamera* luaCamera;
         static vector<Tank*>* luaTanks;
