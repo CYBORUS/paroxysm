@@ -18,6 +18,8 @@
 #ifndef GAMEMODULE_H
 #define GAMEMODULE_H
 
+#include "CollisionEngine.h"
+
 #include "Module.h"
 #include "TerrainGrid.h"
 #include "Point2D.h"
@@ -49,6 +51,7 @@ class GameModule : public Module
         virtual void onCleanup();
 
         virtual void addTank(ControlType inControlType);
+        void addTank(ControlType inControlType, Vector3D<float> inPosition);
 
         /// Lua wiring
         static int luaCameraPan(lua_State* inState);

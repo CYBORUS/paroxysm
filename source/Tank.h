@@ -38,9 +38,9 @@ class Tank : public Entity
         Tank(TerrainGrid* inTerrain);
         virtual ~Tank();
 
+        void onCollision(Entity* inCollidedWith);
+
         virtual void display();
-        Vector3D<float> getPosition();
-        void setPosition(Vector3D<float> inPosition);
         void rotateTurret(float inRotation);
         void setTurretDirection(float inRotation);
         void modifyTurretRotation(bool inRotate, float inRotation);
@@ -59,7 +59,6 @@ class Tank : public Entity
         TerrainGrid* mTerrain;
         int mTerrainWidth;
         int mTerrainHeight;
-        Vector3D<float> mPosition;
         Vector3D<float> mRotation;
         Vector3D<float> mMovementVector;
 

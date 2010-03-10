@@ -21,6 +21,9 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5),
     mHeadCenter(0.0, 0.75, 0.0), mHeadSize(0.75, 0.5, 0.75),
     mTurretCenter(0.0, 0.0, 0.75), mTurretSize(0.25, 0.25, 0.75)
 {
+    //setRadius(0.5);
+    mRadius = 0.75;
+    mWhatAmI = E_TANK;
     mTerrain = inTerrain;
     mTerrainWidth = mTerrain->getMatrix().cols();
     mTerrainHeight = mTerrain->getMatrix().rows();
@@ -149,6 +152,16 @@ Tank::Tank(TerrainGrid* inTerrain) : mTankSize(1.5, 1.0, 1.5),
 Tank::~Tank()
 {
     //dtor
+}
+
+void Tank::onCollision(Entity* inCollidedWith)
+{
+    if (inCollidedWith->getWhatIAm() == E_TANK)
+    {
+        Tank* t = (Tank*)inCollidedWith;
+        mPosition = mPreviousPosition;
+        t->mPosition = t->mPreviousPosition;
+    }
 }
 
 
@@ -421,16 +434,6 @@ void Tank::display()
     //cerr << "transformed front left: " << mTransformedFrontLeftControl << endl;
 }
 
-Vector3D<float> Tank::getPosition()
-{
-    return mPosition;
-}
-
-void Tank::setPosition(Vector3D<float> inPosition)
-{
-    mPosition = inPosition;
-}
-
 void Tank::rotateTurret(float inRotation)
 {
     mAIRotateCalled = true;
@@ -602,6 +605,8 @@ void Tank::move()
     //mPosition[1] = mTerrain->findHeight(mPosition[0], mPosition[2]) + mTankSize.y / 2.0;
     mPosition[1] = (highestControlPoint + lowestControlPoint) / 2.0
         + mTankSize[1] / 2.0;
+
+    mPreviousPosition = mPosition;
 
     mPosition += mMovementVector;
 

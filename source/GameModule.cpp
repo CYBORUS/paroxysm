@@ -127,7 +127,7 @@ GameModule::GameModule(const char* inMapFile)
     }
 
     addTank(PLAYER_TANK);
-    addTank(ROBOT_TANK);
+    //addTank(ROBOT_TANK);
 }
 
 GameModule::~GameModule()
@@ -225,6 +225,16 @@ void GameModule::onInit()
 
 void GameModule::onLoop()
 {
+    CollisionEngine::checkCollisions();
+
+    if (CollisionEngine::mCollisions.size() > 0)
+    {
+        for (int i = 0; i < CollisionEngine::mCollisions.size(); ++i)
+        {
+            cerr << "Collision!";
+        }
+    }
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
@@ -317,9 +327,44 @@ void GameModule::onCleanup()
 
 }
 
+void GameModule::addTank(ControlType inControlType, Vector3D<float> inPosition)
+{
+    Tank* tank = new Tank(&mTerrain);
+    tank->setPosition(inPosition);
+    CollisionEngine::addEntity(tank);
+
+    Control* controls;
+
+    mTanks.push_back(tank);
+
+    switch (inControlType)
+    {
+        case PLAYER_TANK:
+        {
+            controls = new PlayerControl(tank);
+            break;
+        }
+
+        case ROBOT_TANK:
+        {
+            controls = new RobotControl(tank);
+            break;
+        }
+
+        default:
+        {
+        }
+    }
+
+    mControls.push_back(controls);
+}
+
+
 void GameModule::addTank(ControlType inControlType)
 {
     Tank* tank = new Tank(&mTerrain);
+    CollisionEngine::addEntity(tank);
+
     Control* controls;
 
     mTanks.push_back(tank);
