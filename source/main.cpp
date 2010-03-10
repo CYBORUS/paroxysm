@@ -19,12 +19,14 @@
 #include "DisplayEngine.h"
 #include "SoundEngine.h"
 #include "MainMenuModule.h"
+#include "CollisionEngine.h"
 
 int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
     SoundEngine::initialize();
+    CollisionEngine::onSetup();
 
     Config::outputSettings();
 

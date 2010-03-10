@@ -5,18 +5,34 @@
 
 #include <iostream>
 #include <vector>
+#include <list>
 using namespace std;
 
+struct Functor
+{
+    bool operator ()(Entity* a, Entity* b)
+    {
+        Vector3D<float> x = a->getPosition();
+        Vector3D<float> y = b->getPosition();
+        //cerr << "returning: " << x[0] << " < " << y[0] << endl;
+        return (x[0] < y[0]);
+    }
+};
 
 class CollisionEngine
 {
     public:
+        static void onSetup();
+        static void onCleanup();
+
         static void addEntity(Entity* inEntity);
 
         static void checkCollisions();
 
     private:
-        static vector<Entity*> mEntities;
+        static Functor mFunc;
+        static list<Entity*> mEntities;
+        static float mLargestRadius;
 };
 
 #endif // COLLISIONENGINE_H

@@ -53,6 +53,8 @@
 		</Linker>
 		<Unit filename="..\Button.cpp" />
 		<Unit filename="..\Button.h" />
+		<Unit filename="..\CollisionEngine.cpp" />
+		<Unit filename="..\CollisionEngine.h" />
 		<Unit filename="..\Config.cpp" />
 		<Unit filename="..\Config.h" />
 		<Unit filename="..\Container.cpp" />
@@ -63,6 +65,8 @@
 		<Unit filename="..\DisplayEngine.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
 		<Unit filename="..\EditVertexAction.h" />
+		<Unit filename="..\Entity.cpp" />
+		<Unit filename="..\Entity.h" />
 		<Unit filename="..\GameCamera.cpp" />
 		<Unit filename="..\GameCamera.h" />
 		<Unit filename="..\GameModule.cpp" />
@@ -85,6 +89,8 @@
 		<Unit filename="..\MapEditorAction.h" />
 		<Unit filename="..\MapEditorModule.cpp" />
 		<Unit filename="..\MapEditorModule.h" />
+		<Unit filename="..\MathEngine.cpp" />
+		<Unit filename="..\MathEngine.h" />
 		<Unit filename="..\Matrix.h" />
 		<Unit filename="..\Model3D.cpp" />
 		<Unit filename="..\Model3D.h" />

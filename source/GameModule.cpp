@@ -325,6 +325,7 @@ void GameModule::onCleanup()
     glDisable(GL_CULL_FACE);
     glDisable(GL_LIGHTING);
 
+    CollisionEngine::onCleanup();
 }
 
 void GameModule::addTank(ControlType inControlType,
