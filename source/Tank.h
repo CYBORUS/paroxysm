@@ -48,6 +48,8 @@ class Tank : public Entity
         void changeSpeed(float inSpeed);
 
         Vector3D<float> getBulletDirection();
+        Vector3D<float> getBulletStart();
+        float getBulletRotation();
 
         Vector3D<float> getControlPoint();
 

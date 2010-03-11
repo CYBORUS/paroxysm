@@ -9,7 +9,7 @@
 class Bullet : public Entity
 {
     public:
-        Bullet(TerrainGrid* inTerrain, Vector3D<float> inPosition, Vector3D<float> inMomentum);
+        Bullet(TerrainGrid* inTerrain, Vector3D<float> inPosition, Vector3D<float> inMomentum, float inRotation);
         virtual ~Bullet();
 
         virtual void display();
@@ -17,12 +17,10 @@ class Bullet : public Entity
         void onCollision(Entity* inCollidedWith);
         void move();
 
-        bool isAlive();
 
     protected:
         TSphere mSphere;
 
-        bool mAlive;
         float mSpeed;
 };
 

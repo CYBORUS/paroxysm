@@ -24,6 +24,7 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
     //setRadius(0.5);
     mRadius = 0.75;
     mWhatAmI = E_TANK;
+    mAlive = true;
     mPosition[0] = mTerrainWidth / 2;
     mPosition[1] = 0.5;
     mPosition[2] = mTerrainHeight / 2;
@@ -148,17 +149,40 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
 
 Tank::~Tank()
 {
-    //dtor
+    glDeleteBuffers(4, mHead);
+    glDeleteBuffers(4, mTurret);
+    glDeleteBuffers(4, mBody);
 }
 
 void Tank::onCollision(Entity* inCollidedWith)
 {
+    switch (inCollidedWith->getWhatIAm())
+    {
+        case E_TANK:
+        {
+            Tank* t = (Tank*)inCollidedWith;
+            mPosition = mPreviousPosition;
+
+            break;
+        }
+        case E_BULLET:
+        {
+            mAlive = false;
+            break;
+        }
+
+        default:
+        {
+        }
+    }
+    /*
     if (inCollidedWith->getWhatIAm() == E_TANK)
     {
         Tank* t = (Tank*)inCollidedWith;
         mPosition = mPreviousPosition;
         //t->mPosition = t->mPreviousPosition;
     }
+    */
 }
 
 
@@ -495,8 +519,6 @@ void Tank::move()
     Vector3D<float> newPosition = mPosition + driveMomentum;
 
 
-    //changeMovementVector();
-
     if (mTurretConstantRotate)
     {
         mHeadRotation += mHeadRotationDirection;
@@ -516,8 +538,6 @@ void Tank::move()
         }
     }
 
-
-    //transformControlPoints();
 
     //transform the four control points to determine how the tank should sit
     //on the terrrain
@@ -676,4 +696,26 @@ Vector3D<float> Tank::getBulletDirection()
 
     Vector3D<float> direction(ySin, 0.0f, yCos);
     return direction;
+}
+
+Vector3D<float> Tank::getBulletStart()
+{
+    float ySin = sin(TO_RADIANS(mHeadRotation));
+    float yCos = cos(TO_RADIANS(mHeadRotation));
+
+    float oldZ = mTurretCenter[2] + mTurretSize[2];
+    float x = oldZ * ySin;
+    float z = oldZ * yCos;
+
+    x += mPosition[0];
+    z += mPosition[2];
+
+    Vector3D<float> position(x, mPosition[1] + mHeadCenter[1], z);
+
+    return position;
+}
+
+float Tank::getBulletRotation()
+{
+    return mHeadRotation;
 }

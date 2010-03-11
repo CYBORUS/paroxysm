@@ -7,7 +7,6 @@ Functor CollisionEngine::mFunc;
 
 void CollisionEngine::onSetup()
 {
-    mEntities.sort(mFunc);
 }
 
 
@@ -16,28 +15,32 @@ void CollisionEngine::addEntity(Entity* inEntity)
     mEntities.push_back(inEntity);
     if (inEntity->getRadius() > mLargestRadius)
     {
-        mLargestRadius = inEntity->getRadius() * 2.0f;
+        mLargestRadius = inEntity->getRadius() * 3.0f;
     }
-    /*
-    mEntities.sort(mFunc);
-
-    int i = 0;
-
-    for (list<Entity*>::iterator it = mEntities.begin(); it != mEntities.end(); ++it, ++i)
-    {
-        cerr << i << ": " << (*it)->getPosition()[0] << endl;
-    }
-    cerr << endl << endl;
-    */
 }
+
+void CollisionEngine::removeEntity(Entity* inEntity)
+{
+    list<Entity*>::iterator it = mEntities.begin();
+
+    while (it != mEntities.end())
+    {
+        if (*it == inEntity)
+        {
+            it = mEntities.erase(it);
+            break;
+        }
+        ++it;
+    }
+}
+
 
 void CollisionEngine::checkCollisions()
 {
     mEntities.sort(mFunc);
 
     list<Entity*>::iterator itFirst = mEntities.begin();
-    list<Entity*>::iterator itSecond;// = itFirst;
-    //++itSecond;
+    list<Entity*>::iterator itSecond;
 
     for (; itFirst != mEntities.end(); ++itFirst)
     {

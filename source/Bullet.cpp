@@ -1,14 +1,15 @@
 #include "Bullet.h"
 
-Bullet::Bullet(TerrainGrid* inTerrain, Vector3D<float> inPosition, Vector3D<float> inMomentum) : Entity(inTerrain)
+Bullet::Bullet(TerrainGrid* inTerrain, Vector3D<float> inPosition, Vector3D<float> inMomentum, float inRotation) : Entity(inTerrain)
 {
     mWhatAmI = E_BULLET;
     mRadius = 0.5f;
 
-    mSpeed = 0.8f;
+    mSpeed = 1.8f;
     mMomentum = inMomentum;
     mMomentum.normalizeTo(mSpeed);
     mPosition = inPosition;
+    mRotation[1] = inRotation;
     mAlive = true;
 }
 
@@ -19,6 +20,10 @@ Bullet::~Bullet()
 
 void Bullet::onCollision(Entity* inCollidedWith)
 {
+    if (inCollidedWith->getWhatIAm() == E_TANK)
+    {
+        mAlive = false;
+    }
 }
 
 void Bullet::move()
@@ -42,7 +47,7 @@ void Bullet::display()
         glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
         glRotatef(mRotation[0], 1.0f, 0.0f, 0.0f);
         glRotatef(mRotation[2], 0.0f, 0.0f, 1.0f);
-        glScalef(0.5f, 0.5f, 0.5f);
+        glScalef(0.25f, 0.25f, 1.0f);
 
         mSphere.display();
     }
@@ -50,7 +55,3 @@ void Bullet::display()
 
 }
 
-bool Bullet::isAlive()
-{
-    return mAlive;
-}

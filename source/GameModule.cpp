@@ -308,24 +308,49 @@ void GameModule::onFrame()
     mCamera.update();
     mSceneChanged = true;
 
-    for (unsigned int i = 0; i < mControls.size(); ++i)
+    unsigned int size = mControls.size();
+    for (unsigned int i = 0; i < size; ++i)
     {
         mControls[i]->update();
+
+        if (!mTanks[i]->isAlive())
+        {
+            vector<Tank*>::iterator itTanks = mTanks.begin();
+            vector<Control*>::iterator itControls = mControls.begin();
+
+            while (*itTanks != mTanks[i] && itTanks != mTanks.end())
+            {
+                ++itTanks;
+                ++itControls;
+            }
+
+            CollisionEngine::removeEntity(*itTanks);
+            delete *itTanks;
+            delete *itControls;
+
+            mControls.erase(itControls);
+            mTanks.erase(itTanks);
+            --i;
+
+            size = mControls.size();
+        }
     }
 
-    list<Bullet*>::iterator it = mBullets.begin();
+    list<Bullet*>::iterator itBullets = mBullets.begin();
 
-    while (it != mBullets.end())
+    while (itBullets != mBullets.end())
     {
-        (*it)->move();
+        (*itBullets)->move();
 
-        if (!(*it)->isAlive())
+        if (!(*itBullets)->isAlive())
         {
-            it = mBullets.erase(it);
+            CollisionEngine::removeEntity(*itBullets);
+            delete *itBullets;
+            itBullets = mBullets.erase(itBullets);
         }
         else
         {
-            ++it;
+            ++itBullets;
         }
     }
 
@@ -349,6 +374,7 @@ void GameModule::onCleanup()
     for (unsigned int i = 0; i < mTanks.size(); ++i)
     {
         delete mTanks[i];
+        delete mControls[i];
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -422,8 +448,9 @@ Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
 
 void GameModule::onLButtonDown(int inX, int inY)
 {
-    Bullet* bullet = new Bullet(&mTerrain, mPlayerTank->getPosition(), mPlayerTank->getBulletDirection());
+    Bullet* bullet = new Bullet(&mTerrain, mPlayerTank->getBulletStart(), mPlayerTank->getBulletDirection(), mPlayerTank->getBulletRotation());
     mBullets.push_back(bullet);
+    CollisionEngine::addEntity(bullet);
 }
 
 

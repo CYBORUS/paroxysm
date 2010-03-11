@@ -39,6 +39,7 @@ class Entity
         void setPosition(const Vector3D<float>& inPosition);
 
         EntityType getWhatIAm();
+        bool isAlive();
 
     protected:
         EntityType mWhatAmI;
@@ -55,6 +56,9 @@ class Entity
 
         //for remembering where we were in case of collisions
         Vector3D<float> mPreviousPosition;
+
+        bool mAlive;
+
 };
 
 inline const Vector3D<float>& Entity::getPosition() const
@@ -65,6 +69,11 @@ inline const Vector3D<float>& Entity::getPosition() const
 inline float Entity::getRadius()
 {
     return mRadius;
+}
+
+inline bool Entity::isAlive()
+{
+    return mAlive;
 }
 
 #endif

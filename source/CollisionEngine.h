@@ -26,6 +26,7 @@ class CollisionEngine
         static void onCleanup();
 
         static void addEntity(Entity* inEntity);
+        static void removeEntity(Entity* inEntity);
 
         static void checkCollisions();
 
