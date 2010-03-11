@@ -29,5 +29,5 @@ PlayerControl::~PlayerControl()
 
 void PlayerControl::update()
 {
-    mTank->move();
+
 }

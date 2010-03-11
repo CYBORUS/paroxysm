@@ -20,7 +20,7 @@
 #include "RobotControl.h"
 
 GameCamera* GameModule::luaCamera = NULL;
-//vector<Tank*>* GameModule::luaTanks = NULL;
+vector<Tank*>* GameModule::luaTanks = NULL;
 GameModule* GameModule::luaGM = NULL;
 TerrainGrid* GameModule::luaTG = NULL;
 
@@ -33,18 +33,18 @@ int GameModule::luaCameraPan(lua_State* inState)
     {
         luaCamera->follow(NULL);
     }
-//    else if (argc == 1)
-//    {
-//        unsigned int index = (unsigned int)lua_tonumber(inState, 1);
-//        if (index >= luaTanks->size())
-//        {
-//            outSuccess = 0;
-//        }
-//        else
-//        {
-//            luaCamera->follow(luaTanks[0][index]);
-//        }
-//    }
+    else if (argc == 1)
+    {
+        unsigned int index = (unsigned int)lua_tonumber(inState, 1);
+        if (index >= luaTanks->size())
+        {
+            outSuccess = 0;
+        }
+        else
+        {
+            luaCamera->follow(luaTanks[0][index]);
+        }
+    }
     else if (argc > 1)
     {
         Vector3D<float> p(lua_tonumber(inState, 1), 0.0f,
@@ -122,6 +122,7 @@ int GameModule::luaSetFriction(lua_State* inState)
 
 GameModule::GameModule(const char* inMapFile)
 {
+    mNumTanks = 0;
     string inFile = "assets/maps/";
     inFile += inMapFile;
 
@@ -149,7 +150,6 @@ GameModule::GameModule(const char* inMapFile)
         {
             cerr << "badbit flipped." << endl;
         }
-        //cerr << "failed to open file: " << inMapFile << endl;
         exit(3);
     }
 
@@ -285,18 +285,19 @@ void GameModule::onLoop()
     glEnd();
     glPopAttrib();
 */
-
-    for (unsigned int i = 0; i < mTanks.size(); ++i)
+    list<Entity*>::iterator itEntities = mEntities.begin();
+    for (; itEntities != mEntities.end(); ++itEntities)
     {
-        mTanks[i]->display();
+        (*itEntities)->display();
     }
 
+/*
     list<Bullet*>::iterator it = mBullets.begin();
     for (; it != mBullets.end(); ++it)
     {
         (*it)->display();
     }
-
+*/
     glPopMatrix();
 
     mHUD.display();
@@ -308,49 +309,39 @@ void GameModule::onFrame()
     mCamera.update();
     mSceneChanged = true;
 
-    unsigned int size = mControls.size();
-    for (unsigned int i = 0; i < size; ++i)
+    cerr << "updating controls...";
+    map<Tank*, Control*>::iterator itControls = mControls.begin();
+    for (; itControls != mControls.end(); ++itControls)
     {
-        mControls[i]->update();
+        //(*itControls)->update();
+        itControls->second->update();
+    }
+    cerr << "done." << endl;
 
-        if (!mTanks[i]->isAlive())
+    list<Entity*>::iterator itEntities = mEntities.begin();
+
+    while (itEntities != mEntities.end())
+    {
+        (*itEntities)->move();
+
+        if (!(*itEntities)->isAlive())
         {
-            vector<Tank*>::iterator itTanks = mTanks.begin();
-            vector<Control*>::iterator itControls = mControls.begin();
+            CollisionEngine::removeEntity(*itEntities);
 
-            while (*itTanks != mTanks[i] && itTanks != mTanks.end())
+            if ((*itEntities)->getWhatIAm() == E_TANK)
             {
-                ++itTanks;
-                ++itControls;
+                Control* control = mControls[(Tank*)*itEntities];
+                mControls.erase((Tank*)*itEntities);
+                delete control;
+                --mNumTanks;
             }
 
-            CollisionEngine::removeEntity(*itTanks);
-            delete *itTanks;
-            delete *itControls;
-
-            mControls.erase(itControls);
-            mTanks.erase(itTanks);
-            --i;
-
-            size = mControls.size();
-        }
-    }
-
-    list<Bullet*>::iterator itBullets = mBullets.begin();
-
-    while (itBullets != mBullets.end())
-    {
-        (*itBullets)->move();
-
-        if (!(*itBullets)->isAlive())
-        {
-            CollisionEngine::removeEntity(*itBullets);
-            delete *itBullets;
-            itBullets = mBullets.erase(itBullets);
+            delete *itEntities;
+            itEntities = mEntities.erase(itEntities);
         }
         else
         {
-            ++itBullets;
+            ++itEntities;
         }
     }
 
@@ -371,10 +362,25 @@ void GameModule::onFrame()
 
 void GameModule::onCleanup()
 {
+    /*
     for (unsigned int i = 0; i < mTanks.size(); ++i)
     {
         delete mTanks[i];
         delete mControls[i];
+    }
+    */
+
+    map<Tank*, Control*>::iterator itControls = mControls.begin();
+
+    for (; itControls != mControls.end(); ++itControls)
+    {
+        delete itControls->second;
+    }
+
+    list<Entity*>::iterator itEntities = mEntities.begin();
+    for (; itEntities != mEntities.end(); ++itEntities)
+    {
+        delete *itEntities;
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -393,7 +399,7 @@ void GameModule::addTank(ControlType inControlType,
 
     Control* controls;
 
-    mTanks.push_back(tank);
+    mEntities.push_back(tank);
 
     switch (inControlType)
     {
@@ -416,7 +422,10 @@ void GameModule::addTank(ControlType inControlType,
         }
     }
 
-    mControls.push_back(controls);
+    //mControls.push_back(controls);
+    mControls[tank] = controls;
+
+    ++mNumTanks;
 }
 
 Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
@@ -441,14 +450,15 @@ Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
         cerr << "gluUnProject failed." << endl;
     }
 
-    return Vector3D<float>((float)tempX, (float)tempY, (float)tempZ);
+    Vector3D<float> currentVertex((float)tempX, (float)tempY, (float)tempZ);
+    return currentVertex;
 }
 
 
 void GameModule::onLButtonDown(int inX, int inY)
 {
     Bullet* bullet = new Bullet(&mTerrain, mPlayerTank->getBulletStart(), mPlayerTank->getBulletDirection(), mPlayerTank->getBulletRotation());
-    mBullets.push_back(bullet);
+    mEntities.push_back(bullet);
     CollisionEngine::addEntity(bullet);
 }
 
@@ -548,7 +558,7 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             relative[2] = hoverPoint[2] - tankPos[2];
             float angle = -atan2(relative[2], relative[0]) + PI_HALVES;
 
-            mTanks[0]->setTurretDirection(TO_DEGREES(angle));
+            mPlayerTank->setTurretDirection(TO_DEGREES(angle));
 
             mHUD.setStates(inX, inY, false);
             break;
@@ -605,59 +615,25 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_n:
         {
-            cerr << "Total number of tanks currently on map: " << mTanks.size() << endl;
+            cerr << "Total number of tanks currently on map: " << mNumTanks << endl;
             break;
         }
 
         case SDLK_k:
         {
-            cerr << "position: " << mTanks[0]->getPosition() << endl;
-            Vector3D<float> point = mTanks[0]->getControlPoint();
-
-            float inX = point[0];
-            float inZ = point[2];
-            int x = int(inX);
-            int z = int(inZ);
-
-            //determine which direction the slant on each tile is
-            int slant = ((z % 2) + (x % 2)) % 2;
-
-            //determine where we are on an individual tile
-            float xTest = inX - float(x);
-            float zTest = inZ - float(z);
-
-            int quadrant;
-
-            if (xTest + zTest < 1.0f)
-            {
-                if (xTest - zTest > 0.0f)
-                    quadrant = 1; // north
-                else
-                    quadrant = 2; // west
-            }
-            else
-            {
-                if (xTest - zTest < 0.0f)
-                    quadrant = 3; // south
-                else
-                    quadrant = 4; // east
-            }
-
-            cerr << "slant: " << slant << " quadrant: " << quadrant << endl;
-            cerr << "xTest: " << xTest << " zTest: " << zTest << " x,z: " << x << ", " << z << endl << endl;
 
             break;
         }
 
         case SDLK_q:
         {
-            mTanks[0]->modifyTurretRotation(true, 1.0f);
+            mPlayerTank->modifyTurretRotation(true, 1.0f);
             break;
         }
 
         case SDLK_e:
         {
-            mTanks[0]->modifyTurretRotation(true, -1.0f);
+            mPlayerTank->modifyTurretRotation(true, -1.0f);
             break;
         }
 
@@ -687,13 +663,13 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_q:
         {
-            mTanks[0]->modifyTurretRotation(false, 0.0f);
+            mPlayerTank->modifyTurretRotation(false, 0.0f);
             break;
         }
 
         case SDLK_e:
         {
-            mTanks[0]->modifyTurretRotation(false, 0.0f);
+            mPlayerTank->modifyTurretRotation(false, 0.0f);
             break;
         }
 

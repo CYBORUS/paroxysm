@@ -31,6 +31,7 @@ class Entity
 
         virtual void onCollision(Entity* inCollidedWith) = 0;
         virtual void move() = 0;
+        virtual void display() = 0;
 
         void setRadius(float inRadius);
         float getRadius();

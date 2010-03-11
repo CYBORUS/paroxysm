@@ -36,8 +36,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <vector>
 #include <list>
+#include <map>
 using namespace std;
 
 class GameModule : public Module
@@ -55,17 +55,6 @@ class GameModule : public Module
         void addTank(ControlType inControlType,
             const Vector3D<float>& inPosition = Vector3D<float>(10.0f));
 
-        /// Lua wiring
-        static int luaCameraPan(lua_State* inState);
-        static int luaAddTank(lua_State* inState);
-        static int luaGetHeight(lua_State* inState);
-        static int luaSetFriction(lua_State* inState);
-
-        static TerrainGrid* luaTG;
-        static GameModule* luaGM;
-        static GameCamera* luaCamera;
-        //static vector<Tank*>* luaTanks;
-
     protected:
         virtual void onLButtonDown(int inX, int inY);
         virtual void onLButtonUp(int inX, int inY);
@@ -77,7 +66,7 @@ class GameModule : public Module
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onMouseWheel(bool inUp, bool inDown);
 
-        Vector3D<float> findMouseObjectPoint(int inX, int inY);
+        inline Vector3D<float> findMouseObjectPoint(int inX, int inY);
 
         void getHeight(float inX, float inZ);
 
@@ -104,17 +93,31 @@ class GameModule : public Module
 
         Light mLight;
 
+        int mNumTanks;
+
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;
 
-        vector<Tank*> mTanks;
+        list<Tank*> mTanks;
+        list<Entity*> mEntities;
         list<Bullet*> mBullets;
         Tank* mPlayerTank;
         Control* mPlayerControls;
-        vector<Control*> mControls;
+        map<Tank*, Control*> mControls;
 
         Label* mFPSLabel;
         unsigned int mFPS;
+
+        /// Lua wiring
+        static int luaCameraPan(lua_State* inState);
+        static int luaAddTank(lua_State* inState);
+        static int luaGetHeight(lua_State* inState);
+        static int luaSetFriction(lua_State* inState);
+
+        static TerrainGrid* luaTG;
+        static GameModule* luaGM;
+        static GameCamera* luaCamera;
+        static vector<Tank*>* luaTanks;
 };
 
 #endif

@@ -44,6 +44,4 @@ void RobotControl::update()
         mTank->changeSpeed(mSpeed);
         mTank->changeDirection(mTurn);
     }
-
-    mTank->move();
 }
