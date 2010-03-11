@@ -41,9 +41,9 @@ void GameCamera::transform()
     glTranslatef(-mPanning[0], -mPanning[1], -mPanning[2]);
 }
 
-void GameCamera::follow(Tank* inTank)
+void GameCamera::follow(Entity* inEntity)
 {
-    mFollow = inTank;
+    mFollow = inEntity;
 }
 
 void GameCamera::setTrackball(const Vector3D<float>& inVector)

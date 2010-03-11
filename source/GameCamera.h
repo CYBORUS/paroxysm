@@ -18,7 +18,7 @@
 #ifndef GAMECAMERA_H
 #define GAMECAMERA_H
 
-#include "Tank.h"
+#include "Entity.h"
 
 class GameCamera
 {
@@ -26,7 +26,7 @@ class GameCamera
         GameCamera();
         ~GameCamera();
 
-        void follow(Tank* inTank);
+        void follow(Entity* inEntity);
         void update();
         void transform();
         void setTrackball(const Vector3D<float>& inVector);
@@ -37,7 +37,7 @@ class GameCamera
         Vector3D<float> mTrackball;
         Vector3D<float> mPanning;
 
-        Tank* mFollow;
+        Entity* mFollow;
 };
 
 #endif
