@@ -309,17 +309,18 @@ void GameModule::onFrame()
     mCamera.update();
     mSceneChanged = true;
 
-    cerr << "updating controls...";
+
     map<Tank*, Control*>::iterator itControls = mControls.begin();
     for (; itControls != mControls.end(); ++itControls)
     {
         //(*itControls)->update();
         itControls->second->update();
     }
-    cerr << "done." << endl;
+
 
     list<Entity*>::iterator itEntities = mEntities.begin();
 
+    cerr << "updating/deleting entities...";
     while (itEntities != mEntities.end())
     {
         (*itEntities)->move();
@@ -344,6 +345,7 @@ void GameModule::onFrame()
             ++itEntities;
         }
     }
+    cerr << "done." << endl;
 
     if (mLuaConsole->isLockedIn())
     {

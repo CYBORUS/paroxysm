@@ -98,9 +98,7 @@ class GameModule : public Module
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;
 
-        list<Tank*> mTanks;
         list<Entity*> mEntities;
-        list<Bullet*> mBullets;
         Tank* mPlayerTank;
         Control* mPlayerControls;
         map<Tank*, Control*> mControls;
