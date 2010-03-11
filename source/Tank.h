@@ -47,18 +47,14 @@ class Tank : public Entity
         void changeDirection(float inDirection);
         void changeSpeed(float inSpeed);
 
+        Vector3D<float> getBulletDirection();
+
         Vector3D<float> getControlPoint();
 
         virtual void move();
 
     protected:
         void changeMovementVector();
-        //void setupModelview();
-        void transformControlPoints();
-
-        TerrainGrid* mTerrain;
-        int mTerrainWidth;
-        int mTerrainHeight;
 
         //these four points control collision with the terrain
         Vector3D<float> mFrontLeftControl;

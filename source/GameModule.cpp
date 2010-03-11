@@ -169,7 +169,7 @@ bool GameModule::onLoad()
     mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
     mPanning[2] = static_cast<GLfloat>(mTerrainSize.y) / -2.0f;
     mCamera.setTrackball(mTrackball);
-    mCamera.follow(mTanks[0]);
+    mCamera.follow(mPlayerTank);
 
     mDisplay.x = SDL_GetVideoSurface()->w;
     mCenter.x = mDisplay.x / 2;
@@ -272,6 +272,7 @@ void GameModule::onLoop()
 
     mTerrain.display();
 
+/*
     glPushAttrib(GL_LIGHTING_BIT);
     glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
@@ -281,26 +282,18 @@ void GameModule::onLoop()
     }
     glEnd();
     glPopAttrib();
-/*
-    glPushAttrib(GL_LIGHTING_BIT);
-    {
-        glPushAttrib(GL_POLYGON_BIT);
-        {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            //glEnable(GL_LIGHTING);
-            glDisable(GL_LIGHTING);
-
 */
-            for (unsigned int i = 0; i < mTanks.size(); ++i)
-            {
-                mTanks[i]->display();
-            }
-            /*
-        }
-        glPopAttrib();
+
+    for (unsigned int i = 0; i < mTanks.size(); ++i)
+    {
+        mTanks[i]->display();
     }
-    glPopAttrib();
-    */
+
+    list<Bullet*>::iterator it = mBullets.begin();
+    for (; it != mBullets.end(); ++it)
+    {
+        (*it)->display();
+    }
 
     glPopMatrix();
 
@@ -316,6 +309,22 @@ void GameModule::onFrame()
     for (unsigned int i = 0; i < mControls.size(); ++i)
     {
         mControls[i]->update();
+    }
+
+    list<Bullet*>::iterator it = mBullets.begin();
+
+    while (it != mBullets.end())
+    {
+        (*it)->move();
+
+        if (!(*it)->isAlive())
+        {
+            it = mBullets.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
 
     if (mLuaConsole->isLockedIn())
@@ -363,6 +372,8 @@ void GameModule::addTank(ControlType inControlType,
         case PLAYER_TANK:
         {
             controls = new PlayerControl(tank);
+            mPlayerTank = tank;
+            mPlayerControls = controls;
             break;
         }
 
@@ -404,6 +415,18 @@ Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
 
     Vector3D<float> currentVertex((float)tempX, (float)tempY, (float)tempZ);
     return currentVertex;
+}
+
+
+void GameModule::onLButtonDown(int inX, int inY)
+{
+    Bullet* bullet = new Bullet(&mTerrain, mPlayerTank->getPosition(), mPlayerTank->getBulletDirection());
+    mBullets.push_back(bullet);
+}
+
+
+void GameModule::onLButtonUp(int inX, int inY)
+{
 }
 
 
@@ -492,7 +515,7 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             //cerr << "hoverPoint: " << hoverPoint << endl;
             //mSphere.moveSphere(hoverVertex[0], hoverVertex[1], hoverVertex[2]);
             Vector3D<float> relative;
-            Vector3D<float> tankPos = mTanks[0]->getPosition();
+            Vector3D<float> tankPos = mPlayerTank->getPosition();
             relative[0] = hoverPoint[0] - tankPos[0];
             relative[2] = hoverPoint[2] - tankPos[2];
             float angle = -atan2(relative[2], relative[0]) + PI_HALVES;
@@ -530,25 +553,25 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_a:
         {
-            mControls[0]->changeDirection(1.0f);
+            mPlayerControls->changeDirection(1.0f);
             break;
         }
 
         case SDLK_w:
         {
-            mControls[0]->changeSpeed(1.0f);
+            mPlayerControls->changeSpeed(1.0f);
             break;
         }
 
         case SDLK_d:
         {
-            mControls[0]->changeDirection(-1.0f);
+            mPlayerControls->changeDirection(-1.0f);
             break;
         }
 
         case SDLK_s:
         {
-            mControls[0]->changeSpeed(-1.0f);
+            mPlayerControls->changeSpeed(-1.0f);
             break;
         }
 
@@ -624,13 +647,13 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_a:
         case SDLK_d:
         {
-            mControls[0]->changeDirection(0.0f);
+            mPlayerControls->changeDirection(0.0f);
             break;
         }
         case SDLK_w:
         case SDLK_s:
         {
-            mControls[0]->changeSpeed(0.0f);
+            mPlayerControls->changeSpeed(0.0f);
             break;
         }
 

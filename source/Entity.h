@@ -19,13 +19,14 @@
 #define ENTITY_H
 
 #include "Vector3D.h"
+#include "TerrainGrid.h"
 
 enum EntityType { E_TANK, E_BULLET };
 
 class Entity
 {
     public:
-        Entity();
+        Entity(TerrainGrid* inTerrain);
         virtual ~Entity();
 
         virtual void onCollision(Entity* inCollidedWith) = 0;
@@ -42,6 +43,11 @@ class Entity
     protected:
         EntityType mWhatAmI;
         float mRadius;
+
+        TerrainGrid* mTerrain;
+        int mTerrainWidth;
+        int mTerrainHeight;
+
 
         Vector3D<float> mMomentum;
         Vector3D<float> mPosition;

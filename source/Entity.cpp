@@ -17,9 +17,13 @@
 
 #include "Entity.h"
 
-Entity::Entity()
+Entity::Entity(TerrainGrid* inTerrain)
 {
     mRadius = 1;
+    mTerrain = inTerrain;
+    mTerrainWidth = mTerrain->getMatrix().cols();
+    mTerrainHeight = mTerrain->getMatrix().rows();
+
 }
 
 Entity::~Entity()

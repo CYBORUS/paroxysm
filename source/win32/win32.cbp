@@ -51,6 +51,8 @@
 			<Add library="C:\dev\MingW\lib\boost\libboost_system-mgw34-mt.lib" />
 			<Add library="lua51" />
 		</Linker>
+		<Unit filename="..\Bullet.cpp" />
+		<Unit filename="..\Bullet.h" />
 		<Unit filename="..\Button.cpp" />
 		<Unit filename="..\Button.h" />
 		<Unit filename="..\CollisionEngine.cpp" />
@@ -116,8 +118,6 @@
 		<Unit filename="..\TerrainGrid.h" />
 		<Unit filename="..\TextBox.cpp" />
 		<Unit filename="..\TextBox.h" />
-		<Unit filename="..\TextLayer.cpp" />
-		<Unit filename="..\TextLayer.h" />
 		<Unit filename="..\TextPic.cpp" />
 		<Unit filename="..\TextPic.h" />
 		<Unit filename="..\Vector3D.h" />

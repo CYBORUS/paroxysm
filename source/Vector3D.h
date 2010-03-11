@@ -137,9 +137,11 @@ void Vector3D<T>::normalizeTo(float inLength)
     T length = sqrt((mVector[0] * mVector[0]) + (mVector[1] * mVector[1]) +
         (mVector[2] * mVector[2]));
     if (fabs(length) < PSEUDO_ZERO) return;
-    mVector[0] *= (inLength / length);
-    mVector[1] *= (inLength / length);
-    mVector[2] *= (inLength / length);
+
+    length = inLength / length;
+    mVector[0] *= length;
+    mVector[1] *= length;
+    mVector[2] *= length;
 }
 
 template<class T>

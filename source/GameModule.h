@@ -26,6 +26,7 @@
 #include "LuaMachine.h"
 #include "TextBox.h"
 #include "Tank.h"
+#include "Bullet.h"
 #include "Control.h"
 #include "PlayerControl.h"
 #include "GameCamera.h"
@@ -36,6 +37,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <list>
 using namespace std;
 
 class GameModule : public Module
@@ -65,6 +67,8 @@ class GameModule : public Module
         static vector<Tank*>* luaTanks;
 
     protected:
+        virtual void onLButtonDown(int inX, int inY);
+        virtual void onLButtonUp(int inX, int inY);
         virtual void onRButtonDown(int inX, int inY);
         virtual void onRButtonUp(int inX, int inY);
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
@@ -104,6 +108,9 @@ class GameModule : public Module
         Vector3D<GLfloat> mPanning;
 
         vector<Tank*> mTanks;
+        list<Bullet*> mBullets;
+        Tank* mPlayerTank;
+        Control* mPlayerControls;
         vector<Control*> mControls;
 
         Label* mFPSLabel;
