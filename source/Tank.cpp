@@ -429,6 +429,8 @@ void Tank::display()
 */
 
     //cerr << "transformed front left: " << mTransformedFrontLeftControl << endl;
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void Tank::rotateTurret(float inRotation)

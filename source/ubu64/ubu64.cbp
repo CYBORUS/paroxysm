@@ -47,6 +47,8 @@
 			<Add library="boost_system" />
 			<Add library="lua5.1" />
 		</Linker>
+		<Unit filename="../Bullet.cpp" />
+		<Unit filename="../Bullet.h" />
 		<Unit filename="../Button.cpp" />
 		<Unit filename="../Button.h" />
 		<Unit filename="../CollisionEngine.cpp" />

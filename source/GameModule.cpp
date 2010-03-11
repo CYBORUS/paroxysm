@@ -135,6 +135,8 @@ GameModule::GameModule(const char* inMapFile)
         mTerrainSize.x = mTerrain.getMatrix().cols();
         mTerrainSize.y = mTerrain.getMatrix().rows();
 
+        mTerrain.showWall();
+
         input.close();
     }
     else

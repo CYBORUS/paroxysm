@@ -42,6 +42,7 @@ class TerrainGrid
         void destroy();
         void save(const char* inFile);
         void display();
+        void showWall(bool inSetting = true);
         void set(int inRow, int inCol, float inHeight,
             bool inFindNormal = true);
         Vector3D<float> getVertex(int inRow, int inCol);
@@ -59,8 +60,6 @@ class TerrainGrid
     private:
         void displayNormals();
 
-        float mFriction;
-
         Matrix<float> mHeights;
         GLfloat* mVertices;
         GLfloat* mNormals;
@@ -72,6 +71,14 @@ class TerrainGrid
         GLuint mTextureIndex;
 
         GLuint mVertexBuffers[4];
+
+        float mFriction;
+        float mWallLow;
+        float mWallHigh;
+        bool mShowWall;
+        GLfloat mWallVertices[24];
+        static GLint mWallTextureCoords[16];
+        static GLuint mWallIndices[16];
 };
 
 inline const Matrix<float>& TerrainGrid::getMatrix() const
@@ -87,6 +94,11 @@ inline float TerrainGrid::getFriction(float inX, float inZ)
 inline void TerrainGrid::setFriction(float inFriction)
 {
     mFriction = inFriction;
+}
+
+inline void TerrainGrid::showWall(bool inSetting)
+{
+    mShowWall = inSetting;
 }
 
 #endif
