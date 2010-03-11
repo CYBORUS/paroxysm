@@ -20,7 +20,7 @@
 #include "RobotControl.h"
 
 GameCamera* GameModule::luaCamera = NULL;
-vector<Tank*>* GameModule::luaTanks = NULL;
+//vector<Tank*>* GameModule::luaTanks = NULL;
 GameModule* GameModule::luaGM = NULL;
 TerrainGrid* GameModule::luaTG = NULL;
 
@@ -33,18 +33,18 @@ int GameModule::luaCameraPan(lua_State* inState)
     {
         luaCamera->follow(NULL);
     }
-    else if (argc == 1)
-    {
-        unsigned int index = (unsigned int)lua_tonumber(inState, 1);
-        if (index >= luaTanks->size())
-        {
-            outSuccess = 0;
-        }
-        else
-        {
-            luaCamera->follow(luaTanks[0][index]);
-        }
-    }
+//    else if (argc == 1)
+//    {
+//        unsigned int index = (unsigned int)lua_tonumber(inState, 1);
+//        if (index >= luaTanks->size())
+//        {
+//            outSuccess = 0;
+//        }
+//        else
+//        {
+//            luaCamera->follow(luaTanks[0][index]);
+//        }
+//    }
     else if (argc > 1)
     {
         Vector3D<float> p(lua_tonumber(inState, 1), 0.0f,
@@ -212,7 +212,7 @@ void GameModule::onInit()
     mNextModule = NULL;
     mMouseMode = MM_DEFAULT;
     luaCamera = &mCamera;
-    luaTanks = &mTanks;
+    //luaTanks = &mTanks;
     luaTG = &mTerrain;
     luaGM = this;
     mSceneChanged = true;
@@ -441,8 +441,7 @@ Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
         cerr << "gluUnProject failed." << endl;
     }
 
-    Vector3D<float> currentVertex((float)tempX, (float)tempY, (float)tempZ);
-    return currentVertex;
+    return Vector3D<float>((float)tempX, (float)tempY, (float)tempZ);
 }
 
 

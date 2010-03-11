@@ -64,7 +64,7 @@ class GameModule : public Module
         static TerrainGrid* luaTG;
         static GameModule* luaGM;
         static GameCamera* luaCamera;
-        static vector<Tank*>* luaTanks;
+        //static vector<Tank*>* luaTanks;
 
     protected:
         virtual void onLButtonDown(int inX, int inY);
@@ -77,7 +77,7 @@ class GameModule : public Module
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         virtual void onMouseWheel(bool inUp, bool inDown);
 
-        inline Vector3D<float> findMouseObjectPoint(int inX, int inY);
+        Vector3D<float> findMouseObjectPoint(int inX, int inY);
 
         void getHeight(float inX, float inZ);
 
