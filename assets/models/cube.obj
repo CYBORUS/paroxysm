@@ -1,6 +1,6 @@
 # Blender3D v249 OBJ File: 
 # www.blender3d.org
-mtllib untitled.mtl
+mtllib something.mtl
 v 1.000000 -1.000000 -1.000000
 v 1.000000 -1.000000 1.000000
 v -1.000000 -1.000000 1.000000
@@ -9,7 +9,7 @@ v 1.000000 1.000000 -1.000000
 v 0.999999 1.000000 1.000001
 v -1.000000 1.000000 1.000000
 v -1.000000 1.000000 -1.000000
-usemtl Material
+usemtl Material.001
 s off
 f 1 2 3 4
 f 5 8 7 6

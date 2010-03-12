@@ -114,7 +114,11 @@ Model3D::Model3D(const char* inFile)
             GLuint v[4];
 
             int i = 0; // keep the count outside the for loop
-            for (; i < 4 && !ss.fail() && !ss.eof(); ++i) ss >> v[i];
+            for (; i < 4 && !ss.fail() && !ss.eof(); ++i)
+            {
+                ss >> v[i];
+                --v[i];
+            }
 
             if (i == 3)
             {
