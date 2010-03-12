@@ -17,8 +17,6 @@
 
 #include "Bullet.h"
 
-//TSphere Bullet::mSphere;
-
 Bullet::Bullet(TerrainGrid* inTerrain, const Vector3D<float>& inPosition,
     const Vector3D<float>& inMomentum, float inRotation) : Entity(inTerrain)
 {

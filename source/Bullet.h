@@ -22,7 +22,6 @@
 #include "TSphere.h"
 #include "OGL.h"
 
-
 class Bullet : public Entity
 {
     public:

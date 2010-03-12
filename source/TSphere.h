@@ -54,7 +54,6 @@ class TSphere
         GLuint mVertexBuffers[3];
         vector<GLuint> mIndices;
         vector<GLfloat> mVertices;
-        //Vector3D<double>** mRows;
 };
 
 #endif

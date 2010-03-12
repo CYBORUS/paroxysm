@@ -22,8 +22,43 @@
 #include <fstream>
 #include <sstream>
 
+map<string, Model3D*> Model3D::mModels;
+
+Model3D* Model3D::load(const char* inFile)
+{
+    map<string, Model3D*>::iterator i = mModels.find(inFile);
+
+    if (i == mModels.end())
+    {
+        Model3D* m = new Model3D(inFile);
+        mModels[inFile] = m;
+        return m;
+    }
+
+    return i->second;
+}
+
+void Model3D::unloadAll()
+{
+    for (map<string, Model3D*>::iterator i = mModels.begin();
+        i != mModels.end(); ++i)
+    {
+        delete i->second;
+    }
+
+    mModels.clear();
+}
+
 Model3D::Model3D(const char* inFile)
 {
+    vector<GLuint> quadIndices;
+    vector<GLuint> triangleIndices;
+    vector<GLfloat> vertices;
+    vector<GLfloat> normals;
+    vector<GLfloat> textureCoords;
+
+    glGenBuffers(M3D_VBO_COUNT, mVBO);
+
     string f("assets/models/");
     f += inFile;
 
@@ -52,7 +87,7 @@ Model3D::Model3D(const char* inFile)
             {
                 GLfloat p;
                 ss >> p;
-                mVertices.push_back(p);
+                vertices.push_back(p);
             }
         }
         else if (key == "vn")
@@ -63,7 +98,7 @@ Model3D::Model3D(const char* inFile)
 
             v.normalize();
 
-            for (int i = 0; i < 3; ++i) mNormals.push_back(v[i]);
+            for (int i = 0; i < 3; ++i) normals.push_back(v[i]);
         }
         else if (key == "vt")
         {
@@ -71,17 +106,30 @@ Model3D::Model3D(const char* inFile)
             {
                 GLfloat p;
                 ss >> p;
-                mTextureCoords.push_back(p);
+                textureCoords.push_back(p);
             }
         }
         else if (key == "f")
         {
-            Vector3D<GLfloat> v;
+            GLuint v[4];
 
-            int i; // keep the count outside the for loop
-            for (i = 0; i < 4 && !ss.fail() && !ss.eof(); ++i)
+            int i = 0; // keep the count outside the for loop
+            for (; i < 4 && !ss.fail() && !ss.eof(); ++i) ss >> v[i];
+
+            if (i == 3)
             {
-                ss >> v[i];
+                triangleIndices.push_back(v[0]);
+                triangleIndices.push_back(v[1]);
+                triangleIndices.push_back(v[2]);
+            }
+            else if (i == 4)
+            {
+                cerr << "loading quad " << v[0] << ' ' << v[1] << ' '
+                    << v[2] << ' ' << v[3] << endl;
+                quadIndices.push_back(v[0]);
+                quadIndices.push_back(v[1]);
+                quadIndices.push_back(v[2]);
+                quadIndices.push_back(v[3]);
             }
         }
         else
@@ -93,8 +141,84 @@ Model3D::Model3D(const char* inFile)
     }
 
     modelFile.close();
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_VERTICES]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size(),
+        &vertices[0], GL_DYNAMIC_DRAW);
+
+    mActive.normals = false;
+    if (normals.size() > 0)
+    {
+        mActive.normals = true;
+        glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_NORMALS]);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * normals.size(),
+            &normals[0], GL_DYNAMIC_DRAW);
+    }
+
+    mActive.triangles = triangleIndices.size();
+    if (mActive.triangles > 0)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVBO[M3D_TRIANGLES]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)
+            * triangleIndices.size(), &triangleIndices[0], GL_DYNAMIC_DRAW);
+    }
+
+    mActive.quads = quadIndices.size();
+    if (mActive.quads > 0)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVBO[M3D_QUADS]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)
+            * quadIndices.size(), &quadIndices[0], GL_DYNAMIC_DRAW);
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    mModels[inFile] = this;
 }
 
 Model3D::~Model3D()
 {
+    glDeleteBuffers(M3D_VBO_COUNT, mVBO);
+}
+
+void Model3D::display()
+{
+    cerr << "yarr " << __LINE__ << endl;
+    glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_VERTICES]);
+    glVertexPointer(3, GL_FLOAT, 0, 0);
+    cerr << "yarr " << __LINE__ << endl;
+
+    if (mActive.normals)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_NORMALS]);
+        glNormalPointer(GL_FLOAT, 0, 0);
+    }
+
+    cerr << "yarr " << __LINE__ << endl;
+
+    if (mActive.triangles > 0)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVBO[M3D_TRIANGLES]);
+        glDrawElements(GL_TRIANGLES, mActive.triangles, GL_UNSIGNED_INT, 0);
+    }
+
+    cerr << "yarr " << __LINE__ << endl;
+
+    if (mActive.quads > 0)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVBO[M3D_QUADS]);
+        glDrawElements(GL_QUADS, mActive.quads, GL_UNSIGNED_INT, 0);
+    }
+
+    cerr << "yarr " << __LINE__ << endl;
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glPopClientAttrib();
+    cerr << "yarr " << __LINE__ << endl;
 }

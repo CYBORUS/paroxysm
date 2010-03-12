@@ -163,6 +163,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
+    mTestModel = Model3D::load("cube.obj");
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
@@ -272,6 +273,10 @@ void GameModule::onLoop()
         mSceneChanged = false;
     }
 
+    glDisable(GL_LIGHTING);
+    mTestModel->display();
+    glEnable(GL_LIGHTING);
+
     mTerrain.display();
 
 /*
@@ -363,6 +368,7 @@ void GameModule::onFrame()
 
 void GameModule::onCleanup()
 {
+    Model3D::unloadAll();
     /*
     for (unsigned int i = 0; i < mTanks.size(); ++i)
     {

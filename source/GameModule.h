@@ -31,6 +31,7 @@
 #include "PlayerControl.h"
 #include "GameCamera.h"
 #include "Label.h"
+#include "Model3D.h"
 
 #include <iostream>
 #include <fstream>
@@ -94,6 +95,7 @@ class GameModule : public Module
         Light mLight;
 
         int mNumTanks;
+        Model3D* mTestModel;
 
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;

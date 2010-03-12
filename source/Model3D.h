@@ -22,7 +22,14 @@
 
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
+
+#define M3D_VBO_COUNT 4
+#define M3D_TRIANGLES 0
+#define M3D_QUADS 1
+#define M3D_VERTICES 2
+#define M3D_NORMALS 3
 
 /**
  *  This object's primary function is to read in the 3D file format "obj".
@@ -31,13 +38,25 @@ using namespace std;
 class Model3D
 {
     public:
-        Model3D(const char* inFile);
         ~Model3D();
 
+        void display();
+
+        static Model3D* load(const char* inFile);
+        static void unloadAll();
+
     private:
-        vector<GLfloat> mVertices;
-        vector<GLfloat> mNormals;
-        vector<GLfloat> mTextureCoords;
+        Model3D(const char* inFile);
+
+        static map<string, Model3D*> mModels;
+
+        GLuint mVBO[M3D_VBO_COUNT];
+        struct {
+            bool normals;
+            bool textures;
+            unsigned int quads;
+            unsigned int triangles;
+        } mActive;
 };
 
 #endif

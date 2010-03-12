@@ -1,8 +1,6 @@
 #include "MainMenuModule.h"
 #include "PlainPic.h"
 
-#include "Model3D.h" // testing purposes only
-
 bool MainMenuModule::onLoad()
 {
     Button* b = new Button("map_editor", MAP_EDITOR);
@@ -20,8 +18,6 @@ bool MainMenuModule::onLoad()
     pp->setLocation(0.0f, 6.0f);
     pp->setSize(24.0f, 6.0f);
     mHUD.addWidget(pp);
-
-    Model3D m("cube.obj"); // testing purposes only
 
     return true;
 }
