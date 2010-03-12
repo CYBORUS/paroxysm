@@ -320,7 +320,6 @@ void GameModule::onFrame()
 
     list<Entity*>::iterator itEntities = mEntities.begin();
 
-    cerr << "updating/deleting entities...";
     while (itEntities != mEntities.end())
     {
         (*itEntities)->move();
@@ -345,7 +344,7 @@ void GameModule::onFrame()
             ++itEntities;
         }
     }
-    cerr << "done." << endl;
+
 
     if (mLuaConsole->isLockedIn())
     {

@@ -643,22 +643,22 @@ void Tank::move()
 
     mPosition += mMomentum;
 
-    if (mPosition[0] < 1)
+    if (mPosition[0] < 1.25)
     {
-        mPosition[0] = 1;
+        mPosition[0] = 1.25;
     }
-    else if (mPosition[0] > mTerrainWidth - 2)
+    else if (mPosition[0] > mTerrainWidth - 2.25)
     {
-        mPosition[0] = mTerrainWidth - 2;
+        mPosition[0] = mTerrainWidth - 2.25;
     }
 
-    if (mPosition[2] < 1)
+    if (mPosition[2] < 1.25)
     {
-        mPosition[2] = 1;
+        mPosition[2] = 1.25;
     }
-    else if (mPosition[2] > mTerrainHeight - 2)
+    else if (mPosition[2] > mTerrainHeight - 2.25)
     {
-        mPosition[2] = mTerrainHeight - 2;
+        mPosition[2] = mTerrainHeight - 2.25;
     }
 
 }
