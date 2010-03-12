@@ -21,14 +21,14 @@
 #include <fstream>
 using namespace std;
 
-GLint TerrainGrid::mWallTextureCoords[16] = {0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0,
-    0, 0, 1, 0};
 GLuint TerrainGrid::mWallIndices[16] = {4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7,
     4, 0, 3};
 
 TerrainGrid::TerrainGrid() : mNumIndices(0), mFriction(0.5f), mShowWall(false)
 {
     glGenBuffers(4, mVertexBuffers);
+    glGenTextures(1, &mWallTexture);
+    DisplayEngine::loadTexture("assets/images/brick.png", mWallTexture);
 }
 
 TerrainGrid::~TerrainGrid()
@@ -36,6 +36,7 @@ TerrainGrid::~TerrainGrid()
     destroy();
 
     glDeleteBuffers(4, mVertexBuffers);
+    glDeleteTextures(1, &mWallTexture);
 }
 
 void TerrainGrid::save(const char* inFile)
@@ -145,7 +146,7 @@ void TerrainGrid::create()
     }
 
     glGenTextures(1, &mTextureIndex);
-    mTexture = DisplayEngine::loadImage("./assets/images/green.png");
+    mTexture = DisplayEngine::loadImage("assets/images/green.png");
     if (!DisplayEngine::loadTexture(mTexture, mTextureIndex))
         cerr << "Error loading texture!" << endl;
 
@@ -169,41 +170,57 @@ void TerrainGrid::create()
     mWallVertices[0] = 0.0f;
     mWallVertices[1] = mWallHigh;
     mWallVertices[2] = 0.0f;
+    mWallTextureCoords[0] = 0;
+    mWallTextureCoords[1] = 0;
 
     // point 1
     mWallVertices[3] = mHeights.lastCol();
     mWallVertices[4] = mWallHigh;
     mWallVertices[5] = 0.0f;
+    mWallTextureCoords[2] = mHeights.lastCol();
+    mWallTextureCoords[3] = 0;
 
     // point 2
     mWallVertices[6] = mHeights.lastCol();
     mWallVertices[7] = mWallHigh;
     mWallVertices[8] = mHeights.lastRow();
+    mWallTextureCoords[4] = 0;
+    mWallTextureCoords[5] = 0;
 
     // point 3
     mWallVertices[9] = 0.0f;
     mWallVertices[10] = mWallHigh;
     mWallVertices[11] = mHeights.lastRow();
+    mWallTextureCoords[6] = mHeights.lastCol();
+    mWallTextureCoords[7] = 0;
 
     // point 4
     mWallVertices[12] = 0.0f;
     mWallVertices[13] = mWallLow;
     mWallVertices[14] = 0.0f;
+    mWallTextureCoords[8] = 0;
+    mWallTextureCoords[9] = mWallHigh - mWallLow;
 
     // point 5
     mWallVertices[15] = mHeights.lastCol();
     mWallVertices[16] = mWallLow;
     mWallVertices[17] = 0.0f;
+    mWallTextureCoords[10] = mHeights.lastCol();
+    mWallTextureCoords[11] = mWallHigh - mWallLow;
 
     // point 6
     mWallVertices[18] = mHeights.lastCol();
     mWallVertices[19] = mWallLow;
     mWallVertices[20] = mHeights.lastRow();
+    mWallTextureCoords[12] = 0;
+    mWallTextureCoords[13] = mWallHigh - mWallLow;
 
     // point 7
     mWallVertices[21] = 0.0f;
     mWallVertices[22] = mWallLow;
     mWallVertices[23] = mHeights.lastRow();
+    mWallTextureCoords[14] = mHeights.lastCol();
+    mWallTextureCoords[15] = mWallHigh - mWallLow;
 
     cerr << mWallLow << ", " << mWallHigh << endl;
 }
@@ -218,16 +235,16 @@ void TerrainGrid::display()
     {
         glPushAttrib(GL_LIGHTING_BIT);
         glDisable(GL_LIGHTING);
+        glBindTexture(GL_TEXTURE_2D, mWallTexture);
         glBegin(GL_QUADS);
-        glColor3f(0.3f, 0.3f, 0.3f);
+        glColor3f(1.0f, 1.0f, 1.0f);
         for (int i = 0; i < 16; ++i)
         {
-            //glVertex2iv(mWallTextureCoords + (mWallIndices[i] * 2));
+            glTexCoord2iv(mWallTextureCoords + (mWallIndices[i] * 2));
             glVertex3fv(mWallVertices + (mWallIndices[i] * 3));
         }
         glEnd();
         glPopAttrib();
-        glColor3f(1.0f, 1.0f, 1.0f);
     }
 
     glEnableClientState(GL_VERTEX_ARRAY);

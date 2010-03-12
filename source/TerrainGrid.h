@@ -76,8 +76,10 @@ class TerrainGrid
         float mWallLow;
         float mWallHigh;
         bool mShowWall;
+        GLuint mWallTexture;
         GLfloat mWallVertices[24];
-        static GLint mWallTextureCoords[16];
+        GLint mWallTextureCoords[16];
+        GLuint mWallVBO[4];
         static GLuint mWallIndices[16];
 };
 
