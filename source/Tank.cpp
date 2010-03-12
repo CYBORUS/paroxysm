@@ -223,7 +223,7 @@ void Tank::display()
 
 
 
-            glVertexPointer(3, GL_FLOAT, 0, mBaseRect);
+            //glVertexPointer(3, GL_FLOAT, 0, mBaseRect);
 
             glBindBuffer(GL_ARRAY_BUFFER, mBody[VERTEX_DATA]);
             glVertexPointer(3, GL_FLOAT, 0, 0);

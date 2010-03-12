@@ -124,8 +124,6 @@ Model3D::Model3D(const char* inFile)
             }
             else if (i == 4)
             {
-                cerr << "loading quad " << v[0] << ' ' << v[1] << ' '
-                    << v[2] << ' ' << v[3] << endl;
                 quadIndices.push_back(v[0]);
                 quadIndices.push_back(v[1]);
                 quadIndices.push_back(v[2]);
@@ -184,22 +182,20 @@ Model3D::~Model3D()
 
 void Model3D::display()
 {
-    cerr << "yarr " << __LINE__ << endl;
     glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
     glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
+
 
     glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_VERTICES]);
     glVertexPointer(3, GL_FLOAT, 0, 0);
-    cerr << "yarr " << __LINE__ << endl;
 
     if (mActive.normals)
     {
+        glEnableClientState(GL_NORMAL_ARRAY);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_NORMALS]);
         glNormalPointer(GL_FLOAT, 0, 0);
     }
 
-    cerr << "yarr " << __LINE__ << endl;
 
     if (mActive.triangles > 0)
     {
@@ -207,7 +203,6 @@ void Model3D::display()
         glDrawElements(GL_TRIANGLES, mActive.triangles, GL_UNSIGNED_INT, 0);
     }
 
-    cerr << "yarr " << __LINE__ << endl;
 
     if (mActive.quads > 0)
     {
@@ -215,10 +210,8 @@ void Model3D::display()
         glDrawElements(GL_QUADS, mActive.quads, GL_UNSIGNED_INT, 0);
     }
 
-    cerr << "yarr " << __LINE__ << endl;
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glPopClientAttrib();
-    cerr << "yarr " << __LINE__ << endl;
 }

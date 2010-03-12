@@ -123,6 +123,24 @@ void DisplayEngine::start(Module* inModule)
 
 void DisplayEngine::initialize()
 {
+    //delete any old log files
+    string logsDir = "assets/logs/";
+
+    if (is_directory(logsDir))
+    {
+        for (directory_iterator itr(logsDir); itr != directory_iterator(); ++itr)
+        {
+            if (is_regular_file(itr->status()))
+            {
+                //delete any log files that are more than 10 seconds old
+                if (difftime(time(NULL), last_write_time(itr->path())) > 10)
+                {
+                    remove(itr->path());
+                }
+            }
+        }
+    }
+
     putenv((char*)"SDL_VIDEO_CENTERED=1");
 
     if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)

@@ -19,28 +19,6 @@
 
 LogFile::LogFile(const char* inTitle)
 {
-    string logsDir = "assets/logs/";
-
-    //load the list up with all the maps in the maps directory
-    if (is_directory(logsDir))
-    {
-        for (directory_iterator itr(logsDir); itr != directory_iterator(); ++itr)
-        {
-            //cout << itr->path().filename() << ' ';
-            if (is_regular_file(itr->status()))
-            {
-                //delete any log files that are more than 10 seconds old
-                if (difftime(time(NULL), last_write_time(itr->path())) > 10)
-                {
-                    //maps->addListItem(itr->path().filename());
-                    remove(itr->path());
-                }
-            }
-        }
-    }
-
-    //remove_all("assets/logs");
-    //create_
 
     char buffer[15];
     time_t rawtime;
