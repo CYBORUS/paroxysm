@@ -398,7 +398,7 @@ void GameModule::addTank(ControlType inControlType,
     tank->setPosition(inPosition);
     CollisionEngine::addEntity(tank);
 
-    Control* controls;
+    Control* controls = NULL;
 
     mEntities.push_back(tank);
 

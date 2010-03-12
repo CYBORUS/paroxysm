@@ -18,6 +18,10 @@
 #ifndef _LOGFILE_H_
 #define _LOGFILE_H_
 
+#include <boost/filesystem.hpp>
+using namespace boost::filesystem;
+
+
 #include <iostream>
 #include <fstream>
 #include <string>
