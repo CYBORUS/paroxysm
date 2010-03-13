@@ -20,6 +20,7 @@
 
 #include "OGL.h"
 #include "Vector3D.h"
+#include "PowerVBO.h"
 
 #include <vector>
 
@@ -51,7 +52,7 @@ class TSphere
         static GLuint mTIndices[20][3];
         Vector3D<float> mTranslation;
 
-        GLuint mVertexBuffers[3];
+        PowerVBO mVBO;
         vector<GLuint> mIndices;
         vector<GLfloat> mVertices;
 };

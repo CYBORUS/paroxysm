@@ -36,8 +36,6 @@ TSphere::TSphere(int inDetail) : mScale(1.0, 1.0, 1.0), mDetail(inDetail)
     mFill = true;
     mColor[0].set(1.0f, 1.0f, 1.0f);
 
-    glGenBuffers(3, mVertexBuffers);
-
     mCurrentColor = 1;
 
     for (int i = 0; i < 20; ++i)
@@ -46,25 +44,13 @@ TSphere::TSphere(int inDetail) : mScale(1.0, 1.0, 1.0), mDetail(inDetail)
             &mVData[mTIndices[i][0]][0], mDetail);
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mVertices.size(),
-        &mVertices[0], GL_DYNAMIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mVertices.size(),
-        &mVertices[0], GL_DYNAMIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mIndices.size(),
-        &mIndices[0], GL_DYNAMIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    mVBO.loadVertexArray(PVBO_VERTEX, 3, mVertices.size(), &mVertices[0]);
+    mVBO.loadVertexArray(PVBO_NORMAL, 3, mVertices.size(), &mVertices[0]);
+    mVBO.loadIndexArray(GL_TRIANGLES, mIndices.size(), &mIndices[0]);
 }
 
 TSphere::~TSphere()
 {
-    glDeleteBuffers(3, mVertexBuffers);
 }
 
 void TSphere::display()
@@ -76,23 +62,7 @@ void TSphere::display()
         {
             glTranslatef(mTranslation[0], mTranslation[1], mTranslation[2]);
             glScalef(mScale[0], mScale[1], mScale[2]);
-
-            glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-            glEnableClientState(GL_VERTEX_ARRAY);
-            glEnableClientState(GL_NORMAL_ARRAY);
-
-            glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
-            glVertexPointer(3, GL_FLOAT, 0, 0);
-
-            glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
-            glNormalPointer(GL_FLOAT, 0, 0);
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
-            glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-            glPopClientAttrib();
+            mVBO.display();
         }
         glPopMatrix();
     }
