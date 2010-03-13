@@ -118,8 +118,8 @@ void PowerVBO::display()
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pia.binding);
         glDrawElements(pia.drawMode, pia.size, GL_UNSIGNED_INT, 0);
     }
+    glPopClientAttrib();
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glPopClientAttrib();
 }

@@ -57,8 +57,6 @@ Model3D::Model3D(const char* inFile)
     vector<GLfloat> normals;
     vector<GLfloat> textureCoords;
 
-    glGenBuffers(M3D_VBO_COUNT, mVBO);
-
     string f("assets/models/");
     f += inFile;
 
@@ -144,78 +142,30 @@ Model3D::Model3D(const char* inFile)
 
     modelFile.close();
 
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_VERTICES]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size(),
-        &vertices[0], GL_DYNAMIC_DRAW);
+    mVBO.loadVertexArray(PVBO_VERTEX, 3, vertices.size(), &vertices[0],
+        GL_STATIC_DRAW);
 
-    mActive.normals = false;
     if (normals.size() > 0)
     {
-        mActive.normals = true;
-        glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_NORMALS]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * normals.size(),
-            &normals[0], GL_DYNAMIC_DRAW);
+        mVBO.loadVertexArray(PVBO_NORMAL, 3, normals.size(), &normals[0],
+            GL_STATIC_DRAW);
     }
 
-    mActive.triangles = triangleIndices.size();
-    if (mActive.triangles > 0)
+    if (triangleIndices.size() > 0)
     {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVBO[M3D_TRIANGLES]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)
-            * triangleIndices.size(), &triangleIndices[0], GL_DYNAMIC_DRAW);
+        mVBO.loadIndexArray(GL_TRIANGLES, triangleIndices.size(),
+            &triangleIndices[0], GL_STATIC_DRAW);
     }
 
-    mActive.quads = quadIndices.size();
-    if (mActive.quads > 0)
+    if (quadIndices.size() > 0)
     {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVBO[M3D_QUADS]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)
-            * quadIndices.size(), &quadIndices[0], GL_DYNAMIC_DRAW);
+        mVBO.loadIndexArray(GL_QUADS, quadIndices.size(),
+            &quadIndices[0], GL_STATIC_DRAW);
     }
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     mModels[inFile] = this;
 }
 
 Model3D::~Model3D()
 {
-    glDeleteBuffers(M3D_VBO_COUNT, mVBO);
-}
-
-void Model3D::display()
-{
-    glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-    glEnableClientState(GL_VERTEX_ARRAY);
-
-
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_VERTICES]);
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-
-    if (mActive.normals)
-    {
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glBindBuffer(GL_ARRAY_BUFFER, mVBO[M3D_NORMALS]);
-        glNormalPointer(GL_FLOAT, 0, 0);
-    }
-
-
-    if (mActive.triangles > 0)
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVBO[M3D_TRIANGLES]);
-        glDrawElements(GL_TRIANGLES, mActive.triangles, GL_UNSIGNED_INT, 0);
-    }
-
-
-    if (mActive.quads > 0)
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVBO[M3D_QUADS]);
-        glDrawElements(GL_QUADS, mActive.quads, GL_UNSIGNED_INT, 0);
-    }
-
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glPopClientAttrib();
 }

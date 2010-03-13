@@ -18,18 +18,12 @@
 #ifndef MODEL3D_H
 #define MODEL3D_H
 
-#include "OGL.h"
+#include "PowerVBO.h"
 
 #include <string>
 #include <vector>
 #include <map>
 using namespace std;
-
-#define M3D_VBO_COUNT 4
-#define M3D_TRIANGLES 0
-#define M3D_QUADS 1
-#define M3D_VERTICES 2
-#define M3D_NORMALS 3
 
 /**
  *  This object's primary function is to read in the 3D file format "obj".
@@ -50,13 +44,12 @@ class Model3D
 
         static map<string, Model3D*> mModels;
 
-        GLuint mVBO[M3D_VBO_COUNT];
-        struct {
-            bool normals;
-            bool textures;
-            unsigned int quads;
-            unsigned int triangles;
-        } mActive;
+        PowerVBO mVBO;
 };
+
+inline void Model3D::display()
+{
+    mVBO.display();
+}
 
 #endif
