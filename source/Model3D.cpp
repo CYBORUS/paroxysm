@@ -142,25 +142,22 @@ Model3D::Model3D(const char* inFile)
 
     modelFile.close();
 
-    mVBO.loadVertexArray(PVBO_VERTEX, 3, vertices.size(), &vertices[0],
-        GL_STATIC_DRAW);
+    mVBO.loadVertexArray(PVBO_VERTEX, 3, vertices.size(), &vertices[0]);
 
     if (normals.size() > 0)
     {
-        mVBO.loadVertexArray(PVBO_NORMAL, 3, normals.size(), &normals[0],
-            GL_STATIC_DRAW);
+        mVBO.loadVertexArray(PVBO_NORMAL, 3, normals.size(), &normals[0]);
     }
 
     if (triangleIndices.size() > 0)
     {
         mVBO.loadIndexArray(GL_TRIANGLES, triangleIndices.size(),
-            &triangleIndices[0], GL_STATIC_DRAW);
+            &triangleIndices[0]);
     }
 
     if (quadIndices.size() > 0)
     {
-        mVBO.loadIndexArray(GL_QUADS, quadIndices.size(),
-            &quadIndices[0], GL_STATIC_DRAW);
+        mVBO.loadIndexArray(GL_QUADS, quadIndices.size(), &quadIndices[0]);
     }
 
     mModels[inFile] = this;

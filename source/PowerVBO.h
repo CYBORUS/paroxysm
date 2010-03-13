@@ -49,9 +49,9 @@ class PowerVBO
         ~PowerVBO();
 
         void loadVertexArray(GLuint inType, GLuint inValuesPerVertex,
-            GLuint inSize, GLfloat* inData, GLenum inUsage = GL_DYNAMIC_DRAW);
+            GLuint inSize, GLfloat* inData, GLenum inUsage = GL_STATIC_DRAW);
         void loadIndexArray(GLenum inDrawMode, GLsizei inSize, GLuint* inData,
-            GLenum inUsage = GL_DYNAMIC_DRAW);
+            GLenum inUsage = GL_STATIC_DRAW);
         void display();
 
     private:
