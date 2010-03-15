@@ -274,7 +274,7 @@ void GameModule::onLoop()
     }
 
     glDisable(GL_LIGHTING);
-    mTestModel->display();
+    //mTestModel->display();
     glEnable(GL_LIGHTING);
 
     mTerrain.display();
