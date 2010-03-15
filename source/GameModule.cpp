@@ -246,6 +246,8 @@ void GameModule::onInit()
     mLight.position[1] = 10.0f;
     mLight.position[3] = 0.0f; // distant light source
 
+    mLight.ambient.set(0.1f);
+
     glEnable(GL_LIGHT0);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
