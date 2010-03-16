@@ -120,7 +120,7 @@ int GameModule::luaSetFriction(lua_State* inState)
     return 1;
 }
 
-GameModule::GameModule(const char* inMapFile)
+GameModule::GameModule(const char* inMapFile) : mSun(4)
 {
     mNumTanks = 0;
     string inFile = "assets/maps/";
@@ -248,6 +248,10 @@ void GameModule::onInit()
     mLight.position[2] = mTerrainSize.y / 2.0f;
     mLight.position[3] = 1.0f; // distant light source
 
+    mSun.moveSphere(mLight.position[0], mLight.position[1], mLight.position[2]);
+    mSun.setColor(1.0f, 1.0f, 0.0f);
+    mSun.setScale(10.0f, 10.0f, 10.0f);
+
     mLight.ambient.set(0.1f);
 
     glEnable(GL_LIGHT0);
@@ -278,6 +282,8 @@ void GameModule::onLoop()
     }
 
     glDisable(GL_LIGHTING);
+        mSun.display();
+
     //mTestModel->display();
     glEnable(GL_LIGHTING);
 
