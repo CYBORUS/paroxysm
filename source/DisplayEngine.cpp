@@ -534,22 +534,26 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+    #ifndef __APPLE__
     if ((mMipmapping == 2 || (!GLEE_ARB_framebuffer_object && !GLEE_EXT_framebuffer_object)) && mMipmapping != 3)
     {
         mLogFile.addLine("Mipmapping using older method.");
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
     }
+    #endif
 
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
+    #ifndef __APPLE__
     if ((mMipmapping == 1 && (GLEE_ARB_framebuffer_object || GLEE_EXT_framebuffer_object)) || mMipmapping == 3)
     {
         mLogFile.addLine("Mipmapping using fastest method.");
         glGenerateMipmap(GL_TEXTURE_2D);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     }
+    #endif
 
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
