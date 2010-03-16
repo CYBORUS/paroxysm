@@ -241,10 +241,12 @@ void GameModule::onInit()
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
 
-    mLight.diffuse.set(1.0f);
-    mLight.direction[1] = -1.0f;
-    mLight.position[1] = 10.0f;
-    mLight.position[3] = 0.0f; // distant light source
+    mLight.diffuse.set(1.0f, 1.0f, 0.7f);
+    //mLight.direction[1] = -1.0f;
+    mLight.position[0] = mTerrainSize.x / 2.0f;
+    mLight.position[1] = 100.0f;
+    mLight.position[2] = mTerrainSize.y / 2.0f;
+    mLight.position[3] = 1.0f; // distant light source
 
     mLight.ambient.set(0.1f);
 
