@@ -95,6 +95,7 @@ class GameModule : public Module
         Light mLight;
 
         TSphere mSun;
+        float mSunRotation;
 
         int mNumTanks;
         Model3D* mTestModel;

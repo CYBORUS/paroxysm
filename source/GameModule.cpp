@@ -125,6 +125,7 @@ GameModule::GameModule(const char* inMapFile) : mSun(4)
     mNumTanks = 0;
     string inFile = "assets/maps/";
     inFile += inMapFile;
+    mSunRotation = 0;
 
     ifstream input;
     input.clear();
@@ -244,13 +245,13 @@ void GameModule::onInit()
     mLight.diffuse.set(1.0f, 1.0f, 0.7f);
     //mLight.direction[1] = -1.0f;
     mLight.position[0] = mTerrainSize.x / 2.0f;
-    mLight.position[1] = 100.0f;
+    mLight.position[1] = 50.0f;
     mLight.position[2] = mTerrainSize.y / 2.0f;
     mLight.position[3] = 1.0f; // distant light source
 
-    mSun.moveSphere(mLight.position[0], mLight.position[1], mLight.position[2]);
+    //mSun.moveSphere(mLight.position[0], mLight.position[1], mLight.position[2]);
     mSun.setColor(1.0f, 1.0f, 0.0f);
-    mSun.setScale(10.0f, 10.0f, 10.0f);
+    //mSun.setScale(10.0f, 10.0f, 10.0f);
 
     mLight.ambient.set(0.1f);
 
@@ -270,10 +271,6 @@ void GameModule::onLoop()
     glPushMatrix();
     mCamera.transform();
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
-    glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
-    glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
 
     if (mSceneChanged)
     {
@@ -281,11 +278,24 @@ void GameModule::onLoop()
         mSceneChanged = false;
     }
 
+    glPushAttrib(GL_LIGHTING_BIT);
     glDisable(GL_LIGHTING);
+    glPushMatrix();
+        glTranslatef(mTerrainSize.x / 2.0f, 0.0f, mTerrainSize.y / 2.0f);
+        glRotatef(mSunRotation, 0.0f, 0.0f, 1.0f);
+        glTranslatef(0.0f, mLight.position[1], 0.0f);
+        glScalef(10.0f, 10.0f, 10.0f);
         mSun.display();
 
     //mTestModel->display();
-    glEnable(GL_LIGHTING);
+    glPopAttrib();
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
+    glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
+    glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
+
+    glPopMatrix();
 
     mTerrain.display();
 
@@ -324,6 +334,7 @@ void GameModule::onFrame()
     mCamera.update();
     mSceneChanged = true;
 
+    mSunRotation += 1.0f;
 
     map<Tank*, Control*>::iterator itControls = mControls.begin();
     for (; itControls != mControls.end(); ++itControls)

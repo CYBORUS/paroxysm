@@ -104,6 +104,8 @@
 		<Unit filename="..\PlayerControl.cpp" />
 		<Unit filename="..\PlayerControl.h" />
 		<Unit filename="..\Point2D.h" />
+		<Unit filename="..\PowerVBO.cpp" />
+		<Unit filename="..\PowerVBO.h" />
 		<Unit filename="..\RobotControl.cpp" />
 		<Unit filename="..\RobotControl.h" />
 		<Unit filename="..\ScrollList.cpp" />
