@@ -264,7 +264,10 @@ void GameModule::onInit()
 
     mSunLight.ambient.set(0.1f);
 
-    glEnable(GL_LIGHT0);
+    //glEnable(GL_LIGHT0);
+    //glEnable(GL_LIGHT1);
+    mLights[0] = false;
+    mLights[1] = false;
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mSunLight.ambient.array());
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -295,10 +298,23 @@ void GameModule::onLoop()
 
         if (mSunRotation <= 100.0f || mSunRotation >= 260.0f)
         {
-        //glLightfv(GL_LIGHT0, GL_AMBIENT, mSunLight.ambient.array());
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, mSunLight.diffuse.array());
-        glLightfv(GL_LIGHT0, GL_SPECULAR, mSunLight.specular.array());
-        glLightfv(GL_LIGHT0, GL_POSITION, Vector3D<float>().array());
+            if (!mLights[0])
+            {
+                mLights[0] = true;
+                glEnable(GL_LIGHT0);
+            }
+            //glLightfv(GL_LIGHT0, GL_AMBIENT, mSunLight.ambient.array());
+            glLightfv(GL_LIGHT0, GL_DIFFUSE, mSunLight.diffuse.array());
+            glLightfv(GL_LIGHT0, GL_SPECULAR, mSunLight.specular.array());
+            glLightfv(GL_LIGHT0, GL_POSITION, Vector3D<float>().array());
+        }
+        else
+        {
+            if (mLights[0])
+            {
+                mLights[0] = false;
+                glDisable(GL_LIGHT0);
+            }
         }
 
 
@@ -320,11 +336,24 @@ void GameModule::onLoop()
         glRotatef(mSunRotation, 0.0f, 0.0f, 1.0f);
         glTranslatef(0.0f, mMoonLight.position[1], 0.0f);
 
-        if (mSunRotation > 100.0f && mSunRotation < 260.0f)
+        if (mSunRotation > 80.0f && mSunRotation < 280.0f)
         {
-            glLightfv(GL_LIGHT0, GL_DIFFUSE, mMoonLight.diffuse.array());
-            glLightfv(GL_LIGHT0, GL_SPECULAR, mMoonLight.specular.array());
-            glLightfv(GL_LIGHT0, GL_POSITION, Vector3D<float>().array());
+            if (!mLights[1])
+            {
+                mLights[1] = true;
+                glEnable(GL_LIGHT1);
+            }
+            glLightfv(GL_LIGHT1, GL_DIFFUSE, mMoonLight.diffuse.array());
+            glLightfv(GL_LIGHT1, GL_SPECULAR, mMoonLight.specular.array());
+            glLightfv(GL_LIGHT1, GL_POSITION, Vector3D<float>().array());
+        }
+        else
+        {
+            if (mLights[1])
+            {
+                mLights[1] = false;
+                glDisable(GL_LIGHT1);
+            }
         }
 
         glPushAttrib(GL_LIGHTING_BIT);

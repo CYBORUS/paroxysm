@@ -25,6 +25,7 @@
 #include "TerrainGrid.h"
 #include "Matrix.h"
 #include "TSphere.h"
+#include "Model3D.h"
 
 #include "DisplayEngine.h"
 
@@ -78,14 +79,18 @@ class Tank : public Entity
 */
         //to hold the buffers for drawing each of the
         //three tank parts
-        GLuint mBody[4];
-        GLuint mHead[4];
-        GLuint mTurret[4];
+        //GLuint mBody[4];
+        //GLuint mHead[4];
+        //GLuint mTurret[4];
 
         GLfloat mBaseRect[24];
         GLfloat mBaseRectNormals[24];
         GLuint mBaseRectIndices[24];
         GLsizei mNumIndices;
+
+        Model3D* mHead;
+        Model3D* mTurret;
+        Model3D* mBody;
 
         float mTurretAngle;
 

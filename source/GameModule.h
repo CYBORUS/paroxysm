@@ -94,6 +94,7 @@ class GameModule : public Module
 
         Light mSunLight;
         Light mMoonLight;
+        bool mLights[2];
 
         TSphere mSun;
         TSphere mMoon;

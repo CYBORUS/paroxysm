@@ -49,9 +49,9 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
 
     mSphere.setScale(0.1, 0.1, 0.1);
 
-    glGenBuffers(4, mBody);
-    glGenBuffers(4, mHead);
-    glGenBuffers(4, mTurret);
+    //glGenBuffers(4, mBody);
+    //glGenBuffers(4, mHead);
+    //glGenBuffers(4, mTurret);
 
 
     float a = 0.5;
@@ -108,7 +108,7 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
     }
 
 
-
+/*
     glBindBuffer(GL_ARRAY_BUFFER, mBody[VERTEX_DATA]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, baseRect, GL_STATIC_DRAW);
 
@@ -120,7 +120,9 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBody[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
-
+*/
+    mBody = Model3D::load("tank_body.obj");
+/*
     glBindBuffer(GL_ARRAY_BUFFER, mHead[VERTEX_DATA]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, baseRect, GL_STATIC_DRAW);
 
@@ -132,7 +134,10 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mHead[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
+*/
+    mHead = Model3D::load("tank_head.obj");
 
+/*
     glBindBuffer(GL_ARRAY_BUFFER, mTurret[VERTEX_DATA]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, baseRect, GL_STATIC_DRAW);
 
@@ -144,14 +149,15 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTurret[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
-
+*/
+    mTurret = Model3D::load("tank_turret.obj");
 }
 
 Tank::~Tank()
 {
-    glDeleteBuffers(4, mHead);
-    glDeleteBuffers(4, mTurret);
-    glDeleteBuffers(4, mBody);
+    //glDeleteBuffers(4, mHead);
+    //glDeleteBuffers(4, mTurret);
+    //glDeleteBuffers(4, mBody);
 }
 
 void Tank::onCollision(Entity* inCollidedWith)
@@ -202,7 +208,7 @@ void Tank::display()
 
         glPushMatrix();
         {
-            glScalef(mTankSize[0], mTankSize[1], mTankSize[2]);
+            //glScalef(mTankSize[0], mTankSize[1], mTankSize[2]);
 
 /*
             glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
@@ -215,7 +221,7 @@ void Tank::display()
                 mBaseRectIndices);
             glPopClientAttrib();
 */
-
+/*
             //glBindTexture(GL_TEXTURE_2D, mTextureIndex);
             glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
             glEnableClientState(GL_VERTEX_ARRAY);
@@ -236,7 +242,8 @@ void Tank::display()
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBody[INDEX_DATA]);
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-
+*/
+            mBody->display();
 
 
 /*
@@ -283,17 +290,17 @@ void Tank::display()
         }
         glPopMatrix();
 
-        glTranslatef(mHeadCenter[0], mHeadCenter[1], mHeadCenter[2]);
+        //glTranslatef(mHeadCenter[0], mHeadCenter[1], mHeadCenter[2]);
         glRotatef(mHeadRotation - mRotation[1], 0.0f, 1.0f, 0.0f);
 
         glPushMatrix();
         {
-            glScalef(mHeadSize[0], mHeadSize[1], mHeadSize[2]);
+            //glScalef(mHeadSize[0], mHeadSize[1], mHeadSize[2]);
 /*
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
                 mBaseRectIndices);
 */
-
+/*
             glBindBuffer(GL_ARRAY_BUFFER, mHead[VERTEX_DATA]);
             glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -305,7 +312,8 @@ void Tank::display()
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mHead[INDEX_DATA]);
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-
+*/
+            mHead->display();
 
 /*
             glBegin(GL_QUADS);
@@ -351,16 +359,16 @@ void Tank::display()
         }
         glPopMatrix();
 
-        glTranslatef(mTurretCenter[0], mTurretCenter[1], mTurretCenter[2]);
+        //glTranslatef(mTurretCenter[0], mTurretCenter[1], mTurretCenter[2]);
 
         glPushMatrix();
         {
-            glScalef(mTurretSize[0], mTurretSize[1], mTurretSize[2]);
+            //glScalef(mTurretSize[0], mTurretSize[1], mTurretSize[2]);
 /*
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
                 mBaseRectIndices);
 */
-
+/*
             glBindBuffer(GL_ARRAY_BUFFER, mTurret[VERTEX_DATA]);
             glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -372,7 +380,8 @@ void Tank::display()
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTurret[INDEX_DATA]);
             glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-
+*/
+            mTurret->display();
 
 /*
             glBegin(GL_QUADS);
