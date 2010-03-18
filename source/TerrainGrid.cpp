@@ -123,19 +123,19 @@ void TerrainGrid::create()
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mVertices,
-        GL_DYNAMIC_DRAW);
+        GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mNumVerticesX3, mNormals,
-        GL_DYNAMIC_DRAW);
+        GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[TEXTURE_DATA]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * mNumVerticesX3 / 3 * 2,
-        mTextureCoordinates, GL_DYNAMIC_DRAW);
+        mTextureCoordinates, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mVertexBuffers[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices,
-        mIndices, GL_DYNAMIC_DRAW);
+        mIndices, GL_STATIC_DRAW);
 
     for (int i = 0; i < mHeights.rows(); ++i)
     {
@@ -199,28 +199,28 @@ void TerrainGrid::create()
     mWallVertices[13] = mWallLow;
     mWallVertices[14] = 0.0f;
     mWallTextureCoords[8] = 0;
-    mWallTextureCoords[9] = mWallHigh - mWallLow;
+    mWallTextureCoords[9] = GLint(mWallHigh - mWallLow);
 
     // point 5
     mWallVertices[15] = mHeights.lastCol();
     mWallVertices[16] = mWallLow;
     mWallVertices[17] = 0.0f;
     mWallTextureCoords[10] = mHeights.lastCol();
-    mWallTextureCoords[11] = mWallHigh - mWallLow;
+    mWallTextureCoords[11] = GLint(mWallHigh - mWallLow);
 
     // point 6
     mWallVertices[18] = mHeights.lastCol();
     mWallVertices[19] = mWallLow;
     mWallVertices[20] = mHeights.lastRow();
     mWallTextureCoords[12] = 0;
-    mWallTextureCoords[13] = mWallHigh - mWallLow;
+    mWallTextureCoords[13] = GLint(mWallHigh - mWallLow);
 
     // point 7
     mWallVertices[21] = 0.0f;
     mWallVertices[22] = mWallLow;
     mWallVertices[23] = mHeights.lastRow();
     mWallTextureCoords[14] = mHeights.lastCol();
-    mWallTextureCoords[15] = mWallHigh - mWallLow;
+    mWallTextureCoords[15] = GLint(mWallHigh - mWallLow);
 
     cerr << mWallLow << ", " << mWallHigh << endl;
 }

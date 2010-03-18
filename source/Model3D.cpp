@@ -16,11 +16,6 @@
  */
 
 #include "Model3D.h"
-#include "Vector3D.h"
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
 
 map<string, Model3D*> Model3D::mModels;
 
@@ -53,8 +48,11 @@ Model3D::Model3D(const char* inFile)
 {
     vector<GLuint> quadIndices;
     vector<GLuint> triangleIndices;
+    vector<GLuint> normalWeirdTriangleIndices;
+    vector<GLuint> normalWeirdQuadIndices;
     vector<GLfloat> vertices;
     vector<GLfloat> normals;
+    vector<GLfloat> finalNormals;
     vector<GLfloat> textureCoords;
 
     string f("assets/models/");
@@ -110,12 +108,16 @@ Model3D::Model3D(const char* inFile)
         else if (key == "f")
         {
             GLuint v[4];
+            GLuint vn[4];
 
             int i = 0; // keep the count outside the for loop
             for (; i < 4 && !ss.fail() && !ss.eof(); ++i)
             {
-                ss >> v[i];
+                char slash;
+                char slash2;
+                ss >> v[i] >> slash >> slash2 >> vn[i];
                 --v[i];
+                --vn[i];
             }
 
             if (i == 3)
@@ -123,6 +125,10 @@ Model3D::Model3D(const char* inFile)
                 triangleIndices.push_back(v[0]);
                 triangleIndices.push_back(v[1]);
                 triangleIndices.push_back(v[2]);
+
+                normalWeirdTriangleIndices.push_back(vn[0]);
+                normalWeirdTriangleIndices.push_back(vn[1]);
+                normalWeirdTriangleIndices.push_back(vn[2]);
             }
             else if (i == 4)
             {
@@ -130,11 +136,16 @@ Model3D::Model3D(const char* inFile)
                 quadIndices.push_back(v[1]);
                 quadIndices.push_back(v[2]);
                 quadIndices.push_back(v[3]);
+
+                normalWeirdQuadIndices.push_back(vn[0]);
+                normalWeirdQuadIndices.push_back(vn[1]);
+                normalWeirdQuadIndices.push_back(vn[2]);
+                normalWeirdQuadIndices.push_back(vn[3]);
             }
         }
         else
         {
-            cerr << "unknown key -- " << key << endl;
+            //cerr << "unknown key -- " << ss.str() << endl;
         }
 
         getline(modelFile, line);
@@ -146,6 +157,24 @@ Model3D::Model3D(const char* inFile)
 
     if (normals.size() > 0)
     {
+        finalNormals.insert(finalNormals.begin(), normals.begin(), normals.end());
+        normals.clear();
+        normals.insert(normals.begin(), vertices.size(), 0.0f);
+
+        for (int i = 0; i < normalWeirdTriangleIndices.size(); ++i)
+        {
+            normals[triangleIndices[i] * 3] = finalNormals[normalWeirdTriangleIndices[i] * 3];
+            normals[triangleIndices[i] * 3 + 1] = finalNormals[normalWeirdTriangleIndices[i] * 3 + 1];
+            normals[triangleIndices[i] * 3 + 2] = finalNormals[normalWeirdTriangleIndices[i] * 3 + 2];
+        }
+
+        for (int i = 0; i < normalWeirdQuadIndices.size(); ++i)
+        {
+            normals[quadIndices[i] * 3] = finalNormals[normalWeirdQuadIndices[i] * 3];
+            normals[quadIndices[i] * 3 + 1] = finalNormals[normalWeirdQuadIndices[i] * 3 + 1];
+            normals[quadIndices[i] * 3 + 2] = finalNormals[normalWeirdQuadIndices[i] * 3 + 2];
+        }
+
         mVBO.loadVertexArray(PVBO_NORMAL, 3, normals.size(), &normals[0]);
     }
 

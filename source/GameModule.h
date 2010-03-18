@@ -92,10 +92,13 @@ class GameModule : public Module
         Point2D<int> mOldMouse;
         int mMouseMode;
 
-        Light mLight;
+        Light mSunLight;
+        Light mMoonLight;
 
         TSphere mSun;
+        TSphere mMoon;
         float mSunRotation;
+        float mMoonRotation;
 
         int mNumTanks;
         Model3D* mTestModel;

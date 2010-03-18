@@ -19,10 +19,14 @@
 #define MODEL3D_H
 
 #include "PowerVBO.h"
+#include "Vector3D.h"
 
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 /**

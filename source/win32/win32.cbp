@@ -38,6 +38,7 @@
 			<Add option="-W" />
 		</Compiler>
 		<Linker>
+			<Add option="-s" />
 			<Add library="mingw32" />
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />

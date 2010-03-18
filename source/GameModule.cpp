@@ -120,12 +120,13 @@ int GameModule::luaSetFriction(lua_State* inState)
     return 1;
 }
 
-GameModule::GameModule(const char* inMapFile) : mSun(4)
+GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
 {
     mNumTanks = 0;
     string inFile = "assets/maps/";
     inFile += inMapFile;
     mSunRotation = 0;
+    mMoonRotation = 0;
 
     ifstream input;
     input.clear();
@@ -233,7 +234,7 @@ void GameModule::onInit()
     glGetDoublev(GL_PROJECTION_MATRIX, mProjection.array());
     glGetIntegerv(GL_VIEWPORT, mViewport.array());
 
-
+    glEnable(GL_RESCALE_NORMAL_EXT);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
@@ -242,22 +243,30 @@ void GameModule::onInit()
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
 
-    mLight.diffuse.set(1.0f, 1.0f, 0.7f);
-    //mLight.direction[1] = -1.0f;
-    mLight.position[0] = mTerrainSize.x / 2.0f;
-    mLight.position[1] = mTerrainSize.y / 2.0f + 20.0f;
-    mLight.position[2] = mTerrainSize.y / 2.0f;
-    mLight.position[3] = 1.0f; // distant light source
+    mSunLight.diffuse.set(1.0f, 1.0f, 0.7f);
+    //mSunLight.direction[1] = -1.0f;
+    mSunLight.position[0] = mTerrainSize.x / 2.0f;
+    mSunLight.position[1] = mTerrainSize.y / 2.0f + 20.0f;
+    mSunLight.position[2] = mTerrainSize.y / 2.0f;
+    mSunLight.position[3] = 1.0f; // distant light source
 
-    //mSun.moveSphere(mLight.position[0], mLight.position[1], mLight.position[2]);
+    mMoonLight.diffuse.set(0.5f, 0.5f, 0.7f);
+    mMoonLight.position[0] = mTerrainSize.x / 2.0f;
+    mMoonLight.position[1] = -mSunLight.position[1];
+    mMoonLight.position[2] = mTerrainSize.y / 2.0f;
+    mMoonLight.position[3] = 1.0f;
+
+    //mSun.moveSphere(mSunLight.position[0], mSunLight.position[1], mSunLight.position[2]);
     mSun.setColor(1.0f, 1.0f, 0.0f);
-    //mSun.setScale(10.0f, 10.0f, 10.0f);
+    mSun.setScale(10.0f, 10.0f, 10.0f);
+    mMoon.setColor(0.8f, 0.8f, 1.0f);
+    mMoon.setScale(5.0f, 5.0f, 5.0f);
 
-    mLight.ambient.set(0.1f);
+    mSunLight.ambient.set(0.1f);
 
     glEnable(GL_LIGHT0);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mSunLight.ambient.array());
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
@@ -278,51 +287,81 @@ void GameModule::onLoop()
         mSceneChanged = false;
     }
 
-    glPushAttrib(GL_LIGHTING_BIT);
-    glDisable(GL_LIGHTING);
     glPushMatrix();
-        glTranslatef(mTerrainSize.x / 2.0f, 0.0f, mTerrainSize.y / 2.0f);
+    {
+        glTranslatef(mSunLight.position[0], 0.0f, mSunLight.position[2]);
         glRotatef(mSunRotation, 0.0f, 0.0f, 1.0f);
-        glTranslatef(0.0f, mLight.position[1], 0.0f);
-        glScalef(10.0f, 10.0f, 10.0f);
-        mSun.display();
+        glTranslatef(0.0f, mSunLight.position[1], 0.0f);
 
-    //mTestModel->display();
-    glPopAttrib();
+        if (mSunRotation <= 100.0f || mSunRotation >= 260.0f)
+        {
+        //glLightfv(GL_LIGHT0, GL_AMBIENT, mSunLight.ambient.array());
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, mSunLight.diffuse.array());
+        glLightfv(GL_LIGHT0, GL_SPECULAR, mSunLight.specular.array());
+        glLightfv(GL_LIGHT0, GL_POSITION, Vector3D<float>().array());
+        }
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
-    glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
-    glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
 
+        glPushAttrib(GL_LIGHTING_BIT);
+        {
+            glDisable(GL_LIGHTING);
+            //glScalef(10.0f, 10.0f, 10.0f);
+            mSun.display();
+
+        }
+        glPopAttrib();
+
+    }
+    glPopMatrix();
+
+    glPushMatrix();
+    {
+        glTranslatef(mMoonLight.position[0], 0.0f, mMoonLight.position[2]);
+        glRotatef(mSunRotation, 0.0f, 0.0f, 1.0f);
+        glTranslatef(0.0f, mMoonLight.position[1], 0.0f);
+
+        if (mSunRotation > 100.0f && mSunRotation < 260.0f)
+        {
+            glLightfv(GL_LIGHT0, GL_DIFFUSE, mMoonLight.diffuse.array());
+            glLightfv(GL_LIGHT0, GL_SPECULAR, mMoonLight.specular.array());
+            glLightfv(GL_LIGHT0, GL_POSITION, Vector3D<float>().array());
+        }
+
+        glPushAttrib(GL_LIGHTING_BIT);
+        {
+            glDisable(GL_LIGHTING);
+            //glScalef(10.0f, 10.0f, 10.0f);
+            mMoon.display();
+
+        //mTestModel->display();
+        }
+        glPopAttrib();
+
+    }
+    glPopMatrix();
+
+    glPushMatrix();
+    {
+        glTranslatef(10.0f, 0.0f, 10.0f);
+        glPushAttrib(GL_LIGHTING_BIT);
+        {
+            //glDisable(GL_LIGHTING);
+            mTestModel->display();
+        }
+        glPopAttrib();
+    }
     glPopMatrix();
 
     mTerrain.display();
 
-/*
-    glPushAttrib(GL_LIGHTING_BIT);
-    glDisable(GL_LIGHTING);
-    glBegin(GL_LINES);
-    {
-        glVertex3f(0.0f, 0.0f, 0.0f);
-        glVertex3f(0.0f, 10.0f, 0.0f);
-    }
-    glEnd();
-    glPopAttrib();
-*/
+
     list<Entity*>::iterator itEntities = mEntities.begin();
     for (; itEntities != mEntities.end(); ++itEntities)
     {
         (*itEntities)->display();
     }
 
-/*
-    list<Bullet*>::iterator it = mBullets.begin();
-    for (; it != mBullets.end(); ++it)
-    {
-        (*it)->display();
-    }
-*/
+
     glPopMatrix();
 
     mHUD.display();
@@ -334,7 +373,17 @@ void GameModule::onFrame()
     mCamera.update();
     mSceneChanged = true;
 
-    mSunRotation += 1.0f;
+    mSunRotation += 0.1f;
+    mMoonRotation += 0.1f;
+    if (mSunRotation > 360.0f)
+    {
+        mSunRotation -= 360.0f;
+    }
+
+    if (mMoonRotation > 360.0f)
+    {
+        mMoonRotation -= 360.0f;
+    }
 
     map<Tank*, Control*>::iterator itControls = mControls.begin();
     for (; itControls != mControls.end(); ++itControls)
@@ -390,13 +439,6 @@ void GameModule::onFrame()
 void GameModule::onCleanup()
 {
     Model3D::unloadAll();
-    /*
-    for (unsigned int i = 0; i < mTanks.size(); ++i)
-    {
-        delete mTanks[i];
-        delete mControls[i];
-    }
-    */
 
     map<Tank*, Control*>::iterator itControls = mControls.begin();
 
@@ -414,6 +456,7 @@ void GameModule::onCleanup()
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glDisable(GL_LIGHTING);
+    glDisable(GL_RESCALE_NORMAL_EXT);
 
     CollisionEngine::onCleanup();
 }
