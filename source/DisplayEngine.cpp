@@ -388,12 +388,14 @@ void DisplayEngine::initialize()
     }
     #endif
 
+    #ifdef __WIN32__
     int vsync = Config::get<int>("vsync", 0);
 
     if (WGL_EXT_swap_control)
     {
         wglSwapIntervalEXT(vsync);
     }
+    #endif
 
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

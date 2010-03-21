@@ -25,6 +25,7 @@ Model3D* Model3D::load(const char* inFile)
 
     if (i == mModels.end())
     {
+        cerr << "loading model " << inFile << endl;
         Model3D* m = new Model3D(inFile);
         mModels[inFile] = m;
         return m;
@@ -114,12 +115,12 @@ Model3D::Model3D(const char* inFile)
             for (; i < 4 && !ss.fail() && !ss.eof(); ++i)
             {
                 char slash;
-                char slash2;
-                ss >> v[i] >> slash >> slash2 >> vn[i];
+                ss >> v[i] >> slash >> slash >> vn[i];
                 --v[i];
                 --vn[i];
             }
 
+            i = 3; // overriding triangles only... quads are not working right
             if (i == 3)
             {
                 triangleIndices.push_back(v[0]);
@@ -161,18 +162,25 @@ Model3D::Model3D(const char* inFile)
         normals.clear();
         normals.insert(normals.begin(), vertices.size(), 0.0f);
 
-        for (int i = 0; i < normalWeirdTriangleIndices.size(); ++i)
+        for (unsigned int i = 0; i < normalWeirdTriangleIndices.size(); ++i)
         {
-            normals[triangleIndices[i] * 3] = finalNormals[normalWeirdTriangleIndices[i] * 3];
-            normals[triangleIndices[i] * 3 + 1] = finalNormals[normalWeirdTriangleIndices[i] * 3 + 1];
-            normals[triangleIndices[i] * 3 + 2] = finalNormals[normalWeirdTriangleIndices[i] * 3 + 2];
+            normals[triangleIndices[i] * 3]
+                = finalNormals[normalWeirdTriangleIndices[i] * 3];
+            normals[triangleIndices[i] * 3 + 1]
+                = finalNormals[normalWeirdTriangleIndices[i] * 3 + 1];
+            normals[triangleIndices[i] * 3 + 2]
+                = finalNormals[normalWeirdTriangleIndices[i] * 3 + 2];
         }
 
-        for (int i = 0; i < normalWeirdQuadIndices.size(); ++i)
+        for (unsigned int i = 0; i < normalWeirdQuadIndices.size(); ++i)
         {
-            normals[quadIndices[i] * 3] = finalNormals[normalWeirdQuadIndices[i] * 3];
-            normals[quadIndices[i] * 3 + 1] = finalNormals[normalWeirdQuadIndices[i] * 3 + 1];
-            normals[quadIndices[i] * 3 + 2] = finalNormals[normalWeirdQuadIndices[i] * 3 + 2];
+            cerr << "yarr? " << i << " : " << quadIndices[i] << endl;
+            normals[quadIndices[i] * 3]
+                = finalNormals[normalWeirdQuadIndices[i] * 3];
+            normals[quadIndices[i] * 3 + 1]
+                = finalNormals[normalWeirdQuadIndices[i] * 3 + 1];
+            normals[quadIndices[i] * 3 + 2]
+                = finalNormals[normalWeirdQuadIndices[i] * 3 + 2];
         }
 
         mVBO.loadVertexArray(PVBO_NORMAL, 3, normals.size(), &normals[0]);
