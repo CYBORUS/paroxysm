@@ -16,6 +16,7 @@
  */
 
 #include "Tank.h"
+#include "Model3D.h"
 
 Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5),
     mHeadCenter(0.0, 0.75, 0.0), mHeadSize(0.75, 0.5, 0.75),

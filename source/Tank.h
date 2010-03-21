@@ -25,13 +25,14 @@
 #include "TerrainGrid.h"
 #include "Matrix.h"
 #include "TSphere.h"
-#include "Model3D.h"
 
 #include "DisplayEngine.h"
 
 #include <iostream>
 #include <cstdlib>
 using namespace std;
+
+class Model3D;
 
 class Tank : public Entity
 {

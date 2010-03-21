@@ -24,102 +24,6 @@ vector<Tank*>* GameModule::luaTanks = NULL;
 GameModule* GameModule::luaGM = NULL;
 TerrainGrid* GameModule::luaTG = NULL;
 
-int GameModule::luaCameraPan(lua_State* inState)
-{
-    int outSuccess = 1;
-    int argc = lua_gettop(inState);
-
-    if (argc == 0)
-    {
-        luaCamera->follow(NULL);
-    }
-    else if (argc == 1)
-    {
-        unsigned int index = (unsigned int)lua_tonumber(inState, 1);
-        if (index >= luaTanks->size())
-        {
-            outSuccess = 0;
-        }
-        else
-        {
-            luaCamera->follow(luaTanks[0][index]);
-        }
-    }
-    else if (argc > 1)
-    {
-        Vector3D<float> p(lua_tonumber(inState, 1), 0.0f,
-            lua_tonumber(inState, 2));
-        luaCamera->setPanning(p);
-    }
-    else
-    {
-        outSuccess = 0;
-    }
-
-    lua_pushnumber(inState, outSuccess);
-    return 1;
-}
-
-int GameModule::luaAddTank(lua_State* inState)
-{
-    int outSuccess = 1;
-    int argc = lua_gettop(inState);
-
-    int num = argc > 0 ? (int)lua_tonumber(inState, 1) : 1;
-    if (num < 1) num = 1;
-    for (int i = 0; i < num; ++i)
-    {
-        Vector3D<float> pos;
-        pos[0] = MathEngine::supremeRandom<float>(1.0f,
-            luaTG->getMatrix().lastCol());
-        pos[2] = MathEngine::supremeRandom<float>(1.0f,
-            luaTG->getMatrix().lastRow());
-        luaGM->addTank(ROBOT_TANK, pos);
-    }
-
-    lua_pushnumber(inState, outSuccess);
-    return 1;
-}
-
-int GameModule::luaGetHeight(lua_State* inState)
-{
-    int outSuccess = 1;
-    int argc = lua_gettop(inState);
-
-    if (argc < 2)
-    {
-        outSuccess = 0;
-    }
-    else
-    {
-        float x = lua_tonumber(inState, 1);
-        float z = lua_tonumber(inState, 2);
-        luaGM->getHeight(x, z);
-    }
-
-    lua_pushnumber(inState, outSuccess);
-    return 1;
-}
-
-int GameModule::luaSetFriction(lua_State* inState)
-{
-    int outSuccess = 1;
-    int argc = lua_gettop(inState);
-
-    if (argc < 1)
-    {
-        outSuccess = 0;
-    }
-    else
-    {
-        float f = lua_tonumber(inState, 1);
-        luaTG->setFriction(f);
-    }
-
-    lua_pushnumber(inState, outSuccess);
-    return 1;
-}
-
 GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
 {
     mNumTanks = 0;
@@ -127,6 +31,8 @@ GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
     inFile += inMapFile;
     mSunRotation = 0;
     mMoonRotation = 0;
+
+    Model3D* test = Model3D::load("tank_body.3ds");
 
     ifstream input;
     input.clear();
@@ -796,4 +702,100 @@ void GameModule::getHeight(float inX, float inZ)
 {
     cerr << "getHeight at " << inX << ", " << inZ << ": "
         << mTerrain.findHeight(inX, inZ) << endl;
+}
+
+int GameModule::luaCameraPan(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    if (argc == 0)
+    {
+        luaCamera->follow(NULL);
+    }
+    else if (argc == 1)
+    {
+        unsigned int index = (unsigned int)lua_tonumber(inState, 1);
+        if (index >= luaTanks->size())
+        {
+            outSuccess = 0;
+        }
+        else
+        {
+            luaCamera->follow(luaTanks[0][index]);
+        }
+    }
+    else if (argc > 1)
+    {
+        Vector3D<float> p(lua_tonumber(inState, 1), 0.0f,
+            lua_tonumber(inState, 2));
+        luaCamera->setPanning(p);
+    }
+    else
+    {
+        outSuccess = 0;
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
+int GameModule::luaAddTank(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    int num = argc > 0 ? (int)lua_tonumber(inState, 1) : 1;
+    if (num < 1) num = 1;
+    for (int i = 0; i < num; ++i)
+    {
+        Vector3D<float> pos;
+        pos[0] = MathEngine::supremeRandom<float>(1.0f,
+            luaTG->getMatrix().lastCol());
+        pos[2] = MathEngine::supremeRandom<float>(1.0f,
+            luaTG->getMatrix().lastRow());
+        luaGM->addTank(ROBOT_TANK, pos);
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
+int GameModule::luaGetHeight(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    if (argc < 2)
+    {
+        outSuccess = 0;
+    }
+    else
+    {
+        float x = lua_tonumber(inState, 1);
+        float z = lua_tonumber(inState, 2);
+        luaGM->getHeight(x, z);
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
+}
+
+int GameModule::luaSetFriction(lua_State* inState)
+{
+    int outSuccess = 1;
+    int argc = lua_gettop(inState);
+
+    if (argc < 1)
+    {
+        outSuccess = 0;
+    }
+    else
+    {
+        float f = lua_tonumber(inState, 1);
+        luaTG->setFriction(f);
+    }
+
+    lua_pushnumber(inState, outSuccess);
+    return 1;
 }

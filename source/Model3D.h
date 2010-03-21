@@ -29,13 +29,10 @@
 #include <sstream>
 using namespace std;
 
-/**
- *  This object's primary function is to read in the 3D file format "obj".
- *  The spec is available at <http://en.wikipedia.org/wiki/Obj>.
- */
 class Model3D
 {
     public:
+        Model3D();
         ~Model3D();
 
         void display();
@@ -44,7 +41,11 @@ class Model3D
         static void unloadAll();
 
     private:
-        Model3D(const char* inFile);
+        void loadOBJ(const char* inFile);
+        void load3DS(const char* inFile);
+
+        template<class T> static unsigned short readBytes(istream& inStream,
+            T& inTarget);
 
         static map<string, Model3D*> mModels;
 
@@ -54,6 +55,23 @@ class Model3D
 inline void Model3D::display()
 {
     mVBO.display();
+}
+
+template<class T>
+unsigned short Model3D::readBytes(istream& inStream, T& inTarget)
+{
+    static const unsigned short size = sizeof(T);
+    char bytes[8]; // largest variable type is 8 bytes
+
+    inStream.read(bytes, size);
+    inTarget = bytes[size - 1] & 0x00ff;
+    for (short i = size - 2; i >= 0; --i)
+    {
+        inTarget <<= 8;
+        inTarget |= bytes[i] & 0x00ff;
+    }
+
+    return size;
 }
 
 #endif

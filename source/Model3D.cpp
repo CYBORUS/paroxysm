@@ -16,6 +16,7 @@
  */
 
 #include "Model3D.h"
+#include "LogFile.h"
 
 map<string, Model3D*> Model3D::mModels;
 
@@ -26,7 +27,25 @@ Model3D* Model3D::load(const char* inFile)
     if (i == mModels.end())
     {
         cerr << "loading model " << inFile << endl;
-        Model3D* m = new Model3D(inFile);
+        string s(inFile);
+        s = s.substr(s.rfind('.') + 1);
+
+        Model3D* m = new Model3D;
+
+        if (s == "obj")
+        {
+            m->loadOBJ(inFile);
+        }
+        else if (s == "3ds")
+        {
+            m->load3DS(inFile);
+        }
+        else
+        {
+            cerr << "invalid 3D file extension -- " << s << endl;
+            exit(1);
+        }
+
         mModels[inFile] = m;
         return m;
     }
@@ -45,7 +64,130 @@ void Model3D::unloadAll()
     mModels.clear();
 }
 
-Model3D::Model3D(const char* inFile)
+Model3D::Model3D()
+{
+}
+
+Model3D::~Model3D()
+{
+}
+
+void Model3D::load3DS(const char* inFile)
+{
+    //vector<GLfloat> vertices;
+    //vector<GLfloat> indices; // all triangles
+
+    LogFile log3DS("m3d");
+
+    string f("assets/models/");
+    f += inFile;
+
+    ifstream modelFile;
+    modelFile.open(f.c_str());
+    if (modelFile.fail())
+    {
+        cerr << "failed to open model: " << f << endl;
+        return;
+    }
+
+    unsigned short chunkName;
+    unsigned int chunkSize;
+    unsigned int fileSize;
+    readBytes(modelFile, chunkName);
+
+    if (chunkName == 0x4d4d)
+    {
+        readBytes(modelFile, chunkSize);
+        fileSize = chunkSize;
+        cerr << "valid 3DS file: " << fileSize << " bytes" << endl;
+    }
+    else
+    {
+        cerr << "invalid 3DS file" << endl;
+        modelFile.close();
+        return;
+    }
+
+    while (modelFile.tellg() < fileSize)
+    {
+        readBytes(modelFile, chunkName);
+        readBytes(modelFile, chunkSize);
+        unsigned int dataSize = chunkSize - 6;
+
+        switch (chunkName)
+        {
+            case 0x3d3d: // EDIT3DS
+            case 0x4100:
+            {
+                // nothing to process; simply move onto first internal chunk
+                break;
+            }
+
+            case 0x4000: // EDIT_OBJECT
+            {
+                string s;
+                for (char c = modelFile.get(); c != '\0'; c = modelFile.get())
+                {
+                    s += c;
+                }
+                log3DS.addLine(s);
+                break;
+            }
+
+            case 0x4110: // TRI_VERTEXL
+            {
+                unsigned short numVertices;
+                readBytes(modelFile, numVertices);
+                for (unsigned short i = 0; i < numVertices; ++i)
+                {
+                    union {
+                        unsigned int raw;
+                        float result;
+                    } capture;
+
+                    stringstream ss;
+                    ss << "vertex #" << i << " :";
+
+                    for (unsigned short j = 0; j < 3; ++j)
+                    {
+                        readBytes(modelFile, capture.raw);
+                        ss << ' ' << capture.result;
+                    }
+                    log3DS.addLine(ss.str());
+                }
+                break;
+            }
+
+            case 0x4120: // TRI_FACEL1
+            {
+                unsigned short numIndices;
+                readBytes(modelFile, numIndices);
+                for (unsigned short i = 0; i < numIndices; ++i)
+                {
+                    stringstream ss;
+                    ss << "face #" << i << " :";
+                    for (unsigned short j = 0; j < 4; ++j)
+                    {
+                        unsigned short stuff;
+                        readBytes(modelFile, stuff);
+                        ss << ' ' << stuff;
+                    }
+                    log3DS.addLine(ss.str());
+                }
+                break;
+            }
+
+            default:
+            {
+                modelFile.ignore(dataSize);
+            }
+        }
+    }
+
+    modelFile.close();
+}
+
+void Model3D::loadOBJ(const char* inFile)
 {
     vector<GLuint> quadIndices;
     vector<GLuint> triangleIndices;
@@ -198,8 +340,4 @@ Model3D::Model3D(const char* inFile)
     }
 
     mModels[inFile] = this;
-}
-
-Model3D::~Model3D()
-{
 }
