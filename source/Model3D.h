@@ -64,15 +64,10 @@ class Model3D
         void loadOBJ(const char* inFile);
         void load3DS(const char* inFile);
 
-<<<<<<< .mine
         static map<string, Model3D*> mModels;
         static map<string, BoundingBox*> mBoundingBoxes;
-=======
         template<class T> static unsigned short readBytes(istream& inStream,
             T& inTarget);
-
-        static map<string, Model3D*> mModels;
->>>>>>> .r377
 
         PowerVBO mVBO;
 };

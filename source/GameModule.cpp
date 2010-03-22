@@ -32,7 +32,7 @@ GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
     mSunRotation = 0;
     mMoonRotation = 0;
 
-    Model3D* test = Model3D::load("tank_body.3ds");
+    Model3D* test = Model3D::load("cube.3ds");
 
     ifstream input;
     input.clear();
