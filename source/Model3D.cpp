@@ -19,6 +19,7 @@
 #include "LogFile.h"
 
 map<string, Model3D*> Model3D::mModels;
+map<string, BoundingBox*> Model3D::mBoundingBoxes;
 
 Model3D* Model3D::load(const char* inFile)
 {
@@ -198,6 +199,9 @@ void Model3D::loadOBJ(const char* inFile)
     vector<GLfloat> finalNormals;
     vector<GLfloat> textureCoords;
 
+    BoundingBox* bounds = new BoundingBox;
+    mBoundingBoxes[inFile] = bounds;
+
     string f("assets/models/");
     f += inFile;
 
@@ -219,15 +223,53 @@ void Model3D::loadOBJ(const char* inFile)
         string key;
         ss >> key;
 
-        //cout << "key = " << key << endl;
         if (key == "v")
         {
+            GLfloat p;
+            ss >> p;
+            vertices.push_back(p);
+
+            if (p < bounds->minX)
+            {
+                bounds->minX = p;
+            }
+            else if (p > bounds->maxX)
+            {
+                bounds->maxX = p;
+            }
+
+            ss >> p;
+            vertices.push_back(p);
+
+            if (p < bounds->minY)
+            {
+                bounds->minY = p;
+            }
+            else if (p > bounds->maxY)
+            {
+                bounds->maxY = p;
+            }
+
+            ss >> p;
+            vertices.push_back(p);
+
+            if (p < bounds->minZ)
+            {
+                bounds->minZ = p;
+            }
+            else if (p > bounds->maxZ)
+            {
+                bounds->maxZ = p;
+            }
+
+/*
             for (int i = 0; i < 3; ++i)
             {
                 GLfloat p;
                 ss >> p;
                 vertices.push_back(p);
             }
+            */
         }
         else if (key == "vn")
         {

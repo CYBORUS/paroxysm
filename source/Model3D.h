@@ -29,6 +29,26 @@
 #include <sstream>
 using namespace std;
 
+struct BoundingBox
+{
+    float minX;
+    float minY;
+    float minZ;
+    float maxX;
+    float maxY;
+    float maxZ;
+
+    BoundingBox()
+    {
+        minX = 2000000;
+        minY = 2000000;
+        minZ = 2000000;
+        maxX = -2000000;
+        maxY = -2000000;
+        maxZ = -2000000;
+    }
+};
+
 class Model3D
 {
     public:
@@ -44,10 +64,15 @@ class Model3D
         void loadOBJ(const char* inFile);
         void load3DS(const char* inFile);
 
+<<<<<<< .mine
+        static map<string, Model3D*> mModels;
+        static map<string, BoundingBox*> mBoundingBoxes;
+=======
         template<class T> static unsigned short readBytes(istream& inStream,
             T& inTarget);
 
         static map<string, Model3D*> mModels;
+>>>>>>> .r377
 
         PowerVBO mVBO;
 };
