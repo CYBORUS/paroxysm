@@ -203,7 +203,7 @@ void Model3D::loadOBJ(const char* inFile)
 
     Vector3D<GLfloat> currentColor;
 
-    map<string, Vector3D<GLfloat> > materialColors;
+    map<string, Vector3D<GLfloat>* > materialColors;
 
     bool useNormals = false; //determine if normals were in the file
     bool useTextures = false; //determine if textures coordinates were in the file
@@ -405,6 +405,7 @@ void Model3D::loadOBJ(const char* inFile)
                 exit(30);
             }
             string nextLine;
+                string nextMaterial;
             Vector3D<GLfloat> nextColor;
 
             getline(materials, nextLine);
@@ -415,7 +416,6 @@ void Model3D::loadOBJ(const char* inFile)
                 cerr << "current line: " << nextLine << "...\n";
                 stringstream buffer;
                 string subKey;
-                string nextMaterial;
                 bool foundNext = false;
 
                 buffer << nextLine;
@@ -438,9 +438,9 @@ void Model3D::loadOBJ(const char* inFile)
                 }
                 else if (subKey == "illum")
                 {
-                    cerr << "adding material...";
+                    cerr << "adding material " << nextMaterial << "...";
                     //if we hit this, we're ready to store the color
-                    materialColors[nextMaterial] = nextColor;
+                    materialColors[nextMaterial] = new Vector3D<GLfloat>(nextColor[0], nextColor[1], nextColor[2], nextColor[3]);
                     //nextColor = new Vector3D<GLfloat>;
                     cerr << "done." << endl;
                 }
@@ -453,7 +453,11 @@ void Model3D::loadOBJ(const char* inFile)
         {
             string currentMaterial;
             ss >> currentMaterial;
-            currentColor = materialColors[currentMaterial];
+
+            cerr << "loading material: " << currentMaterial << endl;
+            currentColor = *(materialColors[currentMaterial]);
+
+            cerr << "color: " << currentColor << endl;
 
             if (useAlpha)
             {
@@ -529,6 +533,14 @@ void Model3D::loadOBJ(const char* inFile)
         }
 
         mVBO.loadVertexArray(PVBO_COLOR, colorStride, colors.size(), &colors[0]);
+/*
+        cerr << "colors: " << endl;
+
+        for (int i = 0; i < colors.size(); ++i)
+        {
+            cerr << colors[i++] << ", " << colors[i++] << ", " << colors[i++] << ", " << colors[i] << endl;
+        }
+        */
     }
 
     if (triangleIndices.size() > 0)
