@@ -2,7 +2,6 @@ display width = 1024
 display height = 768
 full screen = 0
 mipmapping = 1
-vsync = 0
 bits per pixel = 24
 SDL_GL_RED_SIZE = -1
 SDL_GL_GREEN_SIZE = -1
@@ -19,5 +18,6 @@ SDL_GL_ACCUM_ALPHA_SIZE = -1
 SDL_GL_STEREO = -1
 SDL_GL_MULTISAMPLEBUFFERS = -1
 SDL_GL_MULTISAMPLESAMPLES = -1
+SDL_GL_SWAP_CONTROL = 0
 SDL_GL_ACCELERATED_VISUAL = -1
 

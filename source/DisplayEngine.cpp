@@ -303,6 +303,13 @@ void DisplayEngine::initialize()
             << SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, setting) << endl;
     }
 
+    setting = Config::get<int>("SDL_GL_SWAP_CONTROL", -1);
+    if (setting >= 0)
+    {
+        logStream << "SDL_GL_SWAP_CONTROL -- "
+            << SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, setting) << endl;
+    }
+
     setting = Config::get<int>("SDL_GL_ACCELERATED_VISUAL", -1);
     if (setting >= 0)
     {
@@ -372,6 +379,8 @@ void DisplayEngine::initialize()
     logStream << "SDL_GL_MULTISAMPLEBUFFERS : " << value << endl;
     SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &value);
     logStream << "SDL_GL_MULTISAMPLESAMPLES : " << value << endl;
+    SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &value);
+    logStream << "SDL_GL_SWAP_CONTROL : " << value << endl;
     SDL_GL_GetAttribute(SDL_GL_ACCELERATED_VISUAL, &value);
     logStream << "SDL_GL_ACCELERATED_VISUAL : " << value << endl;
     mLogFile.addLine(logStream.str());
@@ -389,13 +398,13 @@ void DisplayEngine::initialize()
     }
     #endif
 
-    int vsync = Config::get<int>("vsync", 0);
 
+/*
     if (GLEE_WGL_EXT_swap_control)
     {
         wglSwapIntervalEXT(vsync);
     }
-
+*/
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
