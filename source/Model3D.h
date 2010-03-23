@@ -66,6 +66,8 @@ class Model3D
 
         static map<string, Model3D*> mModels;
 
+        BoundingBox mBoundingBox;
+
         template<class T> static unsigned short readBytes(istream& inStream,
             T& inTarget);
 
