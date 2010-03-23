@@ -102,7 +102,7 @@ class GameModule : public Module
         float mMoonRotation;
 
         int mNumTanks;
-        Model3D* mTestModel;
+        //Model3D* mTestModel;
 
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;

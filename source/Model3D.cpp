@@ -19,7 +19,6 @@
 #include "LogFile.h"
 
 map<string, Model3D*> Model3D::mModels;
-map<string, BoundingBox*> Model3D::mBoundingBoxes;
 
 Model3D* Model3D::load(const char* inFile)
 {
@@ -195,12 +194,23 @@ void Model3D::loadOBJ(const char* inFile)
     vector<GLuint> normalWeirdTriangleIndices;
     vector<GLuint> normalWeirdQuadIndices;
     vector<GLfloat> vertices;
+    vector<GLfloat> colors;
     vector<GLfloat> normals;
     vector<GLfloat> finalNormals;
     vector<GLfloat> textureCoords;
 
+    ifstream materials;
+
+    Vector3D<GLfloat> currentColor;
+
+    map<string, Vector3D<GLfloat> > materialColors;
+
+    bool useNormals = false; //determine if normals were in the file
+    bool useTextures = false; //determine if textures coordinates were in the file
+    bool useColors = false; //are we using colors with this?
+    bool useAlpha = false; //if we have an alpha bit to push on with the current color
+
     BoundingBox* bounds = new BoundingBox;
-    mBoundingBoxes[inFile] = bounds;
 
     string f("assets/models/");
     f += inFile;
@@ -273,6 +283,7 @@ void Model3D::loadOBJ(const char* inFile)
         }
         else if (key == "vn")
         {
+            useNormals = true;
             Vector3D<GLfloat> v;
 
             for (int i = 0; i < 3; ++i) ss >> v[i];
@@ -283,6 +294,7 @@ void Model3D::loadOBJ(const char* inFile)
         }
         else if (key == "vt")
         {
+            useTextures = true;
             for (int i = 0; i < 2; ++i)
             {
                 GLfloat p;
@@ -294,17 +306,64 @@ void Model3D::loadOBJ(const char* inFile)
         {
             GLuint v[4];
             GLuint vn[4];
+            GLuint vt[4];
+            char slash;
 
             int i = 0; // keep the count outside the for loop
-            for (; i < 4 && !ss.fail() && !ss.eof(); ++i)
+
+            //there should always be at least 3 coordinates
+            for (; i < 3 && !ss.fail() && !ss.eof(); ++i)
             {
-                char slash;
-                ss >> v[i] >> slash >> slash >> vn[i];
+                ss >> v[i];
                 --v[i];
-                --vn[i];
+
+                if (useTextures && useNormals)
+                {
+                    ss >> slash >> vt[i] >> slash >> vn[i];
+                    --vt[i];
+                    --vn[i];
+                }
+                else if (useTextures)
+                {
+                    ss >> slash >> vt[i];
+                    --vt[i];
+
+                }
+                else if (useNormals)
+                {
+                    ss >> slash >> slash >> vn[i];
+                    --vn[i];
+                }
             }
 
-            i = 3; // overriding triangles only... quads are not working right
+            //now see if there's a fourth coordinate, defining a quad instead
+            //of a triangle
+            ss >> v[i];
+
+            if (!ss.fail())
+            {
+                if (useTextures && useNormals)
+                {
+                    ss >> slash >> vt[i] >> slash >> vn[i];
+                    --vt[i];
+                    --vn[i];
+                }
+                else if (useTextures)
+                {
+                    ss >> slash >> vt[i];
+                    --vt[i];
+
+                }
+                else if (useNormals)
+                {
+                    ss >> slash >> slash >> vn[i];
+                    --vn[i];
+                }
+
+                ++i;
+            }
+
+            //i = 3; // overriding triangles only... quads are not working right
             if (i == 3)
             {
                 triangleIndices.push_back(v[0]);
@@ -326,6 +385,96 @@ void Model3D::loadOBJ(const char* inFile)
                 normalWeirdQuadIndices.push_back(vn[1]);
                 normalWeirdQuadIndices.push_back(vn[2]);
                 normalWeirdQuadIndices.push_back(vn[3]);
+            }
+        }
+        else if (key == "mtllib")
+        {
+            cerr << "loading mtllib...";
+            useColors = true;
+
+            //run through the materials file and map all the materials we need
+            string materialsFile;
+            ss >> materialsFile;
+            materialsFile = "assets/models/" + materialsFile;
+
+            materials.open(materialsFile.c_str());
+
+            if (materials.fail())
+            {
+                cerr << "failed to load " << materialsFile << endl;
+                exit(30);
+            }
+            string nextLine;
+            Vector3D<GLfloat> nextColor;
+
+            getline(materials, nextLine);
+
+            cerr << "beginning file read...";
+            while (!materials.eof())
+            {
+                cerr << "current line: " << nextLine << "...\n";
+                stringstream buffer;
+                string subKey;
+                string nextMaterial;
+                bool foundNext = false;
+
+                buffer << nextLine;
+                buffer >> subKey;
+
+                if (subKey == "newmtl")
+                {
+                    buffer >> nextMaterial;
+                    cerr << "setting material " << nextMaterial << endl;
+                }
+                else if (subKey == "Kd")
+                {
+                    buffer >> nextColor[0] >> nextColor[1] >> nextColor[2];
+                    cerr << "setting color " << nextColor << endl;
+                }
+                else if (subKey == "d" || subKey == "Tr")
+                {
+                    useAlpha = true;
+                    buffer >> nextColor[3];
+                }
+                else if (subKey == "illum")
+                {
+                    cerr << "adding material...";
+                    //if we hit this, we're ready to store the color
+                    materialColors[nextMaterial] = nextColor;
+                    //nextColor = new Vector3D<GLfloat>;
+                    cerr << "done." << endl;
+                }
+
+                getline(materials, nextLine);
+            }
+            cerr << "done." << endl;
+        }
+        else if (key == "usemtl")
+        {
+            string currentMaterial;
+            ss >> currentMaterial;
+            currentColor = materialColors[currentMaterial];
+
+            if (useAlpha)
+            {
+                //if there's an alpha bit in our colors, this becomes a little
+                //more complicated
+                while (colors.size() < (vertices.size() / 3 * 4))
+                {
+                    colors.push_back(currentColor[0]);
+                    colors.push_back(currentColor[1]);
+                    colors.push_back(currentColor[2]);
+                    colors.push_back(currentColor[3]);
+                }
+            }
+            else
+            {
+                while (colors.size() < vertices.size())
+                {
+                    colors.push_back(currentColor[0]);
+                    colors.push_back(currentColor[1]);
+                    colors.push_back(currentColor[2]);
+                }
             }
         }
         else
@@ -368,6 +517,18 @@ void Model3D::loadOBJ(const char* inFile)
         }
 
         mVBO.loadVertexArray(PVBO_NORMAL, 3, normals.size(), &normals[0]);
+    }
+
+    if (colors.size() > 0)
+    {
+        int colorStride = 3;
+
+        if (useAlpha)
+        {
+            colorStride = 4;
+        }
+
+        mVBO.loadVertexArray(PVBO_COLOR, colorStride, colors.size(), &colors[0]);
     }
 
     if (triangleIndices.size() > 0)

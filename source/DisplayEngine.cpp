@@ -41,6 +41,7 @@ LogFile DisplayEngine::mLogFile("ogl");
 
 void DisplayEngine::start(Module* inModule)
 {
+
     if (inModule == NULL) return;
     Module* currentModule = inModule;
 
@@ -388,14 +389,12 @@ void DisplayEngine::initialize()
     }
     #endif
 
-    #ifdef __WIN32__
     int vsync = Config::get<int>("vsync", 0);
 
-    if (WGL_EXT_swap_control)
+    if (GLEE_WGL_EXT_swap_control)
     {
         wglSwapIntervalEXT(vsync);
     }
-    #endif
 
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

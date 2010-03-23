@@ -71,7 +71,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
-    mTestModel = Model3D::load("cube.obj");
+    //mTestModel = Model3D::load("cube.obj");
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
@@ -281,7 +281,7 @@ void GameModule::onLoop()
         glPushAttrib(GL_LIGHTING_BIT);
         {
             //glDisable(GL_LIGHTING);
-            mTestModel->display();
+            //mTestModel->display();
         }
         glPopAttrib();
     }

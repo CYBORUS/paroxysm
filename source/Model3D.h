@@ -65,7 +65,7 @@ class Model3D
         void load3DS(const char* inFile);
 
         static map<string, Model3D*> mModels;
-        static map<string, BoundingBox*> mBoundingBoxes;
+
         template<class T> static unsigned short readBytes(istream& inStream,
             T& inTarget);
 
