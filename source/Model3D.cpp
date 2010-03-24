@@ -285,12 +285,20 @@ void Model3D::loadOBJ(const char* inFile)
         else if (key == "vt")
         {
             useTextures = true;
-            for (int i = 0; i < 2; ++i)
-            {
+
                 GLfloat p;
                 ss >> p;
+
                 textureCoords.push_back(p);
-            }
+
+                ss >> p;
+
+                //we need to invert the y axis, we think this is because
+                //of sdl image
+                p = 1.0f - p;
+
+                textureCoords.push_back(p);
+
         }
         else if (key == "f")
         {
