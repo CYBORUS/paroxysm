@@ -97,16 +97,8 @@ template<class T>
 unsigned short Model3D::readBytes(istream& inStream, T& inTarget)
 {
     static const unsigned short size = sizeof(T);
-    char bytes[8]; // largest variable type is 8 bytes
-
+    char* bytes = (char*)(&inTarget);
     inStream.read(bytes, size);
-    inTarget = bytes[size - 1] & 0x00ff;
-    for (short i = size - 2; i >= 0; --i)
-    {
-        inTarget <<= 8;
-        inTarget |= bytes[i] & 0x00ff;
-    }
-
     return size;
 }
 
