@@ -48,7 +48,7 @@ void SoundEngine::initialize()
     mAudioRate = Config::get("audio rate", 22050);
     mAudioFormat = Config::get("audio format", AUDIO_S16SYS);
     mNumChannels = Config::get("audio channels", 2);
-    mAudioBufferSize = Config::get("audio bufferSize", 1024);
+    mAudioBufferSize = Config::get("audio buffer size", 1024);
 
 
 

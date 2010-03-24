@@ -225,17 +225,17 @@ void DisplayEngine::initialize()
 
     mMipmapping = Config::get<int>("mipmapping", 0);
 
-    #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
     mMask.red   = 0xff000000;
     mMask.green = 0x00ff0000;
     mMask.blue  = 0x0000ff00;
     mMask.alpha = 0x000000ff;
-    #else
+#else
     mMask.red   = 0x000000ff;
     mMask.green = 0x0000ff00;
     mMask.blue  = 0x00ff0000;
     mMask.alpha = 0xff000000;
-    #endif
+#endif
 
 
     Uint32 flags = SDL_OPENGL;
