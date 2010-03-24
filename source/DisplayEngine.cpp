@@ -198,124 +198,27 @@ void DisplayEngine::initialize()
     logStream << "setting SDL OpenGL settings (0 indicates success)" << endl
         << endl;
 
-    setting = Config::get<int>("SDL_GL_RED_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_RED_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_RED_SIZE, setting) << endl;
-    }
+    #define SET_SDL_SETTING(n) setting = Config::get<int>(#n, -1); \
+        if (setting >= 0) { logStream << #n << " -- " \
+            << SDL_GL_SetAttribute(n, setting) << endl; }
 
-    setting = Config::get<int>("SDL_GL_GREEN_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_GREEN_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_BLUE_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_BLUE_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_ALPHA_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_ALPHA_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_BUFFER_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_BUFFER_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_DOUBLEBUFFER", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_DOUBLEBUFFER -- "
-            << SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_DEPTH_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_DEPTH_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_STENCIL_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_STENCIL_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_ACCUM_RED_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_ACCUM_RED_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_ACCUM_GREEN_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_ACCUM_GREEN_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_ACCUM_BLUE_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_ACCUM_BLUE_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_ACCUM_ALPHA_SIZE", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_ACCUM_ALPHA_SIZE -- "
-            << SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_STEREO", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_STEREO -- "
-            << SDL_GL_SetAttribute(SDL_GL_STEREO, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_MULTISAMPLEBUFFERS", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_MULTISAMPLEBUFFERS -- "
-            << SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_MULTISAMPLESAMPLES", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_MULTISAMPLESAMPLES -- "
-            << SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_SWAP_CONTROL", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_SWAP_CONTROL -- "
-            << SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, setting) << endl;
-    }
-
-    setting = Config::get<int>("SDL_GL_ACCELERATED_VISUAL", -1);
-    if (setting >= 0)
-    {
-        logStream << "SDL_GL_ACCELERATED_VISUAL -- "
-            << SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, setting) << endl;
-    }
+    SET_SDL_SETTING(SDL_GL_RED_SIZE);
+    SET_SDL_SETTING(SDL_GL_GREEN_SIZE);
+    SET_SDL_SETTING(SDL_GL_BLUE_SIZE);
+    SET_SDL_SETTING(SDL_GL_ALPHA_SIZE);
+    SET_SDL_SETTING(SDL_GL_BUFFER_SIZE);
+    SET_SDL_SETTING(SDL_GL_DOUBLEBUFFER);
+    SET_SDL_SETTING(SDL_GL_DEPTH_SIZE);
+    SET_SDL_SETTING(SDL_GL_STENCIL_SIZE);
+    SET_SDL_SETTING(SDL_GL_ACCUM_RED_SIZE);
+    SET_SDL_SETTING(SDL_GL_ACCUM_GREEN_SIZE);
+    SET_SDL_SETTING(SDL_GL_ACCUM_BLUE_SIZE);
+    SET_SDL_SETTING(SDL_GL_ACCUM_ALPHA_SIZE);
+    SET_SDL_SETTING(SDL_GL_STEREO);
+    SET_SDL_SETTING(SDL_GL_MULTISAMPLEBUFFERS);
+    SET_SDL_SETTING(SDL_GL_MULTISAMPLESAMPLES);
+    SET_SDL_SETTING(SDL_GL_SWAP_CONTROL);
+    SET_SDL_SETTING(SDL_GL_ACCELERATED_VISUAL);
 
     int width = Config::get<int>("display width", 800);
     int height = Config::get<int>("display height", 600);
@@ -349,45 +252,31 @@ void DisplayEngine::initialize()
 
     int value;
 
-    SDL_GL_GetAttribute(SDL_GL_RED_SIZE, &value);
-    logStream << "SDL_GL_RED_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_GREEN_SIZE, &value);
-    logStream << "SDL_GL_GREEN_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_BLUE_SIZE, &value);
-    logStream << "SDL_GL_BLUE_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_ALPHA_SIZE, &value);
-    logStream << "SDL_GL_ALPHA_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_BUFFER_SIZE, &value);
-    logStream << "SDL_GL_BUFFER_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &value);
-    logStream << "SDL_GL_DOUBLEBUFFER : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &value);
-    logStream << "SDL_GL_DEPTH_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &value);
-    logStream << "SDL_GL_STENCIL_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_ACCUM_RED_SIZE, &value);
-    logStream << "SDL_GL_ACCUM_RED_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_ACCUM_GREEN_SIZE, &value);
-    logStream << "SDL_GL_ACCUM_GREEN_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_ACCUM_BLUE_SIZE, &value);
-    logStream << "SDL_GL_ACCUM_BLUE_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, &value);
-    logStream << "SDL_GL_ACCUM_ALPHA_SIZE : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_STEREO, &value);
-    logStream << "SDL_GL_STEREO : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_MULTISAMPLEBUFFERS, &value);
-    logStream << "SDL_GL_MULTISAMPLEBUFFERS : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &value);
-    logStream << "SDL_GL_MULTISAMPLESAMPLES : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &value);
-    logStream << "SDL_GL_SWAP_CONTROL : " << value << endl;
-    SDL_GL_GetAttribute(SDL_GL_ACCELERATED_VISUAL, &value);
-    logStream << "SDL_GL_ACCELERATED_VISUAL : " << value << endl;
+    #define GET_SDL_SETTING(n) SDL_GL_GetAttribute(n, &value); \
+        logStream << #n << " : " << value << endl;
+
+    GET_SDL_SETTING(SDL_GL_RED_SIZE);
+    GET_SDL_SETTING(SDL_GL_GREEN_SIZE);
+    GET_SDL_SETTING(SDL_GL_BLUE_SIZE);
+    GET_SDL_SETTING(SDL_GL_ALPHA_SIZE);
+    GET_SDL_SETTING(SDL_GL_BUFFER_SIZE);
+    GET_SDL_SETTING(SDL_GL_DOUBLEBUFFER);
+    GET_SDL_SETTING(SDL_GL_DEPTH_SIZE);
+    GET_SDL_SETTING(SDL_GL_STENCIL_SIZE);
+    GET_SDL_SETTING(SDL_GL_ACCUM_RED_SIZE);
+    GET_SDL_SETTING(SDL_GL_ACCUM_GREEN_SIZE);
+    GET_SDL_SETTING(SDL_GL_ACCUM_BLUE_SIZE);
+    GET_SDL_SETTING(SDL_GL_ACCUM_ALPHA_SIZE);
+    GET_SDL_SETTING(SDL_GL_STEREO);
+    GET_SDL_SETTING(SDL_GL_MULTISAMPLEBUFFERS);
+    GET_SDL_SETTING(SDL_GL_MULTISAMPLESAMPLES);
+    GET_SDL_SETTING(SDL_GL_SWAP_CONTROL);
+    GET_SDL_SETTING(SDL_GL_ACCELERATED_VISUAL);
     mLogFile.addLine(logStream.str());
 
     #ifndef __APPLE__
     // OSX does not support window icons
-    mWindowIcon = loadImage("./assets/images/icon.bmp");
+    mWindowIcon = loadImage("assets/images/icon.bmp");
     if (mWindowIcon != NULL)
     {
         SDL_WM_SetIcon(mWindowIcon, NULL);
@@ -396,15 +285,21 @@ void DisplayEngine::initialize()
     {
         cerr << "window icon failed" << endl;
     }
-    #endif
 
-
-/*
-    if (GLEE_WGL_EXT_swap_control)
+    if (mMipmapping == 1)
     {
-        wglSwapIntervalEXT(vsync);
+        if (GLEE_ARB_framebuffer_object || GLEE_EXT_framebuffer_object)
+        {
+            mLogFile.addLine("extension found -- using glGenerateMipmap");
+            mMipmapping = 3;
+        }
+        else
+        {
+            mLogFile.addLine("extension not found -- using SGI method");
+            mMipmapping = 2;
+        }
     }
-*/
+    #endif
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -553,10 +448,10 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     #ifndef __APPLE__
-    if ((mMipmapping == 2 || (!GLEE_ARB_framebuffer_object && !GLEE_EXT_framebuffer_object)) && mMipmapping != 3)
+    if (mMipmapping == 2)
     {
-        mLogFile.addLine("Mipmapping using older method.");
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+            GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
     }
     #endif
@@ -565,11 +460,11 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
     #ifndef __APPLE__
-    if ((mMipmapping == 1 && (GLEE_ARB_framebuffer_object || GLEE_EXT_framebuffer_object)) || mMipmapping == 3)
+    if (mMipmapping == 3)
     {
-        mLogFile.addLine("Mipmapping using fastest method.");
         glGenerateMipmap(GL_TEXTURE_2D);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+            GL_LINEAR_MIPMAP_LINEAR);
     }
     #endif
 
