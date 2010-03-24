@@ -573,19 +573,6 @@ void Model3D::loadOBJ(const char* inFile)
                 = finalNormals[normalWeirdTriangleIndices[i] * 3 + 2];
         }
 
-/*
-        for (unsigned int i = 0; i < normalWeirdQuadIndices.size(); ++i)
-        {
-            cerr << "yarr? " << i << " : " << quadIndices[i] << endl;
-            normals[quadIndices[i] * 3]
-                = finalNormals[normalWeirdQuadIndices[i] * 3];
-            normals[quadIndices[i] * 3 + 1]
-                = finalNormals[normalWeirdQuadIndices[i] * 3 + 1];
-            normals[quadIndices[i] * 3 + 2]
-                = finalNormals[normalWeirdQuadIndices[i] * 3 + 2];
-        }
-*/
-
         mVBO.loadVertexArray(PVBO_NORMAL, 3, normals.size(), &normals[0]);
     }
 
