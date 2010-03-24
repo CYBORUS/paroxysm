@@ -308,7 +308,7 @@ void GameModule::onFrame()
     mCamera.update();
     mSceneChanged = true;
 
-    mSunRotation += 0.1f;
+    mSunRotation += 0.0f;
     mMoonRotation += 0.1f;
     if (mSunRotation > 360.0f)
     {
