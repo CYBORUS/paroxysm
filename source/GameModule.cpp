@@ -71,7 +71,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
-    mTestModel = Model3D::load("simpleCube.obj");
+    mTestModel = Model3D::load("bradley.obj");
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 

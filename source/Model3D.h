@@ -20,6 +20,7 @@
 
 #include "PowerVBO.h"
 #include "Vector3D.h"
+#include "DisplayEngine.h"
 
 #include <string>
 #include <vector>
@@ -67,6 +68,7 @@ class Model3D
         static map<string, Model3D*> mModels;
 
         BoundingBox mBoundingBox;
+        GLuint mTexture;
 
         template<class T> static unsigned short readBytes(istream& inStream,
             T& inTarget);
@@ -76,7 +78,19 @@ class Model3D
 
 inline void Model3D::display()
 {
-    mVBO.display();
+    if (glIsTexture(mTexture))
+    {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mTexture);
+
+        mVBO.display();
+
+        glDisable(GL_TEXTURE_2D);
+    }
+    else
+    {
+        mVBO.display();
+    }
 }
 
 template<class T>

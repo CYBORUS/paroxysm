@@ -192,12 +192,14 @@ void Model3D::loadOBJ(const char* inFile)
     //vector<GLuint> quadIndices;
     vector<GLuint> triangleIndices;
     vector<GLuint> normalWeirdTriangleIndices;
+    vector<GLuint> textureWeirdTriangleIndices;
     //vector<GLuint> normalWeirdQuadIndices;
     vector<GLfloat> vertices;
     vector<GLfloat> colors;
     vector<GLfloat> normals;
     vector<GLfloat> finalNormals;
     vector<GLfloat> textureCoords;
+    vector<GLfloat> finalTexCoords;
 
 
     Vector3D<GLfloat> currentColor;
@@ -387,6 +389,10 @@ void Model3D::loadOBJ(const char* inFile)
             normalWeirdTriangleIndices.push_back(vn[1]);
             normalWeirdTriangleIndices.push_back(vn[2]);
 
+            textureWeirdTriangleIndices.push_back(vt[0]);
+            textureWeirdTriangleIndices.push_back(vt[1]);
+            textureWeirdTriangleIndices.push_back(vt[2]);
+
             //the face was a quad, we need to form a second triangle
             if (i == 4)
             {
@@ -419,6 +425,9 @@ void Model3D::loadOBJ(const char* inFile)
                 normalWeirdTriangleIndices.push_back(vn[2]);
                 normalWeirdTriangleIndices.push_back(vn[3]);
 
+                textureWeirdTriangleIndices.push_back(vt[0]);
+                textureWeirdTriangleIndices.push_back(vt[2]);
+                textureWeirdTriangleIndices.push_back(vt[3]);
 
                 /*
                 quadIndices.push_back(v[0]);
@@ -483,6 +492,17 @@ void Model3D::loadOBJ(const char* inFile)
                 {
                     //if we hit this, we're ready to store the color
                     materialColors[nextMaterial] = new Vector3D<GLfloat>(nextColor[0], nextColor[1], nextColor[2], nextColor[3]);
+                }
+                else if (subKey == "map_Kd")
+                {
+                    string texFile;
+                    buffer >> texFile;
+                    //cerr << "texture file: " << texFile << endl;
+                    //cerr << "base stringstream: " << buffer.str() << endl;
+                    texFile = "assets/images/models/" + texFile;
+                    glGenTextures(1, &mTexture);
+
+                    DisplayEngine::loadTexture(texFile.c_str(), mTexture);
                 }
 
                 getline(materialsFile, nextLine);
@@ -589,6 +609,22 @@ void Model3D::loadOBJ(const char* inFile)
         }
 
         mVBO.loadVertexArray(PVBO_COLOR, colorStride, colors.size(), &colors[0]);
+    }
+
+    if (textureCoords.size() > 0)
+    {
+        finalTexCoords.insert(finalTexCoords.begin(), textureCoords.begin(), textureCoords.end());
+        textureCoords.clear();
+        textureCoords.insert(textureCoords.begin(), vertices.size() / 3 * 2, 0.0f);
+
+        for (unsigned int i = 0; i < textureWeirdTriangleIndices.size(); ++i)
+        {
+            textureCoords[triangleIndices[i] * 2]
+                = finalTexCoords[textureWeirdTriangleIndices[i] * 2];
+            textureCoords[triangleIndices[i] * 2 + 1]
+                = finalTexCoords[textureWeirdTriangleIndices[i] * 2 + 1];
+        }
+        mVBO.loadVertexArray(PVBO_TEXTURE, 2, textureCoords.size(), &textureCoords[0]);
     }
 
     if (triangleIndices.size() > 0)
