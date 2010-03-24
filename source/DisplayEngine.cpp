@@ -282,6 +282,7 @@ void DisplayEngine::initialize()
     {
         cerr << "window icon failed" << endl;
     }
+    #endif
 
     if (mMipmapping == 1)
     {
@@ -296,7 +297,6 @@ void DisplayEngine::initialize()
             mMipmapping = 2;
         }
     }
-    #endif
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -387,6 +387,10 @@ void DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
                 inStream << "Table too large." << endl;
                 break;
             }
+            default:
+            {
+                inStream << "unknown error" << endl;
+            }
         }
 
         error = glGetError();
@@ -444,26 +448,22 @@ bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    #ifndef __APPLE__
     if (mMipmapping == 2)
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
             GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
     }
-    #endif
 
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, inSurface->w, inSurface->h,
         0, tFormat, GL_UNSIGNED_BYTE, inSurface->pixels);
 
-    #ifndef __APPLE__
     if (mMipmapping == 3)
     {
         glGenerateMipmap(GL_TEXTURE_2D);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
             GL_LINEAR_MIPMAP_LINEAR);
     }
-    #endif
 
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 

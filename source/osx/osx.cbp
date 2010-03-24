@@ -41,6 +41,7 @@
 			<Add library="lua" />
 			<Add library="boost_filesystem" />
 			<Add library="boost_system" />
+			<Add library="glee" />
 		</Linker>
 		<Unit filename="../Bullet.cpp" />
 		<Unit filename="../Bullet.h" />
