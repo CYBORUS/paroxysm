@@ -168,7 +168,7 @@ void GameModule::onInit()
     mMoon.setColor(0.8f, 0.8f, 1.0f);
     mMoon.setScale(5.0f, 5.0f, 5.0f);
 
-    mSunLight.ambient.set(0.1f);
+    mSunLight.ambient.set(1.0f);
 
     //glEnable(GL_LIGHT0);
     //glEnable(GL_LIGHT1);
