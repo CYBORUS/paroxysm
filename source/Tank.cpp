@@ -16,7 +16,7 @@
  */
 
 #include "Tank.h"
-#include "Model3D.h"
+#include "ModelStack.h"
 
 Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5),
     mHeadCenter(0.0, 0.75, 0.0), mHeadSize(0.75, 0.5, 0.75),
@@ -122,7 +122,7 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBody[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
 */
-    mBody = Model3D::load("bradley_body.obj");
+    mBody = ModelStack::load("bradley_body.obj");
 /*
     glBindBuffer(GL_ARRAY_BUFFER, mHead[VERTEX_DATA]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, baseRect, GL_STATIC_DRAW);
@@ -136,7 +136,7 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mHead[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
 */
-    mHead = Model3D::load("bradley_head.obj");
+    mHead = ModelStack::load("bradley_head.obj");
 
 /*
     glBindBuffer(GL_ARRAY_BUFFER, mTurret[VERTEX_DATA]);
@@ -151,7 +151,7 @@ Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTurret[INDEX_DATA]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mNumIndices, indices, GL_STATIC_DRAW);
 */
-    mTurret = Model3D::load("bradley_turret.obj");
+    mTurret = ModelStack::load("bradley_turret.obj");
 }
 
 Tank::~Tank()

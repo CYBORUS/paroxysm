@@ -50,22 +50,23 @@ struct BoundingBox
     }
 };
 
-class Model3D
+class ModelStack
 {
     public:
-        Model3D();
-        ~Model3D();
+        ModelStack();
+        ~ModelStack();
 
         void display();
 
-        static Model3D* load(const char* inFile);
+        static ModelStack* load(const char* inFile);
         static void unloadAll();
 
     private:
         void loadOBJ(const char* inFile);
         void load3DS(const char* inFile);
+        void loadM3D(const char* inFile);
 
-        static map<string, Model3D*> mModels;
+        static map<string, ModelStack*> mModels;
 
         BoundingBox mBoundingBox;
         GLuint mTexture;
@@ -76,7 +77,7 @@ class Model3D
         PowerVBO mVBO;
 };
 
-inline void Model3D::display()
+inline void ModelStack::display()
 {
     if (glIsTexture(mTexture))
     {
@@ -94,7 +95,7 @@ inline void Model3D::display()
 }
 
 template<class T>
-unsigned short Model3D::readBytes(istream& inStream, T& inTarget)
+unsigned short ModelStack::readBytes(istream& inStream, T& inTarget)
 {
     static const unsigned short size = sizeof(T);
     char* bytes = (char*)(&inTarget);

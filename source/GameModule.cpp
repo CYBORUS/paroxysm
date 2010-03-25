@@ -32,7 +32,7 @@ GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
     mSunRotation = 0;
     mMoonRotation = 0;
 
-    Model3D* test = Model3D::load("cube.3ds");
+    ModelStack* test = ModelStack::load("cube.3ds");
 
     ifstream input;
     input.clear();
@@ -71,7 +71,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
-    mTestModel = Model3D::load("bradley.obj");
+    mTestModel = ModelStack::load("bradley.obj");
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
@@ -168,7 +168,7 @@ void GameModule::onInit()
     mMoon.setColor(0.8f, 0.8f, 1.0f);
     mMoon.setScale(5.0f, 5.0f, 5.0f);
 
-    mSunLight.ambient.set(1.0f);
+    mSunLight.ambient.set(0.1f);
 
     //glEnable(GL_LIGHT0);
     //glEnable(GL_LIGHT1);
@@ -308,7 +308,7 @@ void GameModule::onFrame()
     mCamera.update();
     mSceneChanged = true;
 
-    mSunRotation += 0.0f;
+    mSunRotation += 0.1f;
     mMoonRotation += 0.1f;
     if (mSunRotation > 360.0f)
     {
@@ -373,7 +373,7 @@ void GameModule::onFrame()
 
 void GameModule::onCleanup()
 {
-    Model3D::unloadAll();
+    ModelStack::unloadAll();
 
     map<Tank*, Control*>::iterator itControls = mControls.begin();
 

@@ -15,14 +15,14 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Model3D.h"
+#include "ModelStack.h"
 #include "LogFile.h"
 
-map<string, Model3D*> Model3D::mModels;
+map<string, ModelStack*> ModelStack::mModels;
 
-Model3D* Model3D::load(const char* inFile)
+ModelStack* ModelStack::load(const char* inFile)
 {
-    map<string, Model3D*>::iterator i = mModels.find(inFile);
+    map<string, ModelStack*>::iterator i = mModels.find(inFile);
 
     if (i == mModels.end())
     {
@@ -30,7 +30,7 @@ Model3D* Model3D::load(const char* inFile)
         string s(inFile);
         s = s.substr(s.rfind('.') + 1);
 
-        Model3D* m = new Model3D;
+        ModelStack* m = new ModelStack;
 
         if (s == "obj")
         {
@@ -53,9 +53,9 @@ Model3D* Model3D::load(const char* inFile)
     return i->second;
 }
 
-void Model3D::unloadAll()
+void ModelStack::unloadAll()
 {
-    for (map<string, Model3D*>::iterator i = mModels.begin();
+    for (map<string, ModelStack*>::iterator i = mModels.begin();
         i != mModels.end(); ++i)
     {
         delete i->second;
@@ -64,15 +64,15 @@ void Model3D::unloadAll()
     mModels.clear();
 }
 
-Model3D::Model3D()
+ModelStack::ModelStack()
 {
 }
 
-Model3D::~Model3D()
+ModelStack::~ModelStack()
 {
 }
 
-void Model3D::load3DS(const char* inFile)
+void ModelStack::load3DS(const char* inFile)
 {
     //vector<GLfloat> vertices;
     //vector<GLfloat> indices; // all triangles
@@ -187,7 +187,7 @@ void Model3D::load3DS(const char* inFile)
     modelFile.close();
 }
 
-void Model3D::loadOBJ(const char* inFile)
+void ModelStack::loadOBJ(const char* inFile)
 {
     //vector<GLuint> quadIndices;
     vector<GLuint> triangleIndices;
@@ -437,17 +437,6 @@ void Model3D::loadOBJ(const char* inFile)
                 textureWeirdTriangleIndices.push_back(vt[2]);
                 textureWeirdTriangleIndices.push_back(vt[3]);
 
-                /*
-                quadIndices.push_back(v[0]);
-                quadIndices.push_back(v[1]);
-                quadIndices.push_back(v[2]);
-                quadIndices.push_back(v[3]);
-
-                normalWeirdQuadIndices.push_back(vn[0]);
-                normalWeirdQuadIndices.push_back(vn[1]);
-                normalWeirdQuadIndices.push_back(vn[2]);
-                normalWeirdQuadIndices.push_back(vn[3]);
-                */
             }
         }
         else if (key == "mtllib")
@@ -505,8 +494,7 @@ void Model3D::loadOBJ(const char* inFile)
                 {
                     string texFile;
                     buffer >> texFile;
-                    //cerr << "texture file: " << texFile << endl;
-                    //cerr << "base stringstream: " << buffer.str() << endl;
+
                     texFile = "assets/images/models/" + texFile;
                     glGenTextures(1, &mTexture);
 
@@ -628,12 +616,11 @@ void Model3D::loadOBJ(const char* inFile)
             &triangleIndices[0]);
     }
 
-/*
-    if (quadIndices.size() > 0)
-    {
-        mVBO.loadIndexArray(GL_QUADS, quadIndices.size(), &quadIndices[0]);
-    }
-    */
-
     mModels[inFile] = this;
+}
+
+
+
+void ModelStack::loadM3D(const char* inFile)
+{
 }

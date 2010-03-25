@@ -32,7 +32,7 @@
 #include <cstdlib>
 using namespace std;
 
-class Model3D;
+class ModelStack;
 
 class Tank : public Entity
 {
@@ -89,9 +89,9 @@ class Tank : public Entity
         GLuint mBaseRectIndices[24];
         GLsizei mNumIndices;
 
-        Model3D* mHead;
-        Model3D* mTurret;
-        Model3D* mBody;
+        ModelStack* mHead;
+        ModelStack* mTurret;
+        ModelStack* mBody;
 
         float mTurretAngle;
 
