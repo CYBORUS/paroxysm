@@ -40,6 +40,10 @@ ModelStack* ModelStack::load(const char* inFile)
         {
             m->load3DS(inFile);
         }
+        else if (s == "m3d")
+        {
+            m->loadM3D(inFile);
+        }
         else
         {
             cerr << "invalid 3D file extension -- " << s << endl;
