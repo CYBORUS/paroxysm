@@ -633,13 +633,11 @@ void ModelStack::loadM3D(const char* inFile)
 
     int size = m3d.getVertexArraySize();
     GLfloat* data = m3d.getVertexArray();
-    //GLfloat vertices[size] = m3d.getVertexArray();
 
     mVBO.loadVertexArray(PVBO_VERTEX, 3, size, data);
 
     size = m3d.getNormalArraySize();
     data = m3d.getNormalArray();
-    //GLfloat normals[size] = m3d.getNormalArray();
 
     mVBO.loadVertexArray(PVBO_NORMAL, 3, size, data);
 
@@ -647,7 +645,6 @@ void ModelStack::loadM3D(const char* inFile)
     if (size > 0)
     {
         data = m3d.getColorArray();
-        //GLfloat colors[size] = m3d.getColorArray();
         mVBO.loadVertexArray(PVBO_COLOR, 4, size, data);
     }
 
@@ -655,7 +652,6 @@ void ModelStack::loadM3D(const char* inFile)
     if (size > 0)
     {
         data = m3d.getTextureCoordinateArray();
-        //GLfloat textures[size] = m3d.getTextureCoordinateArray();
         mVBO.loadVertexArray(PVBO_TEXTURE, 2, size, data);
 
         glGenTextures(1, &mTexture);
@@ -668,6 +664,5 @@ void ModelStack::loadM3D(const char* inFile)
 
     size = m3d.getIndexArraySize();
     GLuint* indices = m3d.getIndexArray();
-    //GLuint indices[size] = m3d.getIndexArray();
     mVBO.loadIndexArray(GL_TRIANGLES, size, indices);
 }

@@ -51,6 +51,7 @@
 			<Add library="C:\dev\MingW\lib\boost\libboost_filesystem-mgw34-mt.lib" />
 			<Add library="C:\dev\MingW\lib\boost\libboost_system-mgw34-mt.lib" />
 			<Add library="lua51" />
+			<Add library="m3d" />
 		</Linker>
 		<Unit filename="..\Bullet.cpp" />
 		<Unit filename="..\Bullet.h" />
@@ -95,8 +96,9 @@
 		<Unit filename="..\MathEngine.cpp" />
 		<Unit filename="..\MathEngine.h" />
 		<Unit filename="..\Matrix.h" />
-		<Unit filename="..\Model3D.cpp" />
 		<Unit filename="..\Model3D.h" />
+		<Unit filename="..\ModelStack.cpp" />
+		<Unit filename="..\ModelStack.h" />
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />
 		<Unit filename="..\OGL.h" />
