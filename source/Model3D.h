@@ -32,6 +32,7 @@ namespace cyborus
             unsigned int getTextureCoordinateArraySize();
             unsigned int* getIndexArray();
             unsigned int getIndexArraySize();
+            const std::string& getTextureFile();
 
         private:
             Block<float> mVertices;
@@ -90,6 +91,11 @@ namespace cyborus
     inline unsigned int Model3D::getIndexArraySize()
     {
         return mIndices.size;
+    }
+
+    inline const std::string& Model3D::getTextureFile()
+    {
+        return mTextureFile;
     }
 }
 #endif
