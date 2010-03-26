@@ -18,6 +18,8 @@
 #include "ModelStack.h"
 #include "LogFile.h"
 
+#include "Model3D.h"
+
 map<string, ModelStack*> ModelStack::mModels;
 
 ModelStack* ModelStack::load(const char* inFile)
@@ -623,8 +625,7 @@ void ModelStack::loadOBJ(const char* inFile)
     mModels[inFile] = this;
 }
 
-
-
 void ModelStack::loadM3D(const char* inFile)
 {
+    cyborus::Model3D m3d(inFile);
 }

@@ -48,6 +48,7 @@
 			<Add library="boost_filesystem" />
 			<Add library="boost_system" />
 			<Add library="lua5.1" />
+			<Add library="m3d" />
 		</Linker>
 		<Unit filename="../Bullet.cpp" />
 		<Unit filename="../Bullet.h" />
@@ -92,8 +93,9 @@
 		<Unit filename="../MathEngine.cpp" />
 		<Unit filename="../MathEngine.h" />
 		<Unit filename="../Matrix.h" />
-		<Unit filename="../Model3D.cpp" />
 		<Unit filename="../Model3D.h" />
+		<Unit filename="../ModelStack.cpp" />
+		<Unit filename="../ModelStack.h" />
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
 		<Unit filename="../OGL.h" />
