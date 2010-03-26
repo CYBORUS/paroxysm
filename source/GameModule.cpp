@@ -32,7 +32,7 @@ GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
     mSunRotation = 0;
     mMoonRotation = 0;
 
-    ModelStack* test = ModelStack::load("cube.3ds");
+    //ModelStack* test = ModelStack::load("cube.3ds");
 
     ifstream input;
     input.clear();
@@ -71,7 +71,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
-    mTestModel = ModelStack::load("bradley.obj");
+    mTestModel = ModelStack::load("tank_body.m3d");
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
