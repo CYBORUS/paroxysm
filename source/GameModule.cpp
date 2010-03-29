@@ -182,6 +182,11 @@ void GameModule::onInit()
 
 void GameModule::onLoop()
 {
+    if (DisplayEngine::printErrors("gameModule onLoop beginning: "))
+    {
+        exit(30);
+    }
+
     CollisionEngine::checkCollisions();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -300,11 +305,19 @@ void GameModule::onLoop()
     glPopMatrix();
 
     mHUD.display();
+    if (DisplayEngine::printErrors("gameModule onLoop end: "))
+    {
+        exit(30);
+    }
 
 }
 
 void GameModule::onFrame()
 {
+    if (DisplayEngine::printErrors("gameModule onFrame beginning: "))
+    {
+        exit(30);
+    }
     mCamera.update();
     mSceneChanged = true;
 

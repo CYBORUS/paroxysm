@@ -342,9 +342,10 @@ Surface DisplayEngine::loadImage(const char* inFile)
     return outSurface;
 }
 
-void DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
+bool DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
 {
     GLenum error;
+    bool isError = false;
 
     error = glGetError();
 
@@ -353,11 +354,13 @@ void DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
     if (error != GL_NO_ERROR)
     {
         inStream << inMessage;
+        isError = true;
     }
 
     while (error != GL_NO_ERROR)
     {
         inStream << gluErrorString(error) << endl;
+        /*
         switch(error)
         {
             case GL_INVALID_ENUM:
@@ -400,9 +403,11 @@ void DisplayEngine::printErrors(const char* inMessage, ostream& inStream)
                 inStream << "unknown error" << endl;
             }
         }
+        */
 
         error = glGetError();
     }
+    return isError;
 }
 
 bool DisplayEngine::loadTexture(Surface inSurface, GLuint inTexture,

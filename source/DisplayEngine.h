@@ -72,10 +72,11 @@ class DisplayEngine
         static Surface mDisplay;
         static unsigned int mFPS;
 
+        static bool printErrors(const char* inMessage, ostream& inStream = mLogFile);
+
     private:
         static void cleanup();
 
-        static void printErrors(const char* inMessage, ostream& inStream);
 
         static Surface mWindowIcon;
         static SDL_Rect** mModes;
