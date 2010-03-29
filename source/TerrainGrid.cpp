@@ -50,8 +50,6 @@ void TerrainGrid::destroy()
 {
     if (mNumIndices > 0)
     {
-        save("last_terrain.txt");
-
         mNumIndices = 0;
         delete [] mVertices;
         delete [] mNormals;

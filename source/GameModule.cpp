@@ -27,7 +27,12 @@ TerrainGrid* GameModule::luaTG = NULL;
 GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
 {
     mNumTanks = 0;
-    string inFile = "assets/maps/";
+#ifdef __WIN32__
+    string inFile("assets/maps/");
+#else
+    string inFile(Config::getUserFolder());
+    inFile += "maps/";
+#endif
     inFile += inMapFile;
     mSunRotation = 0;
     mMoonRotation = 0;

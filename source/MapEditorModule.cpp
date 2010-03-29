@@ -214,7 +214,13 @@ void MapEditorModule::onFrame()
 
     if (mSaveBox->isLockedIn())
     {
+#ifdef __WIN32__
         string f("assets/maps/");
+#else
+        string f(Config::getUserFolder());
+        f += "maps/";
+#endif
+
         string s(mSaveBox->getText());
         if (s.length() < 1) return;
 
@@ -270,7 +276,13 @@ void MapEditorModule::setSize(int inX, int inY)
 
 void MapEditorModule::loadMapFile(const char* inFile)
 {
-    string base = "assets/maps/";
+#ifdef __WIN32__
+    string base("assets/maps/");
+#else
+    string base(Config::getUserFolder());
+    base += "maps/";
+#endif
+
     base += inFile;
     ifstream input(base.c_str());
 
