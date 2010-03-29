@@ -22,6 +22,7 @@
 #include "OGL.h"
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <boost/filesystem.hpp>
 
 #if SDL_IMAGE_PATCHLEVEL == 9
 // SDL_image 1.2.9 has a bug that prevents it from loading more than one image.
@@ -37,7 +38,7 @@ SDL_Rect** DisplayEngine::mModes = NULL;
 int DisplayEngine::mMipmapping = 0;
 ColorMask DisplayEngine::mMask;
 unsigned int DisplayEngine::mFPS = 0;
-LogFile DisplayEngine::mLogFile("ogl");
+LogFile DisplayEngine::mLogFile;
 
 void DisplayEngine::start(Module* inModule)
 {
@@ -124,8 +125,17 @@ void DisplayEngine::start(Module* inModule)
 
 void DisplayEngine::initialize()
 {
+    using namespace boost::filesystem;
+
     //delete any old log files
-    string logsDir = "assets/logs/";
+#ifdef __WIN32__
+    string logsDir("assets/logs/");
+#else
+    string logsDir(Config::getUserFolder());
+    logsDir += "logs";
+    create_directory(logsDir.c_str());
+    logsDir += '/';
+#endif
 
     if (is_directory(logsDir))
     {
@@ -133,14 +143,12 @@ void DisplayEngine::initialize()
         {
             if (is_regular_file(itr->status()))
             {
-                //delete any log files that are more than 10 seconds old
-                if (difftime(time(NULL), last_write_time(itr->path())) > 10)
-                {
-                    remove(itr->path());
-                }
+                remove(itr->path());
             }
         }
     }
+
+    mLogFile.start("ogl");
 
     putenv((char*)"SDL_VIDEO_CENTERED=1");
 
@@ -157,11 +165,11 @@ void DisplayEngine::initialize()
     }
 
 
-    #ifdef __WIN32__
+#ifdef __WIN32__
     // redirect output to screen (instead of text files)
     freopen("CON", "w", stdout);
     freopen("CON", "w", stderr);
-    #endif
+#endif
 
     // get available full screen modes
     mModes = SDL_ListModes(NULL, SDL_FULLSCREEN);
@@ -271,7 +279,7 @@ void DisplayEngine::initialize()
     GET_SDL_SETTING(SDL_GL_ACCELERATED_VISUAL);
     mLogFile.addLine(logStream.str());
 
-    #ifndef __APPLE__
+#ifndef __APPLE__
     // OSX does not support window icons
     mWindowIcon = loadImage("assets/images/icon.bmp");
     if (mWindowIcon != NULL)
@@ -282,7 +290,7 @@ void DisplayEngine::initialize()
     {
         cerr << "window icon failed" << endl;
     }
-    #endif
+#endif
 
     if (mMipmapping == 1)
     {
@@ -309,9 +317,9 @@ void DisplayEngine::initialize()
 
 void DisplayEngine::cleanup()
 {
-    #ifndef __APPLE__
+#ifndef __APPLE__
     SDL_FreeSurface(mWindowIcon);
-    #endif
+#endif
 
     TTF_Quit();
     SDL_Quit();

@@ -17,10 +17,17 @@
 
 #include "Config.h"
 
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 
 map<string, string> Config::mSettings;
+
+#ifndef __WIN32__
+string Config::mUserFolder(UNIX_HOME_FOLDER);
+#else
+string Config::mUserFolder;
+#endif
 
 void trim(string& inString)
 {
@@ -35,7 +42,14 @@ void trim(string& inString)
 
 void Config::initialize(int inArgc, char** inArgv)
 {
-    loadFromFile(inArgc > 1 ? inArgv[1] : "settings.txt");
+#ifndef __WIN32__
+    // UNIX home folder settings file
+    mUserFolder += "/.cyborus/paroxysm/";
+#endif
+
+    string settingsFile(mUserFolder);
+    settingsFile += "settings.txt";
+    loadFromFile(inArgc > 1 ? inArgv[1] : settingsFile.c_str());
 }
 
 void Config::loadFromFile(const char* inFile)

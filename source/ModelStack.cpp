@@ -83,7 +83,8 @@ void ModelStack::load3DS(const char* inFile)
     //vector<GLfloat> vertices;
     //vector<GLfloat> indices; // all triangles
 
-    LogFile log3DS("m3d");
+    LogFile log3DS;
+    log3DS.start("3ds");
 
     string f("assets/models/");
     f += inFile;
@@ -473,7 +474,7 @@ void ModelStack::loadOBJ(const char* inFile)
             {
                 stringstream buffer;
                 string subKey;
-                bool foundNext = false;
+                //bool foundNext = false;
 
                 buffer << nextLine;
                 buffer >> subKey;

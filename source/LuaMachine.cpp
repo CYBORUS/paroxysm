@@ -17,11 +17,12 @@
 
 #include "LuaMachine.h"
 
-LogFile LuaMachine::mLogFile("lua");
+LogFile LuaMachine::mLogFile;
 
 LuaMachine::LuaMachine() : mLuaState(luaL_newstate())
 {
     //luaL_openlibs(mLuaState); // massive security hole
+    mLogFile.start("lua");
 }
 
 LuaMachine::~LuaMachine()

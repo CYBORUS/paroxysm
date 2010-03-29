@@ -12,7 +12,6 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="settings-ubu64.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -23,7 +22,6 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="settings-ubu64.txt" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -34,6 +32,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-D__UNIX__" />
 			<Add directory="." />
 		</Compiler>
 		<Linker>

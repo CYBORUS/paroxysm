@@ -24,6 +24,10 @@
 #include <map>
 using namespace std;
 
+#ifndef __WIN32__
+#define UNIX_HOME_FOLDER getenv("HOME")
+#endif
+
 #define DEFAULT_VALUE ""
 
 class Config
@@ -31,6 +35,7 @@ class Config
     public:
         static void initialize(int inArgc, char** inArgv);
         static void loadFromFile(const char* inFile);
+        static const string& getUserFolder();
         static void outputSettings();
         static void outputSettings(ostream& inStream);
         static const char* getRaw(const char* inKey, const char* inDefault);
@@ -40,7 +45,13 @@ class Config
 
     private:
         static map<string, string> mSettings;
+        static string mUserFolder;
 };
+
+inline const string& Config::getUserFolder()
+{
+    return mUserFolder;
+}
 
 template<class T>
 T Config::get(const char* inKey, T inDefault)

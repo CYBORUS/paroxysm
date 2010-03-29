@@ -18,10 +18,6 @@
 #ifndef _LOGFILE_H_
 #define _LOGFILE_H_
 
-#include <boost/filesystem.hpp>
-using namespace boost::filesystem;
-
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -30,11 +26,12 @@ using namespace std;
 class LogFile
 {
     public:
-        LogFile(const char* inTitle);
+        LogFile();
         virtual ~LogFile();
 
         operator ofstream&();
 
+        void start(const char* inTitle);
         void addLine(const string& inText);
         void addLine(const char* inText);
 
