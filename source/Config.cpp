@@ -17,6 +17,8 @@
 
 #include "Config.h"
 
+#include <boost/filesystem.hpp>
+
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
@@ -44,6 +46,16 @@ void Config::initialize(int inArgc, char** inArgv)
 {
 #ifndef __WIN32__
     // UNIX home folder settings file
+    string s(UNIX_HOME_FOLDER);
+    s += "/.cyborus";
+    boost::filesystem::create_directory(s.c_str());
+    s += "/paroxysm";
+    boost::filesystem::create_directory(s.c_str());
+    string t(s);
+    s += "/logs";
+    boost::filesystem::create_directory(s.c_str());
+    t += "/maps";
+    boost::filesystem::create_directory(t.c_str());
     mUserFolder += "/.cyborus/paroxysm/";
 #endif
 

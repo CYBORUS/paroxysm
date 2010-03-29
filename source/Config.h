@@ -24,9 +24,7 @@
 #include <map>
 using namespace std;
 
-#ifndef __WIN32__
 #define UNIX_HOME_FOLDER getenv("HOME")
-#endif
 
 #define DEFAULT_VALUE ""
 
