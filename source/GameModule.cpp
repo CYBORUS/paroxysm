@@ -184,7 +184,7 @@ void GameModule::onLoop()
 {
     if (DisplayEngine::printErrors("gameModule onLoop beginning: "))
     {
-        exit(30);
+        //exit(30);
     }
 
     CollisionEngine::checkCollisions();
@@ -307,7 +307,7 @@ void GameModule::onLoop()
     mHUD.display();
     if (DisplayEngine::printErrors("gameModule onLoop end: "))
     {
-        exit(30);
+        //exit(30);
     }
 
 }
@@ -316,7 +316,7 @@ void GameModule::onFrame()
 {
     if (DisplayEngine::printErrors("gameModule onFrame beginning: "))
     {
-        exit(30);
+        //exit(30);
     }
     mCamera.update();
     mSceneChanged = true;
