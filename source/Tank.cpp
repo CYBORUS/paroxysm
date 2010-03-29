@@ -195,9 +195,6 @@ void Tank::onCollision(Entity* inCollidedWith)
 
 void Tank::display()
 {
-    //glEnableClientState(GL_NORMAL_ARRAY);
-    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
     //float a = 0.5;
     glPushMatrix();
     {
@@ -209,85 +206,7 @@ void Tank::display()
 
         glPushMatrix();
         {
-            //glScalef(mTankSize[0], mTankSize[1], mTankSize[2]);
-
-/*
-            glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-            glEnableClientState(GL_VERTEX_ARRAY);
-
-            glVertexPointer(3, GL_FLOAT, 0, mBaseRect);
-            //glNormalPointer(GL_FLOAT, 0, mBaseRectNormals);
-            //glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordinates);
-            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
-                mBaseRectIndices);
-            glPopClientAttrib();
-*/
-/*
-            //glBindTexture(GL_TEXTURE_2D, mTextureIndex);
-            glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-            glEnableClientState(GL_VERTEX_ARRAY);
-            glEnableClientState(GL_NORMAL_ARRAY);
-
-
-
-            //glVertexPointer(3, GL_FLOAT, 0, mBaseRect);
-
-            glBindBuffer(GL_ARRAY_BUFFER, mBody[VERTEX_DATA]);
-            glVertexPointer(3, GL_FLOAT, 0, 0);
-
-            glBindBuffer(GL_ARRAY_BUFFER, mBody[NORMAL_DATA]);
-            glNormalPointer(GL_FLOAT, 0, 0);
-
-            //glBindBuffer(GL_ARRAY_BUFFER, mBody[TEXTURE_DATA]);
-            //glTexCoordPointer(2, GL_FLOAT, 0, 0);
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBody[INDEX_DATA]);
-            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-*/
             mBody->display();
-
-
-/*
-            glBegin(GL_QUADS);
-            {
-                glNormal3f(0.0f, 0.0f, 1.0f);
-                glVertex3f(-a, -a, a);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, a, a);
-                glVertex3f(-a, a, a);
-
-                glNormal3f(1.0f, 0.0f, 0.0f);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, -a, -a);
-                glVertex3f(a, a, -a);
-                glVertex3f(a, a, a);
-
-                glNormal3f(0.0f, 0.0f, -1.0f);
-                glVertex3f(a, -a, -a);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(-a, a, -a);
-                glVertex3f(a, a, -a);
-
-                glNormal3f(-1.0f, 0.0f, 0.0f);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(-a, -a, a);
-                glVertex3f(-a, a, a);
-                glVertex3f(-a, a, -a);
-
-                glNormal3f(0.0f, 1.0f, 0.0f);
-                glVertex3f(-a, a, a);
-                glVertex3f(a, a, a);
-                glVertex3f(a, a, -a);
-                glVertex3f(-a, a, -a);
-
-                glNormal3f(0.0f, -1.0f, 0.0f);
-                glVertex3f(-a, -a, a);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(a, -a, -a);
-                glVertex3f(a, -a, a);
-            }
-            glEnd();
-*/
         }
         glPopMatrix();
 
@@ -296,67 +215,7 @@ void Tank::display()
 
         glPushMatrix();
         {
-            //glScalef(mHeadSize[0], mHeadSize[1], mHeadSize[2]);
-/*
-            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
-                mBaseRectIndices);
-*/
-/*
-            glBindBuffer(GL_ARRAY_BUFFER, mHead[VERTEX_DATA]);
-            glVertexPointer(3, GL_FLOAT, 0, 0);
-
-            glBindBuffer(GL_ARRAY_BUFFER, mHead[NORMAL_DATA]);
-            glNormalPointer(GL_FLOAT, 0, 0);
-
-            //glBindBuffer(GL_ARRAY_BUFFER, mHead[TEXTURE_DATA]);
-            //glTexCoordPointer(2, GL_FLOAT, 0, 0);
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mHead[INDEX_DATA]);
-            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-*/
             mHead->display();
-
-/*
-            glBegin(GL_QUADS);
-            {
-                glNormal3f(0.0f, 0.0f, 1.0f);
-                glVertex3f(-a, -a, a);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, a, a);
-                glVertex3f(-a, a, a);
-
-                glNormal3f(1.0f, 0.0f, 0.0f);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, -a, -a);
-                glVertex3f(a, a, -a);
-                glVertex3f(a, a, a);
-
-                glNormal3f(0.0f, 0.0f, -1.0f);
-                glVertex3f(a, -a, -a);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(-a, a, -a);
-                glVertex3f(a, a, -a);
-
-                glNormal3f(-1.0f, 0.0f, 0.0f);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(-a, -a, a);
-                glVertex3f(-a, a, a);
-                glVertex3f(-a, a, -a);
-
-                glNormal3f(0.0f, 1.0f, 0.0f);
-                glVertex3f(-a, a, a);
-                glVertex3f(a, a, a);
-                glVertex3f(a, a, -a);
-                glVertex3f(-a, a, -a);
-
-                glNormal3f(0.0f, -1.0f, 0.0f);
-                glVertex3f(-a, -a, a);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(a, -a, -a);
-                glVertex3f(a, -a, a);
-            }
-            glEnd();
-*/
         }
         glPopMatrix();
 
@@ -364,107 +223,12 @@ void Tank::display()
 
         glPushMatrix();
         {
-            //glScalef(mTurretSize[0], mTurretSize[1], mTurretSize[2]);
-/*
-            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT,
-                mBaseRectIndices);
-*/
-/*
-            glBindBuffer(GL_ARRAY_BUFFER, mTurret[VERTEX_DATA]);
-            glVertexPointer(3, GL_FLOAT, 0, 0);
-
-            glBindBuffer(GL_ARRAY_BUFFER, mTurret[NORMAL_DATA]);
-            glNormalPointer(GL_FLOAT, 0, 0);
-
-            //glBindBuffer(GL_ARRAY_BUFFER, mTurret[TEXTURE_DATA]);
-            //glTexCoordPointer(2, GL_FLOAT, 0, 0);
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTurret[INDEX_DATA]);
-            glDrawElements(GL_QUADS, mNumIndices, GL_UNSIGNED_INT, 0);
-*/
             mTurret->display();
-
-/*
-            glBegin(GL_QUADS);
-            {
-                glNormal3f(0.0f, 0.0f, 1.0f);
-                glVertex3f(-a, -a, a);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, a, a);
-                glVertex3f(-a, a, a);
-
-                glNormal3f(1.0f, 0.0f, 0.0f);
-                glVertex3f(a, -a, a);
-                glVertex3f(a, -a, -a);
-                glVertex3f(a, a, -a);
-                glVertex3f(a, a, a);
-
-                glNormal3f(0.0f, 0.0f, -1.0f);
-                glVertex3f(a, -a, -a);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(-a, a, -a);
-                glVertex3f(a, a, -a);
-
-                glNormal3f(-1.0f, 0.0f, 0.0f);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(-a, -a, a);
-                glVertex3f(-a, a, a);
-                glVertex3f(-a, a, -a);
-
-                glNormal3f(0.0f, 1.0f, 0.0f);
-                glVertex3f(-a, a, a);
-                glVertex3f(a, a, a);
-                glVertex3f(a, a, -a);
-                glVertex3f(-a, a, -a);
-
-                glNormal3f(0.0f, -1.0f, 0.0f);
-                glVertex3f(-a, -a, a);
-                glVertex3f(-a, -a, -a);
-                glVertex3f(a, -a, -a);
-                glVertex3f(a, -a, a);
-            }
-            glEnd();
-*/
-            glPopClientAttrib();
         }
         glPopMatrix();
     }
     glPopMatrix();
 
-
-/*
-            mSphere.moveSphere(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
-            //glTranslatef(mTransformedFrontLeftControl[0], mTransformedFrontLeftControl[1], mTransformedFrontLeftControl[2]);
-            //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
-            //glScalef(10.0f, 10.0f, 10.0f);
-            mSphere.setColor(1.0, 1.0, 1.0);
-            mSphere.display();
-
-            mSphere.moveSphere(mTransformedFrontRightControl[0], mTransformedFrontRightControl[1], mTransformedFrontRightControl[2]);
-            //glTranslatef(mTransformedFrontRightControl[0], mTransformedFrontRightControl[1], mTransformedFrontRightControl[2]);
-            //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
-            //glScalef(10.0f, 10.0f, 10.0f);
-            mSphere.setColor(1.0f, 0.0f, 0.0f);
-            mSphere.display();
-
-            mSphere.moveSphere(mTransformedBackLeftControl[0], mTransformedBackLeftControl[1], mTransformedBackLeftControl[2]);
-            //glTranslatef(mTransformedBackLeftControl[0], mTransformedBackLeftControl[1], mTransformedBackLeftControl[2]);
-            //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
-            //glScalef(10.0f, 10.0f, 10.0f);
-            mSphere.setColor(0.0, 1.0, 0.0);
-            mSphere.display();
-
-            mSphere.moveSphere(mTransformedBackRightControl[0], mTransformedBackRightControl[1], mTransformedBackRightControl[2]);
-            //glTranslatef(mTransformedBackRightControl[0], mTransformedBackRightControl[1], mTransformedBackRightControl[2]);
-            //glRotatef(mRotation[1], 0.0f, 1.0f, 0.0f);
-            //glScalef(10.0f, 10.0f, 10.0f);
-            mSphere.setColor(0.0, 0.0, 1.0);
-            mSphere.display();
-*/
-
-    //cerr << "transformed front left: " << mTransformedFrontLeftControl << endl;
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void Tank::rotateTurret(float inRotation)

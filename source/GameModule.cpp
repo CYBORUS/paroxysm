@@ -192,116 +192,118 @@ void GameModule::onLoop()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
-    mCamera.transform();
-
-
-    if (mSceneChanged)
     {
-        glGetDoublev(GL_MODELVIEW_MATRIX, mModelView.array());
-        mSceneChanged = false;
-    }
+        mCamera.transform();
 
-    glPushMatrix();
-    {
-        glTranslatef(mSunLight.position[0], 0.0f, mSunLight.position[2]);
-        glRotatef(mSunRotation, 0.0f, 0.0f, 1.0f);
-        glTranslatef(0.0f, mSunLight.position[1], 0.0f);
 
-        if (mSunRotation <= 100.0f || mSunRotation >= 260.0f)
+        if (mSceneChanged)
         {
-            if (!mLights[0])
+            glGetDoublev(GL_MODELVIEW_MATRIX, mModelView.array());
+            mSceneChanged = false;
+        }
+
+        glPushMatrix();
+        {
+            glTranslatef(mSunLight.position[0], 0.0f, mSunLight.position[2]);
+            glRotatef(mSunRotation, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, mSunLight.position[1], 0.0f);
+
+            if (mSunRotation <= 100.0f || mSunRotation >= 260.0f)
             {
-                mLights[0] = true;
-                glEnable(GL_LIGHT0);
+                if (!mLights[0])
+                {
+                    mLights[0] = true;
+                    glEnable(GL_LIGHT0);
+                }
+                //glLightfv(GL_LIGHT0, GL_AMBIENT, mSunLight.ambient.array());
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, mSunLight.diffuse.array());
+                glLightfv(GL_LIGHT0, GL_SPECULAR, mSunLight.specular.array());
+                glLightfv(GL_LIGHT0, GL_POSITION, Vector3D<float>().array());
             }
-            //glLightfv(GL_LIGHT0, GL_AMBIENT, mSunLight.ambient.array());
-            glLightfv(GL_LIGHT0, GL_DIFFUSE, mSunLight.diffuse.array());
-            glLightfv(GL_LIGHT0, GL_SPECULAR, mSunLight.specular.array());
-            glLightfv(GL_LIGHT0, GL_POSITION, Vector3D<float>().array());
-        }
-        else
-        {
-            if (mLights[0])
+            else
             {
-                mLights[0] = false;
-                glDisable(GL_LIGHT0);
+                if (mLights[0])
+                {
+                    mLights[0] = false;
+                    glDisable(GL_LIGHT0);
+                }
             }
-        }
 
 
-        glPushAttrib(GL_LIGHTING_BIT);
-        {
-            glDisable(GL_LIGHTING);
-            //glScalef(10.0f, 10.0f, 10.0f);
-            mSun.display();
-
-        }
-        glPopAttrib();
-
-    }
-    glPopMatrix();
-
-    glPushMatrix();
-    {
-        glTranslatef(mMoonLight.position[0], 0.0f, mMoonLight.position[2]);
-        glRotatef(mSunRotation, 0.0f, 0.0f, 1.0f);
-        glTranslatef(0.0f, mMoonLight.position[1], 0.0f);
-
-        if (mSunRotation > 80.0f && mSunRotation < 280.0f)
-        {
-            if (!mLights[1])
+            glPushAttrib(GL_LIGHTING_BIT);
             {
-                mLights[1] = true;
-                glEnable(GL_LIGHT1);
+                glDisable(GL_LIGHTING);
+                //glScalef(10.0f, 10.0f, 10.0f);
+                mSun.display();
+
             }
-            glLightfv(GL_LIGHT1, GL_DIFFUSE, mMoonLight.diffuse.array());
-            glLightfv(GL_LIGHT1, GL_SPECULAR, mMoonLight.specular.array());
-            glLightfv(GL_LIGHT1, GL_POSITION, Vector3D<float>().array());
+            glPopAttrib();
+
         }
-        else
+        glPopMatrix();
+
+        glPushMatrix();
         {
-            if (mLights[1])
+            glTranslatef(mMoonLight.position[0], 0.0f, mMoonLight.position[2]);
+            glRotatef(mSunRotation, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, mMoonLight.position[1], 0.0f);
+
+            if (mSunRotation > 80.0f && mSunRotation < 280.0f)
             {
-                mLights[1] = false;
-                glDisable(GL_LIGHT1);
+                if (!mLights[1])
+                {
+                    mLights[1] = true;
+                    glEnable(GL_LIGHT1);
+                }
+                glLightfv(GL_LIGHT1, GL_DIFFUSE, mMoonLight.diffuse.array());
+                glLightfv(GL_LIGHT1, GL_SPECULAR, mMoonLight.specular.array());
+                glLightfv(GL_LIGHT1, GL_POSITION, Vector3D<float>().array());
             }
-        }
+            else
+            {
+                if (mLights[1])
+                {
+                    mLights[1] = false;
+                    glDisable(GL_LIGHT1);
+                }
+            }
 
-        glPushAttrib(GL_LIGHTING_BIT);
+            glPushAttrib(GL_LIGHTING_BIT);
+            {
+                glDisable(GL_LIGHTING);
+                //glScalef(10.0f, 10.0f, 10.0f);
+                mMoon.display();
+
+            //mTestModel->display();
+            }
+            glPopAttrib();
+
+        }
+        glPopMatrix();
+        glPushMatrix();
         {
-            glDisable(GL_LIGHTING);
-            //glScalef(10.0f, 10.0f, 10.0f);
-            mMoon.display();
-
-        //mTestModel->display();
+            glTranslatef(10.0f, 1.0f, 10.0f);
+            glPushAttrib(GL_LIGHTING_BIT);
+            {
+                //glDisable(GL_LIGHTING);
+                mTestModel->display();
+            }
+            glPopAttrib();
         }
-        glPopAttrib();
+        glPopMatrix();
 
-    }
-    glPopMatrix();
+        mTerrain.display();
+DisplayEngine::printErrors("gameModule onLoop middle one: ");
 
-    glPushMatrix();
-    {
-        glTranslatef(10.0f, 1.0f, 10.0f);
-        glPushAttrib(GL_LIGHTING_BIT);
+
+        list<Entity*>::iterator itEntities = mEntities.begin();
+        for (; itEntities != mEntities.end(); ++itEntities)
         {
-            //glDisable(GL_LIGHTING);
-            mTestModel->display();
+            (*itEntities)->display();
         }
-        glPopAttrib();
+DisplayEngine::printErrors("gameModule onLoop middle two: ");
+
     }
-    glPopMatrix();
-
-    mTerrain.display();
-
-
-    list<Entity*>::iterator itEntities = mEntities.begin();
-    for (; itEntities != mEntities.end(); ++itEntities)
-    {
-        (*itEntities)->display();
-    }
-
-
     glPopMatrix();
 
     mHUD.display();
