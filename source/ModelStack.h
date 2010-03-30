@@ -64,7 +64,7 @@ class ModelStack
     private:
         void loadOBJ(const char* inFile);
         void load3DS(const char* inFile);
-        void loadM3D(const char* inFile);
+        void loadC3M(const char* inFile);
 
         static map<string, ModelStack*> mModels;
 

@@ -42,9 +42,9 @@ ModelStack* ModelStack::load(const char* inFile)
         {
             m->load3DS(inFile);
         }
-        else if (s == "m3d")
+        else if (s == "c3m")
         {
-            m->loadM3D(inFile);
+            m->loadC3M(inFile);
         }
         else
         {
@@ -626,7 +626,7 @@ void ModelStack::loadOBJ(const char* inFile)
     mModels[inFile] = this;
 }
 
-void ModelStack::loadM3D(const char* inFile)
+void ModelStack::loadC3M(const char* inFile)
 {
     string file = "assets/models/";
     file += inFile;

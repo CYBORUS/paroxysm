@@ -76,7 +76,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
-    mTestModel = ModelStack::load("tank_body.m3d");
+    mTestModel = ModelStack::load("tank_body.c3m");
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
@@ -187,11 +187,6 @@ void GameModule::onInit()
 
 void GameModule::onLoop()
 {
-    if (DisplayEngine::printErrors("gameModule onLoop beginning: "))
-    {
-        //exit(30);
-    }
-
     CollisionEngine::checkCollisions();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -298,33 +293,21 @@ void GameModule::onLoop()
         glPopMatrix();
 
         mTerrain.display();
-DisplayEngine::printErrors("gameModule onLoop middle one: ");
-
 
         list<Entity*>::iterator itEntities = mEntities.begin();
         for (; itEntities != mEntities.end(); ++itEntities)
         {
             (*itEntities)->display();
         }
-DisplayEngine::printErrors("gameModule onLoop middle two: ");
 
     }
     glPopMatrix();
 
     mHUD.display();
-    if (DisplayEngine::printErrors("gameModule onLoop end: "))
-    {
-        //exit(30);
-    }
-
 }
 
 void GameModule::onFrame()
 {
-    if (DisplayEngine::printErrors("gameModule onFrame beginning: "))
-    {
-        //exit(30);
-    }
     mCamera.update();
     mSceneChanged = true;
 
