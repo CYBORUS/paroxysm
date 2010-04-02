@@ -15,7 +15,7 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
- #include <CYBORUS/ModelC3M.h>
+#include <CYBORUS/ModelC3M.h>
 
 #include "ModelStack.h"
 #include "LogFile.h"

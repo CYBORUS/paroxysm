@@ -76,7 +76,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
-    mTestModel = ModelStack::load("tank_body.c3m");
+    mTestModel = ModelStack::load("05military-abrams-tank.c3m");
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
@@ -282,7 +282,9 @@ void GameModule::onLoop()
         glPopMatrix();
         glPushMatrix();
         {
-            glTranslatef(10.0f, 1.0f, 10.0f);
+            glTranslatef(10.0f, 10.0f, 10.0f);
+            glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+            glScalef(0.1f, 0.1f, 0.1f);
             glPushAttrib(GL_LIGHTING_BIT);
             {
                 //glDisable(GL_LIGHTING);
