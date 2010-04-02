@@ -27,6 +27,7 @@ using namespace std;
 #define PVBO_NORMAL  0x0002
 #define PVBO_TEXTURE 0x0004
 #define PVBO_COLOR   0x0008
+#define PVBO_COLOR2  0x0010
 
 struct PowerVertexArray
 {

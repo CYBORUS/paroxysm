@@ -72,6 +72,7 @@ void PowerVBO::display()
     if (mTypes & PVBO_NORMAL ) glEnableClientState(GL_NORMAL_ARRAY);
     if (mTypes & PVBO_TEXTURE) glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     if (mTypes & PVBO_COLOR  ) glEnableClientState(GL_COLOR_ARRAY);
+    if (mTypes & PVBO_COLOR2 ) glEnableClientState(GL_SECONDARY_COLOR_ARRAY);
 
     for (unsigned int i = 0; i < mVertices.size(); ++i)
     {
@@ -100,6 +101,12 @@ void PowerVBO::display()
             case PVBO_COLOR:
             {
                 glColorPointer(pva.valuesPerVertex, GL_FLOAT, 0, 0);
+                break;
+            }
+
+            case PVBO_COLOR2:
+            {
+                glSecondaryColorPointer(pva.valuesPerVertex, GL_FLOAT, 0, 0);
                 break;
             }
 
