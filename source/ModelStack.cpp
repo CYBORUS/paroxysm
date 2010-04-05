@@ -15,7 +15,7 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <CYBORUS/ModelC3M.h>
+#include <CYBORUS/c3m.h>
 
 #include "ModelStack.h"
 #include "LogFile.h"
@@ -630,40 +630,47 @@ void ModelStack::loadC3M(const char* inFile)
 {
     string file = "assets/models/";
     file += inFile;
-    cyborus::ModelC3M c3m(file.c_str());
+    c3mModel* c3m = c3mOpen(file.c_str());
+    if (c3mError)
+    {
+        DisplayEngine::printErrors("c3m loader error");
+        return;
+    }
 
-    int size = c3m.getVertexArraySize();
-    GLfloat* data = c3m.getVertexArray();
+    int size = c3m->vertices.size;
+    GLfloat* data = c3m->vertices.array;
 
     mVBO.loadVertexArray(PVBO_VERTEX, 3, size, data);
 
-    size = c3m.getNormalArraySize();
-    data = c3m.getNormalArray();
+    size = c3m->normals.size;
+    data = c3m->normals.array;
 
     mVBO.loadVertexArray(PVBO_NORMAL, 3, size, data);
 
-    size = c3m.getColorArraySize();
+    size = c3m->colors.size;
     if (size > 0)
     {
-        data = c3m.getColorArray();
+        data = c3m->colors.array;
         mVBO.loadVertexArray(PVBO_COLOR, 4, size, data);
     }
 
-    size = c3m.getTextureCoordinateArraySize();
+    size = c3m->textureCoordinates.size;
     if (size > 0)
     {
-        data = c3m.getTextureCoordinateArray();
+        data = c3m->textureCoordinates.array;
         mVBO.loadVertexArray(PVBO_TEXTURE, 2, size, data);
 
         glGenTextures(1, &mTexture);
 
         string texFile = "assets/images/models/";
-        texFile += c3m.getTextureFile();
+        texFile += c3m->textureFile;
 
         DisplayEngine::loadTexture(texFile.c_str(), mTexture);
     }
 
-    size = c3m.getIndexArraySize();
-    GLuint* indices = c3m.getIndexArray();
+    size = c3m->indices.size;
+    GLuint* indices = c3m->indices.array;
     mVBO.loadIndexArray(GL_TRIANGLES, size, indices);
+
+    c3mClose(c3m);
 }
