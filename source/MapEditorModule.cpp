@@ -333,8 +333,15 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
     else
     {
         int closestRow = int(tempZ + 0.5);
-
+        if (closestRow >= numRows)
+        {
+            closestRow = numRows - 1;
+        }
         int closestColumn = int(tempX + 0.5);
+        if (closestColumn >= numCols)
+        {
+            closestColumn = numCols - 1;
+        }
 
         currentVertex = mTerrainGrid.getVertex(closestRow, closestColumn);
     }
