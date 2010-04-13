@@ -35,6 +35,7 @@ class TSphere
         void moveSphere(float inX, float inY, float inZ);
         void setColor(float inR, float inG, float inB);
         void setScale(float inX, float inY, float inZ);
+        const Vector3D<float>& getTranslation();
 
     private:
         void swapColor();
@@ -56,5 +57,10 @@ class TSphere
         vector<GLuint> mIndices;
         vector<GLfloat> mVertices;
 };
+
+inline const Vector3D<float>& TSphere::getTranslation()
+{
+    return mTranslation;
+}
 
 #endif
