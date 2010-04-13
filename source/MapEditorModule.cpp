@@ -326,22 +326,15 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
     int numRows = mTerrainGrid.getMatrix().rows();
     int numCols = mTerrainGrid.getMatrix().cols();
 
-    if (tempZ >= numRows || tempZ < 0)
+    if (tempZ >= numRows || tempZ < 0 || tempX >= numCols || tempX < 0)
     {
         currentVertex = mSphere.getTranslation();
     }
     else
     {
         int closestRow = int(tempZ + 0.5);
-        if (closestRow >= numRows)
-        {
-            closestRow = numRows - 1;
-        }
+
         int closestColumn = int(tempX + 0.5);
-        if (closestColumn >= numCols)
-        {
-            closestColumn = numCols;
-        }
 
         currentVertex = mTerrainGrid.getVertex(closestRow, closestColumn);
     }
