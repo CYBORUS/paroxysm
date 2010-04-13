@@ -323,16 +323,15 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
         cerr << "gluUnProject failed." << endl;
     }
 
-    Vector3D<float> clickPoint(tempX, tempY, tempZ);
-    Vector3D<float> startVertex = mTerrainGrid.getVertex(0, 0);
-    currentVertex = startVertex;
+    int numRows = mTerrainGrid.getMatrix().rows();
+    int numCols = mTerrainGrid.getMatrix().cols();
 
-    if (tempZ >= 0)
+    if (tempZ >= numRows || tempZ < 0)
     {
-
-        int numRows = mTerrainGrid.getMatrix().rows();
-        int numCols = mTerrainGrid.getMatrix().cols();
-
+        currentVertex = mSphere.getTranslation();
+    }
+    else
+    {
         int closestRow = int(tempZ + 0.5);
         if (closestRow >= numRows)
         {
@@ -345,10 +344,6 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
         }
 
         currentVertex = mTerrainGrid.getVertex(closestRow, closestColumn);
-    }
-    else
-    {
-        currentVertex = mSphere.getTranslation();
     }
 
     //return mTerrainGrid.getVertex(closestRow, closestColumn);
