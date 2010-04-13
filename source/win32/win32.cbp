@@ -51,7 +51,7 @@
 			<Add library="C:\dev\MingW\lib\boost\libboost_filesystem-mgw34-mt.lib" />
 			<Add library="C:\dev\MingW\lib\boost\libboost_system-mgw34-mt.lib" />
 			<Add library="lua51" />
-			<Add library="m3d" />
+			<Add library="c3mloader" />
 		</Linker>
 		<Unit filename="..\Bullet.cpp" />
 		<Unit filename="..\Bullet.h" />

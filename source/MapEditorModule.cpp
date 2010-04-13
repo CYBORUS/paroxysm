@@ -330,49 +330,8 @@ Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
     int numRows = mTerrainGrid.getMatrix().rows();
     int numCols = mTerrainGrid.getMatrix().cols();
 
-    int closestRow = 0;
-    int closestColumn = 0;
-    bool found = false;
-    float startDistance = (currentVertex - clickPoint).length();
-    float closestDistance = startDistance;
-    float currentDistance;
-
-    //first find the closest row
-    for (int i = 1; i < numRows && !found; ++i)
-    {
-        currentVertex = mTerrainGrid.getVertex(i, 0);
-
-        if ((currentDistance = (currentVertex - clickPoint).length()) < closestDistance)
-        {
-            closestRow = i;
-            closestDistance = currentDistance;
-        }
-        else
-        {
-            found = true;
-        }
-    }
-
-    found = false;
-    currentVertex = startVertex;
-    closestDistance = startDistance;
-
-    //then the closest column
-    for (int i = 1; i < numCols && !found; ++i)
-    {
-        currentVertex = mTerrainGrid.getVertex(0, i);
-
-        if ((currentDistance = (currentVertex - clickPoint).length()) < closestDistance)
-        {
-            closestColumn = i;
-            closestDistance = currentDistance;
-        }
-        else
-        {
-            found = true;
-        }
-
-    }
+    int closestRow = int(tempZ + 0.5) % numRows;
+    int closestColumn = int(tempX + 0.5) % numCols;
 
     return mTerrainGrid.getVertex(closestRow, closestColumn);
 }
