@@ -26,10 +26,7 @@ int main(int argc, char** argv)
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
     SoundEngine::initialize();
-    CollisionEngine::onSetup();
-
     Config::outputSettings();
-
     DisplayEngine::start(new MainMenuModule);
     SoundEngine::cleanup();
     return 0;
