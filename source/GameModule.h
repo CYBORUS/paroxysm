@@ -33,6 +33,7 @@
 #include "Label.h"
 #include "ModelStack.h"
 
+#include <SDL_thread.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -74,6 +75,8 @@ class GameModule : public Module
         LuaMachine mLua;
         TextBox* mLuaConsole;
         GameCamera mCamera;
+
+        SDL_Thread* mCollisionThread;
 
         TerrainGrid mTerrain;
 

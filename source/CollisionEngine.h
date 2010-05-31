@@ -29,6 +29,7 @@ class CollisionEngine
         static void removeEntity(Entity* inEntity);
 
         static void checkCollisions();
+        static int checkCollisions(void* unused);
 
     private:
         static Functor mFunc;

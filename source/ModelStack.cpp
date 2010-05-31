@@ -667,6 +667,10 @@ void ModelStack::loadC3M(const char* inFile)
 
         DisplayEngine::loadTexture(texFile.c_str(), mTexture);
     }
+    else
+    {
+        cerr << "error, no texture" << endl;
+    }
 
     size = c3m->indices.size;
     GLuint* indices = c3m->indices.array;

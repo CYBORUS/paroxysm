@@ -67,7 +67,7 @@ GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
     }
 
     addTank(PLAYER_TANK);
-    //addTank(ROBOT_TANK);
+    addTank(ROBOT_TANK);
 }
 
 GameModule::~GameModule()
@@ -182,13 +182,18 @@ void GameModule::onInit()
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mSunLight.ambient.array());
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+    //start the collision engine
+    //CollisionEngine::checkCollisions();
+    mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, NULL);
 }
 
 
 void GameModule::onLoop()
 {
-    CollisionEngine::checkCollisions();
-
+    //CollisionEngine::checkCollisions();
+    //mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, NULL);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
@@ -313,8 +318,8 @@ void GameModule::onFrame()
     mCamera.update();
     mSceneChanged = true;
 
-    mSunRotation += 0.1f;
-    mMoonRotation += 0.1f;
+    mSunRotation += 0.01f;
+    mMoonRotation += 0.01f;
     if (mSunRotation > 360.0f)
     {
         mSunRotation -= 360.0f;

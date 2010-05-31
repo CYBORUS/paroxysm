@@ -21,6 +21,22 @@
 #include "MainMenuModule.h"
 #include "CollisionEngine.h"
 
+#include <commdlg.h>
+using namespace std;
+
+/*
+#include <tchar.h>
+using namespace std;
+
+BOOL CALLBACK EnumWindowsProc(HWND inHwnd, LPARAM inLParam)
+{
+    TCHAR winText[400];
+    GetWindowTextA(inHwnd, winText, sizeof(winText) / sizeof(winText[0]));
+    cerr << "Window " << inHwnd << " text: " << _T(winText) << endl;
+    return true;
+}
+*/
+
 int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
@@ -30,6 +46,12 @@ int main(int argc, char** argv)
 
     Config::outputSettings();
 
+    //char fileName[400];
+    //tagOFNA* tag;
+    //GetOpenFileNameA(tag);
+    //cerr << "fileName: " << tag->lpstrFile << endl;
+    //EnumDesktopWindows(NULL, EnumWindowsProc, 0);
+    //EnumWindows(EnumWindowsProc, 0);
     DisplayEngine::start(new MainMenuModule);
     SoundEngine::cleanup();
     return 0;
