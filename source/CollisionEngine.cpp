@@ -4,10 +4,11 @@ list<Entity*> CollisionEngine::mEntities;
 float CollisionEngine::mLargestRadius = 0.0f;
 Functor CollisionEngine::mFunc;
 volatile bool CollisionEngine::mCollisionsRunning = false;
-
+SDL_mutex* CollisionEngine::mEntityLock;
 
 void CollisionEngine::onSetup()
 {
+    mEntityLock = SDL_CreateMutex();
 }
 
 
@@ -175,4 +176,5 @@ int CollisionEngine::checkCollisions(void* unused)
 void CollisionEngine::onUnload()
 {
     mEntities.clear();
+    SDL_DestroyMutex(mEntityLock);
 }

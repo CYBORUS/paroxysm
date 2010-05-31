@@ -185,8 +185,9 @@ void GameModule::onOpen()
 
 
     //start the collision engine
+    mEntityLock = SDL_CreateMutex();
     //CollisionEngine::checkCollisions();
-    mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, NULL);
+    mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, mEntityLock);
 }
 
 
@@ -333,7 +334,6 @@ void GameModule::onFrame()
     map<Tank*, Control*>::iterator itControls = mControls.begin();
     for (; itControls != mControls.end(); ++itControls)
     {
-        //(*itControls)->update();
         itControls->second->update();
     }
 
@@ -410,6 +410,7 @@ void GameModule::onClose()
 {
 
     CollisionEngine::mCollisionsRunning = false;
+    SDL_DestroyMutex(mEntityLock);
 }
 
 void GameModule::addTank(ControlType inControlType,

@@ -34,6 +34,7 @@
 #include "ModelStack.h"
 
 #include <SDL_thread.h>
+#include <SDL_mutex.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -78,6 +79,7 @@ class GameModule : public Module
         GameCamera mCamera;
 
         SDL_Thread* mCollisionThread;
+        SDL_mutex* mEntityLock;
 
         TerrainGrid mTerrain;
 

@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 
+#include <SDL_mutex.h>
 #include <iostream>
 #include <vector>
 #include <list>
@@ -38,6 +39,7 @@ class CollisionEngine
         static list<Entity*> mEntities;
         static float mLargestRadius;
 
+        static SDL_mutex* mEntityLock;
 };
 
 #endif // COLLISIONENGINE_H
