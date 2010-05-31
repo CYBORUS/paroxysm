@@ -3,6 +3,7 @@
 list<Entity*> CollisionEngine::mEntities;
 float CollisionEngine::mLargestRadius = 0.0f;
 Functor CollisionEngine::mFunc;
+volatile bool CollisionEngine::mCollisionsRunning = false;
 
 
 void CollisionEngine::onSetup()
@@ -101,14 +102,17 @@ void CollisionEngine::checkCollisions()
 
 int CollisionEngine::checkCollisions(void* unused)
 {
-    while (true)
+    mCollisionsRunning = true;
+
+    while (mCollisionsRunning)
     {
         mEntities.sort(mFunc);
 
         list<Entity*>::iterator itFirst = mEntities.begin();
         list<Entity*>::iterator itSecond;
+        list<Entity*>::iterator itEnd = mEntities.end();
 
-        for (; itFirst != mEntities.end(); ++itFirst)
+        for (; itFirst != itEnd; ++itFirst)
         {
             itSecond = itFirst;
             ++itSecond;

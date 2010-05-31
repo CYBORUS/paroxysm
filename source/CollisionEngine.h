@@ -31,10 +31,13 @@ class CollisionEngine
         static void checkCollisions();
         static int checkCollisions(void* unused);
 
+        static volatile bool mCollisionsRunning;
+
     private:
         static Functor mFunc;
         static list<Entity*> mEntities;
         static float mLargestRadius;
+
 };
 
 #endif // COLLISIONENGINE_H

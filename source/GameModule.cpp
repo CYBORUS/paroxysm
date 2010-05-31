@@ -406,6 +406,12 @@ void GameModule::onUnload()
     CollisionEngine::onUnload();
 }
 
+void GameModule::onClose()
+{
+
+    CollisionEngine::mCollisionsRunning = false;
+}
+
 void GameModule::addTank(ControlType inControlType,
     const Vector3D<float>& inPosition)
 {

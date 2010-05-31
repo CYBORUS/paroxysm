@@ -52,6 +52,7 @@ class GameModule : public Module
         virtual void onFrame();
         virtual bool onLoad();
         virtual void onOpen();
+        virtual void onClose();
         virtual void onUnload();
 
         void addTank(ControlType inControlType,
