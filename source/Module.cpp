@@ -31,6 +31,42 @@ Module::~Module()
     // here to prevent compiler warnings in Windows :P
 }
 
+Module* Module::next()
+{
+    return NULL;
+}
+
+bool Module::isDead()
+{
+    return true;
+}
+
+bool Module::onLoad()
+{
+    return true;
+}
+
+void Module::onUnload()
+{
+}
+
+void Module::onOpen()
+{
+}
+
+void Module::onClose()
+{
+}
+
+void Module::onLoop()
+{
+}
+
+void Module::onFrame()
+{
+}
+
+/// event handlers
 void Module::onEvent(SDL_Event* inEvent)
 {
     switch (inEvent->type)
@@ -344,24 +380,6 @@ void Module::onExit()
 }
 
 void Module::onUser(Uint8 inType, int inCode, void* inData1, void* inData2)
-{
-}
-
-Module* Module::next()
-{
-    return NULL;
-}
-
-bool Module::isDead()
-{
-    return true;
-}
-
-void Module::onLoop()
-{
-}
-
-void Module::onFrame()
 {
 }
 

@@ -39,7 +39,7 @@ bool MainMenuModule::onLoad()
     return true;
 }
 
-void MainMenuModule::onInit()
+void MainMenuModule::onOpen()
 {
     mRunning = true;
     mDead = true;
@@ -87,7 +87,7 @@ void MainMenuModule::onFrame()
 
 }
 
-void MainMenuModule::onCleanup()
+void MainMenuModule::onUnload()
 {
 }
 

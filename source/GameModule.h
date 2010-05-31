@@ -51,8 +51,8 @@ class GameModule : public Module
         virtual void onLoop();
         virtual void onFrame();
         virtual bool onLoad();
-        virtual void onInit();
-        virtual void onCleanup();
+        virtual void onOpen();
+        virtual void onUnload();
 
         void addTank(ControlType inControlType,
             const Vector3D<float>& inPosition = Vector3D<float>(10.0f));

@@ -168,7 +168,7 @@ int CollisionEngine::checkCollisions(void* unused)
 
 }
 
-void CollisionEngine::onCleanup()
+void CollisionEngine::onUnload()
 {
     mEntities.clear();
 }

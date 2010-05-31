@@ -84,7 +84,7 @@ bool MapEditorModule::onLoad()
     return true;
 }
 
-void MapEditorModule::onInit()
+void MapEditorModule::onOpen()
 {
     mRunning = true;
     mDead = true;
@@ -250,7 +250,7 @@ void MapEditorModule::onFrame()
     }
 }
 
-void MapEditorModule::onCleanup()
+void MapEditorModule::onUnload()
 {
     while (!mUndo.empty())
     {

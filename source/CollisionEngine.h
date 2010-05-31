@@ -23,7 +23,7 @@ class CollisionEngine
 {
     public:
         static void onSetup();
-        static void onCleanup();
+        static void onUnload();
 
         static void addEntity(Entity* inEntity);
         static void removeEntity(Entity* inEntity);

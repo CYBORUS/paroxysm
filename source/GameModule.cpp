@@ -119,7 +119,7 @@ bool GameModule::onLoad()
 }
 
 
-void GameModule::onInit()
+void GameModule::onOpen()
 {
     mRunning = true;
     mDead = true;
@@ -381,7 +381,7 @@ void GameModule::onFrame()
 
 }
 
-void GameModule::onCleanup()
+void GameModule::onUnload()
 {
     ModelStack::unloadAll();
 
@@ -403,7 +403,7 @@ void GameModule::onCleanup()
     glDisable(GL_LIGHTING);
     glDisable(GL_RESCALE_NORMAL_EXT);
 
-    CollisionEngine::onCleanup();
+    CollisionEngine::onUnload();
 }
 
 void GameModule::addTank(ControlType inControlType,

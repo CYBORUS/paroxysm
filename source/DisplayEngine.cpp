@@ -65,8 +65,7 @@ void DisplayEngine::start(Module* inModule)
             break;
         }
 
-        currentModule->onInit();
-
+        currentModule->onOpen();
 
         unsigned int nextSecond = SDL_GetTicks() + 1000u;
         int framesPerSecond = 0;
@@ -103,13 +102,15 @@ void DisplayEngine::start(Module* inModule)
             SDL_Delay(1); // prevent CPU abuse
         }
 
+        currentModule->onClose();
+
         Module* deadModule = currentModule;
         currentModule = currentModule->next();
 
         if (deadModule->isDead())
         {
             // LOL @ "if dead module is dead..."
-            deadModule->onCleanup();
+            deadModule->onUnload();
             delete deadModule;
         }
         else

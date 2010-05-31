@@ -92,7 +92,7 @@ bool LoadGameModule::onLoad()
     return true;
 }
 
-void LoadGameModule::onInit()
+void LoadGameModule::onOpen()
 {
     mRunning = true;
     mNextModule = NULL;
@@ -164,7 +164,7 @@ void LoadGameModule::onFrame()
 
 }
 
-void LoadGameModule::onCleanup()
+void LoadGameModule::onUnload()
 {
 }
 

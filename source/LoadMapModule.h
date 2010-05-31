@@ -44,10 +44,10 @@ class LoadMapModule : public Module
 {
     public:
         bool onLoad();
-        void onInit();
+        void onOpen();
         void onLoop();
         void onFrame();
-        void onCleanup();
+        void onUnload();
         Module* next();
 
     protected:

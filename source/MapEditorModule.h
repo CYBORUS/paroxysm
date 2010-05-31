@@ -64,10 +64,10 @@ class MapEditorModule : public Module
     public:
         /// module operation
         virtual bool onLoad();
-        virtual void onInit();
+        virtual void onOpen();
         virtual void onLoop();
         virtual void onFrame();
-        virtual void onCleanup();
+        virtual void onUnload();
 
         virtual bool isDead();
         virtual Module* next();

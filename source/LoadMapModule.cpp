@@ -119,12 +119,12 @@ bool LoadMapModule::onLoad()
     return true;
 }
 
-void LoadMapModule::onCleanup()
+void LoadMapModule::onUnload()
 {
     //dtor
 }
 
-void LoadMapModule::onInit()
+void LoadMapModule::onOpen()
 {
     mRunning = true;
     mNextModule = NULL;

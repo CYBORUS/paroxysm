@@ -53,11 +53,12 @@ class Module
         bool isRunning();
 
         /// module operation
-        virtual bool onLoad() = 0;
-        virtual void onInit() = 0;
+        virtual bool onLoad();
+        virtual void onOpen();
         virtual void onLoop();
         virtual void onFrame();
-        virtual void onCleanup() = 0;
+        virtual void onClose();
+        virtual void onUnload();
         virtual bool isDead();
         virtual Module* next();
 
