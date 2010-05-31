@@ -67,6 +67,7 @@ class MapEditorModule : public Module
         virtual void onOpen();
         virtual void onLoop();
         virtual void onFrame();
+        virtual void onClose();
         virtual void onUnload();
 
         virtual bool isDead();

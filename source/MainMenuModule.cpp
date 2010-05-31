@@ -87,10 +87,6 @@ void MainMenuModule::onFrame()
 
 }
 
-void MainMenuModule::onUnload()
-{
-}
-
 Module* MainMenuModule::next()
 {
     return mNextModule;

@@ -47,7 +47,6 @@ class LoadMapModule : public Module
         void onOpen();
         void onLoop();
         void onFrame();
-        void onUnload();
         Module* next();
 
     protected:

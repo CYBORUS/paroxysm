@@ -250,6 +250,14 @@ void MapEditorModule::onFrame()
     }
 }
 
+void MapEditorModule::onClose()
+{
+    glDisable(GL_DEPTH_TEST);
+    //glDisable(GL_CULL_FACE);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_COLOR_MATERIAL);
+}
+
 void MapEditorModule::onUnload()
 {
     while (!mUndo.empty())

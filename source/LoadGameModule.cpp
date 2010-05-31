@@ -127,7 +127,6 @@ void LoadGameModule::onOpen()
     display.y = h;
 
     mHUD.setDisplay(display, GAME_RANGE);
-
 }
 
 void LoadGameModule::onLoop()
@@ -162,10 +161,6 @@ void LoadGameModule::onFrame()
         mFPSLabel->setText(s.str().c_str());
     }
 
-}
-
-void LoadGameModule::onUnload()
-{
 }
 
 Module* LoadGameModule::next()
