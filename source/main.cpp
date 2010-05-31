@@ -21,10 +21,6 @@
 #include "MainMenuModule.h"
 #include "CollisionEngine.h"
 
-#include <commdlg.h>
-using namespace std;
-
-
 int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
