@@ -308,12 +308,12 @@ void GameModule::onLoop()
         mTerrain.display();
 
         //cerr << "onloop lock...";
-        SDL_mutexP(mEntityLock);
-        ++mTimes;
-        list<Entity*> tempEntities = mEntities;
-        SDL_mutexV(mEntityLock);
-        list<Entity*>::iterator itEntities = tempEntities.begin();
-        for (; itEntities != tempEntities.end(); ++itEntities)
+        //SDL_mutexP(mEntityLock);
+        //++mTimes;
+        //list<Entity*> tempEntities = mEntities;
+        //SDL_mutexV(mEntityLock);
+        list<Entity*>::iterator itEntities = mEntities.begin();
+        for (; itEntities != mEntities.end(); ++itEntities)
         {
             (*itEntities)->display();
         }

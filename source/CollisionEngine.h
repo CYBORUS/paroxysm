@@ -30,10 +30,11 @@ struct Functor
 {
     bool operator ()(Entity* a, Entity* b)
     {
-        Vector3D<float> x = a->getPosition();
-        Vector3D<float> y = b->getPosition();
+        //Vector3D<float> x = a->getPosition();
+        //Vector3D<float> y = b->getPosition();
         //cerr << "returning: " << x[0] << " < " << y[0] << endl;
-        return (x[0] < y[0]);
+        //return (x[0] < y[0]);
+        return (a->getPosition()[0] < b->getPosition()[0]);
     }
 };
 
