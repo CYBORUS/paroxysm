@@ -17,28 +17,38 @@
 
 #include "CollisionEngine.h"
 
-list<Entity*> CollisionEngine::mEntities;
+list<Entity*>* CollisionEngine::mEntities;
 float CollisionEngine::mLargestRadius = 0.0f;
 Functor CollisionEngine::mFunc;
 volatile bool CollisionEngine::mCollisionsRunning = false;
 SDL_mutex* CollisionEngine::mEntityLock;
+long CollisionEngine::mTimes = 0;
 
-void CollisionEngine::onSetup()
+void CollisionEngine::onSetup(list<Entity*>* inEntities)
 {
-    mEntityLock = SDL_CreateMutex();
+    cerr << "before setup" << endl;
+    //mEntityLock = SDL_CreateMutex();
+    mEntities = inEntities;
+    cerr << "done setup" << endl;
 }
 
+/*
 void CollisionEngine::addEntity(Entity* inEntity)
 {
+    SDL_mutexP(mEntityLock);
+
     mEntities.push_back(inEntity);
     if (inEntity->getRadius() > mLargestRadius)
     {
         mLargestRadius = inEntity->getRadius() * 3.0f;
     }
+    SDL_mutexV(mEntityLock);
 }
+
 
 void CollisionEngine::removeEntity(Entity* inEntity)
 {
+    SDL_mutexP(mEntityLock);
     list<Entity*>::iterator it = mEntities.begin();
 
     while (it != mEntities.end())
@@ -50,8 +60,11 @@ void CollisionEngine::removeEntity(Entity* inEntity)
         }
         ++it;
     }
+    SDL_mutexV(mEntityLock);
 }
+*/
 
+/*
 void CollisionEngine::checkCollisions()
 {
     mEntities.sort(mFunc);
@@ -114,19 +127,23 @@ void CollisionEngine::checkCollisions()
         }
     }
     */
-}
+//}
 
-int CollisionEngine::checkCollisions(void* unused)
+
+int CollisionEngine::checkCollisions(void* inEntityLock)
 {
     mCollisionsRunning = true;
-
+    SDL_mutex* lock = (SDL_mutex*)inEntityLock;
     while (mCollisionsRunning)
     {
-        mEntities.sort(mFunc);
+        SDL_mutexP(lock);
+        ++mTimes;
 
-        list<Entity*>::iterator itFirst = mEntities.begin();
+        mEntities->sort(mFunc);
+
+        list<Entity*>::iterator itFirst = mEntities->begin();
         list<Entity*>::iterator itSecond;
-        list<Entity*>::iterator itEnd = mEntities.end();
+        list<Entity*>::iterator itEnd = mEntities->end();
 
         for (; itFirst != itEnd; ++itFirst)
         {
@@ -134,7 +151,7 @@ int CollisionEngine::checkCollisions(void* unused)
             ++itSecond;
 
             Entity* first = *itFirst;
-            for (; itSecond != mEntities.end(); ++itSecond)
+            for (; itSecond != mEntities->end(); ++itSecond)
             {
                 Entity* second = *itSecond;
                 if (abs(first->getPosition()[0] - second->getPosition()[0]) > mLargestRadius)
@@ -159,6 +176,7 @@ int CollisionEngine::checkCollisions(void* unused)
                 }
             }
         }
+        SDL_mutexV(lock);
         SDL_Delay(1);
         /*
         for (unsigned int i = 0; i < mEntities.size() - 1; ++i)
@@ -188,8 +206,9 @@ int CollisionEngine::checkCollisions(void* unused)
 
 }
 
+
 void CollisionEngine::onUnload()
 {
-    mEntities.clear();
-    SDL_DestroyMutex(mEntityLock);
+    //mEntities.clear();
+    //SDL_DestroyMutex(mEntityLock);
 }

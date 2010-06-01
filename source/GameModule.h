@@ -80,6 +80,7 @@ class GameModule : public Module
 
         SDL_Thread* mCollisionThread;
         SDL_mutex* mEntityLock;
+        long mTimes;
 
         TerrainGrid mTerrain;
 

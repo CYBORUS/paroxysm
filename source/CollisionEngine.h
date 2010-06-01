@@ -40,20 +40,21 @@ struct Functor
 class CollisionEngine
 {
     public:
-        static void onSetup();
+        static void onSetup(list<Entity*>* inEntities);
         static void onUnload();
 
-        static void addEntity(Entity* inEntity);
-        static void removeEntity(Entity* inEntity);
+        //static void addEntity(Entity* inEntity);
+        //static void removeEntity(Entity* inEntity);
 
         static void checkCollisions();
         static int checkCollisions(void* unused);
 
         static volatile bool mCollisionsRunning;
+        static long mTimes;
 
     private:
         static Functor mFunc;
-        static list<Entity*> mEntities;
+        static list<Entity*>* mEntities;
         static float mLargestRadius;
 
         static SDL_mutex* mEntityLock;

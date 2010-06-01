@@ -66,8 +66,6 @@ GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
         exit(3);
     }
 
-    addTank(PLAYER_TANK);
-    addTank(ROBOT_TANK);
 }
 
 GameModule::~GameModule()
@@ -84,8 +82,6 @@ bool GameModule::onLoad()
     mTrackball[2] = 20.0f;
     mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
     mPanning[2] = static_cast<GLfloat>(mTerrainSize.y) / -2.0f;
-    mCamera.setTrackball(mTrackball);
-    mCamera.follow(mPlayerTank);
 
     mDisplay.x = SDL_GetVideoSurface()->w;
     mCenter.x = mDisplay.x / 2;
@@ -114,6 +110,13 @@ bool GameModule::onLoad()
     mFPSLabel->setSize(3.0f, 1.0f);
 
     mHUD.addWidget(mFPSLabel);
+
+    mEntityLock = SDL_CreateMutex();
+    addTank(PLAYER_TANK);
+    addTank(ROBOT_TANK);
+
+    mCamera.setTrackball(mTrackball);
+    mCamera.follow(mPlayerTank);
 
     return true;
 }
@@ -185,14 +188,16 @@ void GameModule::onOpen()
 
 
     //start the collision engine
-    mEntityLock = SDL_CreateMutex();
+    CollisionEngine::onSetup(&mEntities);
     //CollisionEngine::checkCollisions();
     mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, mEntityLock);
+    mTimes = 0;
 }
 
 
 void GameModule::onLoop()
 {
+    //cerr << "onLoop...";
     //CollisionEngine::checkCollisions();
     //mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, NULL);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -302,23 +307,34 @@ void GameModule::onLoop()
 
         mTerrain.display();
 
-        list<Entity*>::iterator itEntities = mEntities.begin();
-        for (; itEntities != mEntities.end(); ++itEntities)
+        //cerr << "onloop lock...";
+        SDL_mutexP(mEntityLock);
+        ++mTimes;
+        list<Entity*> tempEntities = mEntities;
+        SDL_mutexV(mEntityLock);
+        list<Entity*>::iterator itEntities = tempEntities.begin();
+        for (; itEntities != tempEntities.end(); ++itEntities)
         {
             (*itEntities)->display();
         }
+        //cerr << "onLoop release" << endl;
+        //SDL_mutexV(mEntityLock);
 
     }
     glPopMatrix();
 
     mHUD.display();
+    //cerr << "done." << endl;
 }
 
 void GameModule::onFrame()
 {
+    //cerr << "onFrame...";
+    //cerr << "updating camera...";
     mCamera.update();
+    //cerr << "changing scene...";
     mSceneChanged = true;
-
+    //cerr << "camera updated...";
     mSunRotation += 0.01f;
     mMoonRotation += 0.01f;
     if (mSunRotation > 360.0f)
@@ -330,14 +346,16 @@ void GameModule::onFrame()
     {
         mMoonRotation -= 360.0f;
     }
-
+    //cerr << "rotations done...";
     map<Tank*, Control*>::iterator itControls = mControls.begin();
     for (; itControls != mControls.end(); ++itControls)
     {
         itControls->second->update();
     }
 
-
+    //cerr << "onframe lock...";
+    SDL_mutexP(mEntityLock);
+    ++mTimes;
     list<Entity*>::iterator itEntities = mEntities.begin();
 
     while (itEntities != mEntities.end())
@@ -346,7 +364,7 @@ void GameModule::onFrame()
 
         if (!(*itEntities)->isAlive())
         {
-            CollisionEngine::removeEntity(*itEntities);
+            //CollisionEngine::removeEntity(*itEntities);
 
             if ((*itEntities)->getWhatIAm() == E_TANK)
             {
@@ -364,6 +382,8 @@ void GameModule::onFrame()
             ++itEntities;
         }
     }
+    //cerr << "onframe release" << endl;
+    SDL_mutexV(mEntityLock);
 
 
     if (mLuaConsole->isLockedIn())
@@ -378,11 +398,12 @@ void GameModule::onFrame()
         s << mFPS << " FPS";
         mFPSLabel->setText(s.str().c_str());
     }
-
+    //cerr << "done." << endl;
 }
 
 void GameModule::onUnload()
 {
+    cerr << "mTimes: " << mTimes << " collisionEngine: " << CollisionEngine::mTimes << endl;
     ModelStack::unloadAll();
 
     map<Tank*, Control*>::iterator itControls = mControls.begin();
@@ -403,6 +424,8 @@ void GameModule::onUnload()
     glDisable(GL_LIGHTING);
     glDisable(GL_RESCALE_NORMAL_EXT);
 
+    SDL_DestroyMutex(mEntityLock);
+
     CollisionEngine::onUnload();
 }
 
@@ -410,7 +433,6 @@ void GameModule::onClose()
 {
 
     CollisionEngine::mCollisionsRunning = false;
-    SDL_DestroyMutex(mEntityLock);
 }
 
 void GameModule::addTank(ControlType inControlType,
@@ -418,11 +440,13 @@ void GameModule::addTank(ControlType inControlType,
 {
     Tank* tank = new Tank(&mTerrain);
     tank->setPosition(inPosition);
-    CollisionEngine::addEntity(tank);
+    //CollisionEngine::addEntity(tank);
 
     Control* controls = NULL;
 
+    SDL_mutexP(mEntityLock);
     mEntities.push_back(tank);
+    SDL_mutexV(mEntityLock);
 
     switch (inControlType)
     {
@@ -482,7 +506,7 @@ void GameModule::onLButtonDown(int inX, int inY)
 {
     Bullet* bullet = new Bullet(&mTerrain, mPlayerTank->getBulletStart(), mPlayerTank->getBulletDirection(), mPlayerTank->getBulletRotation());
     mEntities.push_back(bullet);
-    CollisionEngine::addEntity(bullet);
+    //CollisionEngine::addEntity(bullet);
 }
 
 
