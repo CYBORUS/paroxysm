@@ -33,7 +33,7 @@ void CollisionEngine::onSetup(list<Entity*>* inEntities)
 
     //this is a temporary fix, we need to find a way to choose
     //a radius based on the list of entities
-    mLargestRadius = 10;
+    mLargestRadius = 0.5;
 }
 
 /*
