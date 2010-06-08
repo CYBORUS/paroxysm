@@ -24,12 +24,8 @@ bool LoadGameModule::onLoad()
     maps->setSize(25.0f, 8.0f);
     maps->setFontSize(20);
 
-#ifdef __WIN32__
-    string mapsDir("assets/maps");
-#else
     string mapsDir(Config::getUserFolder());
     mapsDir += "maps";
-#endif
 
     //load the list up with all the maps in the maps directory
     if (is_directory(mapsDir))

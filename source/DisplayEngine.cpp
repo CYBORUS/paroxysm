@@ -129,14 +129,8 @@ void DisplayEngine::initialize()
     using namespace boost::filesystem;
 
     //delete any old log files
-#ifdef __WIN32__
-    string logsDir("assets/logs/");
-#else
     string logsDir(Config::getUserFolder());
-    logsDir += "logs";
-    create_directory(logsDir.c_str());
-    logsDir += '/';
-#endif
+    logsDir += "logs/";
 
     if (is_directory(logsDir))
     {

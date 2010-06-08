@@ -28,7 +28,7 @@ map<string, string> Config::mSettings;
 #ifndef __WIN32__
 string Config::mUserFolder(UNIX_HOME_FOLDER);
 #else
-string Config::mUserFolder;
+string Config::mUserFolder("assets/");
 #endif
 
 void trim(string& inString)

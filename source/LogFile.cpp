@@ -16,10 +16,7 @@
  */
 
 #include "LogFile.h"
-
-#ifndef __WIN32__
 #include "Config.h"
-#endif
 
 LogFile::LogFile()
 {
@@ -35,12 +32,8 @@ void LogFile::start(const char* inTitle)
     tm* timeinfo = localtime(&rawtime);
     strftime(buffer, 15, "%Y%m%d%H%M%S", timeinfo);
 
-#ifdef __WIN32__
-    string s("assets/logs/");
-#else
     string s(Config::getUserFolder());
     s += "logs/";
-#endif
     s += inTitle;
     s += '-';
     s += buffer;

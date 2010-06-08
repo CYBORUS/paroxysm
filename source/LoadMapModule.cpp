@@ -68,12 +68,8 @@ bool LoadMapModule::onLoad()
     maps->setSize(20.0f, 5.0f);
     maps->setFontSize(20);
 
-#ifdef __WIN32__
-    string mapsDir("assets/maps");
-#else
     string mapsDir(Config::getUserFolder());
     mapsDir += "maps";
-#endif
 
     //load the list up with all the maps in the maps directory
     if (is_directory(mapsDir))
