@@ -36,6 +36,12 @@ class Entity
         void setRadius(float inRadius);
         float getRadius();
 
+        void setGameDead();
+        void setRenderDead();
+
+        bool isGameDead();
+        bool isRenderDead();
+
         const Vector3D<float>& getPosition() const;
         void setPosition(const Vector3D<float>& inPosition);
 
@@ -45,6 +51,9 @@ class Entity
     protected:
         EntityType mWhatAmI;
         float mRadius;
+
+        bool mGameDead;
+        bool mRenderDead;
 
         TerrainGrid* mTerrain;
         int mTerrainWidth;
@@ -75,6 +84,26 @@ inline float Entity::getRadius()
 inline bool Entity::isAlive()
 {
     return mAlive;
+}
+
+inline void Entity::setGameDead()
+{
+    mGameDead = true;
+}
+
+inline void Entity::setRenderDead()
+{
+    mRenderDead = true;
+}
+
+inline bool Entity::isGameDead()
+{
+    return mGameDead;
+}
+
+inline bool Entity::isRenderDead()
+{
+    return mRenderDead;
 }
 
 #endif

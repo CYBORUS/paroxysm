@@ -21,7 +21,7 @@
 #include "Vector3D.h"
 #include "Tank.h"
 
-enum ControlType { PLAYER_TANK, NETWORK_TANK, ROBOT_TANK };
+enum ControlType { NO_CONTROLS, PLAYER_TANK, NETWORK_TANK, ROBOT_TANK };
 
 class Control
 {
@@ -34,13 +34,28 @@ class Control
         virtual void changeDirection(float inDirection);
         virtual void changeSpeed(float inSpeed);
 
+        virtual void setGameDead();
+        virtual bool isGameDead();
+
     protected:
         Tank* mTank;
+
+        bool mGameDead;
 
         //AI turrets have to move differently than player turrets,
         //these controls are meant to provide that functionality
 
 
 };
+
+inline void Control::setGameDead()
+{
+    mGameDead = true;
+}
+
+inline bool Control::isGameDead()
+{
+    return mGameDead;
+}
 
 #endif

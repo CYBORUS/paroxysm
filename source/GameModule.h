@@ -19,6 +19,7 @@
 #define GAMEMODULE_H
 
 #include "CollisionEngine.h"
+#include "EntityGarbageCollector.h"
 
 #include "Module.h"
 #include "TerrainGrid.h"
@@ -59,6 +60,8 @@ class GameModule : public Module
         void addTank(ControlType inControlType,
             const Vector3D<float>& inPosition = Vector3D<float>(10.0f));
 
+        void addEntity(Entity* inEntity);
+
     protected:
         virtual void onLButtonDown(int inX, int inY);
         virtual void onLButtonUp(int inX, int inY);
@@ -79,7 +82,8 @@ class GameModule : public Module
         GameCamera mCamera;
 
         SDL_Thread* mCollisionThread;
-        SDL_mutex* mEntityLock;
+        SDL_Thread* mEntityGarbageCollectorThread;
+        //SDL_mutex* mEntityLock;
         long mTimes;
 
         TerrainGrid mTerrain;
@@ -117,7 +121,7 @@ class GameModule : public Module
         list<Entity*> mEntities;
         Tank* mPlayerTank;
         Control* mPlayerControls;
-        map<Tank*, Control*> mControls;
+        map<Entity*, Control*> mControls;
 
         Label* mFPSLabel;
         unsigned int mFPS;

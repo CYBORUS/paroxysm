@@ -20,6 +20,7 @@
 Control::Control(Tank* inTank)
 {
     mTank = inTank;
+    mGameDead = false;
 }
 
 Control::~Control()

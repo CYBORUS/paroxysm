@@ -23,7 +23,9 @@ Entity::Entity(TerrainGrid* inTerrain)
     mTerrain = inTerrain;
     mTerrainWidth = mTerrain->getMatrix().cols();
     mTerrainHeight = mTerrain->getMatrix().rows();
-
+    mAlive = true;
+    mGameDead = false;
+    mRenderDead = false;
 }
 
 Entity::~Entity()

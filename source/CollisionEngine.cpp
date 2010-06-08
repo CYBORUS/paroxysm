@@ -17,39 +17,35 @@
 
 #include "CollisionEngine.h"
 
-list<Entity*>* CollisionEngine::mEntities;
+list<Entity*> CollisionEngine::mEntities;
 float CollisionEngine::mLargestRadius = 0.0f;
 Functor CollisionEngine::mFunc;
 volatile bool CollisionEngine::mCollisionsRunning = false;
-SDL_mutex* CollisionEngine::mEntityLock;
+//SDL_mutex* CollisionEngine::mEntityLock;
 long CollisionEngine::mTimes = 0;
 
-void CollisionEngine::onSetup(list<Entity*>* inEntities)
+void CollisionEngine::onSetup()
 {
-    //cerr << "before setup" << endl;
+    //mEntities = inEntities;
     //mEntityLock = SDL_CreateMutex();
-    mEntities = inEntities;
-    //cerr << "done setup" << endl;
-
     //this is a temporary fix, we need to find a way to choose
     //a radius based on the list of entities
-    mLargestRadius = 0.5;
+    mLargestRadius = 1;
 }
 
-/*
+
 void CollisionEngine::addEntity(Entity* inEntity)
 {
-    SDL_mutexP(mEntityLock);
-
+    //SDL_mutexP(mEntityLock);
     mEntities.push_back(inEntity);
     if (inEntity->getRadius() > mLargestRadius)
     {
         mLargestRadius = inEntity->getRadius() * 3.0f;
     }
-    SDL_mutexV(mEntityLock);
+    //SDL_mutexV(mEntityLock);
 }
 
-
+/*
 void CollisionEngine::removeEntity(Entity* inEntity)
 {
     SDL_mutexP(mEntityLock);
@@ -134,29 +130,30 @@ void CollisionEngine::checkCollisions()
 //}
 
 
-int CollisionEngine::checkCollisions(void* inEntityLock)
+int CollisionEngine::checkCollisions(void* unused)
 {
     mCollisionsRunning = true;
-    SDL_mutex* lock = (SDL_mutex*)inEntityLock;
-    Vector3D<float> pos(10, 10, 0);
+    //SDL_mutex* lock = (SDL_mutex*)inEntityLock;
+    //Vector3D<float> pos(10, 10, 0);
     while (mCollisionsRunning)
     {
-        SDL_mutexP(lock);
-        ++mTimes;
-        list<Entity*> tempEntities = *mEntities;
-        tempEntities.sort(mFunc);
+        //SDL_mutexP(lock);
+        //++mTimes;
+        //list<Entity*> tempEntities = *mEntities;
+        //tempEntities.sort(mFunc);
+        mEntities.sort(mFunc);
 
-        list<Entity*>::iterator itFirst = tempEntities.begin();
+        list<Entity*>::iterator itFirst = mEntities.begin();
         list<Entity*>::iterator itSecond;
-        list<Entity*>::iterator itEnd = tempEntities.end();
+        list<Entity*>::iterator itEnd = mEntities.end();
 
-        for (; itFirst != itEnd; ++itFirst)
+        while (itFirst != itEnd)
         {
             itSecond = itFirst;
             ++itSecond;
 
             Entity* first = *itFirst;
-            for (; itSecond != tempEntities.end(); ++itSecond)
+            while (itSecond != mEntities.end())
             {
                 Entity* second = *itSecond;
                 if (abs(first->getPosition()[0] - second->getPosition()[0]) > mLargestRadius)
@@ -179,9 +176,29 @@ int CollisionEngine::checkCollisions(void* inEntityLock)
                     //if there is still a collision, call the second objects collision method
                     second->onCollision(first);
                 }
+
+                if (!second->isAlive())
+                {
+                    second->setGameDead();
+                    itSecond = mEntities.erase(itSecond);
+                }
+                else
+                {
+                    ++itSecond;
+                }
+            }
+
+            if (!first->isAlive())
+            {
+                first->setGameDead();
+                itFirst = mEntities.erase(itFirst);
+            }
+            else
+            {
+                ++itFirst;
             }
         }
-        SDL_mutexV(lock);
+        //SDL_mutexV(lock);
         SDL_Delay(1);
         /*
         for (unsigned int i = 0; i < mEntities.size() - 1; ++i)
@@ -216,4 +233,5 @@ void CollisionEngine::onUnload()
 {
     //mEntities.clear();
     //SDL_DestroyMutex(mEntityLock);
+    mCollisionsRunning = false;
 }

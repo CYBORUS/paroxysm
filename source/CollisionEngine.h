@@ -41,10 +41,10 @@ struct Functor
 class CollisionEngine
 {
     public:
-        static void onSetup(list<Entity*>* inEntities);
+        static void onSetup();
         static void onUnload();
 
-        //static void addEntity(Entity* inEntity);
+        static void addEntity(Entity* inEntity);
         //static void removeEntity(Entity* inEntity);
 
         static void checkCollisions();
@@ -53,12 +53,14 @@ class CollisionEngine
         static volatile bool mCollisionsRunning;
         static long mTimes;
 
+        static list<Entity*> mEntities;
+
     private:
         static Functor mFunc;
-        static list<Entity*>* mEntities;
+        //static list<Entity*>* mEntities;
         static float mLargestRadius;
 
-        static SDL_mutex* mEntityLock;
+        //static SDL_mutex* mEntityLock;
 };
 
 #endif // COLLISIONENGINE_H

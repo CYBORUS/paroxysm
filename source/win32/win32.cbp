@@ -71,6 +71,8 @@
 		<Unit filename="..\EditVertexAction.h" />
 		<Unit filename="..\Entity.cpp" />
 		<Unit filename="..\Entity.h" />
+		<Unit filename="..\EntityGarbageCollector.cpp" />
+		<Unit filename="..\EntityGarbageCollector.h" />
 		<Unit filename="..\GameCamera.cpp" />
 		<Unit filename="..\GameCamera.h" />
 		<Unit filename="..\GameModule.cpp" />

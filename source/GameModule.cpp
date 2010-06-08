@@ -111,7 +111,7 @@ bool GameModule::onLoad()
 
     mHUD.addWidget(mFPSLabel);
 
-    mEntityLock = SDL_CreateMutex();
+    //mEntityLock = SDL_CreateMutex();
     addTank(PLAYER_TANK);
     addTank(ROBOT_TANK);
 
@@ -187,10 +187,11 @@ void GameModule::onOpen()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-    //start the collision engine
-    CollisionEngine::onSetup(&mEntities);
+    //start the collision engine and the entity garbage collector
+    CollisionEngine::onSetup();
     //CollisionEngine::checkCollisions();
-    mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, mEntityLock);
+    mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, NULL);
+    mEntityGarbageCollectorThread = SDL_CreateThread(EntityGarbageCollector::runGarbageCollection, NULL);
     mTimes = 0;
 }
 
@@ -313,9 +314,10 @@ void GameModule::onLoop()
         //list<Entity*> tempEntities = mEntities;
         //SDL_mutexV(mEntityLock);
         list<Entity*>::iterator itEntities = mEntities.begin();
-        for (; itEntities != mEntities.end(); ++itEntities)
+        while (itEntities != mEntities.end())
         {
             (*itEntities)->display();
+            ++itEntities;
         }
         //cerr << "onLoop release" << endl;
         //SDL_mutexV(mEntityLock);
@@ -347,13 +349,38 @@ void GameModule::onFrame()
         mMoonRotation -= 360.0f;
     }
     //cerr << "rotations done...";
-    map<Tank*, Control*>::iterator itControls = mControls.begin();
+    map<Entity*, Control*>::iterator itControls = mControls.begin();
     for (; itControls != mControls.end(); ++itControls)
     {
         itControls->second->update();
     }
 
+    list<Entity*>::iterator itEntities = mEntities.begin();
+
+    while (itEntities != mEntities.end())
+    {
+        (*itEntities)->move();
+
+        if (!(*itEntities)->isAlive())
+        {
+            Control* thisControl;
+            if (mControls.find((*itEntities)) != mControls.end())
+            {
+                mControls[(*itEntities)]->setGameDead();
+                mControls.erase((*itEntities));
+            }
+            (*itEntities)->setRenderDead();
+            itEntities = mEntities.erase(itEntities);
+        }
+        else
+        {
+            ++itEntities;
+        }
+
+    }
+
     //cerr << "onframe lock...";
+    /*
     SDL_mutexP(mEntityLock);
     ++mTimes;
     list<Entity*>::iterator itEntities = mEntities.begin();
@@ -384,7 +411,7 @@ void GameModule::onFrame()
     }
     //cerr << "onframe release" << endl;
     SDL_mutexV(mEntityLock);
-
+    */
 
     if (mLuaConsole->isLockedIn())
     {
@@ -406,7 +433,7 @@ void GameModule::onUnload()
     cerr << "mTimes: " << mTimes << " collisionEngine: " << CollisionEngine::mTimes << endl;
     ModelStack::unloadAll();
 
-    map<Tank*, Control*>::iterator itControls = mControls.begin();
+    map<Entity*, Control*>::iterator itControls = mControls.begin();
 
     for (; itControls != mControls.end(); ++itControls)
     {
@@ -424,15 +451,20 @@ void GameModule::onUnload()
     glDisable(GL_LIGHTING);
     glDisable(GL_RESCALE_NORMAL_EXT);
 
-    SDL_DestroyMutex(mEntityLock);
+    //SDL_DestroyMutex(mEntityLock);
 
     CollisionEngine::onUnload();
+    EntityGarbageCollector::onUnload();
+    SDL_WaitThread(mEntityGarbageCollectorThread, NULL);
 }
 
 void GameModule::onClose()
 {
-
+    //tell the collision engine to stop
     CollisionEngine::mCollisionsRunning = false;
+    EntityGarbageCollector::onUnload();
+    SDL_WaitThread(mEntityGarbageCollectorThread, NULL);
+
 }
 
 void GameModule::addTank(ControlType inControlType,
@@ -444,35 +476,49 @@ void GameModule::addTank(ControlType inControlType,
 
     Control* controls = NULL;
 
-    SDL_mutexP(mEntityLock);
-    mEntities.push_back(tank);
-    SDL_mutexV(mEntityLock);
+    //SDL_mutexP(mEntityLock);
+    //mEntities.push_back(tank);
+    //EntityGarbageCollector::addEntity(tank);
+    //CollisionEngine::addEntity(tank);
+    addEntity(tank);
+    //SDL_mutexV(mEntityLock);
 
-    switch (inControlType)
+    if (inControlType != NO_CONTROLS)
     {
-        case PLAYER_TANK:
+
+        switch (inControlType)
         {
-            controls = new PlayerControl(tank);
-            mPlayerTank = tank;
-            mPlayerControls = controls;
-            break;
+            case PLAYER_TANK:
+            {
+                controls = new PlayerControl(tank);
+                mPlayerTank = tank;
+                mPlayerControls = controls;
+                break;
+            }
+
+            case ROBOT_TANK:
+            {
+                controls = new RobotControl(tank);
+                break;
+            }
+
+            default:
+            {
+            }
         }
 
-        case ROBOT_TANK:
-        {
-            controls = new RobotControl(tank);
-            break;
-        }
-
-        default:
-        {
-        }
+        //mControls.push_back(controls);
+        mControls[tank] = controls;
+        EntityGarbageCollector::addControl(tank, controls);
     }
-
-    //mControls.push_back(controls);
-    mControls[tank] = controls;
-
     ++mNumTanks;
+}
+
+void GameModule::addEntity(Entity* inEntity)
+{
+    mEntities.push_back(inEntity);
+    EntityGarbageCollector::addEntity(inEntity);
+    CollisionEngine::addEntity(inEntity);
 }
 
 Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
@@ -505,7 +551,8 @@ Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
 void GameModule::onLButtonDown(int inX, int inY)
 {
     Bullet* bullet = new Bullet(&mTerrain, mPlayerTank->getBulletStart(), mPlayerTank->getBulletDirection(), mPlayerTank->getBulletRotation());
-    mEntities.push_back(bullet);
+    //mEntities.push_back(bullet);
+    addEntity(bullet);
     //CollisionEngine::addEntity(bullet);
 }
 
@@ -605,7 +652,7 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             relative[2] = hoverPoint[2] - tankPos[2];
             float angle = -atan2(relative[2], relative[0]) + PI_HALVES;
 
-            mPlayerTank->setTurretDirection(TO_DEGREES(angle));
+            ((Tank*)mPlayerTank)->setTurretDirection(TO_DEGREES(angle));
 
             mHUD.setStates(inX, inY, false);
             break;
