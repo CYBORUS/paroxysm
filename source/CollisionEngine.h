@@ -60,7 +60,7 @@ class CollisionEngine
         //static list<Entity*>* mEntities;
         static float mLargestRadius;
 
-        //static SDL_mutex* mEntityLock;
+        static SDL_mutex* mEntityLock;
 };
 
 #endif // COLLISIONENGINE_H

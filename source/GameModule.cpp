@@ -114,6 +114,9 @@ bool GameModule::onLoad()
     mCamera.setTrackball(mTrackball);
     mCamera.follow(mPlayerTank);
 
+    CollisionEngine::onSetup();
+    EntityGarbageCollector::onSetup();
+
     return true;
 }
 
@@ -184,7 +187,6 @@ void GameModule::onOpen()
 
 
     //start the collision engine and the entity garbage collector
-    CollisionEngine::onSetup();
     //CollisionEngine::checkCollisions();
     mCollisionThread = SDL_CreateThread(CollisionEngine::checkCollisions, NULL);
     mEntityGarbageCollectorThread = SDL_CreateThread(EntityGarbageCollector::runGarbageCollection, NULL);
@@ -429,6 +431,7 @@ void GameModule::onUnload()
     cerr << "mTimes: " << mTimes << " collisionEngine: " << CollisionEngine::mTimes << endl;
     ModelStack::unloadAll();
 
+/*
     map<Entity*, Control*>::iterator itControls = mControls.begin();
 
     for (; itControls != mControls.end(); ++itControls)
@@ -441,6 +444,10 @@ void GameModule::onUnload()
     {
         delete *itEntities;
     }
+*/
+
+    mEntities.clear();
+    mControls.clear();
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -449,17 +456,21 @@ void GameModule::onUnload()
 
     //SDL_DestroyMutex(mEntityLock);
 
+    CollisionEngine::mCollisionsRunning = false;
+    SDL_WaitThread(mCollisionThread, NULL);
     CollisionEngine::onUnload();
-    EntityGarbageCollector::onUnload();
+    EntityGarbageCollector::mGameRunning = false;
     SDL_WaitThread(mEntityGarbageCollectorThread, NULL);
+    EntityGarbageCollector::onUnload();
 }
 
 void GameModule::onClose()
 {
     //tell the collision engine to stop
     CollisionEngine::mCollisionsRunning = false;
-    EntityGarbageCollector::onUnload();
-    SDL_WaitThread(mEntityGarbageCollectorThread, NULL);
+    EntityGarbageCollector::mGameRunning = false;
+    //EntityGarbageCollector::onUnload();
+    //SDL_WaitThread(mEntityGarbageCollectorThread, NULL);
 
 }
 

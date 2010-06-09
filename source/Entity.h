@@ -52,8 +52,8 @@ class Entity
         EntityType mWhatAmI;
         float mRadius;
 
-        bool mGameDead;
-        bool mRenderDead;
+        bool volatile mGameDead;
+        bool volatile mRenderDead;
 
         TerrainGrid* mTerrain;
         int mTerrainWidth;

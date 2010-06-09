@@ -21,13 +21,13 @@ list<Entity*> CollisionEngine::mEntities;
 float CollisionEngine::mLargestRadius = 0.0f;
 Functor CollisionEngine::mFunc;
 volatile bool CollisionEngine::mCollisionsRunning = false;
-//SDL_mutex* CollisionEngine::mEntityLock;
+SDL_mutex* CollisionEngine::mEntityLock;
 long CollisionEngine::mTimes = 0;
 
 void CollisionEngine::onSetup()
 {
     //mEntities = inEntities;
-    //mEntityLock = SDL_CreateMutex();
+    mEntityLock = SDL_CreateMutex();
     //this is a temporary fix, we need to find a way to choose
     //a radius based on the list of entities
     mLargestRadius = 1;
@@ -36,13 +36,13 @@ void CollisionEngine::onSetup()
 
 void CollisionEngine::addEntity(Entity* inEntity)
 {
-    //SDL_mutexP(mEntityLock);
+    SDL_mutexP(mEntityLock);
     mEntities.push_back(inEntity);
+    SDL_mutexV(mEntityLock);
     if (inEntity->getRadius() > mLargestRadius)
     {
         mLargestRadius = inEntity->getRadius() * 3.0f;
     }
-    //SDL_mutexV(mEntityLock);
 }
 
 /*
@@ -139,6 +139,7 @@ int CollisionEngine::checkCollisions(void* unused)
     {
         //SDL_mutexP(lock);
         //++mTimes;
+        SDL_mutexP(mEntityLock);
         //list<Entity*> tempEntities = *mEntities;
         //tempEntities.sort(mFunc);
         mEntities.sort(mFunc);
@@ -199,6 +200,7 @@ int CollisionEngine::checkCollisions(void* unused)
             }
         }
         //SDL_mutexV(lock);
+        SDL_mutexV(mEntityLock);
         SDL_Delay(1);
         /*
         for (unsigned int i = 0; i < mEntities.size() - 1; ++i)
@@ -231,7 +233,7 @@ int CollisionEngine::checkCollisions(void* unused)
 
 void CollisionEngine::onUnload()
 {
-    //mEntities.clear();
-    //SDL_DestroyMutex(mEntityLock);
-    mCollisionsRunning = false;
+    //mCollisionsRunning = false;
+    mEntities.clear();
+    SDL_DestroyMutex(mEntityLock);
 }
