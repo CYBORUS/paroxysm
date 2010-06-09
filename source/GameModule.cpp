@@ -366,11 +366,11 @@ void GameModule::onFrame()
             Control* thisControl;
             if (mControls.find((*itEntities)) != mControls.end())
             {
-                mControls[(*itEntities)]->setGameDead();
                 mControls.erase((*itEntities));
+                mControls[(*itEntities)]->setGameDead();
             }
-            (*itEntities)->setRenderDead();
             itEntities = mEntities.erase(itEntities);
+            (*itEntities)->setRenderDead();
         }
         else
         {

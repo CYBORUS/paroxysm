@@ -180,8 +180,8 @@ int CollisionEngine::checkCollisions(void* unused)
 
                 if (!second->isAlive())
                 {
-                    second->setGameDead();
                     itSecond = mEntities.erase(itSecond);
+                    second->setGameDead();
                 }
                 else
                 {
@@ -191,8 +191,8 @@ int CollisionEngine::checkCollisions(void* unused)
 
             if (!first->isAlive())
             {
-                first->setGameDead();
                 itFirst = mEntities.erase(itFirst);
+                first->setGameDead();
             }
             else
             {
