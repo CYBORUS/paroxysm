@@ -30,7 +30,7 @@ void CollisionEngine::onSetup()
     mEntityLock = SDL_CreateMutex();
     //this is a temporary fix, we need to find a way to choose
     //a radius based on the list of entities
-    mLargestRadius = 1;
+    mLargestRadius = 0;
 }
 
 
