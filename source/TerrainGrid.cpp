@@ -638,7 +638,7 @@ void TerrainGrid::findNormal(int inRow, int inCol)
     }
 
     Vector3D<GLfloat> normal;
-    for (unsigned int i = 0; i < normals.size(); ++i) normal += normals[i];
+    for (size_t i = 0; i < normals.size(); ++i) normal += normals[i];
 
     normal.normalize();
 

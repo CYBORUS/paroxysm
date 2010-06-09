@@ -134,18 +134,7 @@ void MapEditorModule::onOpen()
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-/*
-    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(FIELD_OF_VIEW, (GLdouble)mDisplay.x / (GLdouble)mDisplay.y,
-        NEAR_CP, FAR_CP);
-
-    glMatrixMode(GL_MODELVIEW);
-*/
-    // purposefully left outside the camera control to illustrate the changing
-    // light patterns
-    glPushMatrix();
 
     glTranslatef(0.0f, 0.0f, -mTrackball[2]);
     glRotatef(mTrackball[0], 1.0f, 0.0f, 0.0f);
@@ -161,9 +150,6 @@ void MapEditorModule::onLoop()
     if (mSceneChanged)
     {
         glGetDoublev(GL_MODELVIEW_MATRIX, mModelView.array());
-        //mModelView.transpose();
-        //mTransform = mModelView * mProjection;
-        //cerr << "\nmTransform: \n" << mTransform << endl;
         mSceneChanged = false;
     }
 
@@ -196,8 +182,6 @@ void MapEditorModule::onLoop()
         }
         glPopAttrib();
     }
-
-    glPopMatrix();
 
     mHUD.display();
 }

@@ -543,9 +543,9 @@ void DisplayEngine::openGLDriverInfo(ostream& inStream)
 
     string stuff = (char*)glGetString(GL_EXTENSIONS);
 
-    for (unsigned int i = 0; i < stuff.length(); ++i)
+    for (size_t i = 0; i < stuff.length(); ++i)
     {
-        unsigned int j = stuff.find_first_of(' ', i);
+        size_t j = stuff.find_first_of(' ', i);
         if (j != string::npos)
         {
             inStream << stuff.substr(i, j - i) << endl;

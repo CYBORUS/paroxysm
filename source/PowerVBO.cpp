@@ -26,10 +26,10 @@ PowerVBO::PowerVBO() : mTypes(0)
 
 PowerVBO::~PowerVBO()
 {
-    for (unsigned int i = 0; i < mVertices.size(); ++i)
+    for (size_t i = 0; i < mVertices.size(); ++i)
         glDeleteBuffers(1, &mVertices[i].binding);
 
-    for (unsigned int i = 0; i < mIndices.size(); ++i)
+    for (size_t i = 0; i < mIndices.size(); ++i)
         glDeleteBuffers(1, &mIndices[i].binding);
 }
 
@@ -74,7 +74,7 @@ void PowerVBO::display()
     if (mTypes & PVBO_COLOR  ) glEnableClientState(GL_COLOR_ARRAY);
     if (mTypes & PVBO_COLOR2 ) glEnableClientState(GL_SECONDARY_COLOR_ARRAY);
 
-    for (unsigned int i = 0; i < mVertices.size(); ++i)
+    for (size_t i = 0; i < mVertices.size(); ++i)
     {
         PowerVertexArray& pva = mVertices[i];
         glBindBuffer(GL_ARRAY_BUFFER, pva.binding);
@@ -119,7 +119,7 @@ void PowerVBO::display()
         }
     }
 
-    for (unsigned int i = 0; i < mIndices.size(); ++i)
+    for (size_t i = 0; i < mIndices.size(); ++i)
     {
         PowerIndexArray& pia = mIndices[i];
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pia.binding);

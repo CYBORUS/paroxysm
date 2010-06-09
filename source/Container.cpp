@@ -23,7 +23,7 @@ Container::Container()
 
 Container::~Container()
 {
-    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    for (size_t i = 0; i < mWidgets.size(); ++i)
     {
         delete mWidgets[i];
         mWidgets[i] = NULL;
@@ -32,7 +32,7 @@ Container::~Container()
 
 void Container::display()
 {
-    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    for (size_t i = 0; i < mWidgets.size(); ++i)
     {
         if (mWidgets[i]->isVisible()) mWidgets[i]->display();
     }

@@ -44,13 +44,13 @@ ScrollList::~ScrollList()
 {
     glDeleteTextures(1, &mNoImage);
 
-    for (unsigned int i = 0; i < mImages.size(); ++i)
+    for (size_t i = 0; i < mImages.size(); ++i)
     {
         GLuint texture = mImages[i];
         glDeleteTextures(1, &texture);
     }
 
-    for (unsigned int i = 0; i < mText.size(); ++i)
+    for (size_t i = 0; i < mText.size(); ++i)
     {
         delete mText[i];
     }
@@ -125,29 +125,6 @@ void ScrollList::addListItem(string inText, Surface inImage)
 
     mImages.push_back(texture);
     mImageSizes.push_back(size);
-
-    //mListText.push_back(inText);
-
-/*
-    random_device device;
-    double ent = device.entropy();
-    unsigned int number = device();
-    cout << "random number? " << number << " entropy: " << ent << endl;
-    */
-/*
-    //someRand();
-    //typedef boost::uniform_int<int> dist_t;
-    typedef boost::normal_distribution<double> dist_t;
-    //typedef uniform_real<double> dist_t;
-    dist_t dist(100, 20);
-    boost::variate_generator<boost::mt19937&, dist_t> rand_ (mSomeRand, dist);
-
-    for (int i = 0; i < 20; ++i)
-    {
-        cout << "random number? " << (int)rand_() << endl;
-    }
-    cout << endl << endl;
-    */
 }
 
 
@@ -233,7 +210,7 @@ void ScrollList::onMouseChange(int inX, int inY)
 
                 bool found = false;
 
-                for (unsigned int i = 0; i < mText.size() &&  startY < mPixelLR.y && !found; ++i)
+                for (size_t i = 0; i < mText.size() &&  startY < mPixelLR.y && !found; ++i)
                 {
                     if (startY + mText[i]->getTextSize().y >= inY)
                     {
@@ -393,7 +370,7 @@ void ScrollList::buildScrollList()
 
         glEnable(GL_SCISSOR_TEST);
 
-        for (unsigned int i = 0; i < mText.size(); ++i)
+        for (size_t i = 0; i < mText.size(); ++i)
         {
             float nextX = startX;
 

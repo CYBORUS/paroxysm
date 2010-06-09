@@ -28,7 +28,7 @@ HUD::HUD()
 
 HUD::~HUD()
 {
-    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    for (size_t i = 0; i < mWidgets.size(); ++i)
     {
         delete mWidgets[i];
         mWidgets[i] = NULL;
@@ -63,7 +63,7 @@ void HUD::addWidget(Widget* inWidget)
 
 void HUD::findPixels()
 {
-    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    for (size_t i = 0; i < mWidgets.size(); ++i)
         mWidgets[i]->findPixels(mDisplay, mRange);
 }
 
@@ -77,7 +77,8 @@ void HUD::display()
     glOrtho(-mRange * ratio, mRange * ratio, -mRange, mRange, -mRange, mRange);
 
     glMatrixMode(GL_MODELVIEW);
-
+    glPushMatrix();
+    glLoadIdentity();
     glDepthMask(GL_FALSE);
     glDisable(GL_DEPTH_TEST);
     glPushAttrib(GL_LIGHTING_BIT);
@@ -86,7 +87,7 @@ void HUD::display()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glColor3f(1.0f, 1.0f, 1.0f);
-    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    for (size_t i = 0; i < mWidgets.size(); ++i)
     {
         if (mWidgets[i]->isVisible()) mWidgets[i]->display();
     }
@@ -95,6 +96,7 @@ void HUD::display()
     glPopAttrib();
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
+    glPopMatrix();
 
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -111,7 +113,7 @@ int HUD::setStates(int inX, int inY, bool inPress)
         mFocusWidget = NULL;
     }
 
-    for (unsigned int i = 0; i < mWidgets.size(); ++i)
+    for (size_t i = 0; i < mWidgets.size(); ++i)
     {
         MouseState state = (mWidgets[i]->isOver(inX, inY)
             && mWidgets[i]->isVisible()) ? hover : OUTSIDE;

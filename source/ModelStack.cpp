@@ -566,7 +566,7 @@ void ModelStack::loadOBJ(const char* inFile)
         normals.clear();
         normals.insert(normals.begin(), vertices.size(), 0.0f);
 
-        for (unsigned int i = 0; i < normalWeirdTriangleIndices.size(); ++i)
+        for (size_t i = 0; i < normalWeirdTriangleIndices.size(); ++i)
         {
             normals[triangleIndices[i] * 3]
                 = finalNormals[normalWeirdTriangleIndices[i] * 3];
@@ -607,7 +607,7 @@ void ModelStack::loadOBJ(const char* inFile)
         textureCoords.clear();
         textureCoords.insert(textureCoords.begin(), vertices.size() / 3 * 2, 0.0f);
 
-        for (unsigned int i = 0; i < textureWeirdTriangleIndices.size(); ++i)
+        for (size_t i = 0; i < textureWeirdTriangleIndices.size(); ++i)
         {
             textureCoords[triangleIndices[i] * 2]
                 = finalTexCoords[textureWeirdTriangleIndices[i] * 2];
