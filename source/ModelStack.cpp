@@ -633,14 +633,16 @@ void ModelStack::loadC3M(const char* inFile)
     c3mModel* c3m = c3mOpen(file.c_str());
     if (c3mError)
     {
-        DisplayEngine::printErrors("c3m loader error");
+        //DisplayEngine::printErrors("c3m loader error");
         return;
     }
+
 
     int size = c3m->vertices.size;
     GLfloat* data = c3m->vertices.array;
 
     mVBO.loadVertexArray(PVBO_VERTEX, 3, size, data);
+
 
     size = c3m->normals.size;
     data = c3m->normals.array;
@@ -653,6 +655,7 @@ void ModelStack::loadC3M(const char* inFile)
         data = c3m->colors.array;
         mVBO.loadVertexArray(PVBO_COLOR, 4, size, data);
     }
+
 
     size = c3m->textureCoordinates.size;
     if (size > 0)
@@ -672,9 +675,12 @@ void ModelStack::loadC3M(const char* inFile)
         cerr << "error, no texture" << endl;
     }
 
+
     size = c3m->indices.size;
     GLuint* indices = c3m->indices.array;
     mVBO.loadIndexArray(GL_TRIANGLES, size, indices);
 
     c3mClose(c3m);
+
+
 }

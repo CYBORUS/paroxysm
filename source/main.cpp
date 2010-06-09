@@ -20,6 +20,7 @@
 #include "SoundEngine.h"
 #include "MainMenuModule.h"
 #include "CollisionEngine.h"
+#include "BenchmarkModule.h"
 
 int main(int argc, char** argv)
 {
@@ -27,7 +28,8 @@ int main(int argc, char** argv)
     DisplayEngine::initialize();
     SoundEngine::initialize();
     Config::outputSettings();
-    DisplayEngine::start(new MainMenuModule);
+    //DisplayEngine::start(new MainMenuModule);
+    DisplayEngine::start(new BenchmarkModule);
     SoundEngine::cleanup();
     return 0;
 }
