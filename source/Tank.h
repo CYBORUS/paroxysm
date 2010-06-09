@@ -71,19 +71,6 @@ class Tank : public Entity
         Vector3D<float> mTransformedBackLeftControl;
         Vector3D<float> mTransformedBackRightControl;
 
-/*
-        Matrix<float> mModelview;
-        Matrix<float> mRotateX;
-        Matrix<float> mRotateY;
-        Matrix<float> mRotateZ;
-        Matrix<float> mTranslate;
-*/
-        //to hold the buffers for drawing each of the
-        //three tank parts
-        //GLuint mBody[4];
-        //GLuint mHead[4];
-        //GLuint mTurret[4];
-
         GLfloat mBaseRect[24];
         GLfloat mBaseRectNormals[24];
         GLuint mBaseRectIndices[24];
@@ -115,8 +102,6 @@ class Tank : public Entity
 
         float mCurrentMoveRate;
         float mCurrentRotationRate;
-
-        TSphere mSphere;
 };
 
 #endif

@@ -30,15 +30,20 @@ class Bullet : public Entity
         virtual ~Bullet();
 
         virtual void display();
+        static void setSphere(TSphere* inSphere);
 
         void onCollision(Entity* inCollidedWith);
         void move();
 
 
     protected:
-        TSphere mSphere;
-
+        static TSphere* mSphere;
         float mSpeed;
 };
+
+inline void Bullet::setSphere(TSphere* inSphere)
+{
+    mSphere = inSphere;
+}
 
 #endif

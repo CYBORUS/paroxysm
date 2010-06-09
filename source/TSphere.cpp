@@ -18,6 +18,8 @@
 #include "TSphere.h"
 #include "DisplayEngine.h"
 
+#include <vector>
+
 #define IX 0.525731112119133606
 #define IZ 0.850650808352039932
 

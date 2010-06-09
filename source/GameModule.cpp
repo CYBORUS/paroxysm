@@ -119,6 +119,8 @@ bool GameModule::onLoad()
     mCamera.setTrackball(mTrackball);
     mCamera.follow(mPlayerTank);
 
+    Bullet::setSphere(&mBullet);
+
     return true;
 }
 
@@ -363,7 +365,6 @@ void GameModule::onFrame()
 
         if (!(*itEntities)->isAlive())
         {
-            Control* thisControl;
             if (mControls.find((*itEntities)) != mControls.end())
             {
                 Control* thisControl = mControls[(*itEntities)];

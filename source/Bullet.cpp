@@ -17,6 +17,8 @@
 
 #include "Bullet.h"
 
+TSphere* Bullet::mSphere = NULL;
+
 Bullet::Bullet(TerrainGrid* inTerrain, const Vector3D<float>& inPosition,
     const Vector3D<float>& inMomentum, float inRotation) : Entity(inTerrain)
 {
@@ -33,7 +35,6 @@ Bullet::Bullet(TerrainGrid* inTerrain, const Vector3D<float>& inPosition,
 
 Bullet::~Bullet()
 {
-    //dtor
 }
 
 void Bullet::onCollision(Entity* inCollidedWith)
@@ -57,8 +58,6 @@ void Bullet::move()
 
 void Bullet::display()
 {
-    //mSphere.moveSphere(mPosition[0], mPosition[1], mPosition[2]);
-
     glPushMatrix();
     {
         glTranslatef(mPosition[0], mPosition[1], mPosition[2]);
@@ -66,8 +65,7 @@ void Bullet::display()
         glRotatef(mRotation[0], 1.0f, 0.0f, 0.0f);
         glRotatef(mRotation[2], 0.0f, 0.0f, 1.0f);
         glScalef(0.25f, 0.25f, 1.0f);
-
-        mSphere.display();
+        mSphere->display();
     }
     glPopMatrix();
 

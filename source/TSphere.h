@@ -22,8 +22,6 @@
 #include "Vector3D.h"
 #include "PowerVBO.h"
 
-#include <vector>
-
 class TSphere
 {
     public:
@@ -33,8 +31,10 @@ class TSphere
         void display();
 
         void moveSphere(float inX, float inY, float inZ);
+        //void moveSphere(const Vector3D<float>& inVector);
         void setColor(float inR, float inG, float inB);
         void setScale(float inX, float inY, float inZ);
+        //void setScale(const Vector3D<float>& inVector);
         const Vector3D<float>& getTranslation() const;
 
     private:

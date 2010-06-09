@@ -109,6 +109,7 @@ class GameModule : public Module
 
         TSphere mSun;
         TSphere mMoon;
+        TSphere mBullet;
         float mSunRotation;
         float mMoonRotation;
 
