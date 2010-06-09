@@ -108,14 +108,15 @@ bool GameModule::onLoad()
     mHUD.addWidget(mFPSLabel);
 
     //mEntityLock = SDL_CreateMutex();
-    addTank(PLAYER_TANK);
-    addTank(ROBOT_TANK);
 
     mCamera.setTrackball(mTrackball);
     mCamera.follow(mPlayerTank);
 
     CollisionEngine::onSetup();
     EntityGarbageCollector::onSetup();
+
+    addTank(PLAYER_TANK);
+    addTank(ROBOT_TANK);
 
     return true;
 }
