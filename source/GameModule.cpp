@@ -292,6 +292,13 @@ void GameModule::onLoop()
     }
     glPopMatrix();
 
+    glPushMatrix();
+    {
+        glTranslatef(1, 1, 1);
+        mTestModel->display();
+    }
+    glPopMatrix();
+
     mTerrain.display();
 
     list<Entity*>::iterator itEntities = mEntities.begin();
