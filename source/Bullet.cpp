@@ -19,8 +19,8 @@
 
 TSphere* Bullet::mSphere = NULL;
 
-Bullet::Bullet(TerrainGrid* inTerrain, const Vector3D<float>& inPosition,
-    const Vector3D<float>& inMomentum, float inRotation) : Entity(inTerrain)
+Bullet::Bullet(const Vector3D<float>& inPosition,
+    const Vector3D<float>& inMomentum, float inRotation)
 {
     mWhatAmI = E_BULLET;
     mRadius = 0.5f;
@@ -71,3 +71,19 @@ void Bullet::display()
 
 }
 
+void Bullet::changeDirection(float inDirection)
+{
+    float x = MathEngine::supremeRandom(-1.0f, 1.0f);
+    float z = MathEngine::supremeRandom(-1.0f, 1.0f);
+
+    mMomentum[0] = x;
+    mMomentum[2] = z;
+    mMomentum.normalizeTo(mSpeed);
+
+}
+
+
+void Bullet::changeSpeed(float inSpeed)
+{
+
+}

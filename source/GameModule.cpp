@@ -18,6 +18,7 @@
 #include "GameModule.h"
 #include "MathEngine.h"
 #include "RobotControl.h"
+#include "Control.h"
 
 GameCamera* GameModule::luaCamera = NULL;
 vector<Tank*>* GameModule::luaTanks = NULL;
@@ -61,6 +62,7 @@ GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
         }
         exit(3);
     }
+
 }
 
 GameModule::~GameModule()
@@ -69,7 +71,8 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
-    mTestModel = ModelStack::load("mt3ds.c3m");
+    mTestModel = ModelStack::load("bradley.c3m");
+
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
@@ -112,6 +115,8 @@ bool GameModule::onLoad()
     CollisionEngine::onSetup();
     EntityGarbageCollector::onSetup();
 
+    Entity::setTerrain(&mTerrain);
+
     addTank(PLAYER_TANK);
     addTank(ROBOT_TANK);
 
@@ -135,6 +140,8 @@ void GameModule::onOpen()
     luaTG = &mTerrain;
     luaGM = this;
     mSceneChanged = true;
+
+    Entity::setTerrain(&mTerrain);
 
     SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
 
@@ -298,14 +305,16 @@ void GameModule::onLoop()
     {
         glScalef(0.05, 0.05, 0.05);
         glRotatef(-90, 1, 0, 0);
+        glRotatef(-90, 1, 0, 0);
+        glScalef(0.1, 0.1, 0.1);
         mTestModel->display();
     }
     glPopMatrix();
     list<Entity*>::iterator itEntities = mEntities.begin();
-    while (itEntities != mEntities.end())
+    for (; itEntities != mEntities.end(); ++itEntities)
     {
         (*itEntities)->display();
-        ++itEntities;
+        //++itEntities;
     }
 
     mHUD.display();
@@ -331,16 +340,32 @@ void GameModule::onFrame()
         mMoonRotation -= 360.0f;
     }
     //cerr << "rotations done...";
+
+    /*
     map<Entity*, Control*>::iterator itControls = mControls.begin();
     for (; itControls != mControls.end(); ++itControls)
     {
         itControls->second->update();
     }
+    */
 
     list<Entity*>::iterator itEntities = mEntities.begin();
 
     while (itEntities != mEntities.end())
     {
+        (*itEntities)->update();
+
+        if (!(*itEntities)->isAlive())
+        {
+            Entity* thisEntity = *itEntities;
+            itEntities = mEntities.erase(itEntities);
+            thisEntity->setRenderDead();
+        }
+        else
+        {
+            ++itEntities;
+        }
+        /*
         (*itEntities)->move();
 
         if (!(*itEntities)->isAlive())
@@ -361,7 +386,7 @@ void GameModule::onFrame()
         {
             ++itEntities;
         }
-
+        */
     }
 
     //cerr << "onframe lock...";
@@ -434,7 +459,7 @@ void GameModule::onUnload()
 */
 
     mEntities.clear();
-    mControls.clear();
+    //mControls.clear();
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -461,51 +486,64 @@ void GameModule::onClose()
 
 }
 
+
+void GameModule::addSomething(Entity* inEntity, Control* inControl)
+{
+    inEntity->setControl(inControl);
+    addEntity(inEntity);
+}
+
 void GameModule::addTank(ControlType inControlType,
     const Vector3D<float>& inPosition)
 {
-    Tank* tank = new Tank(&mTerrain);
+    Entity* entity;
+/*
+    Tank* tank = new Tank();
     tank->setPosition(inPosition);
     //CollisionEngine::addEntity(tank);
-
+*/
     Control* controls = NULL;
 
     //SDL_mutexP(mEntityLock);
     //mEntities.push_back(tank);
     //EntityGarbageCollector::addEntity(tank);
     //CollisionEngine::addEntity(tank);
-    addEntity(tank);
+    //addEntity(tank);
     //SDL_mutexV(mEntityLock);
 
-    if (inControlType != NO_CONTROLS)
+    switch (inControlType)
     {
-
-        switch (inControlType)
+        case PLAYER_TANK:
         {
-            case PLAYER_TANK:
-            {
-                controls = new PlayerControl(tank);
-                mPlayerTank = tank;
-                mPlayerControls = controls;
-                break;
-            }
-
-            case ROBOT_TANK:
-            {
-                controls = new RobotControl(tank);
-                break;
-            }
-
-            default:
-            {
-            }
+            entity = new Tank();
+            controls = new PlayerControl(entity);
+            mPlayerTank = (Tank*)entity;
+            mPlayerControls = controls;
+            entity->setControl(controls);
+            break;
         }
 
+        case ROBOT_TANK:
+        {
+            entity = new Tank();
+            controls = new RobotControl(entity);
+            entity->setControl(controls);
+            break;
+        }
+
+        default:
+        {
+        }
+
+
         //mControls.push_back(controls);
-        mControls[tank] = controls;
-        EntityGarbageCollector::addControl(tank, controls);
+        //mControls[tank] = controls;
+        //EntityGarbageCollector::addControl(tank, controls);
     }
     ++mNumTanks;
+    entity->setPosition(inPosition);
+
+    addEntity(entity);
 }
 
 void GameModule::addEntity(Entity* inEntity)
@@ -544,9 +582,10 @@ Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
 
 void GameModule::onLButtonDown(int inX, int inY)
 {
-    Bullet* bullet = new Bullet(&mTerrain, mPlayerTank->getBulletStart(), mPlayerTank->getBulletDirection(), mPlayerTank->getBulletRotation());
+    Bullet* bullet = new Bullet(mPlayerTank->getBulletStart(), mPlayerTank->getBulletDirection(), mPlayerTank->getBulletRotation());
+    Control* control = new DummyBulletControl(bullet);
     //mEntities.push_back(bullet);
-    addEntity(bullet);
+    addSomething(bullet, control);
     //CollisionEngine::addEntity(bullet);
 }
 

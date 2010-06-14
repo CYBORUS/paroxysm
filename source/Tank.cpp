@@ -18,7 +18,7 @@
 #include "Tank.h"
 #include "ModelStack.h"
 
-Tank::Tank(TerrainGrid* inTerrain) : Entity(inTerrain), mTankSize(1.5, 1.0, 1.5),
+Tank::Tank() : mTankSize(1.5, 1.0, 1.5),
     mHeadCenter(0.0, 0.75, 0.0), mHeadSize(0.75, 0.5, 0.75),
     mTurretCenter(0.0, 0.0, 0.75), mTurretSize(0.25, 0.25, 0.75)
 {

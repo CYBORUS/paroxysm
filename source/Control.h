@@ -19,14 +19,16 @@
 #define CONTROL_H
 
 #include "Vector3D.h"
-#include "Tank.h"
+#include "Entity.h"
 
-enum ControlType { NO_CONTROLS, PLAYER_TANK, NETWORK_TANK, ROBOT_TANK };
+class Entity;
+
+enum ControlType { NO_CONTROLS, PLAYER_TANK, NETWORK_TANK, ROBOT_TANK, DUMMY_BULLET };
 
 class Control
 {
     public:
-        Control(Tank* inTank);
+        Control(Entity* inEntity);
         virtual ~Control();
 
         virtual void update() = 0;
@@ -38,7 +40,7 @@ class Control
         virtual bool isGameDead();
 
     protected:
-        Tank* mTank;
+        Entity* mEntity;
 
         bool mGameDead;
 

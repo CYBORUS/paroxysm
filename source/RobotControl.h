@@ -19,23 +19,26 @@
 #define ROBOTCONTROL_H
 
 #include "Control.h"
+#include "Tank.h"
 
 #define TICK_RESET 15
 
 class RobotControl : public Control
 {
     public:
-        RobotControl(Tank* inTank);
+        RobotControl(Entity* inEntity);
         virtual ~RobotControl();
 
         virtual void update();
 
     private:
+        Tank* mTank;
+
         int mTicks;
         float mTurn;
         float mSpeed;
 
-        float headRotation;
+        float mHeadRotation;
 };
 
 #endif

@@ -63,10 +63,12 @@ int CollisionEngine::checkCollisions(void* unused)
         list<Entity*>::iterator itSecond;
         list<Entity*>::iterator itEnd = mEntities.end();
 
+
         while (itFirst != itEnd)
         {
             itSecond = itFirst;
             ++itSecond;
+
 
             Entity* first = *itFirst;
             while (itSecond != mEntities.end())

@@ -20,9 +20,10 @@
 
 #include <ctime>
 
-RobotControl::RobotControl(Tank* inTank) : Control(inTank), mTicks(1),
+RobotControl::RobotControl(Entity* inEntity) : Control(inEntity), mTicks(1),
     mTurn(0.0f), mSpeed(0.0f)
 {
+    mTank = (Tank*)inEntity;
 }
 
 RobotControl::~RobotControl()
@@ -38,10 +39,10 @@ void RobotControl::update()
         mTicks = TICK_RESET;
         mSpeed = MathEngine::supremeRandom<float>(0.1f, 1.0f);
         mTurn = MathEngine::supremeRandom<float>(-1.0f, 1.0f);
-        headRotation = MathEngine::supremeRandom<float>(0.0f, 360.0f);
+        mHeadRotation = MathEngine::supremeRandom<float>(0.0f, 360.0f);
 
-        mTank->rotateTurret(headRotation);
-        mTank->changeSpeed(mSpeed);
-        mTank->changeDirection(mTurn);
+        mTank->rotateTurret(mHeadRotation);
+        mEntity->changeSpeed(mSpeed);
+        mEntity->changeDirection(mTurn);
     }
 }

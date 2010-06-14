@@ -28,11 +28,11 @@
 #include "TextBox.h"
 #include "Tank.h"
 #include "Bullet.h"
-#include "Control.h"
 #include "PlayerControl.h"
 #include "GameCamera.h"
 #include "Label.h"
 #include "ModelStack.h"
+#include "DummyBulletControl.h"
 
 #include <SDL_thread.h>
 #include <SDL_mutex.h>
@@ -61,6 +61,7 @@ class GameModule : public Module
             const Vector3D<float>& inPosition = Vector3D<float>(10.0f));
 
         void addEntity(Entity* inEntity);
+        void addSomething(Entity* inEntity, Control* inControl);
 
     protected:
         virtual void onLButtonDown(int inX, int inY);

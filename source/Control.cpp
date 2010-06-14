@@ -17,9 +17,9 @@
 
 #include "Control.h"
 
-Control::Control(Tank* inTank)
+Control::Control(Entity* inEntity)
 {
-    mTank = inTank;
+    mEntity = inEntity;
     mGameDead = false;
 }
 
@@ -31,15 +31,15 @@ Control::~Control()
 
 void Control::setPosition(const Vector3D<float>& inPosition)
 {
-    mTank->setPosition(inPosition);
+    mEntity->setPosition(inPosition);
 }
 
 void Control::changeDirection(float inDirection)
 {
-    mTank->changeDirection(inDirection);
+    mEntity->changeDirection(inDirection);
 }
 
 void Control::changeSpeed(float inSpeed)
 {
-    mTank->changeSpeed(inSpeed);
+    mEntity->changeSpeed(inSpeed);
 }

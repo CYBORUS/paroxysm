@@ -53,6 +53,10 @@
 			<Add library="lua51" />
 			<Add library="c3m" />
 		</Linker>
+		<Unit filename="..\BenchmarkModule.cpp" />
+		<Unit filename="..\BenchmarkModule.h" />
+		<Unit filename="..\BenchmarkOBJ.cpp" />
+		<Unit filename="..\BenchmarkOBJ.h" />
 		<Unit filename="..\Bullet.cpp" />
 		<Unit filename="..\Bullet.h" />
 		<Unit filename="..\Button.cpp" />
@@ -127,6 +131,8 @@
 		<Unit filename="..\TextBox.h" />
 		<Unit filename="..\TextPic.cpp" />
 		<Unit filename="..\TextPic.h" />
+		<Unit filename="..\Thread.cpp" />
+		<Unit filename="..\Thread.h" />
 		<Unit filename="..\Vector3D.h" />
 		<Unit filename="..\Widget.cpp" />
 		<Unit filename="..\Widget.h" />

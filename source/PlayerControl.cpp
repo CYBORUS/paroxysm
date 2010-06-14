@@ -17,7 +17,7 @@
 
 #include "PlayerControl.h"
 
-PlayerControl::PlayerControl(Tank* inTank) : Control(inTank)
+PlayerControl::PlayerControl(Entity* inEntity) : Control(inEntity)
 {
     //ctor
 }

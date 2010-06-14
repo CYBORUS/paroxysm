@@ -21,16 +21,20 @@
 #include "Entity.h"
 #include "TSphere.h"
 #include "OGL.h"
+#include "MathEngine.h"
 
 class Bullet : public Entity
 {
     public:
-        Bullet(TerrainGrid* inTerrain, const Vector3D<float>& inPosition,
+        Bullet(const Vector3D<float>& inPosition,
             const Vector3D<float>& inMomentum, float inRotation);
         virtual ~Bullet();
 
         virtual void display();
         static void setSphere(TSphere* inSphere);
+
+        virtual void changeDirection(float inDirection);
+        virtual void changeSpeed(float inSpeed);
 
         void onCollision(Entity* inCollidedWith);
         void move();

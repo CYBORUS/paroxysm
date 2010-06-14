@@ -24,7 +24,7 @@
 class PlayerControl : public Control
 {
     public:
-        PlayerControl(Tank* inTank);
+        PlayerControl(Entity* inEntity);
         virtual ~PlayerControl();
 
         void update();

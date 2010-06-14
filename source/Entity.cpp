@@ -16,11 +16,13 @@
  */
 
 #include "Entity.h"
+#include "Control.h"
 
-Entity::Entity(TerrainGrid* inTerrain)
+TerrainGrid* Entity::mTerrain;
+
+Entity::Entity()
 {
     mRadius = 1;
-    mTerrain = inTerrain;
     mTerrainWidth = mTerrain->getMatrix().cols();
     mTerrainHeight = mTerrain->getMatrix().rows();
     mAlive = true;
@@ -30,8 +32,19 @@ Entity::Entity(TerrainGrid* inTerrain)
 
 Entity::~Entity()
 {
+    delete mControl;
 }
 
+void Entity::update()
+{
+    mControl->update();
+    move();
+}
+
+void Entity::setTerrain(TerrainGrid* inTerrain)
+{
+    mTerrain = inTerrain;
+}
 
 void Entity::setRadius(float inRadius)
 {

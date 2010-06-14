@@ -37,7 +37,7 @@ class ModelStack;
 class Tank : public Entity
 {
     public:
-        Tank(TerrainGrid* inTerrain);
+        Tank();
         virtual ~Tank();
 
         void onCollision(Entity* inCollidedWith);
