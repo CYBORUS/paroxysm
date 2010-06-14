@@ -18,10 +18,12 @@
 #include "DisplayEngine.h"
 #include "Module.h"
 #include "Config.h"
+#include "GameServer.h"
 
 #include "OGL.h"
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_net.h>
 #include <boost/filesystem.hpp>
 
 #if SDL_IMAGE_PATCHLEVEL == 9
@@ -31,6 +33,7 @@
 
 #include <list>
 #include <fstream>
+#include <cstring>
 
 Surface DisplayEngine::mDisplay = NULL;
 Surface DisplayEngine::mWindowIcon = NULL;
@@ -42,14 +45,53 @@ LogFile DisplayEngine::mLogFile;
 
 void DisplayEngine::start(Module* inModule)
 {
+    if (inModule == NULL)
+    {
+        cleanup();
+        return;
+    }
 
-    if (inModule == NULL) return;
     Module* currentModule = inModule;
 
     list<Module*> moduleStack;
 
     unsigned nextFrame = SDL_GetTicks() + FRAME_LENGTH;
     SDL_Event event;
+
+    /// begin network code
+    GameServer server;
+    server.start(100);
+
+    UDPsocket socket;
+    UDPpacket* packet;
+    IPaddress address;
+
+    socket = SDLNet_UDP_Open(0);
+    if (!socket)
+    {
+        cerr << "failed to open client port -- " << SDLNet_GetError() << endl;
+        cleanup();
+        return;
+    }
+
+    if (SDLNet_ResolveHost(&address, "127.0.0.1",
+        Config::get<Uint16>("server port", 9421)) == -1)
+    {
+        cerr << "failed to resolve host -- " << SDLNet_GetError() << endl;
+        cleanup();
+        return;
+    }
+
+    int packetSize = Config::get<int>("client packet size", 512);
+    packet = SDLNet_AllocPacket(packetSize);
+    if (!packet)
+    {
+        cerr << "failed to allocate packet -- " << SDLNet_GetError() << endl;
+        cleanup();
+        return;
+    }
+
+    /// end network initialization
 
     while (currentModule != NULL || moduleStack.size() > 0)
     {
@@ -85,6 +127,13 @@ void DisplayEngine::start(Module* inModule)
                 mFPS = framesPerSecond;
                 framesPerSecond = 0;
                 //nextSecond = SDL_GetTicks() + 1000u;
+
+                static const string transmit("Hello, Server!");
+                strcpy((char*)packet->data, transmit.c_str());
+                packet->address.host = address.host;
+                packet->address.port = address.port;
+                packet->len = transmit.length() + 1;
+                SDLNet_UDP_Send(socket, -1, packet);
             }
 
             if (ticks > nextFrame)
@@ -121,6 +170,9 @@ void DisplayEngine::start(Module* inModule)
 
     }
 
+    SDLNet_FreePacket(packet);
+    server.stopAndWait();
+
     cleanup();
 }
 
@@ -149,13 +201,19 @@ void DisplayEngine::initialize()
 
     if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
     {
-        cerr << "error on SDL_Init" << endl;
+        cerr << "-- error on SDL_Init --" << endl;
         exit(1);
     }
 
     if (TTF_Init() == -1)
     {
         cerr << "-- error on TTF_Init -- " << TTF_GetError() << endl;
+        exit(1);
+    }
+
+    if (SDLNet_Init() < 0)
+    {
+        cerr << "-- error on SDLNet_Init -- " << SDLNet_GetError() << endl;
         exit(1);
     }
 
@@ -316,6 +374,7 @@ void DisplayEngine::cleanup()
     SDL_FreeSurface(mWindowIcon);
 #endif
 
+    SDLNet_Quit();
     TTF_Quit();
     SDL_Quit();
 }
@@ -327,7 +386,7 @@ Surface DisplayEngine::loadImage(const char* inFile)
 
     if (t == NULL)
     {
-        cerr << "failed to load image: " << inFile << endl;
+        //cerr << "failed to load image: " << inFile << endl;
         return NULL;
     }
 

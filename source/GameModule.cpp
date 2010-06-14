@@ -61,7 +61,6 @@ GameModule::GameModule(const char* inMapFile) : mSun(4), mMoon(4)
         }
         exit(3);
     }
-
 }
 
 GameModule::~GameModule()
@@ -70,7 +69,7 @@ GameModule::~GameModule()
 
 bool GameModule::onLoad()
 {
-    mTestModel = ModelStack::load("bradley.c3m");
+    mTestModel = ModelStack::load("mt3ds.c3m");
     mProjection = Matrix<GLdouble>(4);
     mModelView = Matrix<GLdouble>(4);
 
@@ -286,21 +285,22 @@ void GameModule::onLoop()
             glDisable(GL_LIGHTING);
             //glScalef(10.0f, 10.0f, 10.0f);
             mMoon.display();
+
         }
         glPopAttrib();
 
     }
     glPopMatrix();
 
+    mTerrain.display();
+
     glPushMatrix();
     {
-        glTranslatef(1, 1, 1);
+        glScalef(0.05, 0.05, 0.05);
+        glRotatef(-90, 1, 0, 0);
         mTestModel->display();
     }
     glPopMatrix();
-
-    mTerrain.display();
-
     list<Entity*>::iterator itEntities = mEntities.begin();
     while (itEntities != mEntities.end())
     {

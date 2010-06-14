@@ -28,7 +28,7 @@ ModelStack* ModelStack::load(const char* inFile)
 
     if (i == mModels.end())
     {
-        cerr << "loading model " << inFile << endl;
+        //cerr << "loading model " << inFile << endl;
         string s(inFile);
         s = s.substr(s.rfind('.') + 1);
 
@@ -550,7 +550,7 @@ void ModelStack::loadOBJ(const char* inFile)
         }
         else
         {
-            cerr << "unknown key -- " << ss.str() << endl;
+            //cerr << "unknown key -- " << ss.str() << endl;
         }
 
         getline(modelFile, line);

@@ -11,7 +11,7 @@ class Thread
 
         bool isRunning();
         int getReturnStatus();
-        void start();
+        void start(Uint32 inDelay = 0);
         void stop();
         void wait();
         void stopAndWait();
@@ -48,7 +48,7 @@ inline void Thread::stop()
  */
 inline void Thread::wait()
 {
-    SDL_WaitThread(mThread, NULL);
+    if (mRunning) SDL_WaitThread(mThread, NULL);
 }
 
 /**
@@ -58,8 +58,8 @@ inline void Thread::wait()
  */
 inline void Thread::stopAndWait()
 {
-    mStop = true;
-    SDL_WaitThread(mThread, NULL);
+    stop();
+    wait();
 }
 
 inline int Thread::getReturnStatus()

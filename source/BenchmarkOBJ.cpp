@@ -26,7 +26,7 @@ void BenchmarkOBJ::run()
         stringstream b;
         b << "test" << i << ".obj";
         //ModelStack::load(b.str().c_str());
-        ModelStack::load("bradley.c3m");
+        ModelStack::load("bradley_body.c3m");
         cout << "done!" << endl;
     }
     ModelStack::unloadAll();
