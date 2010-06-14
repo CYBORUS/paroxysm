@@ -54,6 +54,8 @@ void GameServer::run()
                 << ") address(" << mPacket->address.host
                 << ' ' << mPacket->address.port << ')' << endl;
         }
+
+        SDL_Delay(1);
     }
 
     SDLNet_FreePacket(mPacket);

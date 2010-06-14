@@ -59,8 +59,6 @@ void DisplayEngine::start(Module* inModule)
     SDL_Event event;
 
     /// begin network code
-    GameServer server;
-    server.start(100);
 
     UDPsocket socket;
     UDPpacket* packet;
@@ -90,6 +88,9 @@ void DisplayEngine::start(Module* inModule)
         cleanup();
         return;
     }
+
+    GameServer server;
+    server.start(100);
 
     /// end network initialization
 
