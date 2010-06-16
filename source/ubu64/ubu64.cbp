@@ -72,6 +72,8 @@
 		<Unit filename="../Control.h" />
 		<Unit filename="../DisplayEngine.cpp" />
 		<Unit filename="../DisplayEngine.h" />
+		<Unit filename="../DummyBulletControl.cpp" />
+		<Unit filename="../DummyBulletControl.h" />
 		<Unit filename="../EditVertexAction.cpp" />
 		<Unit filename="../EditVertexAction.h" />
 		<Unit filename="../Entity.cpp" />
@@ -109,6 +111,8 @@
 		<Unit filename="../ModelStack.h" />
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
+		<Unit filename="../NetworkStream.cpp" />
+		<Unit filename="../NetworkStream.h" />
 		<Unit filename="../OGL.h" />
 		<Unit filename="../PlainPic.cpp" />
 		<Unit filename="../PlainPic.h" />

@@ -17,7 +17,9 @@
 
 #include "GameServer.h"
 #include "Config.h"
+#include "NetworkStream.h"
 
+#include <SDL_net.h>
 #include <iostream>
 using namespace std;
 
@@ -31,32 +33,13 @@ GameServer::~GameServer()
 
 void GameServer::run()
 {
-    Uint16 port = Config::get<Uint16>("server port", 9421);
-    mSocket = SDLNet_UDP_Open(port);
-    if (!mSocket)
-    {
-        cerr << "SDLNet_UDP_Open failed on port " << port << endl;
-        return;
-    }
-
-    int packetSize = Config::get<int>("server packet size", 512);
-    mPacket = SDLNet_AllocPacket(packetSize);
+    NetworkStream net;
+    net.listen(Config::get<Uint16>("server port", 9421));
 
     while (!stopRequested())
     {
-        if (SDLNet_UDP_Recv(mSocket, mPacket))
-        {
-            cout << "UDP packet: channel(" << mPacket->channel
-                << ") data(" << (char*)mPacket->data
-                << ") length(" << mPacket->len
-                << ") max(" << mPacket->maxlen
-                << ") status(" << mPacket->status
-                << ") address(" << mPacket->address.host
-                << ' ' << mPacket->address.port << ')' << endl;
-        }
+        net.dump();
 
         SDL_Delay(1);
     }
-
-    SDLNet_FreePacket(mPacket);
 }

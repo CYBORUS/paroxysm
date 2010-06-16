@@ -18,6 +18,7 @@
 #include "DisplayEngine.h"
 #include "Module.h"
 #include "Config.h"
+#include "NetworkStream.h"
 #include "GameServer.h"
 
 #include "OGL.h"
@@ -33,7 +34,6 @@
 
 #include <list>
 #include <fstream>
-#include <cstring>
 
 Surface DisplayEngine::mDisplay = NULL;
 Surface DisplayEngine::mWindowIcon = NULL;
@@ -60,37 +60,11 @@ void DisplayEngine::start(Module* inModule)
 
     /// begin network code
 
-    UDPsocket socket;
-    UDPpacket* packet;
-    IPaddress address;
-
-    socket = SDLNet_UDP_Open(0);
-    if (!socket)
-    {
-        cerr << "failed to open client port -- " << SDLNet_GetError() << endl;
-        cleanup();
-        return;
-    }
-
-    if (SDLNet_ResolveHost(&address, "127.0.0.1",
-        Config::get<Uint16>("server port", 9421)) == -1)
-    {
-        cerr << "failed to resolve host -- " << SDLNet_GetError() << endl;
-        cleanup();
-        return;
-    }
-
-    int packetSize = Config::get<int>("client packet size", 512);
-    packet = SDLNet_AllocPacket(packetSize);
-    if (!packet)
-    {
-        cerr << "failed to allocate packet -- " << SDLNet_GetError() << endl;
-        cleanup();
-        return;
-    }
-
     GameServer server;
     server.start(100);
+
+    NetworkStream client;
+    client.connect("127.0.0.1", Config::get<Uint16>("server port", 9421));
 
     /// end network initialization
 
@@ -127,14 +101,9 @@ void DisplayEngine::start(Module* inModule)
                 //store the # of frames printed this second
                 mFPS = framesPerSecond;
                 framesPerSecond = 0;
-                //nextSecond = SDL_GetTicks() + 1000u;
 
                 static const string transmit("Hello, Server!");
-                strcpy((char*)packet->data, transmit.c_str());
-                packet->address.host = address.host;
-                packet->address.port = address.port;
-                packet->len = transmit.length() + 1;
-                SDLNet_UDP_Send(socket, -1, packet);
+                client.sendData((Uint8*)transmit.c_str(), transmit.length() + 1);
             }
 
             if (ticks > nextFrame)
@@ -171,7 +140,6 @@ void DisplayEngine::start(Module* inModule)
 
     }
 
-    SDLNet_FreePacket(packet);
     server.stopAndWait();
 
     cleanup();

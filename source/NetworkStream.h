@@ -15,18 +15,28 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GAMESERVER_H
-#define GAMESERVER_H
+#ifndef NETWORKSTREAM_H
+#define NETWORKSTREAM_H
 
-#include "Thread.h"
+#include <SDL.h>
+#include <SDL_net.h>
 
-class GameServer : public Thread
+class NetworkStream
 {
     public:
-        GameServer();
-        virtual ~GameServer();
+        NetworkStream();
+        ~NetworkStream();
 
-        virtual void run();
+        void dump();
+        void listen(Uint16 inPort);
+        void connect(const char* inAddress, Uint16 inPort);
+        void sendData(Uint8* inData, int inLength);
+
+    private:
+        IPaddress mAddress;
+        UDPsocket mSocketIn;
+        UDPsocket mSocketOut;
+        UDPpacket* mPacket;
 };
 
 #endif
