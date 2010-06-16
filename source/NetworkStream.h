@@ -31,13 +31,20 @@ class NetworkStream
         void listen(Uint16 inPort);
         void connect(const char* inAddress, Uint16 inPort);
         void sendData(const void* inData, size_t inLength);
-        void* receiveData();
+        bool receiveData();
+        Uint8* buffer();
 
     private:
+        Uint8* mBuffer;
         IPaddress mAddress;
         UDPsocket mSocketIn;
         UDPsocket mSocketOut;
         UDPpacket* mPacket;
 };
+
+inline Uint8* NetworkStream::buffer()
+{
+    return mBuffer;
+}
 
 #endif

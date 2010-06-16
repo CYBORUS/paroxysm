@@ -24,10 +24,12 @@ using namespace std;
 NetworkStream::NetworkStream()
 {
     mPacket = SDLNet_AllocPacket(1024);
+    mBuffer = new Uint8[1024];
 }
 
 NetworkStream::~NetworkStream()
 {
+    delete [] mBuffer;
     SDLNet_FreePacket(mPacket);
 }
 
@@ -64,16 +66,15 @@ void NetworkStream::sendData(const void* inData, size_t inLength)
     SDLNet_UDP_Send(mSocketOut, -1, mPacket);
 }
 
-void* NetworkStream::receiveData()
+bool NetworkStream::receiveData()
 {
-    void* outData = NULL;
     if (SDLNet_UDP_Recv(mSocketIn, mPacket))
     {
-        outData = malloc(mPacket->len);
-        memcpy(outData, mPacket->data, mPacket->len);
+        memcpy(mBuffer, mPacket->data, mPacket->len);
+        return true;
     }
 
-    return outData;
+    return false;
 }
 
 void NetworkStream::dump()
