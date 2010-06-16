@@ -21,6 +21,24 @@
 #include <cstring>
 using namespace std;
 
+/**
+ *  ABSTRACT -- NetworkStream has a very simple focus: move blocks of memory
+ *              between the client and server. In other words, regardless of how
+ *              big the message is, it needs to be properly divided, labeled,
+ *              and transmitted with respect to the allotted packet size. In
+ *              many respects, it will mimic TCP's reliability but have the
+ *              benefit of speedy UDP through reduced overhead and added
+ *              tolerance for lost packets.
+ *
+ *  (1) break messages across packets -- Every packet needs a small header
+ *      indicating what message it is a part of (message ID), how many packets
+ *      constitute the message, and what packet this is in the series.
+ *
+ *  (2) manage message pieces -- Every packet needs to be tracked carefully. If
+ *      pieces of unrelated messages show up, they need to be stored properly
+ *      for when the rest of the message arrives.
+ */
+
 NetworkStream::NetworkStream()
 {
     mPacket = SDLNet_AllocPacket(1024);

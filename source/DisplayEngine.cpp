@@ -102,8 +102,8 @@ void DisplayEngine::start(Module* inModule)
                 mFPS = framesPerSecond;
                 framesPerSecond = 0;
 
-                static const string transmit("Hello, Server!");
-                client.sendData(transmit.c_str(), transmit.length() + 1);
+                client.sendData("cdaragorn", 10);
+                client.sendData("TheBuzzSaw", 11);
             }
 
             if (ticks > nextFrame)
