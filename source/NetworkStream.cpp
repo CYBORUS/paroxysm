@@ -64,6 +64,18 @@ void NetworkStream::sendData(const void* inData, size_t inLength)
     SDLNet_UDP_Send(mSocketOut, -1, mPacket);
 }
 
+void* NetworkStream::receiveData()
+{
+    void* outData = NULL;
+    if (SDLNet_UDP_Recv(mSocketIn, mPacket))
+    {
+        outData = malloc(mPacket->len);
+        memcpy(outData, mPacket->data, mPacket->len);
+    }
+
+    return outData;
+}
+
 void NetworkStream::dump()
 {
     if (SDLNet_UDP_Recv(mSocketIn, mPacket))

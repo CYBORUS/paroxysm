@@ -38,7 +38,12 @@ void GameServer::run()
 
     while (!stopRequested())
     {
-        net.dump();
+        char* data = (char*)net.receiveData();
+        if (data)
+        {
+            cout << "SERVER -- received message: " << data << endl;
+            free(data);
+        }
 
         SDL_Delay(1);
     }
