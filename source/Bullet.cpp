@@ -73,13 +73,14 @@ void Bullet::display()
 
 void Bullet::changeDirection(float inDirection)
 {
+    /*
     float x = MathEngine::supremeRandom(-1.0f, 1.0f);
     float z = MathEngine::supremeRandom(-1.0f, 1.0f);
 
     mMomentum[0] = x;
     mMomentum[2] = z;
     mMomentum.normalizeTo(mSpeed);
-
+*/
 }
 
 

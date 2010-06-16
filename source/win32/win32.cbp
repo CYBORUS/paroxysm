@@ -44,6 +44,7 @@
 			<Add library="SDL_image" />
 			<Add library="SDL_mixer" />
 			<Add library="SDL_ttf" />
+			<Add library="SDL_net" />
 			<Add library="SDL" />
 			<Add library="Glee" />
 			<Add library="opengl32" />
@@ -71,6 +72,8 @@
 		<Unit filename="..\Control.h" />
 		<Unit filename="..\DisplayEngine.cpp" />
 		<Unit filename="..\DisplayEngine.h" />
+		<Unit filename="..\DummyBulletControl.cpp" />
+		<Unit filename="..\DummyBulletControl.h" />
 		<Unit filename="..\EditVertexAction.cpp" />
 		<Unit filename="..\EditVertexAction.h" />
 		<Unit filename="..\Entity.cpp" />
@@ -81,6 +84,8 @@
 		<Unit filename="..\GameCamera.h" />
 		<Unit filename="..\GameModule.cpp" />
 		<Unit filename="..\GameModule.h" />
+		<Unit filename="..\GameServer.cpp" />
+		<Unit filename="..\GameServer.h" />
 		<Unit filename="..\HUD.cpp" />
 		<Unit filename="..\HUD.h" />
 		<Unit filename="..\Label.cpp" />
