@@ -103,7 +103,7 @@ void DisplayEngine::start(Module* inModule)
                 framesPerSecond = 0;
 
                 static const string transmit("Hello, Server!");
-                client.sendData((Uint8*)transmit.c_str(), transmit.length() + 1);
+                client.sendData(transmit.c_str(), transmit.length() + 1);
             }
 
             if (ticks > nextFrame)

@@ -23,7 +23,7 @@ using namespace std;
 
 NetworkStream::NetworkStream()
 {
-    mPacket = SDLNet_AllocPacket(512);
+    mPacket = SDLNet_AllocPacket(1024);
 }
 
 NetworkStream::~NetworkStream()
@@ -55,14 +55,13 @@ void NetworkStream::connect(const char* inAddress, Uint16 inPort)
     }
 }
 
-void NetworkStream::sendData(Uint8* inData, int inLength)
+void NetworkStream::sendData(const void* inData, size_t inLength)
 {
-    mPacket->data = inData;
+    memcpy(mPacket->data, inData, inLength);
     mPacket->len = inLength;
     mPacket->address.host = mAddress.host;
     mPacket->address.port = mAddress.port;
     SDLNet_UDP_Send(mSocketOut, -1, mPacket);
-    mPacket->data = NULL;
 }
 
 void NetworkStream::dump()
@@ -73,7 +72,7 @@ void NetworkStream::dump()
             << ") data(" << (char*)mPacket->data
             << ") length(" << mPacket->len
             << ") max(" << mPacket->maxlen
-            << ") status(" << mPacket->status
+            << ") \n    status(" << mPacket->status
             << ") address(" << mPacket->address.host
             << ' ' << mPacket->address.port << ')' << endl;
     }

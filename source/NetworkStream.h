@@ -30,7 +30,7 @@ class NetworkStream
         void dump();
         void listen(Uint16 inPort);
         void connect(const char* inAddress, Uint16 inPort);
-        void sendData(Uint8* inData, int inLength);
+        void sendData(const void* inData, size_t inLength);
 
     private:
         IPaddress mAddress;
