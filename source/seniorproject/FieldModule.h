@@ -2,6 +2,7 @@
 #define FIELDMODULE_H
 
 #include "../Module.h"
+#include "WallField.h"
 
 class FieldModule : public Module
 {
@@ -19,6 +20,7 @@ class FieldModule : public Module
 
     protected:
     private:
+        WallField mField;
 };
 
 #endif

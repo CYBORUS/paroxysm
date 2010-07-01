@@ -29,24 +29,18 @@ struct Point2D
 };
 
 template<class T>
-Point2D<T>::Point2D()
+Point2D<T>::Point2D() : x(0), y(0)
 {
-    x = 0;
-    y = 0;
 }
 
 template<class T>
-Point2D<T>::Point2D(T inValue)
+Point2D<T>::Point2D(T inValue) : x(inValue), y(inValue)
 {
-    x = inValue;
-    y = inValue;
 }
 
 template<class T>
-Point2D<T>::Point2D(T inX, T inY)
+Point2D<T>::Point2D(T inX, T inY) : x(inX), y(inY)
 {
-    x = inX;
-    y = inY;
 }
 
 #endif

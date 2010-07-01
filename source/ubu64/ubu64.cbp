@@ -145,6 +145,8 @@
 		<Unit filename="../main.cpp" />
 		<Unit filename="../seniorproject/FieldModule.cpp" />
 		<Unit filename="../seniorproject/FieldModule.h" />
+		<Unit filename="../seniorproject/WallField.cpp" />
+		<Unit filename="../seniorproject/WallField.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
