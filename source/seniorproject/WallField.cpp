@@ -70,9 +70,6 @@ void WallField::dump()
 {
     cout << mSize.x << " x " << mSize.y << " : ";
     Uint32 numBits = mSize.x * mSize.y * 2;
-    for (Uint32 i = 0; i < numBits; ++i)
-    {
-        cout << (checkBit(i) ? '1' : '0');
-    }
+    for (Uint32 i = 0; i < numBits; ++i) cout << (checkBit(i) ? '1' : '0');
     cout << endl;
 }
