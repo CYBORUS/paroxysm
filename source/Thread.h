@@ -29,7 +29,6 @@ class Thread
         void start(Uint32 inDelay = 0);
         virtual void run() = 0;
         inline bool isRunning();
-        inline int getReturnStatus();
         inline void stop();
         inline void wait();
         inline void stopAndWait();
@@ -61,7 +60,8 @@ inline void Thread::stop()
 
 /**
  *  Waits for a thread to finish its run() function. WARNING: Needs to be called
- *  on a thread that will end eventually without any kind of stop() call.
+ *  on a thread that will end eventually without any kind of stop() call (or
+ *  where you have called it prior).
  */
 inline void Thread::wait()
 {

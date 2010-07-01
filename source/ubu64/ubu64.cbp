@@ -143,6 +143,8 @@
 		<Unit filename="../Widget.cpp" />
 		<Unit filename="../Widget.h" />
 		<Unit filename="../main.cpp" />
+		<Unit filename="../seniorproject/FieldModule.cpp" />
+		<Unit filename="../seniorproject/FieldModule.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

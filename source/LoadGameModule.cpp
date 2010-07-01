@@ -100,7 +100,7 @@ void LoadGameModule::onOpen()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+    //glViewport(0, 0, (GLsizei)w, (GLsizei)h);
     //gluPerspective(FIELD_OF_VIEW, (GLdouble)w / (GLdouble)h, NEAR_CP, FAR_CP);
 
     //we need to deal with the possibility of a monitor on it's side

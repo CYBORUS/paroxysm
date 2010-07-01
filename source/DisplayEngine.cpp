@@ -328,6 +328,10 @@ void DisplayEngine::initialize()
         }
     }
 
+    GLsizei w = SDL_GetVideoSurface()->w;
+    GLsizei h = SDL_GetVideoSurface()->h;
+    glViewport(0, 0, w, h);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

@@ -49,17 +49,16 @@ using namespace std;
 class MainMenuModule : public Module
 {
     public:
-        bool onLoad();
-        void onOpen();
-        void onLoop();
-        void onFrame();
-        Module* next();
-
-        bool isDead();
-
+        virtual bool onLoad();
+        virtual void onOpen();
+        virtual void onLoop();
+        virtual void onFrame();
+        virtual Module* next();
+        virtual bool isDead();
 
     protected:
-        void onMouseMove(int inX, int inY, int inRelX, int inRelY,
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
 
         virtual void onButtonPress(int inID);

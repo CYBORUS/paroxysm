@@ -145,7 +145,7 @@ void GameModule::onOpen()
 
     SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
 
-    glViewport(0, 0, (GLsizei)mDisplay.x, (GLsizei)mDisplay.y);
+    //glViewport(0, 0, (GLsizei)mDisplay.x, (GLsizei)mDisplay.y);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
