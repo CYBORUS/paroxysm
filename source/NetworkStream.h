@@ -21,30 +21,24 @@
 #include <SDL.h>
 #include <SDL_net.h>
 
+#define PACKET_SIZE 1024
+
 class NetworkStream
 {
     public:
         NetworkStream();
         ~NetworkStream();
 
-        void dump();
         void listen(Uint16 inPort);
         void connect(const char* inAddress, Uint16 inPort);
         void sendData(const void* inData, size_t inLength);
-        bool receiveData();
-        Uint8* buffer();
+        bool receiveData(Uint8* inCapture);
 
     private:
-        Uint8* mBuffer;
         IPaddress mAddress;
         UDPsocket mSocketIn;
         UDPsocket mSocketOut;
         UDPpacket* mPacket;
 };
-
-inline Uint8* NetworkStream::buffer()
-{
-    return mBuffer;
-}
 
 #endif

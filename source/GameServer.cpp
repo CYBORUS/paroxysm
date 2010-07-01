@@ -36,11 +36,13 @@ void GameServer::run()
     NetworkStream net;
     net.listen(Config::get<Uint16>("server port", 9421));
 
+    Uint8 buffer[PACKET_SIZE];
+
     while (!stopRequested())
     {
-        while (net.receiveData())
+        while (net.receiveData(buffer))
         {
-            cout << "SERVER -- received message: " << net.buffer() << endl;
+            cout << "SERVER -- received message: " << buffer << endl;
         }
 
         SDL_Delay(1);

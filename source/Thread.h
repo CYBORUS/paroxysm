@@ -1,3 +1,20 @@
+/**
+ *  This file is part of "Paroxysm".
+ *
+ *  "Paroxysm" is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  "Paroxysm" is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef THREAD_H
 #define THREAD_H
 
@@ -9,20 +26,20 @@ class Thread
         Thread();
         virtual ~Thread();
 
-        bool isRunning();
-        int getReturnStatus();
         void start(Uint32 inDelay = 0);
-        void stop();
-        void wait();
-        void stopAndWait();
         virtual void run() = 0;
+        inline bool isRunning();
+        inline int getReturnStatus();
+        inline void stop();
+        inline void wait();
+        inline void stopAndWait();
 
     protected:
-        bool stopRequested();
-        volatile int mReturnStatus;
+        inline bool stopRequested();
 
     private:
         static int startThread(void* inData);
+
         volatile bool mRunning;
         volatile bool mStop;
         SDL_Thread* mThread;
@@ -60,11 +77,6 @@ inline void Thread::stopAndWait()
 {
     stop();
     wait();
-}
-
-inline int Thread::getReturnStatus()
-{
-    return mReturnStatus;
 }
 
 inline bool Thread::stopRequested()

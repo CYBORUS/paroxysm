@@ -41,13 +41,11 @@ using namespace std;
 
 NetworkStream::NetworkStream()
 {
-    mPacket = SDLNet_AllocPacket(1024);
-    mBuffer = new Uint8[1024];
+    mPacket = SDLNet_AllocPacket(PACKET_SIZE);
 }
 
 NetworkStream::~NetworkStream()
 {
-    delete [] mBuffer;
     SDLNet_FreePacket(mPacket);
 }
 
@@ -77,6 +75,11 @@ void NetworkStream::connect(const char* inAddress, Uint16 inPort)
 
 void NetworkStream::sendData(const void* inData, size_t inLength)
 {
+    if (inLength > PACKET_SIZE)
+    {
+        cerr << "data too large to transmit" << endl;
+    }
+
     memcpy(mPacket->data, inData, inLength);
     mPacket->len = inLength;
     mPacket->address.host = mAddress.host;
@@ -84,27 +87,13 @@ void NetworkStream::sendData(const void* inData, size_t inLength)
     SDLNet_UDP_Send(mSocketOut, -1, mPacket);
 }
 
-bool NetworkStream::receiveData()
+bool NetworkStream::receiveData(Uint8* inCapture)
 {
     if (SDLNet_UDP_Recv(mSocketIn, mPacket))
     {
-        memcpy(mBuffer, mPacket->data, mPacket->len);
+        memcpy(inCapture, mPacket->data, mPacket->len);
         return true;
     }
 
     return false;
-}
-
-void NetworkStream::dump()
-{
-    if (SDLNet_UDP_Recv(mSocketIn, mPacket))
-    {
-        cout << "UDP packet: channel(" << mPacket->channel
-            << ") data(" << (char*)mPacket->data
-            << ") length(" << mPacket->len
-            << ") max(" << mPacket->maxlen
-            << ") \n    status(" << mPacket->status
-            << ") address(" << mPacket->address.host
-            << ' ' << mPacket->address.port << ')' << endl;
-    }
 }
