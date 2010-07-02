@@ -549,7 +549,11 @@ void GameModule::addTank(ControlType inControlType,
 void GameModule::addEntity(Entity* inEntity)
 {
     mEntities.push_back(inEntity);
-    EntityGarbageCollector::addEntity(inEntity);
+
+    if (inEntity->getWhatIAm() != PLAYER_TANK)
+    {
+        EntityGarbageCollector::addEntity(inEntity);
+    }
     CollisionEngine::addEntity(inEntity);
 }
 

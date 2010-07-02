@@ -112,6 +112,8 @@
 		<Unit filename="..\ModelStack.h" />
 		<Unit filename="..\Module.cpp" />
 		<Unit filename="..\Module.h" />
+		<Unit filename="..\NetworkStream.cpp" />
+		<Unit filename="..\NetworkStream.h" />
 		<Unit filename="..\OGL.h" />
 		<Unit filename="..\PlainPic.cpp" />
 		<Unit filename="..\PlainPic.h" />
@@ -142,6 +144,10 @@
 		<Unit filename="..\Widget.cpp" />
 		<Unit filename="..\Widget.h" />
 		<Unit filename="..\main.cpp" />
+		<Unit filename="..\seniorproject\FieldModule.cpp" />
+		<Unit filename="..\seniorproject\FieldModule.h" />
+		<Unit filename="..\seniorproject\WallField.cpp" />
+		<Unit filename="..\seniorproject\WallField.h" />
 		<Unit filename="icon.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>

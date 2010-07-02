@@ -84,8 +84,10 @@ int CollisionEngine::checkCollisions(void* unused)
                 if (distance < first->getRadius() + second->getRadius())
                 {
                     first->onCollision(second);
+                    second->onCollision(first);
                 }
 
+/*
                 //after we've had one of the two objects deal with it's collision, test to see if there's still a collision
                 distance = (first->getPosition() - second->getPosition()).length();
 
@@ -94,6 +96,7 @@ int CollisionEngine::checkCollisions(void* unused)
                     //if there is still a collision, call the second objects collision method
                     second->onCollision(first);
                 }
+                */
 
                 if (!second->isAlive())
                 {

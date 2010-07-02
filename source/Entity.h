@@ -51,6 +51,7 @@ class Entity
         bool isGameDead();
         bool isRenderDead();
 
+        const Vector3D<float>& getMomentum() const;
         const Vector3D<float>& getPosition() const;
         void setPosition(const Vector3D<float>& inPosition);
 
@@ -90,6 +91,11 @@ inline void Entity::setControl(Control* inControl)
 inline const Vector3D<float>& Entity::getPosition() const
 {
     return mPosition;
+}
+
+inline const Vector3D<float>& Entity::getMomentum() const
+{
+    return mMomentum;
 }
 
 inline float Entity::getRadius()

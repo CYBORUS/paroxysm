@@ -115,7 +115,16 @@ void Tank::onCollision(Entity* inCollidedWith)
         case E_TANK:
         {
             //Tank* t = (Tank*)inCollidedWith;
-            mPosition = mPreviousPosition;
+            Vector3D<float> collisionDirection = (mPosition - inCollidedWith->getPosition()).normalized();
+            float reboundSpeed = inCollidedWith->getMomentum().length() * 2.0f;
+            cerr << "speed: " << reboundSpeed << endl;
+            mMomentum += collisionDirection * reboundSpeed;
+
+            if (mMomentum.length() > 0.45)
+            {
+                mMomentum.normalizeTo(0.45);
+            }
+            //mPosition = mPreviousPosition;
 
             break;
         }
