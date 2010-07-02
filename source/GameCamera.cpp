@@ -62,3 +62,12 @@ void GameCamera::zoom(float inOffset)
     mTrackball[2] += inOffset;
     if (mTrackball[2] < 0.0f) mTrackball[2] = 0.0f;
 }
+
+void GameCamera::spin(float inOffset)
+{
+    mTrackball[1] += inOffset;
+    if (mTrackball[1] > 180.0f)
+        mTrackball[1] -= 360.0f;
+    else if (mTrackball[1] < -180.0f)
+        mTrackball[1] += 180.0f;
+}

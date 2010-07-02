@@ -31,8 +31,13 @@ class TSphere
         void display();
 
         void moveSphere(float inX, float inY, float inZ);
-        //void moveSphere(const Vector3D<float>& inVector);
+        inline void moveSphere(const Vector3D<float>& inVector)
+        {
+            mTranslation = inVector;
+        }
+
         void setColor(float inR, float inG, float inB);
+        void setScale(float inScale);
         void setScale(float inX, float inY, float inZ);
         //void setScale(const Vector3D<float>& inVector);
         const Vector3D<float>& getTranslation() const;

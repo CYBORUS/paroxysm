@@ -139,3 +139,8 @@ void TSphere::setScale(float inX, float inY, float inZ)
 {
     mScale.set(inX, inY, inZ);
 }
+
+void TSphere::setScale(float inScale)
+{
+    mScale.set(inScale);
+}
