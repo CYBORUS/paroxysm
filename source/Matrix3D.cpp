@@ -33,10 +33,14 @@ void Matrix3D::rotateX(float inDegrees)
     float r = TO_RADIANS(inDegrees);
     float c = cos(r);
     float s = sin(r);
-    mData[5] = c;
-    mData[6] = -s;
-    mData[9] = s;
-    mData[10] = c;
+    Matrix3D transform;
+
+    transform[5] = c;
+    transform[6] = -s;
+    transform[9] = s;
+    transform[10] = c;
+
+    (*this) *= transform;
 }
 
 void Matrix3D::rotateY(float inDegrees)
@@ -44,10 +48,14 @@ void Matrix3D::rotateY(float inDegrees)
     float r = TO_RADIANS(inDegrees);
     float c = cos(r);
     float s = sin(r);
-    mData[0] = c;
-    mData[2] = s;
-    mData[8] = -s;
-    mData[10] = c;
+    Matrix3D transform;
+
+    transform[0] = c;
+    transform[2] = s;
+    transform[8] = -s;
+    transform[10] = c;
+
+    (*this) *= transform;
 }
 
 void Matrix3D::rotateZ(float inDegrees)
@@ -55,10 +63,14 @@ void Matrix3D::rotateZ(float inDegrees)
     float r = TO_RADIANS(inDegrees);
     float c = cos(r);
     float s = sin(r);
-    mData[0] = c;
-    mData[1] = -s;
-    mData[4] = s;
-    mData[5] = c;
+    Matrix3D transform;
+
+    transform[0] = c;
+    transform[1] = -s;
+    transform[4] = s;
+    transform[5] = c;
+
+    (*this) *= transform;
 }
 
 void Matrix3D::scale(float inScale)
@@ -68,29 +80,41 @@ void Matrix3D::scale(float inScale)
 
 void Matrix3D::scale(float inX, float inY, float inZ)
 {
-    mData[0] = inX;
-    mData[5] = inY;
-    mData[10] = inZ;
+    Matrix3D transform;
+
+    transform[0] = inX;
+    transform[5] = inY;
+    transform[10] = inZ;
+
+    (*this) *= transform;
 }
 
 void Matrix3D::translate(float inX, float inY, float inZ)
 {
-    mData[3] = inX;
-    mData[7] = inY;
-    mData[11] = inZ;
+    Matrix3D transform;
+
+    transform[3] = inX;
+    transform[7] = inY;
+    transform[11] = inZ;
+
+    (*this) *= transform;
 }
 
 void Matrix3D::frustrum(float inLeft, float inRight, float inBottom,
     float inTop, float inNear, float inFar)
 {
-    mData[0] = (2 * inNear) / (inRight - inLeft);
-    mData[2] = (inRight + inLeft) / (inRight - inLeft);
-    mData[5] = (2 * inNear) / (inTop - inBottom);
-    mData[6] = (inTop + inBottom) / (inTop - inBottom);
-    mData[10] = (inFar + inNear) / (inNear - inFar);
-    mData[11] = (2.0f * inFar * inNear) / (inNear - inFar);
-    mData[14] = -1.0f;
-    mData[15] = 0.0f;
+    Matrix3D transform;
+
+    transform[0] = (2 * inNear) / (inRight - inLeft);
+    transform[2] = (inRight + inLeft) / (inRight - inLeft);
+    transform[5] = (2 * inNear) / (inTop - inBottom);
+    transform[6] = (inTop + inBottom) / (inTop - inBottom);
+    transform[10] = (inFar + inNear) / (inNear - inFar);
+    transform[11] = (2.0f * inFar * inNear) / (inNear - inFar);
+    transform[14] = -1.0f;
+    transform[15] = 0.0f;
+
+    (*this) *= transform;
 }
 
 void Matrix3D::perspective(float inFieldOfView, float inRatio, float inNear,
@@ -100,24 +124,32 @@ void Matrix3D::perspective(float inFieldOfView, float inRatio, float inNear,
     /// http://www.opengl.org/sdk/docs/man/xhtml/gluPerspective.xml
     float r = TO_RADIANS(inFieldOfView);
     float f = 1.0f / tan(inFieldOfView / 2.0f);
-    mData[0] = f / inRatio;
-    mData[5] = f;
-    mData[10] = (inFar + inNear) / (inNear - inFar);
-    mData[11] = (2 * inFar * inNear) / (inNear - inFar);
-    mData[14] = -1.0f;
-    mData[15] = 0.0f;
 
+    Matrix3D transform;
+
+    transform[0] = f / inRatio;
+    transform[5] = f;
+    transform[10] = (inFar + inNear) / (inNear - inFar);
+    transform[11] = (2 * inFar * inNear) / (inNear - inFar);
+    transform[14] = -1.0f;
+    transform[15] = 0.0f;
+
+    (*this) *= transform;
 }
 
 void Matrix3D::orthographic(float inLeft, float inRight, float inBottom,
     float inTop, float inNear, float inFar)
 {
-    mData[0] = 2.0f / (inRight - inLeft);
-    mData[3] = (inRight + inLeft) / (inRight - inLeft);
-    mData[5] = 2.0f / (inTop - inBottom);
-    mData[7] = (inTop + inBottom) / (inTop - inBottom);
-    mData[10] = 2.0f / (inNear - inFar);
-    mData[11] = (inFar + inNear) / (inFar - inNear);
+    Matrix3D transform;
+
+    transform[0] = 2.0f / (inRight - inLeft);
+    transform[3] = (inRight + inLeft) / (inRight - inLeft);
+    transform[5] = 2.0f / (inTop - inBottom);
+    transform[7] = (inTop + inBottom) / (inTop - inBottom);
+    transform[10] = 2.0f / (inNear - inFar);
+    transform[11] = (inFar + inNear) / (inFar - inNear);
+
+    (*this) *= transform;
 }
 
 void Matrix3D::orthographic(float inRange, float inRatio)
