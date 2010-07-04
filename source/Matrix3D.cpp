@@ -3,6 +3,12 @@
 #include <iomanip>
 using namespace std;
 
+const float Matrix3D::mIdentity[16] = {
+    1.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 1.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 1.0f};
+
 Matrix3D::Matrix3D()
 {
     // default to identity matrix
@@ -16,8 +22,7 @@ Matrix3D::Matrix3D(const Matrix3D& inMatrix)
 
 void Matrix3D::loadIdentity()
 {
-    memset(mData, 0, 16 * sizeof(float));
-    for (size_t i = 0; i < 16; i += 5) mData[i] = 1;
+    memcpy(mData, mIdentity, 16 * sizeof(float));
 }
 
 void Matrix3D::rotate(float inDegrees, float inX, float inY, float inZ)
@@ -40,7 +45,7 @@ void Matrix3D::rotateX(float inDegrees)
     transform[9] = s;
     transform[10] = c;
 
-    (*this) *= transform;
+    multiply(transform);
 }
 
 void Matrix3D::rotateY(float inDegrees)
@@ -55,7 +60,7 @@ void Matrix3D::rotateY(float inDegrees)
     transform[8] = -s;
     transform[10] = c;
 
-    (*this) *= transform;
+    multiply(transform);
 }
 
 void Matrix3D::rotateZ(float inDegrees)
@@ -70,12 +75,18 @@ void Matrix3D::rotateZ(float inDegrees)
     transform[4] = s;
     transform[5] = c;
 
-    (*this) *= transform;
+    multiply(transform);
 }
 
 void Matrix3D::scale(float inScale)
 {
-    mData[0] = (mData[5] = (mData[10] = inScale));
+    Matrix3D transform;
+
+    transform[0] = inScale;
+    transform[5] = inScale;
+    transform[10] = inScale;
+
+    multiply(transform);
 }
 
 void Matrix3D::scale(float inX, float inY, float inZ)
@@ -86,7 +97,7 @@ void Matrix3D::scale(float inX, float inY, float inZ)
     transform[5] = inY;
     transform[10] = inZ;
 
-    (*this) *= transform;
+    multiply(transform);
 }
 
 void Matrix3D::translate(float inX, float inY, float inZ)
@@ -97,7 +108,7 @@ void Matrix3D::translate(float inX, float inY, float inZ)
     transform[7] = inY;
     transform[11] = inZ;
 
-    (*this) *= transform;
+    multiply(transform);
 }
 
 void Matrix3D::frustrum(float inLeft, float inRight, float inBottom,
@@ -114,7 +125,7 @@ void Matrix3D::frustrum(float inLeft, float inRight, float inBottom,
     transform[14] = -1.0f;
     transform[15] = 0.0f;
 
-    (*this) *= transform;
+    multiply(transform);
 }
 
 void Matrix3D::perspective(float inFieldOfView, float inRatio, float inNear,
@@ -123,7 +134,7 @@ void Matrix3D::perspective(float inFieldOfView, float inRatio, float inNear,
     /// adaptation of gluPerspective
     /// http://www.opengl.org/sdk/docs/man/xhtml/gluPerspective.xml
     float r = TO_RADIANS(inFieldOfView);
-    float f = 1.0f / tan(inFieldOfView / 2.0f);
+    float f = 1.0f / tan(r / 2.0f);
 
     Matrix3D transform;
 
@@ -134,7 +145,7 @@ void Matrix3D::perspective(float inFieldOfView, float inRatio, float inNear,
     transform[14] = -1.0f;
     transform[15] = 0.0f;
 
-    (*this) *= transform;
+    multiply(transform);
 }
 
 void Matrix3D::orthographic(float inLeft, float inRight, float inBottom,
@@ -149,7 +160,7 @@ void Matrix3D::orthographic(float inLeft, float inRight, float inBottom,
     transform[10] = 2.0f / (inNear - inFar);
     transform[11] = (inFar + inNear) / (inFar - inNear);
 
-    (*this) *= transform;
+    multiply(transform);
 }
 
 void Matrix3D::orthographic(float inRange, float inRatio)
@@ -172,22 +183,93 @@ Matrix3D& Matrix3D::operator=(const Matrix3D& inMatrix)
     return *this;
 }
 
-Matrix3D& Matrix3D::operator*=(const Matrix3D& inMatrix)
+//Matrix3D& Matrix3D::operator*=(const Matrix3D& inMatrix)
+void Matrix3D::multiply(const Matrix3D& inMatrix)
 {
     Matrix3D result;
+
+    // keep for reference
+//    for (size_t i = 0; i < 4; ++i)
+//    {
+//        for (size_t j = 0; j < 4; ++j)
+//        {
+//            float value = 0.0f;
+//            for (size_t k = 0; k < 4; ++k)
+//                value += (*this)(i, k) * inMatrix(k, j);
+//
+//            result(i, j) = value;
+//        }
+//    }
+
+    result[0] = (mData[0] * inMatrix[0]) + (mData[1] * inMatrix[4])
+        + (mData[2] * inMatrix[8]) + (mData[3] * inMatrix[12]);
+    result[1] = (mData[0] * inMatrix[1]) + (mData[1] * inMatrix[5])
+        + (mData[2] * inMatrix[9]) + (mData[3] * inMatrix[13]);
+    result[2] = (mData[0] * inMatrix[2]) + (mData[1] * inMatrix[6])
+        + (mData[2] * inMatrix[10]) + (mData[3] * inMatrix[14]);
+    result[3] = (mData[0] * inMatrix[3]) + (mData[1] * inMatrix[7])
+        + (mData[2] * inMatrix[11]) + (mData[3] * inMatrix[15]);
+    result[4] = (mData[4] * inMatrix[0]) + (mData[5] * inMatrix[4])
+        + (mData[6] * inMatrix[8]) + (mData[7] * inMatrix[12]);
+    result[5] = (mData[4] * inMatrix[1]) + (mData[5] * inMatrix[5])
+        + (mData[6] * inMatrix[9]) + (mData[7] * inMatrix[13]);
+    result[6] = (mData[4] * inMatrix[2]) + (mData[5] * inMatrix[6])
+        + (mData[6] * inMatrix[10]) + (mData[7] * inMatrix[14]);
+    result[7] = (mData[4] * inMatrix[3]) + (mData[5] * inMatrix[7])
+        + (mData[6] * inMatrix[11]) + (mData[7] * inMatrix[15]);
+    result[8] = (mData[8] * inMatrix[0]) + (mData[9] * inMatrix[4])
+        + (mData[10] * inMatrix[8]) + (mData[11] * inMatrix[12]);
+    result[9] = (mData[8] * inMatrix[1]) + (mData[9] * inMatrix[5])
+        + (mData[10] * inMatrix[9]) + (mData[11] * inMatrix[13]);
+    result[10] = (mData[8] * inMatrix[2]) + (mData[9] * inMatrix[6])
+        + (mData[10] * inMatrix[10]) + (mData[11] * inMatrix[14]);
+    result[11] = (mData[8] * inMatrix[3]) + (mData[9] * inMatrix[7])
+        + (mData[10] * inMatrix[11]) + (mData[11] * inMatrix[15]);
+    result[12] = (mData[12] * inMatrix[0]) + (mData[13] * inMatrix[4])
+        + (mData[14] * inMatrix[8]) + (mData[15] * inMatrix[12]);
+    result[13] = (mData[12] * inMatrix[1]) + (mData[13] * inMatrix[5])
+        + (mData[14] * inMatrix[9]) + (mData[15] * inMatrix[13]);
+    result[14] = (mData[12] * inMatrix[2]) + (mData[13] * inMatrix[6])
+        + (mData[14] * inMatrix[10]) + (mData[15] * inMatrix[14]);
+    result[15] = (mData[12] * inMatrix[3]) + (mData[13] * inMatrix[7])
+        + (mData[14] * inMatrix[11]) + (mData[15] * inMatrix[15]);
+
+/** The program below was used to generate the code above.
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+size_t toIndex(size_t inRow, size_t inCol)
+{
+    return inRow * 4 + inCol;
+}
+
+int main(int argc, char** argv)
+{
+    ofstream fout;
+    fout.open("code.txt");
     for (size_t i = 0; i < 4; ++i)
     {
         for (size_t j = 0; j < 4; ++j)
         {
-            float value = 0.0f;
+            fout << "result[" << toIndex(i, j) << "] =";
             for (size_t k = 0; k < 4; ++k)
-                value += (*this)(i, k) * inMatrix(k, j);
-
-            result(i, j) = value;
+            {
+                if (k > 0) fout << " +";
+                fout << " (mData[" << toIndex(i, k) << "] * inMatrix["
+                    << toIndex(k, j) << "])";
+            }
+            fout << ';' << endl;
         }
     }
+    fout.close();
+    return 0;
+}
+
+**/
+
     copy(result);
-    return *this;
 }
 
 ostream& operator<<(ostream& inStream, const Matrix3D& inMatrix)

@@ -25,10 +25,9 @@
 
 int main(int argc, char** argv)
 {
-    Matrix3D a, b, c, d;
-    a.rotateX(25.0f);
-    //b.rotateX(-25.0f);
-    cout << (a * b) << endl;
+    Matrix3D a;
+    a.rotateY(2.5f);
+    cout << a << endl;
 
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
