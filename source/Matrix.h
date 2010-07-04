@@ -32,7 +32,7 @@ class Matrix
         Matrix(const Matrix<T>& inMatrix);
         Matrix(int inRows, int inCols);
         Matrix(int inEdge);
-        virtual ~Matrix();
+        ~Matrix();
 
         int rows() const;
         int cols() const;

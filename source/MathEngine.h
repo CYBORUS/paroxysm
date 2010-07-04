@@ -20,6 +20,12 @@
 
 #include <boost/random.hpp>
 
+#define PI 3.141592653589793238462643383
+#define PI_HALVES PI / 2.0
+#define TO_RADIANS(n) ((n) * PI / 180.0)
+#define TO_DEGREES(n) ((n) * 180.0 / PI)
+#define PSEUDO_ZERO 0.000001
+
 class MathEngine
 {
     public:

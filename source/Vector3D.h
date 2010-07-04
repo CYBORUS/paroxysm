@@ -18,14 +18,10 @@
 #ifndef _VECTOR3D_H_
 #define _VECTOR3D_H_
 
-#include <cmath>
 #include "Matrix.h"
+#include "MathEngine.h"
 
-#define PI 3.141592653589793238462643383
-#define PI_HALVES PI / 2.0
-#define TO_RADIANS(n) ((n) * PI / 180.0)
-#define TO_DEGREES(n) ((n) * 180.0 / PI)
-#define PSEUDO_ZERO 0.000001
+#include <cmath>
 
 template<class T>
 class Vector3D
