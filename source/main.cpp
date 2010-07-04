@@ -15,7 +15,7 @@
  *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Matrix3D.h"
+#include "MatrixStack.h"
 #include "Config.h"
 #include "DisplayEngine.h"
 #include "SoundEngine.h"
@@ -25,14 +25,20 @@
 
 int main(int argc, char** argv)
 {
-    Matrix3D a;
-    a.rotateY(2.5f);
-    cout << a << endl;
+    MatrixStack modelView;
+    modelView.matrix().rotateX(45.0f);
+    cout << modelView.matrix() << endl;
+    modelView.push();
+    cout << modelView.matrix() << endl;
+    modelView.matrix().rotateX(45.0f);
+    cout << modelView.matrix() << endl;
+    modelView.pop();
+    cout << modelView.matrix() << endl;
 
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
     SoundEngine::initialize();
-    Config::outputSettings();
+    //Config::outputSettings();
     DisplayEngine::start(new MainMenuModule);
     //DisplayEngine::start(new BenchmarkModule);
     SoundEngine::cleanup();
