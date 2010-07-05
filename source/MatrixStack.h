@@ -12,6 +12,7 @@ class MatrixStack
         inline Matrix3D& matrix() { return mMatrices[mSize - 1]; }
         void push();
         void pop();
+        void reset();
 
     private:
         Matrix3D* mMatrices;

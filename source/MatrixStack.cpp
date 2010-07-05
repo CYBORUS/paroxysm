@@ -24,3 +24,9 @@ void MatrixStack::pop()
 {
     if (mSize > 1) --mSize;
 }
+
+void MatrixStack::reset()
+{
+    mSize = 1;
+    mMatrices[0].loadIdentity();
+}

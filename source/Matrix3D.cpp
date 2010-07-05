@@ -30,7 +30,23 @@ void Matrix3D::rotate(float inDegrees, float inX, float inY, float inZ)
     /// arbitrary rotation about an axis
     /// http://www.opengl.org/sdk/docs/man/xhtml/glRotate.xml
 
-    // yet to be implemented; see the URL above
+    float r = TO_RADIANS(inDegrees);
+    float c = cos(r);
+    float ci = 1.0f - c;
+    float s = sin(r);
+    Matrix3D transform;
+
+    transform[0] = inX * inX * ci + c;
+    transform[1] = inX * inY * ci - (inZ * s);
+    transform[2] = inX * inZ * ci + (inY * s);
+    transform[4] = inY * inX * ci + (inZ * s);
+    transform[5] = inY * inY * ci + c;
+    transform[6] = inY * inZ * ci - (inX * s);
+    transform[8] = inX * inZ * ci - (inY * s);
+    transform[9] = inY * inZ * ci + (inX * s);
+    transform[10] = inZ * inZ * ci + c;
+
+    multiply(transform);
 }
 
 void Matrix3D::rotateX(float inDegrees)

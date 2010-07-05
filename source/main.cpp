@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     cout << modelView.matrix() << endl;
     modelView.push();
     cout << modelView.matrix() << endl;
-    modelView.matrix().rotateX(45.0f);
+    modelView.matrix().loadIdentity();
     cout << modelView.matrix() << endl;
     modelView.pop();
     cout << modelView.matrix() << endl;
