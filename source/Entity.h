@@ -54,6 +54,7 @@ class Entity
 
         EntityType getWhatIAm();
         bool isAlive();
+        void die();
 
     protected:
         EntityType mWhatAmI;
@@ -80,6 +81,10 @@ class Entity
 
 };
 
+inline void Entity::die()
+{
+    mAlive = false;
+}
 inline const Vector3D<float>& Entity::getPosition() const
 {
     return mPosition;

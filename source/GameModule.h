@@ -77,6 +77,9 @@ class GameModule : public Module
 
         void getHeight(float inX, float inZ);
 
+        //dummy cheat variable
+        bool mProduceBullet;
+
         LuaMachine mLua;
         TextBox* mLuaConsole;
         GameCamera mCamera;

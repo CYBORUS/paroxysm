@@ -24,6 +24,7 @@ RobotControl::RobotControl(Entity* inEntity) : Control(inEntity), mTicks(1),
     mTurn(0.0f), mSpeed(0.0f)
 {
     mTank = (Tank*)inEntity;
+    mWhatAmI = Control::ROBOT_TANK;
 }
 
 RobotControl::~RobotControl()

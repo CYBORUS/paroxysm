@@ -19,7 +19,7 @@
 
 PlayerControl::PlayerControl(Entity* inEntity) : Control(inEntity)
 {
-    //ctor
+    mWhatAmI = Control::PLAYER_TANK;
 }
 
 PlayerControl::~PlayerControl()

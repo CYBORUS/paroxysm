@@ -70,5 +70,9 @@ inline Entity* Control::getEntity()
     return mEntity;
 }
 
+inline Control::ControlType Control::getWhatIAm()
+{
+    return mWhatAmI;
+}
 
 #endif
