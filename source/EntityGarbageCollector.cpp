@@ -1,14 +1,11 @@
 #include "EntityGarbageCollector.h"
 
 volatile bool EntityGarbageCollector::mGameRunning;
-list<Entity*> EntityGarbageCollector::mEntities;
-map<Entity*, Control*> EntityGarbageCollector::mControls;
-SDL_mutex* EntityGarbageCollector::mEntityLock;
+list<Control*> EntityGarbageCollector::mControls;
 SDL_mutex* EntityGarbageCollector::mControlLock;
 
 void EntityGarbageCollector::onSetup()
 {
-    mEntityLock = SDL_CreateMutex();
     mControlLock = SDL_CreateMutex();
 }
 
@@ -19,23 +16,23 @@ int EntityGarbageCollector::runGarbageCollection(void* unused)
 
     while (mGameRunning)
     {
-        SDL_mutexP(mEntityLock);
-        list<Entity*>::iterator itEntities = mEntities.begin();
-        while (itEntities != mEntities.end())
+        SDL_mutexP(mControlLock);
+        list<Control*>::iterator itControls = mControls.begin();
+        while (itControls != mControls.end())
         {
-            if (!(*itEntities)->isAlive() && (*itEntities)->isGameDead() && (*itEntities)->isRenderDead())
+            if (!(*itControls)->getEntity()->isAlive() && (*itControls)->isGameDead() && (*itControls)->getEntity()->isRenderDead())
             {
-                Entity* dead = *itEntities;
-                itEntities = mEntities.erase(itEntities);
+                Control* dead = *itControls;
+                itControls = mControls.erase(itControls);
                 delete dead;
             }
             else
             {
-                ++itEntities;
+                ++itControls;
             }
         }
 
-        SDL_mutexV(mEntityLock);
+        SDL_mutexV(mControlLock);
         SDL_Delay(100);
     }
 
@@ -43,18 +40,10 @@ int EntityGarbageCollector::runGarbageCollection(void* unused)
     return 0;
 }
 
-
-void EntityGarbageCollector::addEntity(Entity* inEntity)
-{
-    SDL_mutexP(mEntityLock);
-    mEntities.push_back(inEntity);
-    SDL_mutexV(mEntityLock);
-}
-
-void EntityGarbageCollector::addControl(Entity* inEntity, Control* inControl)
+void EntityGarbageCollector::addControl(Control* inControl)
 {
     SDL_mutexP(mControlLock);
-    mControls[inEntity] = inControl;
+    mControls.push_back(inControl);
     SDL_mutexV(mControlLock);
 }
 
@@ -63,22 +52,12 @@ void EntityGarbageCollector::onUnload()
 {
     //mGameRunning = false;
 
-    map<Entity*, Control*>::iterator itControls = mControls.begin();
+    list<Control*>::iterator itControls = mControls.begin();
 
     for (; itControls != mControls.end(); ++itControls)
     {
-        delete itControls->second;
+        delete *itControls;
     }
 
-    list<Entity*>::iterator itEntities = mEntities.begin();
-    for (; itEntities != mEntities.end(); ++itEntities)
-    {
-        delete *itEntities;
-    }
-
-
-    mEntities.clear();
     mControls.clear();
-
-    SDL_DestroyMutex(mEntityLock);
 }

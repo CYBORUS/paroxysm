@@ -23,25 +23,30 @@
 
 class Entity;
 
-enum ControlType { NO_CONTROLS, PLAYER_TANK, NETWORK_TANK, ROBOT_TANK, DUMMY_BULLET };
 
 class Control
 {
+    protected:
+
     public:
         Control(Entity* inEntity);
         virtual ~Control();
 
+        enum ControlType { NO_CONTROLS, PLAYER_TANK, NETWORK_TANK, ROBOT_TANK, DUMMY_BULLET };
         virtual void update() = 0;
-        virtual void setPosition(const Vector3D<float>& inPosition);
-        virtual void changeDirection(float inDirection);
-        virtual void changeSpeed(float inSpeed);
+        //virtual void setPosition(const Vector3D<float>& inPosition);
+        //virtual void changeDirection(float inDirection);
+        //virtual void changeSpeed(float inSpeed);
 
+        ControlType getWhatIAm();
         virtual void setGameDead();
         virtual bool isGameDead();
+        Entity* getEntity();
 
     protected:
         Entity* mEntity;
 
+        ControlType mWhatAmI;
         bool mGameDead;
 
         //AI turrets have to move differently than player turrets,
@@ -59,5 +64,11 @@ inline bool Control::isGameDead()
 {
     return mGameDead;
 }
+
+inline Entity* Control::getEntity()
+{
+    return mEntity;
+}
+
 
 #endif

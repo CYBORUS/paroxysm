@@ -21,9 +21,6 @@
 #include "Vector3D.h"
 #include "TerrainGrid.h"
 
-class Control;
-
-enum EntityType { E_TANK, E_BULLET };
 
 class Entity
 {
@@ -31,14 +28,14 @@ class Entity
         Entity();
         virtual ~Entity();
 
+        enum EntityType { TANK, BULLET };
+
         virtual void onCollision(Entity* inCollidedWith) = 0;
         virtual void update();
         virtual void move() = 0;
         virtual void display() = 0;
         virtual void changeDirection(float inDirection) = 0;
         virtual void changeSpeed(float inSpeed) = 0;
-
-        virtual void setControl(Control* inControl);
 
         static void setTerrain(TerrainGrid* inTerrain);
 
@@ -62,7 +59,7 @@ class Entity
         EntityType mWhatAmI;
         float mRadius;
 
-        Control* mControl;
+        //Control* mControl;
 
         bool volatile mGameDead;
         bool volatile mRenderDead;
@@ -82,11 +79,6 @@ class Entity
         bool mAlive;
 
 };
-
-inline void Entity::setControl(Control* inControl)
-{
-    mControl = inControl;
-}
 
 inline const Vector3D<float>& Entity::getPosition() const
 {

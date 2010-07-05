@@ -107,6 +107,8 @@
 		<Unit filename="..\MathEngine.cpp" />
 		<Unit filename="..\MathEngine.h" />
 		<Unit filename="..\Matrix.h" />
+		<Unit filename="..\Matrix3D.cpp" />
+		<Unit filename="..\Matrix3D.h" />
 		<Unit filename="..\Model3D.h" />
 		<Unit filename="..\ModelStack.cpp" />
 		<Unit filename="..\ModelStack.h" />

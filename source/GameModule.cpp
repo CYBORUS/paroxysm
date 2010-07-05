@@ -117,8 +117,8 @@ bool GameModule::onLoad()
 
     Entity::setTerrain(&mTerrain);
 
-    addTank(PLAYER_TANK);
-    addTank(ROBOT_TANK);
+    addTank(Control::PLAYER_TANK);
+    addTank(Control::ROBOT_TANK);
 
     mCamera.setTrackball(mTrackball);
     mCamera.follow(mPlayerTank);
@@ -310,10 +310,11 @@ void GameModule::onLoop()
         mTestModel->display();
     }
     glPopMatrix();
-    list<Entity*>::iterator itEntities = mEntities.begin();
-    for (; itEntities != mEntities.end(); ++itEntities)
+    list<Control*>::iterator itControls = mControls.begin();
+    for (; itControls != mControls.end(); ++itControls)
     {
-        (*itEntities)->display();
+        (*itControls)->update();
+        (*itControls)->getEntity()->display();
         //++itEntities;
     }
 
@@ -349,21 +350,21 @@ void GameModule::onFrame()
     }
     */
 
-    list<Entity*>::iterator itEntities = mEntities.begin();
+    list<Control*>::iterator itControls = mControls.begin();
 
-    while (itEntities != mEntities.end())
+    while (itControls != mControls.end())
     {
-        (*itEntities)->update();
+        (*itControls)->getEntity()->move();
 
-        if (!(*itEntities)->isAlive())
+        if (!(*itControls)->getEntity()->isAlive())
         {
-            Entity* thisEntity = *itEntities;
-            itEntities = mEntities.erase(itEntities);
-            thisEntity->setRenderDead();
+            Control* thisEntity = *itControls;
+            itControls = mControls.erase(itControls);
+            thisEntity->getEntity()->setRenderDead();
         }
         else
         {
-            ++itEntities;
+            ++itControls;
         }
         /*
         (*itEntities)->move();
@@ -458,7 +459,7 @@ void GameModule::onUnload()
     }
 */
 
-    mEntities.clear();
+    mControls.clear();
     //mControls.clear();
 
     glDisable(GL_DEPTH_TEST);
@@ -487,13 +488,7 @@ void GameModule::onClose()
 }
 
 
-void GameModule::addSomething(Entity* inEntity, Control* inControl)
-{
-    inEntity->setControl(inControl);
-    addEntity(inEntity);
-}
-
-void GameModule::addTank(ControlType inControlType,
+void GameModule::addTank(Control::ControlType inControlType,
     const Vector3D<float>& inPosition)
 {
     Entity* entity;
@@ -513,21 +508,21 @@ void GameModule::addTank(ControlType inControlType,
 
     switch (inControlType)
     {
-        case PLAYER_TANK:
+        case Control::PLAYER_TANK:
         {
             entity = new Tank();
             controls = new PlayerControl(entity);
             mPlayerTank = (Tank*)entity;
             mPlayerControls = controls;
-            entity->setControl(controls);
+            //entity->setControl(controls);
             break;
         }
 
-        case ROBOT_TANK:
+        case Control::ROBOT_TANK:
         {
             entity = new Tank();
             controls = new RobotControl(entity);
-            entity->setControl(controls);
+            //entity->setControl(controls);
             break;
         }
 
@@ -541,20 +536,20 @@ void GameModule::addTank(ControlType inControlType,
         //EntityGarbageCollector::addControl(tank, controls);
     }
     ++mNumTanks;
-    entity->setPosition(inPosition);
+    controls->getEntity()->setPosition(inPosition);
 
-    addEntity(entity);
+    addControl(controls);
 }
 
-void GameModule::addEntity(Entity* inEntity)
+void GameModule::addControl(Control* inControl)
 {
-    mEntities.push_back(inEntity);
+    mControls.push_back(inControl);
 
-    if (inEntity->getWhatIAm() != PLAYER_TANK)
+    if (inControl->getEntity()->getWhatIAm() != Control::PLAYER_TANK)
     {
-        EntityGarbageCollector::addEntity(inEntity);
+        EntityGarbageCollector::addControl(inControl);
     }
-    CollisionEngine::addEntity(inEntity);
+    CollisionEngine::addEntity(inControl->getEntity());
 }
 
 Vector3D<float> GameModule::findMouseObjectPoint(int inX, int inY)
@@ -589,7 +584,7 @@ void GameModule::onLButtonDown(int inX, int inY)
     Bullet* bullet = new Bullet(mPlayerTank->getBulletStart(), mPlayerTank->getBulletDirection(), mPlayerTank->getBulletRotation());
     Control* control = new DummyBulletControl(bullet);
     //mEntities.push_back(bullet);
-    addSomething(bullet, control);
+    addControl(control);
     //CollisionEngine::addEntity(bullet);
 }
 
@@ -722,25 +717,25 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_a:
         {
-            mPlayerControls->changeDirection(1.0f);
+            mPlayerControls->getEntity()->changeDirection(1.0f);
             break;
         }
 
         case SDLK_w:
         {
-            mPlayerControls->changeSpeed(1.0f);
+            mPlayerControls->getEntity()->changeSpeed(1.0f);
             break;
         }
 
         case SDLK_d:
         {
-            mPlayerControls->changeDirection(-1.0f);
+            mPlayerControls->getEntity()->changeDirection(-1.0f);
             break;
         }
 
         case SDLK_s:
         {
-            mPlayerControls->changeSpeed(-1.0f);
+            mPlayerControls->getEntity()->changeSpeed(-1.0f);
             break;
         }
 
@@ -782,13 +777,13 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_a:
         case SDLK_d:
         {
-            mPlayerControls->changeDirection(0.0f);
+            mPlayerControls->getEntity()->changeDirection(0.0f);
             break;
         }
         case SDLK_w:
         case SDLK_s:
         {
-            mPlayerControls->changeSpeed(0.0f);
+            mPlayerControls->getEntity()->changeSpeed(0.0f);
             break;
         }
 
@@ -879,7 +874,7 @@ int GameModule::luaAddTank(lua_State* inState)
             luaTG->getMatrix().lastCol());
         pos[2] = MathEngine::supremeRandom<float>(1.0f,
             luaTG->getMatrix().lastRow());
-        luaGM->addTank(ROBOT_TANK, pos);
+        luaGM->addTank(Control::ROBOT_TANK, pos);
     }
 
     lua_pushnumber(inState, outSuccess);

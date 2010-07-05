@@ -22,7 +22,7 @@ TSphere* Bullet::mSphere = NULL;
 Bullet::Bullet(const Vector3D<float>& inPosition,
     const Vector3D<float>& inMomentum, float inRotation)
 {
-    mWhatAmI = E_BULLET;
+    mWhatAmI = Entity::BULLET;
     mRadius = 0.5f;
 
     mSpeed = 1.8f;
@@ -39,7 +39,7 @@ Bullet::~Bullet()
 
 void Bullet::onCollision(Entity* inCollidedWith)
 {
-    if (inCollidedWith->getWhatIAm() == E_TANK)
+    if (inCollidedWith->getWhatIAm() == Entity::TANK)
     {
         mAlive = false;
     }

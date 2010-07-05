@@ -57,11 +57,10 @@ class GameModule : public Module
         virtual void onClose();
         virtual void onUnload();
 
-        void addTank(ControlType inControlType,
+        void addTank(Control::ControlType inControlType,
             const Vector3D<float>& inPosition = Vector3D<float>(10.0f));
 
-        void addEntity(Entity* inEntity);
-        void addSomething(Entity* inEntity, Control* inControl);
+        void addControl(Control* inControl);
 
     protected:
         virtual void onLButtonDown(int inX, int inY);
@@ -120,10 +119,9 @@ class GameModule : public Module
         Vector3D<GLfloat> mTrackball;
         Vector3D<GLfloat> mPanning;
 
-        list<Entity*> mEntities;
+        list<Control*> mControls;
         Tank* mPlayerTank;
         Control* mPlayerControls;
-        map<Entity*, Control*> mControls;
 
         Label* mFPSLabel;
         unsigned int mFPS;

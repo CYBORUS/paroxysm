@@ -24,7 +24,7 @@ Tank::Tank() : mTankSize(1.5, 1.0, 1.5),
 {
     //setRadius(0.5);
     mRadius = 0.75;
-    mWhatAmI = E_TANK;
+    mWhatAmI = Entity::TANK;
     mAlive = true;
     mPosition[0] = mTerrainWidth / 2;
     mPosition[1] = 0.5;
@@ -112,12 +112,12 @@ void Tank::onCollision(Entity* inCollidedWith)
 {
     switch (inCollidedWith->getWhatIAm())
     {
-        case E_TANK:
+        case Entity::TANK:
         {
             //Tank* t = (Tank*)inCollidedWith;
             Vector3D<float> collisionDirection = (mPosition - inCollidedWith->getPosition()).normalized();
             float reboundSpeed = inCollidedWith->getMomentum().length() * 2.0f;
-            cerr << "speed: " << reboundSpeed << endl;
+            //cerr << "speed: " << reboundSpeed << endl;
             mMomentum += collisionDirection * reboundSpeed;
 
             if (mMomentum.length() > 0.45)
@@ -128,7 +128,7 @@ void Tank::onCollision(Entity* inCollidedWith)
 
             break;
         }
-        case E_BULLET:
+        case Entity::BULLET:
         {
             mAlive = false;
             break;

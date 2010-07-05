@@ -25,21 +25,6 @@ Control::Control(Entity* inEntity)
 
 Control::~Control()
 {
+    delete mEntity;
     //dtor
-}
-
-
-void Control::setPosition(const Vector3D<float>& inPosition)
-{
-    mEntity->setPosition(inPosition);
-}
-
-void Control::changeDirection(float inDirection)
-{
-    mEntity->changeDirection(inDirection);
-}
-
-void Control::changeSpeed(float inSpeed)
-{
-    mEntity->changeSpeed(inSpeed);
 }
