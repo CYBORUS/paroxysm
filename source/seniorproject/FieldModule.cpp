@@ -18,7 +18,7 @@ bool FieldModule::onLoad()
     mBall.setScale(0.4f);
     mBall.moveSphere(0.5f, 0.5f, 0.5f);
     mBall.setColor(0.6f, 0.6f, 1.0f);
-    mCamera.setTrackball(Vector3D<float>(22.5f, 0.0f, 10.0f));
+    mCamera.setTrackball(Vector3D<float>(67.5f, 0.0f, 10.0f));
     return true;
 }
 

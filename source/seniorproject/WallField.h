@@ -12,6 +12,8 @@ class WallField
         WallField();
         ~WallField();
 
+        enum Direction { NORTH, EAST, SOUTH, WEST };
+
         void loadFromFile(const char* inFile);
         void createRandom();
         void dump();
@@ -23,6 +25,8 @@ class WallField
         void destroy();
         void createBitList(bool inRandom = false);
         bool checkBit(Uint32 inBit);
+        void setBit(Uint32 inBit, bool inSetting);
+        Uint32 getWallBit(Uint32 inX, Uint32 inY, Direction inDirection);
         void buildVBO();
 
         static const Uint8 bits[8];

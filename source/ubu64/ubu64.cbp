@@ -37,7 +37,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-D__UNIX__" />
-			<Add directory="." />
+			<Add directory="/usr/include/SDL" />
+			<Add directory="/usr/include/lua5.1" />
 		</Compiler>
 		<Linker>
 			<Add library="SDLmain" />

@@ -50,7 +50,32 @@ void WallField::createBitList(bool inRandom)
 
 bool WallField::checkBit(Uint32 inBit)
 {
-    return mBitList[inBit / 8] & bits[inBit % 8];
+    return !!(mBitList[inBit / 8] & bits[inBit % 8]);
+}
+
+void WallField::setBit(Uint32 inBit, bool inSetting)
+{
+    if (inSetting)
+    {
+        mBitList[inBit / 8] |= bits[inBit % 8];
+    }
+    else
+    {
+        mBitList[inBit / 8] &= ~bits[inBit % 8];
+    }
+}
+
+Uint32 WallField::getWallBit(Uint32 inX, Uint32 inY, Direction inDirection)
+{
+    switch (inDirection)
+    {
+        case NORTH: return (2 * mSize.x * inY) + (2 * inX);
+        case WEST: return (2 * mSize.x * inY) + (2 * inX) + 1;
+        case EAST: return getWallBit(inX + 1, inY, WEST);
+        case SOUTH: return getWallBit(inX, inY + 1, NORTH);
+    }
+
+    return 0;
 }
 
 void WallField::buildVBO()
@@ -116,11 +141,28 @@ void WallField::loadFromFile(const char* inFile)
 void WallField::createRandom()
 {
     destroy();
-    mSize.x = rand() % 32 + 1;
-    mSize.y = rand() % 32 + 1;
+    mSize.x = rand() % 16 + 4;
+    mSize.y = rand() % 16 + 4;
     //mSize.x = 4;
     //mSize.y = 4;
     createBitList(true);
+    for (Uint32 i = 0; i < mSize.x; ++i)
+    {
+        setBit(getWallBit(i, 0, NORTH), true);
+        setBit(getWallBit(i, mSize.y - 1, NORTH), true);
+        setBit(getWallBit(i, mSize.y - 1, WEST), false);
+    }
+
+    for (Uint32 i = 0; i < mSize.y; ++i)
+    {
+        setBit(getWallBit(0, i, WEST), true);
+        setBit(getWallBit(mSize.x - 1, i, WEST), true);
+        setBit(getWallBit(mSize.x - 1, i, NORTH), false);
+    }
+
+    setBit(getWallBit(0, mSize.y - 1, WEST), false);
+    setBit(getWallBit(mSize.x - 1, mSize.y - 1, WEST), false);
+
     buildVBO();
 }
 
