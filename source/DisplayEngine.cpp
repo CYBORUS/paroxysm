@@ -58,16 +58,6 @@ void DisplayEngine::start(Module* inModule)
     unsigned nextFrame = SDL_GetTicks() + FRAME_LENGTH;
     SDL_Event event;
 
-    /// begin network code
-
-    GameServer server;
-    server.start(100);
-
-    NetworkStream client;
-    client.connect("127.0.0.1", Config::get<Uint16>("server port", 9421));
-
-    /// end network initialization
-
     while (currentModule != NULL || moduleStack.size() > 0)
     {
         if (currentModule == NULL)
@@ -101,9 +91,6 @@ void DisplayEngine::start(Module* inModule)
                 //store the # of frames printed this second
                 mFPS = framesPerSecond;
                 framesPerSecond = 0;
-
-                client.sendData("cdaragorn", 10);
-                client.sendData("TheBuzzSaw", 11);
             }
 
             if (ticks > nextFrame)
@@ -139,8 +126,6 @@ void DisplayEngine::start(Module* inModule)
         }
 
     }
-
-    server.stopAndWait();
 
     cleanup();
 }

@@ -69,5 +69,14 @@ void GameCamera::spin(float inOffset)
     if (mTrackball[1] > 180.0f)
         mTrackball[1] -= 360.0f;
     else if (mTrackball[1] < -180.0f)
-        mTrackball[1] += 180.0f;
+        mTrackball[1] += 360.0f;
+}
+
+void GameCamera::rise(float inOffset)
+{
+    mTrackball[0] += inOffset;
+    if (mTrackball[0] > 90.0f)
+        mTrackball[0] = 90.0f;
+    else if (mTrackball[0] < 0.0f)
+        mTrackball[0] = 0.0f;
 }

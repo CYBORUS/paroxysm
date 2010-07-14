@@ -14,11 +14,14 @@ bool FieldModule::onLoad()
 {
     srand(time(NULL));
     mField.createRandom();
-    mField.dump();
+    //mField.dump();
     mBall.setScale(0.4f);
     mBall.moveSphere(0.5f, 0.5f, 0.5f);
     mBall.setColor(0.6f, 0.6f, 1.0f);
-    mCamera.setTrackball(Vector3D<float>(67.5f, 0.0f, 10.0f));
+    mCamera.setTrackball(Vector3D<float>(20.0f, 0.0f, 10.0f));
+    mSpin = 0.0f;
+    mRise = 0.0f;
+    mZoom = 0.0f;
     return true;
 }
 
@@ -56,6 +59,122 @@ void FieldModule::onLoop()
 
 void FieldModule::onFrame()
 {
-    mCamera.spin(1.0f);
+    mBall.moveSphere(0.5f + float(mPosition.x), 0.5f,
+        0.5f + float(mPosition.y));
+    mCamera.zoom(mZoom);
+    mCamera.spin(mSpin);
+    mCamera.rise(mRise);
     mCamera.setPanning(mBall.getTranslation());
+}
+
+void FieldModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch (inSym)
+    {
+        case SDLK_ESCAPE:
+        {
+            mRunning = false;
+            break;
+        }
+
+        case SDLK_LEFT:
+        {
+            mSpin = 4.0f;
+            break;
+        }
+
+        case SDLK_RIGHT:
+        {
+            mSpin = -4.0f;
+            break;
+        }
+
+        case SDLK_UP:
+        {
+            mRise = 2.0f;
+            break;
+        }
+
+        case SDLK_DOWN:
+        {
+            mRise = -2.0f;
+            break;
+        }
+
+        case SDLK_PAGEUP:
+        {
+            mZoom = -1.0f;
+            break;
+        }
+
+        case SDLK_PAGEDOWN:
+        {
+            mZoom = 1.0f;
+            break;
+        }
+
+        case SDLK_a:
+        {
+            if (mField.canMove(mPosition.x, mPosition.y, WallField::WEST))
+                mPosition.x -= 1;
+            break;
+        }
+
+        case SDLK_s:
+        {
+            if (mField.canMove(mPosition.x, mPosition.y, WallField::SOUTH))
+                mPosition.y += 1;
+            break;
+        }
+
+        case SDLK_d:
+        {
+            if (mField.canMove(mPosition.x, mPosition.y, WallField::EAST))
+                mPosition.x += 1;
+            break;
+        }
+
+        case SDLK_w:
+        {
+            if (mField.canMove(mPosition.x, mPosition.y, WallField::NORTH))
+                mPosition.y -= 1;
+            break;
+        }
+
+        default:
+        {
+        }
+    }
+}
+
+void FieldModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch (inSym)
+    {
+        case SDLK_LEFT:
+        case SDLK_RIGHT:
+        {
+            mSpin = 0.0f;
+            break;
+        }
+
+        case SDLK_UP:
+        case SDLK_DOWN:
+        {
+            mRise = 0.0f;
+            break;
+        }
+
+        case SDLK_PAGEUP:
+        case SDLK_PAGEDOWN:
+        {
+            mZoom = 0.0f;
+            break;
+        }
+
+        default:
+        {
+
+        }
+    }
 }

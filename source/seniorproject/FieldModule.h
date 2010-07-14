@@ -21,10 +21,17 @@ class FieldModule : public Module
         virtual void onUnload();
 
     protected:
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+
     private:
         WallField mField;
         GameCamera mCamera;
         TSphere mBall;
+        float mSpin;
+        float mRise;
+        float mZoom;
+        Point2D<Uint32> mPosition;
 };
 
 #endif

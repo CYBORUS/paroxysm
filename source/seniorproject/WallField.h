@@ -21,6 +21,11 @@ class WallField
 
         inline const Point2D<Uint32>& size() const { return mSize; }
 
+        inline bool canMove(Uint32 inX, Uint32 inY, Direction inDirection)
+        {
+            return !checkBit(getWallBit(inX, inY, inDirection));
+        }
+
     private:
         void destroy();
         void createBitList(bool inRandom = false);

@@ -44,7 +44,7 @@ void WallField::createBitList(bool inRandom)
     }
     else
     {
-        memset(mBitList, 0, mBitListLength);
+        memset(mBitList, -1, mBitListLength);
     }
 }
 
