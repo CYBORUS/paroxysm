@@ -19,7 +19,7 @@ class WallField
         void dump();
         void display();
 
-        inline bool canMove(Uint32 inX, Uint32 inY, Direction inDirection)
+        inline bool canMove(Uint32 inX, Uint32 inY, Direction inDirection) const
         {
             return !checkBit(getWallBit(inX, inY, inDirection));
         }
@@ -30,9 +30,9 @@ class WallField
     private:
         void destroy();
         void createBitList(bool inRandom = false);
-        bool checkBit(Uint32 inBit);
+        bool checkBit(Uint32 inBit) const;
         void setBit(Uint32 inBit, bool inSetting);
-        Uint32 getWallBit(Uint32 inX, Uint32 inY, Direction inDirection);
+        Uint32 getWallBit(Uint32 inX, Uint32 inY, Direction inDirection) const;
         void buildVBO();
 
         static const Uint8 bits[8];

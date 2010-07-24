@@ -48,7 +48,7 @@ void WallField::createBitList(bool inRandom)
     }
 }
 
-bool WallField::checkBit(Uint32 inBit)
+bool WallField::checkBit(Uint32 inBit) const
 {
     return !!(mBitList[inBit / 8] & bits[inBit % 8]);
 }
@@ -66,6 +66,7 @@ void WallField::setBit(Uint32 inBit, bool inSetting)
 }
 
 Uint32 WallField::getWallBit(Uint32 inX, Uint32 inY, Direction inDirection)
+    const
 {
     switch (inDirection)
     {

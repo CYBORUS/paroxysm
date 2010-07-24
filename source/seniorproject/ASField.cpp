@@ -35,5 +35,6 @@ ASField::~ASField()
 void ASField::findPath(Uint32 inStartX, Uint32 inStartY, Uint32 inEndX,
     Uint32 inEndY)
 {
-
+    mEnd.x = inEndX;
+    mEnd.y = inEndY;
 }

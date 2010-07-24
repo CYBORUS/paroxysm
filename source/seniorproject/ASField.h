@@ -1,8 +1,9 @@
 #ifndef ASFIELD_H
 #define ASFIELD_H
 
-#include "WallField.h"
 #include "ASNode.h"
+#include "WallField.h"
+#include "Point2D.h"
 
 class ASField
 {
@@ -22,6 +23,7 @@ class ASField
         }
 
         const WallField* mField;
+        Point2D<Uint32> mEnd;
         ASNode** mOpenList;
         ASNode** mClosedList;
         size_t mSize;
