@@ -19,7 +19,7 @@
 #define OGL_H
 
 // GLEE does all the work for us. The only thing it leaves out is GLU.
-#include <GL/glee.h>
+#include "GLee.h"
 #if defined(__APPLE__) || defined(__APPLE_CC__)
     #define GL_GLEXT_LEGACY
 	#include <OpenGL/glu.h>

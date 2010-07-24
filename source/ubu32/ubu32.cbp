@@ -32,22 +32,27 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="." />
+			<Add directory="/usr/include/SDL" />
+			<Add directory="/usr/include/lua5.1" />
 		</Compiler>
 		<Linker>
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
 			<Add library="SDL_ttf" />
 			<Add library="SDL_mixer" />
+			<Add library="SDL_net" />
 			<Add library="SDL" />
 			<Add library="GL" />
 			<Add library="GLU" />
-			<Add library="glee" />
 			<Add library="boost_filesystem" />
 			<Add library="boost_system" />
 			<Add library="lua5.1" />
 			<Add library="c3mloader" />
 		</Linker>
+		<Unit filename="../BenchmarkModule.cpp" />
+		<Unit filename="../BenchmarkModule.h" />
+		<Unit filename="../BenchmarkOBJ.cpp" />
+		<Unit filename="../BenchmarkOBJ.h" />
 		<Unit filename="../Bullet.cpp" />
 		<Unit filename="../Bullet.h" />
 		<Unit filename="../Button.cpp" />
@@ -62,14 +67,24 @@
 		<Unit filename="../Control.h" />
 		<Unit filename="../DisplayEngine.cpp" />
 		<Unit filename="../DisplayEngine.h" />
+		<Unit filename="../DummyBulletControl.cpp" />
+		<Unit filename="../DummyBulletControl.h" />
 		<Unit filename="../EditVertexAction.cpp" />
 		<Unit filename="../EditVertexAction.h" />
 		<Unit filename="../Entity.cpp" />
 		<Unit filename="../Entity.h" />
+		<Unit filename="../EntityGarbageCollector.cpp" />
+		<Unit filename="../EntityGarbageCollector.h" />
+		<Unit filename="../GLee.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../GLee.h" />
 		<Unit filename="../GameCamera.cpp" />
 		<Unit filename="../GameCamera.h" />
 		<Unit filename="../GameModule.cpp" />
 		<Unit filename="../GameModule.h" />
+		<Unit filename="../GameServer.cpp" />
+		<Unit filename="../GameServer.h" />
 		<Unit filename="../HUD.cpp" />
 		<Unit filename="../HUD.h" />
 		<Unit filename="../Label.cpp" />
@@ -91,10 +106,16 @@
 		<Unit filename="../MathEngine.cpp" />
 		<Unit filename="../MathEngine.h" />
 		<Unit filename="../Matrix.h" />
+		<Unit filename="../Matrix3D.cpp" />
+		<Unit filename="../Matrix3D.h" />
+		<Unit filename="../MatrixStack.cpp" />
+		<Unit filename="../MatrixStack.h" />
 		<Unit filename="../ModelStack.cpp" />
 		<Unit filename="../ModelStack.h" />
 		<Unit filename="../Module.cpp" />
 		<Unit filename="../Module.h" />
+		<Unit filename="../NetworkStream.cpp" />
+		<Unit filename="../NetworkStream.h" />
 		<Unit filename="../OGL.h" />
 		<Unit filename="../PlainPic.cpp" />
 		<Unit filename="../PlainPic.h" />
@@ -119,13 +140,24 @@
 		<Unit filename="../TextBox.h" />
 		<Unit filename="../TextPic.cpp" />
 		<Unit filename="../TextPic.h" />
+		<Unit filename="../Thread.cpp" />
+		<Unit filename="../Thread.h" />
 		<Unit filename="../Vector3D.h" />
 		<Unit filename="../Widget.cpp" />
 		<Unit filename="../Widget.h" />
 		<Unit filename="../main.cpp" />
+		<Unit filename="../seniorproject/ASField.cpp" />
+		<Unit filename="../seniorproject/ASField.h" />
+		<Unit filename="../seniorproject/ASNode.cpp" />
+		<Unit filename="../seniorproject/ASNode.h" />
+		<Unit filename="../seniorproject/FieldModule.cpp" />
+		<Unit filename="../seniorproject/FieldModule.h" />
+		<Unit filename="../seniorproject/WallField.cpp" />
+		<Unit filename="../seniorproject/WallField.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

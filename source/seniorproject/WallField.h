@@ -19,12 +19,13 @@ class WallField
         void dump();
         void display();
 
-        inline const Point2D<Uint32>& size() const { return mSize; }
-
         inline bool canMove(Uint32 inX, Uint32 inY, Direction inDirection)
         {
             return !checkBit(getWallBit(inX, inY, inDirection));
         }
+
+        inline Uint32 width() const { return mSize.x - 1; }
+        inline Uint32 height() const { return mSize.y - 1; }
 
     private:
         void destroy();
