@@ -3,7 +3,9 @@
 
 #include "ASNode.h"
 #include "WallField.h"
-#include "Point2D.h"
+#include "../Point2D.h"
+
+#include <list>
 
 class ASField
 {
@@ -11,24 +13,28 @@ class ASField
         ASField(const WallField& inField);
         ~ASField();
 
-        void findPath(Uint32 inStartX, Uint32 inStartY, Uint32 inEndX,
-            Uint32 inEndY);
+        void findPath(int inStartX, int inStartY, int inEndX,
+            int inEndY);
 
     private:
         void clear();
+        static int findHeuristic(int inStartX, int inStartY,
+            int inEndX, int inEndY);
 
-        inline size_t toIndex(Uint32 inRow, Uint32 inCol)
+        inline size_t toIndex(int inRow, int inCol)
         {
             return inRow * mWidth + inCol;
         }
 
         const WallField* mField;
-        Point2D<Uint32> mEnd;
-        ASNode** mOpenList;
-        ASNode** mClosedList;
+        Point2D<int> mStart;
+        Point2D<int> mEnd;
+        ASNode** mNodes;
+        std::list<ASNode*> mOpenList;
+        std::list<ASNode*> mClosedList;
         size_t mSize;
-        Uint32 mWidth;
-        Uint32 mHeight;
+        int mWidth;
+        int mHeight;
 };
 
 #endif

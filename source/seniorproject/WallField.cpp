@@ -39,8 +39,11 @@ void WallField::createBitList(bool inRandom)
     mBitList = new Uint8[mBitListLength];
     if (inRandom)
     {
-        for (size_t i = 0; i < mBitListLength; ++i)
-            mBitList[i] = rand() % 256;
+        for (Uint32 i = 0; i < numberOfWalls; ++i)
+        {
+            int roll = rand() % 5;
+            setBit(i, !roll);
+        }
     }
     else
     {
@@ -142,8 +145,8 @@ void WallField::loadFromFile(const char* inFile)
 void WallField::createRandom()
 {
     destroy();
-    mSize.x = rand() % 16 + 4;
-    mSize.y = rand() % 16 + 4;
+    mSize.x = rand() % 16 + 16;
+    mSize.y = rand() % 16 + 16;
     //mSize.x = 4;
     //mSize.y = 4;
     createBitList(true);

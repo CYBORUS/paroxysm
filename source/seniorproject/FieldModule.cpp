@@ -1,4 +1,5 @@
 #include "FieldModule.h"
+#include "ASField.h"
 
 #include <ctime>
 
@@ -14,6 +15,8 @@ bool FieldModule::onLoad()
 {
     srand(time(NULL));
     mField.createRandom();
+    ASField asf(mField);
+    asf.findPath(0, 0, mField.width() - 1, mField.height() - 1);
     //mField.dump();
     mBall.setScale(0.4f);
     mBall.moveSphere(0.5f, 0.5f, 0.5f);

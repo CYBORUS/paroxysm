@@ -1,40 +1,143 @@
 #include "ASField.h"
 
 #include <cstring>
-
-#include <SDL.h>
+#include <iostream>
+using namespace std;
 
 ASField::ASField(const WallField& inField) : mField(&inField)
 {
     mWidth = mField->width();
     mHeight = mField->height();
     mSize = mWidth * mHeight;
-    mOpenList = new ASNode*[mSize];
-    memset(mOpenList, 0, mSize * sizeof(ASNode*));
-    mClosedList = new ASNode*[mSize];
-    memset(mClosedList, 0, mSize * sizeof(ASNode*));
+    mNodes = new ASNode*[mSize];
+    memset(mNodes, 0, mSize * sizeof(ASNode*));
 }
 
 ASField::~ASField()
 {
-    for (size_t i = 0; i < mSize; ++i)
-    {
-        if (mOpenList[i])
-        {
-            delete mOpenList[i];
-            mClosedList[i] = NULL;
-        }
-
-        if (mClosedList[i]) delete mClosedList[i];
-    }
-
-    delete [] mClosedList;
-    delete [] mOpenList;
+    delete [] mNodes;
 }
 
-void ASField::findPath(Uint32 inStartX, Uint32 inStartY, Uint32 inEndX,
-    Uint32 inEndY)
+void ASField::findPath(int inStartX, int inStartY, int inEndX,
+    int inEndY)
 {
     mEnd.x = inEndX;
     mEnd.y = inEndY;
+    mStart.x = inStartX;
+    mStart.y = inStartY;
+
+
+    int h = findHeuristic(mStart.x, mStart.y, mEnd.x, mEnd.y);
+    //cerr << "h is " << h << endl;
+    mOpenList.push_back(new ASNode(mStart.x, mStart.y, h));
+
+    ASNode* destination = NULL;
+
+    while (!mOpenList.empty())
+    {
+        ASNode* lowestF = NULL;
+        for (list<ASNode*>::iterator i = mOpenList.begin();
+            i != mOpenList.end(); ++i)
+        {
+            ASNode* j = *i;
+            if (!lowestF || j->getF() < lowestF->getF()) lowestF = j;
+        }
+
+        //cerr << "processing node at " << lowestF->getX() << ", "
+        //    << lowestF->getY() << endl;
+
+        mOpenList.remove(lowestF);
+        mClosedList.push_back(lowestF);
+        lowestF->close();
+
+        if (!lowestF->getH())
+        {
+            destination = lowestF;
+            break;
+        }
+
+        int x = lowestF->getX();
+        int y = lowestF->getY();
+
+        if (mField->canMove(x, y, WallField::NORTH))
+        {
+            h = findHeuristic(x, y - 1, mEnd.x, mEnd.y);
+            ASNode* targetNode = mNodes[toIndex(y - 1, x)];
+            if (!targetNode)
+            {
+                ASNode* asn = new ASNode(x, y - 1, h);
+                asn->connect(lowestF, 10);
+                mNodes[toIndex(y - 1, x)] = asn;
+                mOpenList.push_back(asn);
+            }
+            else
+            {
+                targetNode->compare(lowestF, 10);
+            }
+        }
+
+        if (mField->canMove(x, y, WallField::SOUTH))
+        {
+            h = findHeuristic(x, y + 1, mEnd.x, mEnd.y);
+            ASNode* targetNode = mNodes[toIndex(y + 1, x)];
+            if (!targetNode)
+            {
+                ASNode* asn = new ASNode(x, y + 1, h);
+                asn->connect(lowestF, 10);
+                mNodes[toIndex(y + 1, x)] = asn;
+                mOpenList.push_back(asn);
+            }
+            else
+            {
+                targetNode->compare(lowestF, 10);
+            }
+        }
+
+        if (mField->canMove(x, y, WallField::WEST))
+        {
+            h = findHeuristic(x - 1, y, mEnd.x, mEnd.y);
+            ASNode* targetNode = mNodes[toIndex(y, x - 1)];
+            if (!targetNode)
+            {
+                ASNode* asn = new ASNode(x - 1, y, h);
+                asn->connect(lowestF, 10);
+                mNodes[toIndex(y, x - 1)] = asn;
+                mOpenList.push_back(asn);
+            }
+            else
+            {
+                targetNode->compare(lowestF, 10);
+            }
+        }
+
+        if (mField->canMove(x, y, WallField::EAST))
+        {
+            h = findHeuristic(x + 1, y, mEnd.x, mEnd.y);
+            ASNode* targetNode = mNodes[toIndex(y, x + 1)];
+            if (!targetNode)
+            {
+                ASNode* asn = new ASNode(x + 1, y, h);
+                asn->connect(lowestF, 10);
+                mNodes[toIndex(y, x + 1)] = asn;
+                mOpenList.push_back(asn);
+            }
+            else
+            {
+                targetNode->compare(lowestF, 10);
+            }
+        }
+    }
+
+    if (destination)
+        cerr << "path found! " << endl;
+    else
+        cerr << "no path found" << endl;
+}
+
+int ASField::findHeuristic(int inStartX, int inStartY, int inEndX,
+    int inEndY)
+{
+    int dx = abs(inEndX - inStartX);
+    int dy = abs(inEndY - inStartY);
+    return 10 * (dx + dy);
 }

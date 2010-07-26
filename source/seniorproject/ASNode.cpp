@@ -1,14 +1,27 @@
 #include "ASNode.h"
 
-ASNode::ASNode(Uint32 inH) : mParent(NULL), mF(inH), mH(inH), mG(0)
+#include <iostream>
+using namespace std;
+
+ASNode::ASNode(int inX, int inY, int inH) : mParent(NULL), mClosed(false),
+    mX(inX), mY(inY), mF(inH), mH(inH), mG(0)
 {
+    //cerr << "new node created at " << inX << ", " << inY << endl;
 }
 
-ASNode::ASNode(Uint32 inH, Uint32 inOffsetG, ASNode* inParent)
-    : mParent(inParent), mH(inH)
+void ASNode::connect(ASNode* inParent, int inOffsetG)
 {
+    if (!inParent) return;
+    mParent = inParent;
     mG = mParent->mG + inOffsetG;
     mF = mG + mH;
+}
+
+void ASNode::compare(ASNode* inParent, int inOffsetG)
+{
+    if (!inParent || mClosed) return;
+    int g = inParent->mG + inOffsetG;
+    if (g < mG) connect(inParent, inOffsetG);
 }
 
 ASNode::~ASNode()
