@@ -16,6 +16,8 @@ ASField::ASField(const WallField& inField) : mField(&inField),
 
 ASField::~ASField()
 {
+    for (size_t i = 0; i < mSize; ++i)
+        if (mNodes[i]) delete mNodes[i];
     delete [] mNodes;
 }
 

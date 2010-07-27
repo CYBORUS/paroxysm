@@ -4,6 +4,8 @@
 #include "../PowerVBO.h"
 #include "../Point2D.h"
 
+#include <iostream>
+
 #include <SDL.h>
 
 class WallField
@@ -26,6 +28,10 @@ class WallField
 
         inline Uint32 width() const { return mSize.x - 1; }
         inline Uint32 height() const { return mSize.y - 1; }
+
+        friend std::ostream& operator<<(std::ostream&,
+            const WallField& inField);
+        friend std::istream& operator>>(std::istream&, WallField& inField);
 
     private:
         void destroy();

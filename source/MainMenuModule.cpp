@@ -152,7 +152,7 @@ void MainMenuModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         {
             mNextModule = new FieldModule;
             mRunning = false;
-            mDead = true;
+            mDead = false;
             break;
         }
 

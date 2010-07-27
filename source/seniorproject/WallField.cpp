@@ -1,6 +1,5 @@
 #include "WallField.h"
 
-#include <iostream>
 #include <cstring>
 using namespace std;
 
@@ -42,6 +41,7 @@ void WallField::createBitList(bool inRandom)
         for (Uint32 i = 0; i < numberOfWalls; ++i)
         {
             int roll = rand() % 5;
+            if (roll == 1) roll--;
             setBit(i, !roll);
         }
     }
@@ -145,8 +145,8 @@ void WallField::loadFromFile(const char* inFile)
 void WallField::createRandom()
 {
     destroy();
-    mSize.x = rand() % 16 + 16;
-    mSize.y = rand() % 16 + 16;
+    mSize.x = rand() % 32 + 16;
+    mSize.y = rand() % 32 + 16;
     //mSize.x = 4;
     //mSize.y = 4;
     createBitList(true);
@@ -181,4 +181,23 @@ void WallField::dump()
 void WallField::display()
 {
     if (mVBO) mVBO->display();
+}
+
+ostream& operator<<(ostream& inStream, const WallField& inField)
+{
+    inStream.write((char*)&inField.mSize.x, sizeof(Uint32));
+    inStream.write((char*)&inField.mSize.y, sizeof(Uint32));
+    inStream.write((char*)inField.mBitList, inField.mBitListLength);
+    return inStream;
+}
+
+istream& operator>>(istream& inStream, WallField& inField)
+{
+    inField.destroy();
+    inStream.read((char*)&inField.mSize.x, sizeof(Uint32));
+    inStream.read((char*)&inField.mSize.y, sizeof(Uint32));
+    inField.createBitList(false);
+    inStream.read((char*)inField.mBitList, inField.mBitListLength);
+    inField.buildVBO();
+    return inStream;
 }

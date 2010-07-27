@@ -1,7 +1,10 @@
 #include "FieldModule.h"
 #include "ASField.h"
+#include "../Config.h"
 
 #include <ctime>
+#include <iostream>
+using namespace std;
 
 FieldModule::FieldModule()
 {
@@ -15,6 +18,22 @@ bool FieldModule::onLoad()
 {
     srand(time(NULL));
     mField.createRandom();
+
+    string s(Config::getRaw("field", "x"));
+    if (s != "x")
+    {
+        ifstream fin(s.c_str(), ifstream::binary);
+        if (fin.fail())
+        {
+            cerr << "no map file: " << s << endl;
+        }
+        else
+        {
+            fin >> mField;
+            fin.close();
+        }
+    }
+
     ASField asf(mField);
     asf.findPath(0, 0, mField.width() - 1, mField.height() - 1);
     mPath = asf.getPath();
@@ -159,6 +178,23 @@ void FieldModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_PAGEDOWN:
         {
             mZoom = 1.0f;
+            break;
+        }
+
+        case SDLK_SPACE:
+        {
+            mPosition.x = 0;
+            mPosition.y = 0;
+            mCurrentStep = 0;
+            break;
+        }
+
+        case SDLK_TAB:
+        {
+            ofstream fout("field.bin", ofstream::binary);
+            if (fout.fail()) break;
+            fout << mField;
+            fout.close();
             break;
         }
 
