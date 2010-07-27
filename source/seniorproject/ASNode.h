@@ -13,6 +13,7 @@ class ASNode
         void compare(ASNode* inParent, int inOffsetG);
         inline void close() { mClosed = true; }
 
+        inline ASNode* getParent() { return mParent; }
         inline bool isClosed() { return mClosed; }
         inline int getF() { return mF; }
         inline int getG() { return mG; }

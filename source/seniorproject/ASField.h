@@ -15,6 +15,8 @@ class ASField
 
         void findPath(int inStartX, int inStartY, int inEndX,
             int inEndY);
+        WallField::Direction* getPath();
+        inline size_t getPathSize() { return mPathSize; }
 
     private:
         void clear();
@@ -30,6 +32,8 @@ class ASField
         Point2D<int> mStart;
         Point2D<int> mEnd;
         ASNode** mNodes;
+        ASNode* mDestination;
+        size_t mPathSize;
         std::list<ASNode*> mOpenList;
         std::list<ASNode*> mClosedList;
         size_t mSize;

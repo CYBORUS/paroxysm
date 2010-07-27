@@ -4,7 +4,8 @@
 #include <iostream>
 using namespace std;
 
-ASField::ASField(const WallField& inField) : mField(&inField)
+ASField::ASField(const WallField& inField) : mField(&inField),
+    mDestination(NULL), mPathSize(0)
 {
     mWidth = mField->width();
     mHeight = mField->height();
@@ -31,8 +32,6 @@ void ASField::findPath(int inStartX, int inStartY, int inEndX,
     //cerr << "h is " << h << endl;
     mOpenList.push_back(new ASNode(mStart.x, mStart.y, h));
 
-    ASNode* destination = NULL;
-
     while (!mOpenList.empty())
     {
         ASNode* lowestF = NULL;
@@ -52,7 +51,7 @@ void ASField::findPath(int inStartX, int inStartY, int inEndX,
 
         if (!lowestF->getH())
         {
-            destination = lowestF;
+            mDestination = lowestF;
             break;
         }
 
@@ -128,10 +127,54 @@ void ASField::findPath(int inStartX, int inStartY, int inEndX,
         }
     }
 
-    if (destination)
+    if (mDestination)
+    {
         cerr << "path found! " << endl;
+    }
     else
+    {
         cerr << "no path found" << endl;
+    }
+}
+
+WallField::Direction* ASField::getPath()
+{
+    if (!mDestination) return NULL;
+
+    list<WallField::Direction> path;
+    ASNode* a = mDestination;
+    ASNode* b = a->getParent();
+
+    while (b)
+    {
+        WallField::Direction d;
+
+        if (a->getX() > b->getX())
+            d = WallField::EAST;
+        else if (a->getX() < b->getX())
+            d = WallField::WEST;
+        else if (a->getY() < b->getY())
+            d = WallField::NORTH;
+        else if (a->getY() > b->getY())
+            d = WallField::SOUTH;
+
+        path.push_front(d);
+
+        a = b;
+        b = b->getParent();
+    }
+
+    mPathSize = path.size();
+    WallField::Direction* outArray = new WallField::Direction[mPathSize];
+    size_t index = 0;
+    for (list<WallField::Direction>::iterator i = path.begin();
+        i != path.end(); ++i)
+    {
+        outArray[index] = *i;
+        ++index;
+    }
+
+    return outArray;
 }
 
 int ASField::findHeuristic(int inStartX, int inStartY, int inEndX,

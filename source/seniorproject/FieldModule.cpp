@@ -17,7 +17,11 @@ bool FieldModule::onLoad()
     mField.createRandom();
     ASField asf(mField);
     asf.findPath(0, 0, mField.width() - 1, mField.height() - 1);
-    //mField.dump();
+    mPath = asf.getPath();
+    mPathSize = asf.getPathSize();
+    mCurrentStep = 0;
+    mTimer = 0;
+
     mBall.setScale(0.4f);
     mBall.moveSphere(0.5f, 0.5f, 0.5f);
     mBall.setColor(0.6f, 0.6f, 1.0f);
@@ -62,6 +66,48 @@ void FieldModule::onLoop()
 
 void FieldModule::onFrame()
 {
+    if (mCurrentStep < mPathSize)
+    {
+        ++mTimer;
+        if (mTimer > 10)
+        {
+            mTimer = 0;
+
+            switch(mPath[mCurrentStep])
+            {
+                case WallField::NORTH:
+                {
+                    --mPosition.y;
+                    break;
+                }
+
+                case WallField::SOUTH:
+                {
+                    ++mPosition.y;
+                    break;
+                }
+
+                case WallField::WEST:
+                {
+                    --mPosition.x;
+                    break;
+                }
+
+                case WallField::EAST:
+                {
+                    ++mPosition.x;
+                    break;
+                }
+
+                default:
+                {
+
+                }
+            }
+
+            ++mCurrentStep;
+        }
+    }
     mBall.moveSphere(0.5f + float(mPosition.x), 0.5f,
         0.5f + float(mPosition.y));
     mCamera.zoom(mZoom);
@@ -116,33 +162,33 @@ void FieldModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
             break;
         }
 
-        case SDLK_a:
-        {
-            if (mField.canMove(mPosition.x, mPosition.y, WallField::WEST))
-                mPosition.x -= 1;
-            break;
-        }
-
-        case SDLK_s:
-        {
-            if (mField.canMove(mPosition.x, mPosition.y, WallField::SOUTH))
-                mPosition.y += 1;
-            break;
-        }
-
-        case SDLK_d:
-        {
-            if (mField.canMove(mPosition.x, mPosition.y, WallField::EAST))
-                mPosition.x += 1;
-            break;
-        }
-
-        case SDLK_w:
-        {
-            if (mField.canMove(mPosition.x, mPosition.y, WallField::NORTH))
-                mPosition.y -= 1;
-            break;
-        }
+//        case SDLK_a:
+//        {
+//            if (mField.canMove(mPosition.x, mPosition.y, WallField::WEST))
+//                mPosition.x -= 1;
+//            break;
+//        }
+//
+//        case SDLK_s:
+//        {
+//            if (mField.canMove(mPosition.x, mPosition.y, WallField::SOUTH))
+//                mPosition.y += 1;
+//            break;
+//        }
+//
+//        case SDLK_d:
+//        {
+//            if (mField.canMove(mPosition.x, mPosition.y, WallField::EAST))
+//                mPosition.x += 1;
+//            break;
+//        }
+//
+//        case SDLK_w:
+//        {
+//            if (mField.canMove(mPosition.x, mPosition.y, WallField::NORTH))
+//                mPosition.y -= 1;
+//            break;
+//        }
 
         default:
         {

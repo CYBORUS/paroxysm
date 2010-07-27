@@ -26,6 +26,10 @@ class FieldModule : public Module
 
     private:
         WallField mField;
+        WallField::Direction* mPath;
+        size_t mPathSize;
+        size_t mCurrentStep;
+        Uint32 mTimer;
         GameCamera mCamera;
         TSphere mBall;
         float mSpin;
