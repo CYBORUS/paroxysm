@@ -26,10 +26,10 @@ int main(int argc, char** argv)
 {
     Config::initialize(argc, argv);
     DisplayEngine::initialize();
-    //SoundEngine::initialize();
+    SoundEngine::initialize();
     //Config::outputSettings();
     DisplayEngine::start(new MainMenuModule);
     //DisplayEngine::start(new BenchmarkModule);
-    //SoundEngine::cleanup();
+    SoundEngine::cleanup();
     return 0;
 }
