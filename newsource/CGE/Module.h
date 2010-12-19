@@ -2,7 +2,6 @@
 #define MODULE_H
 
 #include "Graphics.h"
-//#include "PropertyList.h"
 
 namespace CGE
 {
@@ -14,16 +13,12 @@ namespace CGE
 
             void onEvent(SDL_Event* inEvent);
             inline bool isRunning() const { return mRunning; };
-            inline bool isDead() const { return mDead; }
-            inline Module* nextModule() const { return mNextModule; }
 
             /// module operation
-            virtual void onLoad();
             virtual void onOpen();
             virtual void onLoop();
             virtual void onFrame();
             virtual void onClose();
-            virtual void onUnload();
 
             /// input events
             virtual void onInputFocus();
@@ -58,8 +53,6 @@ namespace CGE
 
         protected:
             bool mRunning;
-            bool mDead;
-            Module* mNextModule;
     };
 
 }

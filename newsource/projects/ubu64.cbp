@@ -42,11 +42,12 @@
 			<Add library="SDL_net" />
 			<Add library="SDL" />
 			<Add library="GL" />
-			<Add library="GLU" />
 		</Linker>
 		<Unit filename="../CGE/Engine.cpp" />
 		<Unit filename="../CGE/Engine.h" />
 		<Unit filename="../CGE/Graphics.h" />
+		<Unit filename="../CGE/ManagedModule.cpp" />
+		<Unit filename="../CGE/ManagedModule.h" />
 		<Unit filename="../CGE/Matrix4x4.h" />
 		<Unit filename="../CGE/Module.cpp" />
 		<Unit filename="../CGE/Module.h" />

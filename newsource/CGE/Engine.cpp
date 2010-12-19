@@ -6,6 +6,7 @@
 #include <SDL_net.h>
 
 #include <iostream>
+#include <list>
 
 namespace CGE
 {
@@ -144,5 +145,40 @@ namespace CGE
         }
 
         inModule->onClose();
+    }
+
+    void Engine::manage(ManagedModule* inModule)
+    {
+        if (!inModule) return;
+
+        ManagedModule* currentModule = inModule;
+        list<ManagedModule*> moduleStack;
+
+        while (currentModule || moduleStack.size())
+        {
+            if (!currentModule)
+            {
+                currentModule = moduleStack.back();
+                moduleStack.pop_back();
+            }
+
+            currentModule->onLoad(mConfig);
+
+            run(currentModule);
+
+            ManagedModule* deadModule = currentModule;
+            currentModule = currentModule->nextModule();
+
+            if (deadModule->isDead())
+            {
+                deadModule->onUnload();
+                delete deadModule;
+            }
+            else
+            {
+                moduleStack.push_back(deadModule);
+                deadModule = NULL;
+            }
+        }
     }
 }

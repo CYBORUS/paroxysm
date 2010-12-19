@@ -2,19 +2,11 @@
 
 namespace CGE
 {
-    Module::Module() : mRunning(true), mDead(true), mNextModule(NULL)
+    Module::Module() : mRunning(true)
     {
     }
 
     Module::~Module()
-    {
-    }
-
-    void Module::onLoad()
-    {
-    }
-
-    void Module::onUnload()
     {
     }
 

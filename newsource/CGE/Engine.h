@@ -2,7 +2,7 @@
 #define ENGINE_H
 
 #include "Graphics.h"
-#include "PropertyList.h"
+#include "ManagedModule.h"
 
 namespace CGE
 {
@@ -17,8 +17,6 @@ namespace CGE
         Uint32 alpha;
     };
 
-    class Module;
-
     class Engine
     {
         public:
@@ -26,6 +24,7 @@ namespace CGE
             ~Engine();
 
             void run(Module* inModule);
+            void manage(ManagedModule* inModule);
 
         private:
             ColorMask mMask;
