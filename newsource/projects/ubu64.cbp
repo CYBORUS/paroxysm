@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="paroxysm (ubu64)" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../paroxysm-ubu64-debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../.." />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../paroxysm-ubu64" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../.." />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory=".." />
+			<Add directory="/usr/include/SDL" />
+		</Compiler>
+		<Linker>
+			<Add library="SDLmain" />
+			<Add library="SDL_image" />
+			<Add library="SDL_ttf" />
+			<Add library="SDL_net" />
+			<Add library="SDL" />
+			<Add library="GL" />
+			<Add library="GLU" />
+		</Linker>
+		<Unit filename="../CGE/Engine.cpp" />
+		<Unit filename="../CGE/Engine.h" />
+		<Unit filename="../CGE/Graphics.h" />
+		<Unit filename="../CGE/Matrix4x4.h" />
+		<Unit filename="../CGE/Module.cpp" />
+		<Unit filename="../CGE/Module.h" />
+		<Unit filename="../CGE/PropertyList.cpp" />
+		<Unit filename="../CGE/PropertyList.h" />
+		<Unit filename="../CGE/Tools.cpp" />
+		<Unit filename="../CGE/Tools.h" />
+		<Unit filename="../GLee/GLee.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../GLee/GLee.h" />
+		<Unit filename="../game/main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
