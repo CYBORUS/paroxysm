@@ -769,4 +769,6 @@ namespace CGE
     }
 }
 
+typedef CGE::Matrix4x4<float> mat4f;
+
 #endif

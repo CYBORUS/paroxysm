@@ -43,22 +43,31 @@
 			<Add library="SDL" />
 			<Add library="GL" />
 		</Linker>
+		<Unit filename="../CGE/ClusterVBO.h" />
 		<Unit filename="../CGE/Engine.cpp" />
 		<Unit filename="../CGE/Engine.h" />
 		<Unit filename="../CGE/Graphics.h" />
+		<Unit filename="../CGE/IndexVBO.cpp" />
+		<Unit filename="../CGE/IndexVBO.h" />
 		<Unit filename="../CGE/ManagedModule.cpp" />
 		<Unit filename="../CGE/ManagedModule.h" />
 		<Unit filename="../CGE/Matrix4x4.h" />
 		<Unit filename="../CGE/Module.cpp" />
 		<Unit filename="../CGE/Module.h" />
+		<Unit filename="../CGE/Program.h" />
 		<Unit filename="../CGE/PropertyList.cpp" />
 		<Unit filename="../CGE/PropertyList.h" />
+		<Unit filename="../CGE/Shader.cpp" />
+		<Unit filename="../CGE/Shader.h" />
 		<Unit filename="../CGE/Tools.cpp" />
 		<Unit filename="../CGE/Tools.h" />
+		<Unit filename="../CGE/Vector3D.h" />
 		<Unit filename="../GLee/GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../GLee/GLee.h" />
+		<Unit filename="../game/TestModule.cpp" />
+		<Unit filename="../game/TestModule.h" />
 		<Unit filename="../game/main.cpp" />
 		<Extensions>
 			<code_completion />

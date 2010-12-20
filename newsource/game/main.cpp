@@ -1,10 +1,12 @@
 #include <CGE/Engine.h>
-#include <CGE/Module.h>
+#include "TestModule.h"
 
 int main(int argc, char** argv)
 {
     CGE::Engine e;
-    CGE::Module m;
-    e.run(&m);
+    {
+        TestModule tm;
+        e.run(&tm);
+    }
     return 0;
 }
