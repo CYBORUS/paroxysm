@@ -26,6 +26,7 @@ class TestModule : public CGE::Module
         CGE::ClusterVBO<3> mVBO;
         CGE::IndexVBO mIVBO;
 
+        GLuint mTexture;
         GLint mUniMVPM;
         GLint mUniMVM;
         GLint mUniNM;

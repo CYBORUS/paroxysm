@@ -1,6 +1,7 @@
 #include "TestModule.h"
 
 #include <CGE/Vector3D.h>
+#include <CGE/Tools.h>
 
 #define FOV 30.0f
 #define NCC 1.0f
@@ -18,12 +19,14 @@ GLchar VSSource[] =
     "\n"
     "varying vec4 ex_Color;\n"
     "varying vec3 ex_Normal;\n"
+    "varying vec3 ex_Texture;\n"
     "varying vec3 ex_LightDir;\n"
     "void main(void)\n"
     "{\n"
     "    vec4 p = vec4(in_Position, 1.0);\n"
     "    \n"
     "    ex_Normal = vec3(NM * vec4(in_Normal, 1.0));\n"
+    "    ex_Texture = in_Normal;\n"
     "    \n"
     "    vec4 vPosition4 = MVM * p;\n"
     "    vec3 vPosition3 = vPosition4.xyz / vPosition4.w;\n"
@@ -39,9 +42,11 @@ GLchar FSSource[] =
     "uniform vec4 ambientColor;\n"
     "uniform vec4 diffuseColor;\n"
     "uniform vec4 specularColor;\n"
+    "uniform samplerCube cubeMap;"
     "\n"
     "varying vec4 ex_Color;\n"
     "varying vec3 ex_Normal;\n"
+    "varying vec3 ex_Texture;\n"
     "varying vec3 ex_LightDir;\n"
     "\n"
     "void main(void)\n"
@@ -52,7 +57,8 @@ GLchar FSSource[] =
     "    \n"
     "    lightColor += ambientColor;\n"
     "    \n"
-    "    lightColor *= ex_Color;\n"
+    //"    lightColor *= ex_Color;\n"
+    "    lightColor *= texture(cubeMap, ex_Texture);\n"
     "    \n"
     "    vec3 vReflection = normalize(reflect(-normalize(ex_LightDir),\n"
     "        normalize(ex_Normal)));\n"
@@ -114,6 +120,14 @@ GLfloat normals[24] = {
 
 TestModule::TestModule() : mRotate(0.0f)
 {
+    glGenTextures(1, &mTexture);
+
+    Surface pics[6];
+    pics[0] = CGE::loadImage("data/images/icon.bmp");
+    for (size_t i = 1; i < 6; ++i) pics[i] = pics[0];
+    CGE::loadCubeMap(pics, mTexture);
+    SDL_FreeSurface(pics[0]);
+
     mVS.loadFromBuffer(VSSource, GL_VERTEX_SHADER);
     mFS.loadFromBuffer(FSSource, GL_FRAGMENT_SHADER);
     mProgram.attachShader(mVS);
@@ -127,6 +141,10 @@ TestModule::TestModule() : mRotate(0.0f)
     mUniNM = mProgram.getUniformLocation("NM");
 
     GLint u;
+
+    u = mProgram.getUniformLocation("cubeMap");
+    glUniform1i(u, 0);
+
     vec4f v(0.1f, 0.1f, 0.1f, 1.0f);
     u = mProgram.getUniformLocation("ambientColor");
     glUniform4fv(u, 1, v.array());
@@ -157,6 +175,7 @@ TestModule::TestModule() : mRotate(0.0f)
 
 TestModule::~TestModule()
 {
+    glDeleteTextures(1, &mTexture);
 }
 
 void TestModule::onOpen()
@@ -166,6 +185,9 @@ void TestModule::onOpen()
 
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, mTexture);
 
     glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
 }

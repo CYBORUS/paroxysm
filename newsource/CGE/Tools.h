@@ -6,6 +6,8 @@
 namespace CGE
 {
     Surface loadImage(const char* inFile);
+    void loadTexture(Surface inSurface, GLuint inTexture);
+    void loadCubeMap(Surface inSurface[6], GLuint inTexture);
 }
 
 #endif
