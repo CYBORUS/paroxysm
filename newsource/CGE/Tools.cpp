@@ -84,7 +84,7 @@ namespace CGE
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
-    void loadCubeMap(Surface inSurface[6], GLuint inTexture)
+    void loadCubeMap(Surface inSurface[], GLuint inTexture)
     {
         GLint nOfColors;
         GLenum tFormat;
