@@ -654,7 +654,7 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_b:
         {
-            mProduceBullet = true;
+            mProduceBullet = false;
             break;
         }
 

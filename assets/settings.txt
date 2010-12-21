@@ -1,5 +1,5 @@
-display width = 1280
-display height = 720
+display width = 1024
+display height = 768
 full screen = 0
 mipmapping = 1
 bits per pixel = 24

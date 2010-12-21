@@ -148,6 +148,10 @@
 		<Unit filename="..\Widget.cpp" />
 		<Unit filename="..\Widget.h" />
 		<Unit filename="..\main.cpp" />
+		<Unit filename="..\seniorproject\ASField.cpp" />
+		<Unit filename="..\seniorproject\ASField.h" />
+		<Unit filename="..\seniorproject\ASNode.cpp" />
+		<Unit filename="..\seniorproject\ASNode.h" />
 		<Unit filename="..\seniorproject\FieldModule.cpp" />
 		<Unit filename="..\seniorproject\FieldModule.h" />
 		<Unit filename="..\seniorproject\WallField.cpp" />
