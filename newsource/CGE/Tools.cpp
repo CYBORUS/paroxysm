@@ -4,6 +4,18 @@
 
 namespace CGE
 {
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    const Uint32 redMask   = 0xff000000;
+    const Uint32 greenMask = 0x00ff0000;
+    const Uint32 blueMask  = 0x0000ff00;
+    const Uint32 alphaMask = 0x000000ff;
+#else
+    const Uint32 redMask   = 0x000000ff;
+    const Uint32 greenMask = 0x0000ff00;
+    const Uint32 blueMask  = 0x00ff0000;
+    const Uint32 alphaMask = 0xff000000;
+#endif
+
     const GLenum defaultTexParam[] = {
         GL_TEXTURE_WRAP_S, GL_REPEAT,
         GL_TEXTURE_WRAP_T, GL_REPEAT,
@@ -27,10 +39,10 @@ namespace CGE
         GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
         GL_TEXTURE_CUBE_MAP_NEGATIVE_Z };
 
-    void processTexParameter(GLenum inTarget, const GLenum* inParameters)
+    void processTexParameter(GLenum inTarget, const GLenum inParameters[])
     {
         for (const GLenum *i = inParameters; *i; i += 2)
-            glTexParameteri(inTarget, *i, *(i + 1));
+            glTexParameteri(inTarget, i[0], i[1]);
     }
 
     void loadDetails(Surface inSurface, GLint& outColors, GLenum& outFormat)
@@ -56,6 +68,21 @@ namespace CGE
         }
     }
 
+    Surface blankSurface(int inWidth, int inHeight)
+    {
+        if (inWidth < 1 || inHeight < 1) return NULL;
+
+        Surface t = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, inWidth,
+            inHeight, 0, redMask, greenMask, blueMask, alphaMask);
+        SDL_SetAlpha(t, SDL_SRCALPHA, 0xff);
+
+        if (!t) return NULL;
+
+        Surface outSurface = SDL_DisplayFormatAlpha(t);
+        SDL_FreeSurface(t);
+        return outSurface;
+    }
+
     Surface loadImage(const char* inFile)
     {
         Surface t = IMG_Load(inFile);
@@ -65,7 +92,17 @@ namespace CGE
         return outSurface;
     }
 
-    void loadTexture(Surface inSurface, GLuint inTexture)
+    void loadTextureFile(const char* inFile, GLtexture inTexture)
+    {
+        if (!inFile || !*inFile) return;
+
+        Surface s = loadImage(inFile);
+        if (!s) return;
+        loadTexture(s, inTexture);
+        SDL_FreeSurface(s);
+    }
+
+    void loadTexture(Surface inSurface, GLtexture inTexture)
     {
         if (!inSurface) return;
 
@@ -84,7 +121,7 @@ namespace CGE
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
-    void loadCubeMap(Surface inSurface[], GLuint inTexture)
+    void loadCubeMap(Surface inSurface[], GLtexture inTexture)
     {
         GLint nOfColors;
         GLenum tFormat;

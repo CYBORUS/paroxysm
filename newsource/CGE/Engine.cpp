@@ -58,24 +58,12 @@ namespace CGE
             cout << endl;
         }
 
-        int width = mConfig.get("display width", 800);
-        int height = mConfig.get("display height", 600);
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        mMask.red   = 0xff000000;
-        mMask.green = 0x00ff0000;
-        mMask.blue  = 0x0000ff00;
-        mMask.alpha = 0x000000ff;
-#else
-        mMask.red   = 0x000000ff;
-        mMask.green = 0x0000ff00;
-        mMask.blue  = 0x00ff0000;
-        mMask.alpha = 0xff000000;
-#endif
+        int width = mConfig.get("display width", 1024);
+        int height = mConfig.get("display height", 768);
 
         Uint32 flags = SDL_OPENGL;
         if (mConfig.get("full screen", 0)) flags |= SDL_FULLSCREEN;
-        SDL_WM_SetCaption("paroxysm 0.0.1", "paroxysm");
+        SDL_WM_SetCaption("paroxysm 0.1", "paroxysm");
         mDisplay = SDL_SetVideoMode(width, height,
             mConfig.get("bits per pixel", 24), flags);
 

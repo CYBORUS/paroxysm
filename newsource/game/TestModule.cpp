@@ -1,6 +1,6 @@
 #include "TestModule.h"
 
-#include <CGE/Vector3D.h>
+#include <CGE/Vectors.h>
 #include <CGE/Tools.h>
 
 #define FOV 30.0f
@@ -85,27 +85,27 @@ TestModule::TestModule() : mRotate(0.0f)
     u = mProgram.getUniformLocation("cubeMap");
     glUniform1i(u, 0);
 
-    vec4f v(0.1f, 0.1f, 0.1f, 1.0f);
+    vec4f v = { 0.1f, 0.1f, 0.1f, 1.0f };
     u = mProgram.getUniformLocation("ambientColor");
-    glUniform4fv(u, 1, v.array());
+    glUniform4fv(u, 1, v);
 
     u = mProgram.getUniformLocation("diffuseColor");
     v[0] = 1.0f;
     v[1] = 1.0f;
     v[2] = 1.0f;
-    glUniform4fv(u, 1, v.array());
+    glUniform4fv(u, 1, v);
 
     u = mProgram.getUniformLocation("specularColor");
     v[0] = 1.0f;
     v[1] = 1.0f;
     v[2] = 1.0f;
     v[3] = 0.0f;
-    glUniform4fv(u, 1, v.array());
+    glUniform4fv(u, 1, v);
 
     u = mProgram.getUniformLocation("lightPosition");
     v[0] = 5.0f;
     v[2] = 100.0f;
-    glUniform3fv(u, 1, v.array());
+    glUniform3fv(u, 1, v);
 
     mVBO.loadVAA(0, 3, 8, points);
     mVBO.loadVAA(1, 4, 8, colors);

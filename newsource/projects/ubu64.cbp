@@ -61,7 +61,8 @@
 		<Unit filename="../CGE/Shader.h" />
 		<Unit filename="../CGE/Tools.cpp" />
 		<Unit filename="../CGE/Tools.h" />
-		<Unit filename="../CGE/Vector3D.h" />
+		<Unit filename="../CGE/Vectors.cpp" />
+		<Unit filename="../CGE/Vectors.h" />
 		<Unit filename="../GLee/GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>
