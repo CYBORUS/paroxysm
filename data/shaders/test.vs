@@ -1,3 +1,4 @@
+#version 120
 uniform mat4 MVPM;
 uniform mat4 MVM;
 uniform mat4 NM;

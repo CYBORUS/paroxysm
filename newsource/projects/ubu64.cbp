@@ -54,6 +54,7 @@
 		<Unit filename="../CGE/Matrix4x4.h" />
 		<Unit filename="../CGE/Module.cpp" />
 		<Unit filename="../CGE/Module.h" />
+		<Unit filename="../CGE/Platforms.h" />
 		<Unit filename="../CGE/Program.h" />
 		<Unit filename="../CGE/PropertyList.cpp" />
 		<Unit filename="../CGE/PropertyList.h" />
@@ -61,7 +62,6 @@
 		<Unit filename="../CGE/Shader.h" />
 		<Unit filename="../CGE/Tools.cpp" />
 		<Unit filename="../CGE/Tools.h" />
-		<Unit filename="../CGE/Vectors.cpp" />
 		<Unit filename="../CGE/Vectors.h" />
 		<Unit filename="../GLee/GLee.c">
 			<Option compilerVar="CC" />

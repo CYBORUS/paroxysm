@@ -4,6 +4,8 @@
 #include "Graphics.h"
 #include "ManagedModule.h"
 
+#include <iostream>
+
 namespace CGE
 {
     const Uint32 ENGINE_FPS = 40;
@@ -19,11 +21,17 @@ namespace CGE
             void manage(ManagedModule* inModule);
 
         private:
+            void initialize();
+
             PropertyList mConfig;
             Surface mDisplay;
             Surface mWindowIcon;
             SDL_Rect** mModes;
-            Uint32 mFPS;
+
+            static void logOpenGL(std::ostream& inStream);
+            static void prepareFiles();
+            static const char* logFile;
+            static const char* settingsFile;
     };
 }
 

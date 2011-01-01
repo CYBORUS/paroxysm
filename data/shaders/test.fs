@@ -1,3 +1,4 @@
+#version 120
 uniform vec4 ambientColor;
 uniform vec4 diffuseColor;
 uniform vec4 specularColor;
@@ -17,7 +18,7 @@ void main(void)
     lightColor += ambientColor;
     
     //lightColor *= ex_Color;
-    lightColor *= texture(cubeMap, ex_Texture);
+    lightColor *= textureCube(cubeMap, ex_Texture);
     
     vec3 vReflection = normalize(reflect(-normalize(ex_LightDir),
         normalize(ex_Normal)));
