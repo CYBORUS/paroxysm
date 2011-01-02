@@ -1,5 +1,6 @@
 #include "TestModule.h"
 
+//#include
 #include <CGE/Vectors.h>
 #include <CGE/Tools.h>
 
@@ -53,20 +54,11 @@ GLfloat normals[24] = {
 
 TestModule::TestModule() : mRotate(0.0f)
 {
-    glGenTextures(1, &mTexture);
-
-    Surface pics[6];
     const char* path = "assets/images/brick.png";
     const char* path2 = "assets/images/green2.png";
-    pics[0] = CGE::loadImage(path);
-    pics[1] = CGE::loadImage(path);
-    pics[2] = CGE::loadImage(path);
-    pics[3] = CGE::loadImage(path2);
-    pics[4] = CGE::loadImage(path2);
-    pics[5] = CGE::loadImage(path2);
 
-    CGE::loadCubeMap(pics, mTexture);
-    for (size_t i = 0; i < 6; ++i) SDL_FreeSurface(pics[i]);
+    const char* paths[] = { path, path, path, path2, path2, path2 };
+    mCubeMap.loadFromFiles(paths);
 
     mVS.loadFromFile("data/shaders/test.vs", GL_VERTEX_SHADER);
     mFS.loadFromFile("data/shaders/test.fs", GL_FRAGMENT_SHADER);
@@ -115,7 +107,6 @@ TestModule::TestModule() : mRotate(0.0f)
 
 TestModule::~TestModule()
 {
-    glDeleteTextures(1, &mTexture);
 }
 
 void TestModule::onOpen()
@@ -127,7 +118,7 @@ void TestModule::onOpen()
     glCullFace(GL_BACK);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, mTexture);
+    mCubeMap.bind();
 
     glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
 }

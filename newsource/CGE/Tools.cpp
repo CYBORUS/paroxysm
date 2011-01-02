@@ -121,6 +121,17 @@ namespace CGE
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
+    void loadCubeMapFiles(const char* inFiles[], GLtexture inTexture)
+    {
+        Surface surfaces[6];
+
+        for (size_t i = 0; i < 6; ++i) surfaces[i] = loadImage(inFiles[i]);
+
+        loadCubeMap(surfaces, inTexture);
+
+        for (size_t i = 0; i < 6; ++i) SDL_FreeSurface(surfaces[i]);
+    }
+
     void loadCubeMap(Surface inSurface[], GLtexture inTexture)
     {
         GLint nOfColors;

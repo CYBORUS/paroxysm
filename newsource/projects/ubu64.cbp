@@ -44,6 +44,8 @@
 			<Add library="GL" />
 		</Linker>
 		<Unit filename="../CGE/ClusterVBO.h" />
+		<Unit filename="../CGE/CubeMap.cpp" />
+		<Unit filename="../CGE/CubeMap.h" />
 		<Unit filename="../CGE/Engine.cpp" />
 		<Unit filename="../CGE/Engine.h" />
 		<Unit filename="../CGE/Graphics.h" />
@@ -60,6 +62,10 @@
 		<Unit filename="../CGE/PropertyList.h" />
 		<Unit filename="../CGE/Shader.cpp" />
 		<Unit filename="../CGE/Shader.h" />
+		<Unit filename="../CGE/Texture.cpp" />
+		<Unit filename="../CGE/Texture.h" />
+		<Unit filename="../CGE/Texture2D.cpp" />
+		<Unit filename="../CGE/Texture2D.h" />
 		<Unit filename="../CGE/Tools.cpp" />
 		<Unit filename="../CGE/Tools.h" />
 		<Unit filename="../CGE/Vectors.h" />

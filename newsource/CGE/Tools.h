@@ -9,6 +9,7 @@ namespace CGE
     Surface loadImage(const char* inFile);
     void loadTextureFile(const char* inFile, GLtexture inTexture);
     void loadTexture(Surface inSurface, GLtexture inTexture);
+    void loadCubeMapFiles(const char* inFiles[], GLtexture inTexture);
     void loadCubeMap(Surface inSurface[], GLtexture inTexture);
 }
 
