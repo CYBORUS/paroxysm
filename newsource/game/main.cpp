@@ -3,7 +3,10 @@
 
 int main(int argc, char** argv)
 {
-    CGE::Engine e;
+    CGE::Engine::Settings s;
+    s.windowTitle = "paroxysm 0.1";
+    s.windowTitle2 = "paroxysm";
+    CGE::Engine e(s);
     {
         TestModule tm;
         e.run(&tm);

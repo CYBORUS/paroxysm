@@ -1,7 +1,7 @@
 #include "Engine.h"
 #include "Module.h"
-#include "Tools.h"
 #include "Platforms.h"
+#include "Image.h"
 
 #include <SDL_ttf.h>
 #include <SDL_net.h>
@@ -16,7 +16,7 @@ namespace CGE
     using namespace std;
 
     const char* Engine::logFile = NULL;
-    const char* Engine::settingsFile = NULL;
+    const char* Engine::configFile = NULL;
 
     void Engine::prepareFiles()
     {
@@ -24,7 +24,7 @@ namespace CGE
 
         // TODO: adjust to store in home folder on UNIX platform
         logFile = "data/logs/init.txt";
-        settingsFile = "data/settings.txt";
+        configFile = "data/settings.txt";
     }
 
     void Engine::logOpenGL(ostream& inStream)
@@ -65,7 +65,8 @@ namespace CGE
         inStream << "\n\n";
     }
 
-    Engine::Engine() : mWindowIcon(NULL)
+    Engine::Engine(const Settings& inSettings) : mWindowIcon(NULL),
+        mSettings(inSettings)
     {
         initialize();
     }
@@ -183,7 +184,7 @@ namespace CGE
             fout << "log begun at " << asctime(timeinfo) << "\n\n";
         }
 
-        ifstream fin(settingsFile);
+        ifstream fin(configFile);
         if (fin)
         {
             fin >> mConfig;
@@ -191,7 +192,7 @@ namespace CGE
         }
         else
         {
-            fout << "missing " << settingsFile << " -- loading defaults\n\n";
+            fout << "missing " << configFile << " -- loading defaults\n\n";
         }
 
         if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
@@ -249,21 +250,18 @@ namespace CGE
 
         Uint32 flags = SDL_OPENGL;
         if (mConfig.get("full screen", 0)) flags |= SDL_FULLSCREEN;
-        SDL_WM_SetCaption("paroxysm 0.1", "paroxysm");
+
+        if (!mSettings.windowTitle)
+            mSettings.windowTitle = "CYBORUS Game Engine";
+
+        SDL_WM_SetCaption(mSettings.windowTitle, mSettings.windowTitle2);
+
         mDisplay = SDL_SetVideoMode(width, height,
             mConfig.get("bits per pixel", 24), flags);
 
 #ifndef __APPLE__
         // OSX does not support window icons
-        mWindowIcon = loadImage("data/images/icon.bmp");
-        if (mWindowIcon != NULL)
-        {
-            SDL_WM_SetIcon(mWindowIcon, NULL);
-        }
-        else
-        {
-            fout << "window icon failed\n\n";
-        }
+        setWindowIcon(Image("data/images/icon.bmp"));
 #endif
 
         logOpenGL(fout);

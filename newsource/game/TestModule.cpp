@@ -2,7 +2,6 @@
 
 //#include
 #include <CGE/Vectors.h>
-#include <CGE/Tools.h>
 
 #define FOV 30.0f
 #define NCC 1.0f
@@ -58,7 +57,7 @@ TestModule::TestModule() : mRotate(0.0f)
     const char* path2 = "assets/images/green2.png";
 
     const char* paths[] = { path, path, path, path2, path2, path2 };
-    mCubeMap.loadFromFiles(paths);
+    mCubeMap.loadFiles(paths);
 
     mVS.loadFromFile("data/shaders/test.vs", GL_VERTEX_SHADER);
     mFS.loadFromFile("data/shaders/test.fs", GL_FRAGMENT_SHADER);

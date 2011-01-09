@@ -14,7 +14,15 @@ namespace CGE
     class Engine
     {
         public:
-            Engine();
+            struct Settings
+            {
+                Settings() : windowTitle(NULL), windowTitle2(NULL) {}
+
+                const char* windowTitle;
+                const char* windowTitle2;
+            };
+
+            Engine(const Settings& inSettings = Settings());
             ~Engine();
 
             void run(Module* inModule);
@@ -27,11 +35,12 @@ namespace CGE
             Surface mDisplay;
             Surface mWindowIcon;
             SDL_Rect** mModes;
+            Settings mSettings;
 
             static void logOpenGL(std::ostream& inStream);
             static void prepareFiles();
             static const char* logFile;
-            static const char* settingsFile;
+            static const char* configFile;
     };
 }
 

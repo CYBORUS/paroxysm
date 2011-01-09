@@ -2,6 +2,7 @@
 #define TEXTURE2D_H
 
 #include "Texture.h"
+#include "Image.h"
 
 namespace CGE
 {
@@ -11,8 +12,7 @@ namespace CGE
             Texture2D();
             virtual ~Texture2D();
 
-            void loadFromSurface(Surface inSurface);
-            void loadFromFile(const char* inFile);
+            void loadImage(const Image& inImage);
     };
 }
 

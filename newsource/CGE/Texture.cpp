@@ -2,7 +2,7 @@
 
 namespace CGE
 {
-    Texture::Texture()
+    Texture::Texture(GLenum inTarget) : mTarget(inTarget)
     {
         glGenTextures(1, &mHandle);
     }
@@ -12,4 +12,9 @@ namespace CGE
         glDeleteTextures(1, &mHandle);
     }
 
+    void Texture::processParams(const GLenum inParams[])
+    {
+        for (const GLenum *i = inParams; *i; i += 2)
+            glTexParameteri(mTarget, i[0], i[1]);
+    }
 }

@@ -2,6 +2,7 @@
 #define CUBEMAP_H
 
 #include "Texture.h"
+#include "Image.h"
 
 namespace CGE
 {
@@ -11,8 +12,8 @@ namespace CGE
             CubeMap();
             virtual ~CubeMap();
 
-            void loadFromSurfaces(Surface inSurfaces[]);
-            void loadFromFiles(const char* inFiles[]);
+            void loadImages(const Image* inImages[]);
+            void loadFiles(const char* inFiles[]);
     };
 }
 

@@ -8,15 +8,13 @@ namespace CGE
     class Texture
     {
         public:
-            Texture();
+            Texture(GLenum inTarget);
             virtual ~Texture();
 
-            inline void bind()
-            {
-                glBindBuffer(mTarget, mHandle);
-            }
+            inline void bind() const { glBindTexture(mTarget, mHandle); }
 
         protected:
+            void processParams(const GLenum inParams[]);
             GLtexture mHandle;
             GLenum mTarget;
 
