@@ -20,7 +20,7 @@ int EntityGarbageCollector::runGarbageCollection(void* unused)
         list<Control*>::iterator itControls = mControls.begin();
         while (itControls != mControls.end())
         {
-            if (!(*itControls)->getEntity()->isAlive() && (*itControls)->isGameDead() && (*itControls)->getEntity()->isRenderDead())
+            if (!(*itControls)->getEntity()->isAlive() && !(*itControls)->getEntity()->hasReferences()) /*(*itControls)->isGameDead() && (*itControls)->getEntity()->isRenderDead())*/
             {
                 Control* dead = *itControls;
                 itControls = mControls.erase(itControls);

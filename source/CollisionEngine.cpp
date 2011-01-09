@@ -37,12 +37,13 @@ void CollisionEngine::onSetup()
 void CollisionEngine::addEntity(Entity* inEntity)
 {
     SDL_mutexP(mEntityLock);
-    mEntities.push_back(inEntity);
+    mEntities.push_back(inEntity->getReference());
     SDL_mutexV(mEntityLock);
     if (inEntity->getRadius() > mLargestRadius)
     {
         mLargestRadius = inEntity->getRadius() * 3.0f;
     }
+    //inEntity->addReference();
 }
 
 int CollisionEngine::checkCollisions(void* unused)
@@ -101,7 +102,8 @@ int CollisionEngine::checkCollisions(void* unused)
                 if (!second->isAlive())
                 {
                     itSecond = mEntities.erase(itSecond);
-                    second->setGameDead();
+                    //second->setGameDead();
+                    second->removeReference();
                 }
                 else
                 {
@@ -112,7 +114,8 @@ int CollisionEngine::checkCollisions(void* unused)
             if (!first->isAlive())
             {
                 itFirst = mEntities.erase(itFirst);
-                first->setGameDead();
+                //first->setGameDead();
+                first->removeReference();
             }
             else
             {

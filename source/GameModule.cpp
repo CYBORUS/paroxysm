@@ -362,7 +362,7 @@ void GameModule::onFrame()
         {
             Control* thisEntity = *itControls;
             itControls = mControls.erase(itControls);
-            thisEntity->getEntity()->setRenderDead();
+            thisEntity->getEntity()->removeReference();
         }
         else
         {
@@ -475,6 +475,9 @@ void GameModule::addTank(Control::ControlType inControlType,
 void GameModule::addControl(Control* inControl)
 {
     mControls.push_back(inControl);
+
+    //add a reference to the entity of this control
+    inControl->getEntity()->addReference();
 
     if (inControl->getWhatIAm() != Control::PLAYER_TANK)
     {

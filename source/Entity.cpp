@@ -26,8 +26,9 @@ Entity::Entity()
     mTerrainWidth = mTerrain->getMatrix().cols();
     mTerrainHeight = mTerrain->getMatrix().rows();
     mAlive = true;
-    mGameDead = false;
-    mRenderDead = false;
+    //mGameDead = false;
+    //mRenderDead = false;
+    mNumReferences = 0;
 }
 
 Entity::~Entity()

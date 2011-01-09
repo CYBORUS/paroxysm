@@ -42,8 +42,13 @@ class Entity
         void setRadius(float inRadius);
         float getRadius();
 
-        void setGameDead();
-        void setRenderDead();
+        //void setGameDead();
+        //void setRenderDead();
+
+        void addReference();
+        Entity* getReference();
+        void removeReference();
+        bool hasReferences();
 
         bool isGameDead();
         bool isRenderDead();
@@ -60,10 +65,12 @@ class Entity
         EntityType mWhatAmI;
         float mRadius;
 
+        char mNumReferences;
+
         //Control* mControl;
 
-        bool volatile mGameDead;
-        bool volatile mRenderDead;
+        //bool volatile mGameDead;
+        //bool volatile mRenderDead;
 
         static TerrainGrid* mTerrain;
         int mTerrainWidth;
@@ -105,24 +112,61 @@ inline bool Entity::isAlive()
     return mAlive;
 }
 
-inline void Entity::setGameDead()
+//inline void Entity::setGameDead()
+//{
+//    mGameDead = true;
+//}
+//
+//inline void Entity::setRenderDead()
+//{
+//    mRenderDead = true;
+//}
+//
+//inline bool Entity::isGameDead()
+//{
+//    return mGameDead;
+//}
+//
+//inline bool Entity::isRenderDead()
+//{
+//    return mRenderDead;
+//}
+
+/***********************************
+*   Here for readability with a model that
+*   wasn't really built for reference counting.
+*   Just indicates that you are holding a reference
+*   to this entity somewhere
+*************************************/
+inline void Entity::addReference()
 {
-    mGameDead = true;
+    ++mNumReferences;
 }
 
-inline void Entity::setRenderDead()
+/**
+*   Adds to the number of references held to this entity
+*   and returns a reference to this entity.
+**/
+inline Entity* Entity::getReference()
 {
-    mRenderDead = true;
+    ++mNumReferences;
+    return this;
 }
 
-inline bool Entity::isGameDead()
+/**
+*   Removes a reference to this entity.
+**/
+inline void Entity::removeReference()
 {
-    return mGameDead;
+    --mNumReferences;
 }
 
-inline bool Entity::isRenderDead()
+/**
+*   Checks to see if there are any references being held to this entity
+**/
+inline bool Entity::hasReferences()
 {
-    return mRenderDead;
+    return mNumReferences > 0;
 }
 
 #endif

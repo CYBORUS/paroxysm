@@ -39,8 +39,8 @@ class Control
         //virtual void changeSpeed(float inSpeed);
 
         ControlType getWhatIAm();
-        virtual void setGameDead();
-        virtual bool isGameDead();
+        //virtual void setGameDead();
+        //virtual bool isGameDead();
         Entity* getEntity();
 
     protected:
@@ -55,15 +55,15 @@ class Control
 
 };
 
-inline void Control::setGameDead()
-{
-    mGameDead = true;
-}
-
-inline bool Control::isGameDead()
-{
-    return mGameDead;
-}
+//inline void Control::setGameDead()
+//{
+//    mGameDead = true;
+//}
+//
+//inline bool Control::isGameDead()
+//{
+//    return mGameDead;
+//}
 
 inline Entity* Control::getEntity()
 {

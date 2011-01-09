@@ -20,7 +20,7 @@
 Control::Control(Entity* inEntity)
 {
     mEntity = inEntity;
-    mGameDead = false;
+    //mGameDead = false;
 }
 
 Control::~Control()
