@@ -80,9 +80,6 @@ namespace CGE
             fout.close();
         }
 
-#ifndef __APPLE__
-        SDL_FreeSurface(mWindowIcon);
-#endif
         SDLNet_Quit();
         TTF_Quit();
         SDL_Quit();
@@ -95,14 +92,14 @@ namespace CGE
         inModule->onOpen();
         inModule->onResize(mDisplay->w, mDisplay->h);
 
-        Uint32 nextFrame = SDL_GetTicks() + FRAME_LENGTH;
+        Uint32 nextPulse = SDL_GetTicks() + mSettings.frameLength;
         Uint32 nextSecond = SDL_GetTicks() + 1000;
         Uint32 framesPerSecond = 0;
 
         while (inModule->isRunning())
         {
             SDL_Event event;
-            while (SDL_PollEvent(&event)) inModule->onEvent(&event);
+            while (SDL_PollEvent(&event)) inModule->onEvent(event);
 
             Uint32 ticks = SDL_GetTicks();
 
@@ -112,10 +109,10 @@ namespace CGE
                 framesPerSecond = 0;
             }
 
-            if (ticks > nextFrame)
+            if (ticks > nextPulse)
             {
-                inModule->onFrame();
-                nextFrame += FRAME_LENGTH;
+                inModule->onPulse();
+                nextPulse += mSettings.frameLength;
             }
             else
             {
@@ -261,7 +258,7 @@ namespace CGE
 
 #ifndef __APPLE__
         // OSX does not support window icons
-        setWindowIcon(Image("data/images/icon.bmp"));
+        Image("data/images/icon.bmp").setAsWindowIcon();
 #endif
 
         logOpenGL(fout);

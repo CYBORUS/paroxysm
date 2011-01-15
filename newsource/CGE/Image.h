@@ -18,10 +18,9 @@ namespace CGE
 
             void blitOnto(Image& inImage) const;
             void loadIntoTexture(GLenum inTarget = GL_TEXTURE_2D) const;
+            void setAsWindowIcon() const;
             int width() const;
             int height() const;
-
-            friend void setWindowIcon(const Image& inImage);
 
         private:
             void destroy();

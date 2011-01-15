@@ -22,6 +22,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -68,8 +69,6 @@
 		<Unit filename="../CGE/Texture.h" />
 		<Unit filename="../CGE/Texture2D.cpp" />
 		<Unit filename="../CGE/Texture2D.h" />
-		<Unit filename="../CGE/Tools.cpp" />
-		<Unit filename="../CGE/Tools.h" />
 		<Unit filename="../CGE/Vectors.h" />
 		<Unit filename="../GLee/GLee.c">
 			<Option compilerVar="CC" />

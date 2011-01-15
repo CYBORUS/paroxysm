@@ -130,8 +130,8 @@ namespace CGE
         }
     }
 
-    void setWindowIcon(const Image& inImage)
+    void Image::setAsWindowIcon() const
     {
-        SDL_WM_SetIcon(inImage.mData, NULL);
+        SDL_WM_SetIcon(mData, NULL);
     }
 }

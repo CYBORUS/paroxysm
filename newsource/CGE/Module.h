@@ -11,13 +11,13 @@ namespace CGE
             Module();
             virtual ~Module();
 
-            void onEvent(SDL_Event* inEvent);
+            void onEvent(const SDL_Event& inEvent);
             inline bool isRunning() const { return mRunning; };
 
             /// module operation
             virtual void onOpen();
             virtual void onLoop();
-            virtual void onFrame();
+            virtual void onPulse();
             virtual void onClose();
 
             /// input events

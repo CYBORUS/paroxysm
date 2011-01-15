@@ -15,7 +15,7 @@ class TestModule : public CGE::Module
 
         virtual void onOpen();
         virtual void onLoop();
-        virtual void onFrame();
+        virtual void onPulse();
         virtual void onClose();
 
         virtual void onResize(int inWidth, int inHeight);

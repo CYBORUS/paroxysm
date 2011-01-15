@@ -7,52 +7,51 @@
 #define NCC 1.0f
 #define FCC 100.0f
 
-GLfloat points[24] = {
-    +1.0f, +1.0f, +1.0f,
-    +1.0f, -1.0f, +1.0f,
-    -1.0f, -1.0f, +1.0f,
-    -1.0f, +1.0f, +1.0f,
-    +1.0f, +1.0f, -1.0f,
-    +1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
-    -1.0f, +1.0f, -1.0f
-};
-
-GLfloat colors[32] = {
-    1.0f, 0.0f, 0.0f, 1.0f,
-    0.0f, 1.0f, 0.0f, 1.0f,
-    0.0f, 0.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 0.0f, 1.0f,
-    1.0f, 0.0f, 1.0f, 1.0f,
-    0.0f, 1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f, 1.0f,
-    0.0f, 0.0f, 0.0f, 1.0f
-};
-
-GLuint indices[36] = {
-    0, 1, 2, 0, 2, 3, // top
-    7, 6, 5, 7, 5, 4, // bottom
-    1, 0, 4, 1, 4, 5, // right
-    3, 2, 6, 3, 6, 7, // left
-    2, 1, 5, 2, 5, 6, // front
-    0, 3, 7, 0, 7, 4  // back
-};
-
-const GLfloat a = 1.0f / sqrt(3.0f);
-
-GLfloat normals[24] = {
-    +a, +a, +a,
-    +a, -a, +a,
-    -a, -a, +a,
-    -a, +a, +a,
-    +a, +a, -a,
-    +a, -a, -a,
-    -a, -a, -a,
-    -a, +a, -a,
-};
-
 TestModule::TestModule() : mRotate(0.0f)
 {
+    GLfloat points[24] = {
+        +1.0f, +1.0f, +1.0f,
+        +1.0f, -1.0f, +1.0f,
+        -1.0f, -1.0f, +1.0f,
+        -1.0f, +1.0f, +1.0f,
+        +1.0f, +1.0f, -1.0f,
+        +1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, +1.0f, -1.0f
+    };
+
+    GLfloat colors[32] = {
+        1.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    };
+
+    GLuint indices[36] = {
+        0, 1, 2, 0, 2, 3, // top
+        7, 6, 5, 7, 5, 4, // bottom
+        1, 0, 4, 1, 4, 5, // right
+        3, 2, 6, 3, 6, 7, // left
+        2, 1, 5, 2, 5, 6, // front
+        0, 3, 7, 0, 7, 4  // back
+    };
+
+    const GLfloat a = 1.0f / sqrt(3.0f);
+
+    GLfloat normals[24] = {
+        +a, +a, +a,
+        +a, -a, +a,
+        -a, -a, +a,
+        -a, +a, +a,
+        +a, +a, -a,
+        +a, -a, -a,
+        -a, -a, -a,
+        -a, +a, -a,
+    };
     const char* path = "assets/images/brick.png";
     const char* path2 = "assets/images/green2.png";
 
@@ -128,7 +127,7 @@ void TestModule::onClose()
     glDisable(GL_CULL_FACE);
 }
 
-void TestModule::onFrame()
+void TestModule::onPulse()
 {
     mRotate += 1.0f;
     if (mRotate > 180.0f) mRotate -= 360.0f;
