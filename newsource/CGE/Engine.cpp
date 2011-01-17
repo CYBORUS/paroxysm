@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Platforms.h"
 #include "Image.h"
+#include "Exception.h"
 
 #include <SDL_ttf.h>
 #include <SDL_net.h>
@@ -136,13 +137,27 @@ namespace CGE
 
         while (currentModule || moduleStack.size())
         {
-            if (!currentModule)
+            if (currentModule)
+            {
+                try
+                {
+                    currentModule->onLoad(mConfig);
+                }
+                catch (Exception inException)
+                {
+                    cerr << "exception -- " << inException.header
+                        << " -- \n    " << inException.message << '\n';
+
+                    delete currentModule;
+                    currentModule = NULL;
+                    continue;
+                }
+            }
+            else
             {
                 currentModule = moduleStack.back();
                 moduleStack.pop_back();
             }
-
-            currentModule->onLoad(mConfig);
 
             run(currentModule);
 
@@ -157,7 +172,6 @@ namespace CGE
             else
             {
                 moduleStack.push_back(deadModule);
-                deadModule = NULL;
             }
         }
     }

@@ -1,4 +1,5 @@
 #include "Image.h"
+#include "Exception.h"
 
 #include <SDL_image.h>
 
@@ -24,7 +25,7 @@ namespace CGE
         if (inFile) loadFile(inFile);
     }
 
-    Image::Image(int inWidth, int inHeight)
+    Image::Image(int inWidth, int inHeight) : mData(NULL), mFormat(0)
     {
         if (inWidth < 1 || inHeight < 1) return; // TODO: report error
 
@@ -52,21 +53,21 @@ namespace CGE
 
     void Image::loadFile(const char* inFile)
     {
+        static const char* functionName = "Image::loadFile";
+
         if (!inFile || !*inFile)
-        {
-            cerr << "Image::loadfile -- invalid file name\n";
-            return;
-        }
+            throw Exception(functionName, "invalid file string");
 
         destroy();
 
         Surface data = IMG_Load(inFile);
         if (!data)
         {
-            cerr << "Image::loadfile -- failed to load file: " << inFile
-                << endl;
-            return;
+            std::string message("failed to load file: ");
+            message += inFile;
+            throw Exception(functionName, message);
         }
+
         mData = SDL_DisplayFormatAlpha(data);
         SDL_FreeSurface(data);
         findFormat();
@@ -80,13 +81,12 @@ namespace CGE
 
     void Image::loadIntoTexture(GLenum inTarget) const
     {
-        if (!mData)
-        {
-            cerr << "Image::loadIntoTexture -- invalid image data\n";
-            return;
-        }
+        static const char* functionName = "Image::loadIntoTexture";
 
-        glTexImage2D(inTarget, 0, mColors, mData->w, mData->h, 0, mFormat,
+        if (!mData)
+            throw Exception(functionName, "invalid image data");
+
+        glTexImage2D(inTarget, 0, GL_RGBA, mData->w, mData->h, 0, mFormat,
             GL_UNSIGNED_BYTE, mData->pixels);
     }
 

@@ -1,6 +1,5 @@
 #include "TestModule.h"
 
-//#include
 #include <CGE/Vectors.h>
 
 #define FOV 30.0f
@@ -8,6 +7,14 @@
 #define FCC 100.0f
 
 TestModule::TestModule() : mRotate(0.0f)
+{
+}
+
+TestModule::~TestModule()
+{
+}
+
+void TestModule::onLoad(CGE::PropertyList& inList)
 {
     GLfloat points[24] = {
         +1.0f, +1.0f, +1.0f,
@@ -103,7 +110,7 @@ TestModule::TestModule() : mRotate(0.0f)
     mIVBO.loadData(GL_TRIANGLES, 36, indices);
 }
 
-TestModule::~TestModule()
+void TestModule::onUnload()
 {
 }
 

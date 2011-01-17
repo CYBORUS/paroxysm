@@ -1,22 +1,24 @@
 #ifndef TESTMODULE_H
 #define TESTMODULE_H
 
-#include <CGE/Module.h>
+#include <CGE/ManagedModule.h>
 #include <CGE/Program.h>
 #include <CGE/ClusterVBO.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/CubeMap.h>
 
-class TestModule : public CGE::Module
+class TestModule : public CGE::ManagedModule
 {
     public:
         TestModule();
         virtual ~TestModule();
 
+        virtual void onLoad(CGE::PropertyList& inList);
+        virtual void onUnload();
         virtual void onOpen();
+        virtual void onClose();
         virtual void onLoop();
         virtual void onPulse();
-        virtual void onClose();
 
         virtual void onResize(int inWidth, int inHeight);
 

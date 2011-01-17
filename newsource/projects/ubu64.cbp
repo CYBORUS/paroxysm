@@ -49,6 +49,8 @@
 		<Unit filename="../CGE/CubeMap.h" />
 		<Unit filename="../CGE/Engine.cpp" />
 		<Unit filename="../CGE/Engine.h" />
+		<Unit filename="../CGE/Exception.cpp" />
+		<Unit filename="../CGE/Exception.h" />
 		<Unit filename="../CGE/Graphics.h" />
 		<Unit filename="../CGE/Image.cpp" />
 		<Unit filename="../CGE/Image.h" />

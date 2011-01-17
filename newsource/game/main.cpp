@@ -8,8 +8,7 @@ int main(int argc, char** argv)
     s.windowTitle2 = "paroxysm";
 
     CGE::Engine e(s);
-    TestModule tm;
-    e.run(&tm);
+    e.manage(new TestModule);
 
     return 0;
 }
