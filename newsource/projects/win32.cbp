@@ -12,7 +12,6 @@
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -28,6 +27,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-mwindows" />
 				</Linker>
 			</Target>
 		</Build>
@@ -40,31 +40,41 @@
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
 			<Add library="SDL_ttf" />
+			<Add library="SDL_mixer" />
 			<Add library="SDL_net" />
 			<Add library="SDL" />
 			<Add library="opengl32" />
+			<Add library="lua51" />
 		</Linker>
 		<Unit filename="..\CGE\ClusterVBO.h" />
 		<Unit filename="..\CGE\CubeMap.cpp" />
 		<Unit filename="..\CGE\CubeMap.h" />
 		<Unit filename="..\CGE\Engine.cpp" />
 		<Unit filename="..\CGE\Engine.h" />
+		<Unit filename="..\CGE\Exception.cpp" />
+		<Unit filename="..\CGE\Exception.h" />
 		<Unit filename="..\CGE\Graphics.h" />
 		<Unit filename="..\CGE\Image.cpp" />
 		<Unit filename="..\CGE\Image.h" />
 		<Unit filename="..\CGE\IndexVBO.cpp" />
 		<Unit filename="..\CGE\IndexVBO.h" />
+		<Unit filename="..\CGE\LuaMachine.cpp" />
+		<Unit filename="..\CGE\LuaMachine.h" />
 		<Unit filename="..\CGE\ManagedModule.cpp" />
 		<Unit filename="..\CGE\ManagedModule.h" />
 		<Unit filename="..\CGE\Matrix4x4.h" />
 		<Unit filename="..\CGE\Module.cpp" />
 		<Unit filename="..\CGE\Module.h" />
+		<Unit filename="..\CGE\Music.cpp" />
+		<Unit filename="..\CGE\Music.h" />
 		<Unit filename="..\CGE\Platforms.h" />
 		<Unit filename="..\CGE\Program.h" />
 		<Unit filename="..\CGE\PropertyList.cpp" />
 		<Unit filename="..\CGE\PropertyList.h" />
 		<Unit filename="..\CGE\Shader.cpp" />
 		<Unit filename="..\CGE\Shader.h" />
+		<Unit filename="..\CGE\Sound.cpp" />
+		<Unit filename="..\CGE\Sound.h" />
 		<Unit filename="..\CGE\Texture.cpp" />
 		<Unit filename="..\CGE\Texture.h" />
 		<Unit filename="..\CGE\Texture2D.cpp" />
