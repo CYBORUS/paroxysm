@@ -23,6 +23,7 @@ class TestModule : public CGE::ManagedModule
         virtual void onPulse();
 
         virtual void onResize(int inWidth, int inHeight);
+        virtual void onMouseWheel(bool inUp, bool inDown);
 
     private:
         CGE::Program<2> mProgram;

@@ -62,12 +62,16 @@
 		<Unit filename="../CGE/Matrix4x4.h" />
 		<Unit filename="../CGE/Module.cpp" />
 		<Unit filename="../CGE/Module.h" />
+		<Unit filename="../CGE/Music.cpp" />
+		<Unit filename="../CGE/Music.h" />
 		<Unit filename="../CGE/Platforms.h" />
 		<Unit filename="../CGE/Program.h" />
 		<Unit filename="../CGE/PropertyList.cpp" />
 		<Unit filename="../CGE/PropertyList.h" />
 		<Unit filename="../CGE/Shader.cpp" />
 		<Unit filename="../CGE/Shader.h" />
+		<Unit filename="../CGE/Sound.cpp" />
+		<Unit filename="../CGE/Sound.h" />
 		<Unit filename="../CGE/Texture.cpp" />
 		<Unit filename="../CGE/Texture.h" />
 		<Unit filename="../CGE/Texture2D.cpp" />

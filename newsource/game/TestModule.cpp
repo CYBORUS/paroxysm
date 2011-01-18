@@ -173,3 +173,11 @@ void TestModule::onResize(int inWidth, int inHeight)
     mProjection.perspective(FOV, ratio, NCC, FCC, true);
     glViewport(0, 0, inWidth, inHeight);
 }
+
+void TestModule::onMouseWheel(bool inUp, bool inDown)
+{
+    if (inUp)
+        mMusic.increaseVolume();
+    else
+        mMusic.decreaseVolume();
+}
