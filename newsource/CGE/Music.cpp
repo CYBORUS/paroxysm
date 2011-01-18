@@ -6,7 +6,8 @@ namespace CGE
 {
     Music::Music()
     {
-        mMusicVolume = 100;
+        mMusicVolume = 20;
+        Mix_VolumeMusic(mMusicVolume);
     }
 
     Music::~Music()
