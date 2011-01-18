@@ -129,6 +129,9 @@ void TestModule::onOpen()
 
     mTestSound.load("me.wav");
     mTestSound.play();
+
+    mMusic.load("portal_still_alive.wav");
+    mMusic.play();
 }
 
 void TestModule::onClose()

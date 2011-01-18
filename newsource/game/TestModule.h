@@ -7,6 +7,7 @@
 #include <CGE/Matrix4x4.h>
 #include <CGE/CubeMap.h>
 #include <CGE/Sound.h>
+#include <CGE/Music.h>
 
 class TestModule : public CGE::ManagedModule
 {
@@ -40,6 +41,7 @@ class TestModule : public CGE::ManagedModule
         float mRotate;
 
         CGE::Sound mTestSound;
+        CGE::Music mMusic;
 };
 
 #endif
