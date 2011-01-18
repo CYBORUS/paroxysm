@@ -16,7 +16,7 @@ namespace CGE
 
     Sound::~Sound()
     {
-        //dtor
+        Mix_FreeChunk(mSound);
     }
 
     void Sound::load(const char* inFile)
