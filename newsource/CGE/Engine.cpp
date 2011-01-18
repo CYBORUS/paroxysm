@@ -6,6 +6,7 @@
 
 #include <SDL_ttf.h>
 #include <SDL_net.h>
+#include <SDL_mixer.h>
 
 #include <ctime>
 #include <fstream>
@@ -81,6 +82,7 @@ namespace CGE
             fout.close();
         }
 
+        Mix_CloseAudio();
         SDLNet_Quit();
         TTF_Quit();
         SDL_Quit();
@@ -226,6 +228,18 @@ namespace CGE
             fout.close();
             exit(1);
         }
+
+        if (Mix_OpenAudio(mConfig.get("audio rate", 22050),
+            mConfig.get("audio format", AUDIO_S16SYS),
+            mConfig.get("audio channels", 2),
+            mConfig.get("audio buffer size", 1024)) == -1)
+        {
+            cerr << "-- error on Mix_OpenAudio -- " << Mix_GetError() << endl;
+            fout.close();
+            exit(1);
+        }
+
+        Mix_AllocateChannels(mConfig.get("audio channels", 32));
 
 #ifdef __WIN32__
         // redirect output to screen (instead of text files)
