@@ -35,6 +35,7 @@
 			<Add option="-Wall" />
 			<Add directory=".." />
 			<Add directory="/usr/include/SDL" />
+			<Add directory="/usr/include/lua5.1" />
 		</Compiler>
 		<Linker>
 			<Add library="SDLmain" />
@@ -44,6 +45,7 @@
 			<Add library="SDL_mixer" />
 			<Add library="SDL" />
 			<Add library="GL" />
+			<Add library="lua5.1" />
 		</Linker>
 		<Unit filename="../CGE/ClusterVBO.h" />
 		<Unit filename="../CGE/CubeMap.cpp" />
@@ -57,6 +59,8 @@
 		<Unit filename="../CGE/Image.h" />
 		<Unit filename="../CGE/IndexVBO.cpp" />
 		<Unit filename="../CGE/IndexVBO.h" />
+		<Unit filename="../CGE/LuaMachine.cpp" />
+		<Unit filename="../CGE/LuaMachine.h" />
 		<Unit filename="../CGE/ManagedModule.cpp" />
 		<Unit filename="../CGE/ManagedModule.h" />
 		<Unit filename="../CGE/Matrix4x4.h" />

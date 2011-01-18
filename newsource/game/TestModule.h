@@ -8,6 +8,7 @@
 #include <CGE/CubeMap.h>
 #include <CGE/Sound.h>
 #include <CGE/Music.h>
+#include <CGE/LuaMachine.h>
 
 class TestModule : public CGE::ManagedModule
 {
@@ -31,6 +32,7 @@ class TestModule : public CGE::ManagedModule
         CGE::Shader mFS;
         CGE::ClusterVBO<3> mVBO;
         CGE::IndexVBO mIVBO;
+        CGE::LuaMachine mLua;
 
         CGE::CubeMap mCubeMap;
         GLint mUniMVPM;

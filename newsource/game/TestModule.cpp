@@ -132,6 +132,8 @@ void TestModule::onOpen()
 
     mMusic.load("portal_still_alive.ogg");
     mMusic.play();
+
+    mLua.runCommand("io.write(5);");
 }
 
 void TestModule::onClose()
