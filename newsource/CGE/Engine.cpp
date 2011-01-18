@@ -13,6 +13,9 @@
 #include <string>
 #include <list>
 
+#include <stdio.h>
+#include <stdlib.h>
+
 namespace CGE
 {
     using namespace std;
@@ -215,6 +218,8 @@ namespace CGE
             exit(1);
         }
 
+
+
         if (TTF_Init() == -1)
         {
             cerr << "-- error on TTF_Init -- " << TTF_GetError() << endl;
@@ -242,10 +247,15 @@ namespace CGE
         Mix_AllocateChannels(mConfig.get("audio channels", 32));
 
 #ifdef __WIN32__
+        //ofstream console("CON");
+        //AllocConsole();
         // redirect output to screen (instead of text files)
         freopen("CON", "w", stdout);
         freopen("CON", "w", stderr);
+        //freopen("CON", "r+", stderr)
+        //console.close();
 #endif
+
 
         // get available full screen modes
         mModes = SDL_ListModes(NULL, SDL_FULLSCREEN);
@@ -283,6 +293,7 @@ namespace CGE
 
         mDisplay = SDL_SetVideoMode(width, height,
             mConfig.get("bits per pixel", 24), flags);
+
 
 #ifndef __APPLE__
         // OSX does not support window icons

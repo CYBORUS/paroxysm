@@ -38,6 +38,8 @@ class TestModule : public CGE::ManagedModule
         mat4f mModelView;
         mat4f mNormalView;
         float mRotate;
+
+        CGE::Sound mTestSound;
 };
 
 #endif

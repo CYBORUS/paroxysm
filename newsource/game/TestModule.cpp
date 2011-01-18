@@ -127,9 +127,10 @@ void TestModule::onOpen()
 
     glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
 
-    CGE::Sound s;
-    s.load("me.wav");
-    s.play();
+    mTestSound.load("me.wav");
+    mTestSound.play();
+
+
 }
 
 void TestModule::onClose()
