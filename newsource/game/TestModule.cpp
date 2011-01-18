@@ -129,8 +129,6 @@ void TestModule::onOpen()
 
     mTestSound.load("me.wav");
     mTestSound.play();
-
-
 }
 
 void TestModule::onClose()

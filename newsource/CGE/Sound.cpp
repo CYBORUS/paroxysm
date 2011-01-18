@@ -43,4 +43,18 @@ namespace CGE
         mChannel = (mChannel + 1) % NUM_CHANNELS;
     }
 
+
+    void Sound::playFromPosition(int inAngle, int inDistance)
+    {
+        if (!Mix_SetPosition(mChannel, inAngle, inDistance))
+        {
+            cerr << Mix_GetError() << endl;
+        }
+        if (Mix_PlayChannel(mChannel, mSound, 0) == -1)
+        {
+            cerr << Mix_GetError() << endl;
+        }
+        mChannel = (mChannel + 1) % NUM_CHANNELS;
+    }
+
 }

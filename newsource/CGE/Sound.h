@@ -18,6 +18,7 @@ namespace CGE
 
             void load(const char* inFile);
             void play();
+            void playFromPosition(int inAngle, int inDistance);
 
         protected:
             SoundEffect mSound;
