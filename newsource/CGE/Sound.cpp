@@ -23,7 +23,7 @@ namespace CGE
     {
         cerr << "loading sound" << endl;
         stringstream soundFile;
-        soundFile << "./assets/audio/" << inFile;
+        soundFile << "./data/audio/" << inFile;
 
         if ((mSound = Mix_LoadWAV(soundFile.str().c_str())) == NULL)
         {
@@ -33,6 +33,7 @@ namespace CGE
 
     void Sound::play()
     {
+        cerr << "playing sound" << endl;
         if (Mix_PlayChannel(mChannel, mSound, 0) == -1)
         {
             cerr << Mix_GetError() << endl;

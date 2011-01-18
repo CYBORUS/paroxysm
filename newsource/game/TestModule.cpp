@@ -128,7 +128,7 @@ void TestModule::onOpen()
     glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
 
     CGE::Sound s;
-    s.load("./data/audio/me.wav");
+    s.load("me.wav");
     s.play();
 }
 
@@ -140,6 +140,7 @@ void TestModule::onClose()
 
 void TestModule::onPulse()
 {
+
     mRotate += 1.0f;
     if (mRotate > 180.0f) mRotate -= 360.0f;
 }
