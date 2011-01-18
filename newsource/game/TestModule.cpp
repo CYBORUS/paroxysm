@@ -126,6 +126,10 @@ void TestModule::onOpen()
     mCubeMap.bind();
 
     glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
+
+    CGE::Sound s;
+    s.load("./data/audio/me.wav");
+    s.play();
 }
 
 void TestModule::onClose()

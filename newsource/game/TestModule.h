@@ -6,6 +6,7 @@
 #include <CGE/ClusterVBO.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/CubeMap.h>
+#include <CGE/Sound.h>
 
 class TestModule : public CGE::ManagedModule
 {
