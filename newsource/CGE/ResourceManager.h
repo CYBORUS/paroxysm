@@ -39,7 +39,7 @@ namespace CGE
     template<typename T>
     T* ResourceManager<T>::load(const char* inFile)
     {
-        std::map<std::string, T*>::iterator i;// = mResources.find(inFile);
+        typename std::map<std::string, T*>::iterator i = mResources.find(inFile);
 
         if (i != mResources.end())
         {
