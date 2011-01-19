@@ -32,6 +32,7 @@ namespace CGE
     template<typename T>
     ResourceManager<T>::~ResourceManager()
     {
+        unloadAll();
     }
 
     template<typename T>
