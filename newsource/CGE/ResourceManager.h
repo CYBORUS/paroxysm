@@ -53,10 +53,10 @@ namespace CGE
     {
         typename std::map<std::string, T*>::iterator it = mResources.find(inFile);
 
-        if (i != mResources.end())
+        if (it != mResources.end())
         {
-            delete i->second;
-            mResources.erase(i);
+            delete it->second;
+            mResources.erase(it);
         }
     }
 
