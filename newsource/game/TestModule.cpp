@@ -109,8 +109,10 @@ void TestModule::onLoad(CGE::PropertyList& inList)
     mVBO.loadVAA(2, 3, 8, normals);
     mIVBO.loadData(GL_TRIANGLES, 36, indices);
 
-    //CGE::Texture2D tex("data/images/icon.bmmmp");
-    //mTex.loadImage("blah");
+    mTestSound.load("data/audio/me.wav");
+    mMusic.load("data/audio/portal_still_alive.ogg");
+    mLua.runCommand("io.write(\"Hello, Lua!\\n\");");
+    mTex.loadImage("blah");
 }
 
 void TestModule::onUnload()
@@ -130,13 +132,8 @@ void TestModule::onOpen()
 
     glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
 
-    mTestSound.load("me.wav");
     mTestSound.play();
-
-    mMusic.load("portal_still_alive.ogg");
     mMusic.play();
-
-    mLua.runCommand("io.write(5);");
 }
 
 void TestModule::onClose()

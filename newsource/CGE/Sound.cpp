@@ -9,22 +9,18 @@ namespace CGE
     int Sound::mChannel = 1;
 
 
-    Sound::Sound()
+    Sound::Sound() : mSound(NULL)
     {
-        //ctor
     }
 
     Sound::~Sound()
     {
-        Mix_FreeChunk(mSound);
+        Mix_FreeChunk(mSound); // safe to call on NULL value
     }
 
     void Sound::load(const char* inFile)
     {
-        stringstream soundFile;
-        soundFile << "data/audio/" << inFile;
-
-        if ((mSound = Mix_LoadWAV(soundFile.str().c_str())) == NULL)
+        if ((mSound = Mix_LoadWAV(inFile)) == NULL)
         {
             cerr << "something wrong: " << Mix_GetError() << endl;
         }

@@ -4,7 +4,7 @@ using namespace std;
 
 namespace CGE
 {
-    Music::Music()
+    Music::Music() : mBackgroundMusic(NULL)
     {
         mMusicVolume = 20;
         Mix_VolumeMusic(mMusicVolume);
@@ -18,7 +18,7 @@ namespace CGE
             Mix_HaltMusic();
         }
 
-        Mix_FreeMusic(mBackgroundMusic);
+        Mix_FreeMusic(mBackgroundMusic); // safe to call on NULL value
     }
 
 
@@ -64,15 +64,9 @@ namespace CGE
 
     void Music::load(const char* inFile)
     {
-        stringstream music;
-        music << "data/audio/" << inFile;
-        //music << Config::get<string>("background music", inFile);
-
-
-        /* Actually loads up the music */
-        if ((mBackgroundMusic = Mix_LoadMUS(music.str().c_str())) == NULL)
+        if ((mBackgroundMusic = Mix_LoadMUS(inFile)) == NULL)
         {
-            cerr << Mix_GetError()  << " " << music.str() << endl;
+            cerr << Mix_GetError()  << " " << inFile << endl;
         }
     }
 

@@ -8,20 +8,18 @@
 
 namespace CGE
 {
-    typedef Mix_Chunk* SoundEffect;
-
     class Sound
     {
         public:
             Sound();
-            virtual ~Sound();
+            ~Sound();
 
             void load(const char* inFile);
             void play();
             void playFromPosition(int inAngle, int inDistance);
 
         protected:
-            SoundEffect mSound;
+            Mix_Chunk* mSound;
 
             static int mChannel;
 
@@ -29,4 +27,4 @@ namespace CGE
     };
 }
 
-#endif // SOUND_H
+#endif

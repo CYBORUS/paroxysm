@@ -35,8 +35,8 @@ class TestModule : public CGE::ManagedModule
         CGE::IndexVBO mIVBO;
         CGE::LuaMachine mLua;
         CGE::Texture2D mTex;
-
         CGE::CubeMap mCubeMap;
+
         GLint mUniMVPM;
         GLint mUniMVM;
         GLint mUniNM;

@@ -8,13 +8,11 @@
 
 namespace CGE
 {
-    typedef Mix_Music* BackgroundMusic;
-
     class Music
     {
         public:
             Music();
-            virtual ~Music();
+            ~Music();
 
             void increaseVolume();
             void decreaseVolume();
@@ -24,12 +22,10 @@ namespace CGE
             void play();
             void stop();
 
-        protected:
-
-            BackgroundMusic mBackgroundMusic;
-            int mMusicVolume;
         private:
+            Mix_Music* mBackgroundMusic;
+            int mMusicVolume;
     };
 }
 
-#endif // MUSIC_H
+#endif
