@@ -3,6 +3,7 @@
 
 #include <SDL_mixer.h>
 #include <cmath>
+#include <iostream>
 
 #define NUM_CHANNELS 32
 #define MAX_VOLUME 128
@@ -20,6 +21,10 @@ namespace CGE
             void play();
             void play(float inVolume);
             void playFromPosition(int inAngle, int inDistance);
+
+            void setVolume(float inVolume);
+            void increaseVolume();
+            void decreaseVolume();
 
         private:
             Mix_Chunk* mSound;

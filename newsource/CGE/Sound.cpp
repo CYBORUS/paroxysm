@@ -51,11 +51,11 @@ namespace CGE
         {
             inVolume = 0;
         }
-        inVolume = min(1.0, inVolume);
+        inVolume = std::min(1.0f, inVolume);
 
-        Mix_Volume(-1, (inVolume * mMasterVolume * MAX_VOLUME));
+        Mix_Volume(-1, int(inVolume * mMasterVolume * MAX_VOLUME));
         play();
-        Mix_Volume(-1, (mMasterVolume * MAX_VOLUME))
+        Mix_Volume(-1, int(mMasterVolume * MAX_VOLUME));
     }
 
 
@@ -73,6 +73,16 @@ namespace CGE
         mChannel = (mChannel + 1) % NUM_CHANNELS;
     }
 
+    void Sound::increaseVolume()
+    {
+        setVolume(mMasterVolume + 0.05);
+    }
+
+    void Sound::decreaseVolume()
+    {
+        setVolume(mMasterVolume - 0.05);
+    }
+
 
     void Sound::setVolume(float inVolume)
     {
@@ -80,8 +90,8 @@ namespace CGE
         {
             inVolume = 0;
         }
-        mMasterVolume = min(1.0, inVolume);
-        Mix_Volume(-1, (mMasterVolume * MAX_VOLUME))
+        mMasterVolume = std::min(1.0f, inVolume);
+        Mix_Volume(-1, int(mMasterVolume * MAX_VOLUME));
     }
 
 }

@@ -110,6 +110,7 @@ void TestModule::onLoad(CGE::PropertyList& inList)
     mIVBO.loadData(GL_TRIANGLES, 36, indices);
 
     mTestSound = mSounds.load("data/audio/dwang.ogg");
+    mTestSound->setVolume(0.05);
     mTestSound = mSounds.load("data/audio/dwang.ogg");
     mMusic = mMusicTracks.load("data/audio/portal_still_alive.ogg");
     mLua.runCommand("io.write(\"Hello, Lua!\\n\");");
@@ -196,6 +197,18 @@ void TestModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_SPACE:
         {
             mTestSound->play();
+            break;
+        }
+
+        case SDLK_PAGEUP:
+        {
+            mTestSound->increaseVolume();
+            break;
+        }
+
+        case SDLK_PAGEDOWN:
+        {
+            mTestSound->decreaseVolume();
             break;
         }
 
