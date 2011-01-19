@@ -51,7 +51,13 @@ namespace CGE
     template<typename T>
     void ResourceManager<T>::unload(const char* inFile)
     {
+        typename std::map<std::string, T*>::iterator it = mResources.find(inFile);
 
+        if (i != mResources.end())
+        {
+            delete i->second;
+            mResources.erase(i);
+        }
     }
 
     template<typename T>
