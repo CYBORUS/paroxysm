@@ -4,6 +4,7 @@
 namespace CGE
 {
     int Sound::mChannel = 1;
+    float Sound::mMasterVolume = 1.0f;
 
     Sound::Sound() : mSound(NULL)
     {
@@ -45,10 +46,17 @@ namespace CGE
         mChannel = (mChannel + 1) % NUM_CHANNELS;
     }
 
-    void Sound::play(int inVolume)
+    void Sound::play(float inVolume)
     {
-        Mix_Volume(-1, inVolume);
+        if (inVolume < 0)
+        {
+            inVolume = 0;
+        }
+        inVolume = min(1.0, inVolume);
+
+        Mix_Volume(-1, (inVolume * mMasterVolume * MAX_VOLUME));
         play();
+        Mix_Volume(-1, (mMasterVolume * MAX_VOLUME))
     }
 
 
@@ -64,6 +72,17 @@ namespace CGE
             throw Exception(functionName, Mix_GetError());
 
         mChannel = (mChannel + 1) % NUM_CHANNELS;
+    }
+
+
+    void Sound::setVolume(float inVolume)
+    {
+        if (inVolume < 0)
+        {
+            inVolume = 0;
+        }
+        mMasterVolume = min(1.0, inVolume);
+        Mix_Volume(-1, (mMasterVolume * MAX_VOLUME))
     }
 
 }
