@@ -20,9 +20,13 @@ namespace CGE
     const Uint32 alphaMask = 0xff000000;
 #endif
 
+    Image::Image() : mData(NULL), mFormat(0)
+    {
+    }
+
     Image::Image(const char* inFile) : mData(NULL), mFormat(0)
     {
-        if (inFile) loadFile(inFile);
+        loadFile(inFile);
     }
 
     Image::Image(int inWidth, int inHeight) : mData(NULL), mFormat(0)

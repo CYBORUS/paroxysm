@@ -8,7 +8,8 @@ namespace CGE
     class Image
     {
         public:
-            Image(const char* inFile = NULL);
+            Image();
+            Image(const char* inFile);
             Image(int inWidth, int inHeight);
             Image(const Image& inImage);
             ~Image();

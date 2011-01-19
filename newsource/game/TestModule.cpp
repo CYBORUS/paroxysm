@@ -108,6 +108,9 @@ void TestModule::onLoad(CGE::PropertyList& inList)
     mVBO.loadVAA(1, 4, 8, colors);
     mVBO.loadVAA(2, 3, 8, normals);
     mIVBO.loadData(GL_TRIANGLES, 36, indices);
+
+    //CGE::Texture2D tex("data/images/icon.bmmmp");
+    //mTex.loadImage("blah");
 }
 
 void TestModule::onUnload()

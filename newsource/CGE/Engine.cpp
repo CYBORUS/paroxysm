@@ -155,7 +155,6 @@ namespace CGE
 
                     delete currentModule;
                     currentModule = NULL;
-                    continue;
                 }
             }
             else
@@ -163,6 +162,8 @@ namespace CGE
                 currentModule = moduleStack.back();
                 moduleStack.pop_back();
             }
+
+            if (!currentModule) continue;
 
             run(currentModule);
 

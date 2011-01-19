@@ -6,6 +6,7 @@
 #include <CGE/ClusterVBO.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/CubeMap.h>
+#include <CGE/Texture2D.h>
 #include <CGE/Sound.h>
 #include <CGE/Music.h>
 #include <CGE/LuaMachine.h>
@@ -33,6 +34,7 @@ class TestModule : public CGE::ManagedModule
         CGE::ClusterVBO<3> mVBO;
         CGE::IndexVBO mIVBO;
         CGE::LuaMachine mLua;
+        CGE::Texture2D mTex;
 
         CGE::CubeMap mCubeMap;
         GLint mUniMVPM;
