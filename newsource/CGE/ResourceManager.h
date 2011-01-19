@@ -41,14 +41,12 @@ namespace CGE
     {
         typename std::map<std::string, T*>::iterator i = mResources.find(inFile);
 
-        if (i != mResources.end())
+        if (i == mResources.end())
         {
-
+            mResources[inFile] = new T(inFile);
         }
-        else
-        {
 
-        }
+        return mResources[inFile];
     }
 
     template<typename T>
@@ -60,7 +58,14 @@ namespace CGE
     template<typename T>
     void ResourceManager<T>::unloadAll()
     {
+        typename std::map<std::string, T*>::iterator i = mResources.begin();
 
+        for (; i != mResources.end(); ++i)
+        {
+            delete i->second;
+        }
+
+        mResources.clear();
     }
 
 }
