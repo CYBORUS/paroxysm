@@ -10,6 +10,6 @@ int main(int argc, char** argv)
 
     CGE::Engine e(s);
     e.manage(new TestModule);
-    CGE::ResourceManager<int> my;
+
     return 0;
 }

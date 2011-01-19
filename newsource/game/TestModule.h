@@ -12,6 +12,7 @@
 #include <CGE/Sound.h>
 #include <CGE/Music.h>
 #include <CGE/LuaMachine.h>
+#include <CGE/ResourceManager.h>
 
 class TestModule : public CGE::ManagedModule
 {
@@ -40,6 +41,9 @@ class TestModule : public CGE::ManagedModule
         CGE::Texture2D mTex;
         CGE::CubeMap mCubeMap;
 
+        CGE::ResourceManager<CGE::Sound> mSounds;
+        CGE::ResourceManager<CGE::Music> mMusicTracks;
+
         GLint mUniMVPM;
         GLint mUniMVM;
         GLint mUniNM;
@@ -48,8 +52,8 @@ class TestModule : public CGE::ManagedModule
         mat4f mNormalView;
         float mRotate;
 
-        CGE::Sound mTestSound;
-        CGE::Music mMusic;
+        CGE::Sound* mTestSound;
+        CGE::Music* mMusic;
 };
 
 #endif

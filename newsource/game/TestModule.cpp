@@ -109,8 +109,8 @@ void TestModule::onLoad(CGE::PropertyList& inList)
     mVBO.loadVAA(2, 3, 8, normals);
     mIVBO.loadData(GL_TRIANGLES, 36, indices);
 
-    mTestSound.load("data/audio/dwang.ogg");
-    mMusic.load("data/audio/portal_still_alive.ogg");
+    mTestSound = mSounds.load("data/audio/dwang.ogg");
+    mMusic = mMusicTracks.load("data/audio/portal_still_alive.ogg");
     mLua.runCommand("io.write(\"Hello, Lua!\\n\");");
     //mTex.loadImage("blah"); // uncomment this line to test exception handling
 }
@@ -132,7 +132,7 @@ void TestModule::onOpen()
 
     glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
 
-    mMusic.play();
+    mMusic->play();
 }
 
 void TestModule::onClose()
@@ -177,9 +177,9 @@ void TestModule::onResize(int inWidth, int inHeight)
 void TestModule::onMouseWheel(bool inUp, bool inDown)
 {
     if (inUp)
-        mMusic.increaseVolume();
+        mMusic->increaseVolume();
     else
-        mMusic.decreaseVolume();
+        mMusic->decreaseVolume();
 }
 
 void TestModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
@@ -194,7 +194,7 @@ void TestModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_SPACE:
         {
-            mTestSound.play();
+            mTestSound->play();
             break;
         }
 
