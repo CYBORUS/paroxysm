@@ -45,6 +45,11 @@ namespace CGE
         mChannel = (mChannel + 1) % NUM_CHANNELS;
     }
 
+    void Sound::play(int inVolume)
+    {
+
+    }
+
 
     void Sound::playFromPosition(int inAngle, int inDistance)
     {

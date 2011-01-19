@@ -53,6 +53,8 @@
 		<Unit filename="..\CGE\Engine.h" />
 		<Unit filename="..\CGE\Exception.cpp" />
 		<Unit filename="..\CGE\Exception.h" />
+		<Unit filename="..\CGE\FragmentShader.cpp" />
+		<Unit filename="..\CGE\FragmentShader.h" />
 		<Unit filename="..\CGE\Graphics.h" />
 		<Unit filename="..\CGE\Image.cpp" />
 		<Unit filename="..\CGE\Image.h" />
@@ -81,6 +83,8 @@
 		<Unit filename="..\CGE\Texture2D.cpp" />
 		<Unit filename="..\CGE\Texture2D.h" />
 		<Unit filename="..\CGE\Vectors.h" />
+		<Unit filename="..\CGE\VertexShader.cpp" />
+		<Unit filename="..\CGE\VertexShader.h" />
 		<Unit filename="..\GLee\GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>

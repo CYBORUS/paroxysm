@@ -16,6 +16,7 @@ namespace CGE
 
             void load(const char* inFile);
             void play();
+            void play(int inVolume);
             void playFromPosition(int inAngle, int inDistance);
 
         private:
