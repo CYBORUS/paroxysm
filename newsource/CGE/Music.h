@@ -3,8 +3,6 @@
 
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include <sstream>
-#include <iostream>
 
 namespace CGE
 {
@@ -12,6 +10,7 @@ namespace CGE
     {
         public:
             Music();
+            Music(const char* inFile);
             ~Music();
 
             void increaseVolume();
@@ -23,8 +22,8 @@ namespace CGE
             void stop();
 
         private:
-            Mix_Music* mBackgroundMusic;
-            int mMusicVolume;
+            Mix_Music* mMusic;
+            int mVolume;
     };
 }
 

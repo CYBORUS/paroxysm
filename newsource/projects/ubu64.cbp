@@ -54,6 +54,8 @@
 		<Unit filename="../CGE/Engine.h" />
 		<Unit filename="../CGE/Exception.cpp" />
 		<Unit filename="../CGE/Exception.h" />
+		<Unit filename="../CGE/FragmentShader.cpp" />
+		<Unit filename="../CGE/FragmentShader.h" />
 		<Unit filename="../CGE/Graphics.h" />
 		<Unit filename="../CGE/Image.cpp" />
 		<Unit filename="../CGE/Image.h" />
@@ -72,6 +74,7 @@
 		<Unit filename="../CGE/Program.h" />
 		<Unit filename="../CGE/PropertyList.cpp" />
 		<Unit filename="../CGE/PropertyList.h" />
+		<Unit filename="../CGE/ResourceManager.h" />
 		<Unit filename="../CGE/Shader.cpp" />
 		<Unit filename="../CGE/Shader.h" />
 		<Unit filename="../CGE/Sound.cpp" />
@@ -81,6 +84,8 @@
 		<Unit filename="../CGE/Texture2D.cpp" />
 		<Unit filename="../CGE/Texture2D.h" />
 		<Unit filename="../CGE/Vectors.h" />
+		<Unit filename="../CGE/VertexShader.cpp" />
+		<Unit filename="../CGE/VertexShader.h" />
 		<Unit filename="../GLee/GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>

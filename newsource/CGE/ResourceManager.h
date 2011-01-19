@@ -27,13 +27,11 @@ namespace CGE
     template<typename T>
     ResourceManager<T>::ResourceManager()
     {
-        //ctor
     }
 
     template<typename T>
     ResourceManager<T>::~ResourceManager()
     {
-        //dtor
     }
 
     template<typename T>
@@ -70,4 +68,4 @@ namespace CGE
 
 }
 
-#endif // RESOURCEMANAGER_H
+#endif

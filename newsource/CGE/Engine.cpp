@@ -3,6 +3,7 @@
 #include "Platforms.h"
 #include "Image.h"
 #include "Exception.h"
+#include "Sound.h"
 
 #include <SDL_ttf.h>
 #include <SDL_net.h>
@@ -155,6 +156,7 @@ namespace CGE
 
                     delete currentModule;
                     currentModule = NULL;
+                    continue;
                 }
             }
             else
@@ -162,8 +164,6 @@ namespace CGE
                 currentModule = moduleStack.back();
                 moduleStack.pop_back();
             }
-
-            if (!currentModule) continue;
 
             run(currentModule);
 
@@ -245,7 +245,7 @@ namespace CGE
             exit(1);
         }
 
-        Mix_AllocateChannels(mConfig.get("audio channels", 32));
+        Mix_AllocateChannels(NUM_CHANNELS);
 
 #ifdef __WIN32__
         //ofstream console("CON");

@@ -65,8 +65,8 @@ void TestModule::onLoad(CGE::PropertyList& inList)
     const char* paths[] = { path, path, path, path2, path2, path2 };
     mCubeMap.loadFiles(paths);
 
-    mVS.loadFromFile("data/shaders/test.vs", GL_VERTEX_SHADER);
-    mFS.loadFromFile("data/shaders/test.fs", GL_FRAGMENT_SHADER);
+    mVS.loadFromFile("data/shaders/test.vs");
+    mFS.loadFromFile("data/shaders/test.fs");
     mProgram.attachShader(mVS);
     mProgram.attachShader(mFS);
     mProgram.bindAttribLocation(0, "in_Position");
@@ -109,10 +109,10 @@ void TestModule::onLoad(CGE::PropertyList& inList)
     mVBO.loadVAA(2, 3, 8, normals);
     mIVBO.loadData(GL_TRIANGLES, 36, indices);
 
-    mTestSound.load("data/audio/me.wav");
+    mTestSound.load("data/audio/dwang.ogg");
     mMusic.load("data/audio/portal_still_alive.ogg");
     mLua.runCommand("io.write(\"Hello, Lua!\\n\");");
-    mTex.loadImage("blah");
+    //mTex.loadImage("blah"); // uncomment this line to test exception handling
 }
 
 void TestModule::onUnload()
@@ -132,7 +132,6 @@ void TestModule::onOpen()
 
     glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
 
-    mTestSound.play();
     mMusic.play();
 }
 
@@ -144,7 +143,6 @@ void TestModule::onClose()
 
 void TestModule::onPulse()
 {
-
     mRotate += 1.0f;
     if (mRotate > 180.0f) mRotate -= 360.0f;
 }
@@ -182,4 +180,24 @@ void TestModule::onMouseWheel(bool inUp, bool inDown)
         mMusic.increaseVolume();
     else
         mMusic.decreaseVolume();
+}
+
+void TestModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch (inSym)
+    {
+        case SDLK_ESCAPE:
+        {
+            mRunning = false;
+            break;
+        }
+
+        case SDLK_SPACE:
+        {
+            mTestSound.play();
+            break;
+        }
+
+        default: {}
+    }
 }

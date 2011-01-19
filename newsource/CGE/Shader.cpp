@@ -7,13 +7,8 @@ namespace CGE
 {
     const char* Shader::mFile = "(direct buffer)";
 
-    Shader::Shader() : mHandle(0)
+    Shader::Shader(GLenum inType) : mHandle(0), mType(inType)
     {
-    }
-
-    Shader::Shader(const char* inFile, GLenum inType) : mHandle(0)
-    {
-        loadFromFile(inFile, inType);
     }
 
     Shader::~Shader()
@@ -21,7 +16,7 @@ namespace CGE
         unload();
     }
 
-    void Shader::loadFromFile(const char* inFile, GLenum inType)
+    void Shader::loadFromFile(const char* inFile)
     {
         static const char* functionName = "Shader::loadFromFile";
 
@@ -38,17 +33,17 @@ namespace CGE
 
         const char* temp = mFile;
         mFile = inFile;
-        loadFromBuffer(source, inType);
+        loadFromBuffer(source);
         mFile = temp;
 
         delete [] source;
     }
 
-    void Shader::loadFromBuffer(const char* inBuffer, GLenum inType)
+    void Shader::loadFromBuffer(const char* inBuffer)
     {
         static const char* functionName = "Shader::loadFromBuffer";
 
-        if (!mHandle) mHandle = glCreateShader(inType);
+        if (!mHandle) mHandle = glCreateShader(mType);
 
         if (!mHandle) throw Exception(functionName, "failed to create shader");
 

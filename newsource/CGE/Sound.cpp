@@ -1,16 +1,17 @@
 #include "Sound.h"
-
-#include <sstream>
-#include <iostream>
-using namespace std;
+#include "Exception.h"
 
 namespace CGE
 {
     int Sound::mChannel = 1;
 
-
     Sound::Sound() : mSound(NULL)
     {
+    }
+
+    Sound::Sound(const char* inFile) : mSound(NULL)
+    {
+        load(inFile);
     }
 
     Sound::~Sound()
@@ -20,32 +21,41 @@ namespace CGE
 
     void Sound::load(const char* inFile)
     {
+        static const char* functionName = "Sound::load";
+
+        if (!inFile || !*inFile)
+            throw Exception(functionName, "invalid file");
+
         if ((mSound = Mix_LoadWAV(inFile)) == NULL)
-        {
-            cerr << "something wrong: " << Mix_GetError() << endl;
-        }
+            throw Exception(functionName, Mix_GetError());
     }
 
     void Sound::play()
     {
+        static const char* functionName = "Sound::play";
+
+        // We only want to throw an exception if there is a valid sound to be
+        // played.
+        if (!mSound) return;
+
         if (Mix_PlayChannel(mChannel, mSound, 0) == -1)
-        {
-            cerr << Mix_GetError() << endl;
-        }
+            throw Exception(functionName, Mix_GetError());
+
         mChannel = (mChannel + 1) % NUM_CHANNELS;
     }
 
 
     void Sound::playFromPosition(int inAngle, int inDistance)
     {
+        static const char* functionName = "Sound::playFromPosition";
+        if (!mSound) return;
+
         if (!Mix_SetPosition(mChannel, inAngle, inDistance))
-        {
-            cerr << Mix_GetError() << endl;
-        }
+            throw Exception(functionName, Mix_GetError());
+
         if (Mix_PlayChannel(mChannel, mSound, 0) == -1)
-        {
-            cerr << Mix_GetError() << endl;
-        }
+            throw Exception(functionName, Mix_GetError());
+
         mChannel = (mChannel + 1) % NUM_CHANNELS;
     }
 

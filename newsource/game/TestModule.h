@@ -3,6 +3,8 @@
 
 #include <CGE/ManagedModule.h>
 #include <CGE/Program.h>
+#include <CGE/VertexShader.h>
+#include <CGE/FragmentShader.h>
 #include <CGE/ClusterVBO.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/CubeMap.h>
@@ -26,11 +28,12 @@ class TestModule : public CGE::ManagedModule
 
         virtual void onResize(int inWidth, int inHeight);
         virtual void onMouseWheel(bool inUp, bool inDown);
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
     private:
         CGE::Program<2> mProgram;
-        CGE::Shader mVS;
-        CGE::Shader mFS;
+        CGE::VertexShader mVS;
+        CGE::FragmentShader mFS;
         CGE::ClusterVBO<3> mVBO;
         CGE::IndexVBO mIVBO;
         CGE::LuaMachine mLua;
