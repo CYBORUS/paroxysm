@@ -6,6 +6,13 @@
 
 namespace CGE
 {
+    /**************************
+    *   Class for managing resources.
+    *
+    *   Keeps track of all loading/unloading of a specified
+    *   resource, and ensures that that resource is not
+    *   loaded more than once.
+    **************************/
     template<typename T>
     class ResourceManager
     {
@@ -19,6 +26,8 @@ namespace CGE
             void unloadAll();
 
         protected:
+            /// maps each resource to it's filepath
+            /// so we can use that to keep track of it
             std::map<std::string, T*> mResources;
 
         private:
@@ -35,19 +44,44 @@ namespace CGE
         unloadAll();
     }
 
+    /**************************
+    *   Loads the T form of a resource from the passed in file.
+    *   Returns a pointer to the loaded resource.
+    *
+    *   If the resource has already been loaded, returns a pointer
+    *   to the existing resource in memory (prevents loading it
+    *   multiple times).
+    *
+    *   IMPORTANT: Do NOT call delete on the returned pointer.
+    *   Instead, call ResourceManager::unload or ResourceManager
+    *   will clean the resource pointed to for you when it is
+    *   destroyed.
+    **************************/
     template<typename T>
     T* ResourceManager<T>::load(const char* inFile)
     {
-        typename std::map<std::string, T*>::iterator i = mResources.find(inFile);
+        typename std::map<std::string, T*>::iterator it = mResources.find(inFile);
 
-        if (i == mResources.end())
+        //we don't want to make the map search for the resource
+        //twice
+        T* resource = NULL;
+        if (it == mResources.end())
         {
-            mResources[inFile] = new T(inFile);
+            resource = new T(inFile);
+            mResources[inFile] = resource;
+        }
+        else
+        {
+            resource = it->second;
         }
 
-        return mResources[inFile];
+        return resource;
     }
 
+    /******************************
+    *   Frees up the passed in resource from memory, if it
+    *   has been loaded.
+    *******************************/
     template<typename T>
     void ResourceManager<T>::unload(const char* inFile)
     {
@@ -60,14 +94,17 @@ namespace CGE
         }
     }
 
+    /*****************************
+    *   Frees up all resources loaded by this ResourceManager instance.
+    ******************************/
     template<typename T>
     void ResourceManager<T>::unloadAll()
     {
-        typename std::map<std::string, T*>::iterator i = mResources.begin();
+        typename std::map<std::string, T*>::iterator it = mResources.begin();
 
-        for (; i != mResources.end(); ++i)
+        for (; it != mResources.end(); ++it)
         {
-            delete i->second;
+            delete it->second;
         }
 
         mResources.clear();

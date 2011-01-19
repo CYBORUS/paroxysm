@@ -21,6 +21,7 @@ namespace CGE
 
     void Sound::load(const char* inFile)
     {
+        Mix_Volume(-1, 12);
         static const char* functionName = "Sound::load";
 
         if (!inFile || !*inFile)

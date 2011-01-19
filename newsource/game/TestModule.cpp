@@ -110,6 +110,7 @@ void TestModule::onLoad(CGE::PropertyList& inList)
     mIVBO.loadData(GL_TRIANGLES, 36, indices);
 
     mTestSound = mSounds.load("data/audio/dwang.ogg");
+    mTestSound = mSounds.load("data/audio/dwang.ogg");
     mMusic = mMusicTracks.load("data/audio/portal_still_alive.ogg");
     mLua.runCommand("io.write(\"Hello, Lua!\\n\");");
     //mTex.loadImage("blah"); // uncomment this line to test exception handling
