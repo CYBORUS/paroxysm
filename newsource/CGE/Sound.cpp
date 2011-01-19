@@ -47,7 +47,8 @@ namespace CGE
 
     void Sound::play(int inVolume)
     {
-
+        Mix_Volume(-1, inVolume);
+        play();
     }
 
 
