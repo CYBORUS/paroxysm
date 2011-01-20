@@ -6,7 +6,6 @@
 #include <iostream>
 
 #define NUM_CHANNELS 32
-#define MAX_VOLUME 128
 
 namespace CGE
 {
@@ -18,16 +17,30 @@ namespace CGE
             ~Sound();
 
             void load(const char* inFile);
-            void play();
-            void play(float inVolume);
+            void play() const;
             void playFromPosition(int inAngle, int inDistance);
-
             void setVolume(float inVolume);
             void increaseVolume();
             void decreaseVolume();
 
+            static void setMasterVolume(float inVolume);
+            static void increaseMasterVolume();
+            static void decreaseMasterVolume();
+
         private:
+            Sound(const Sound& inSound)
+            {
+                // no copying
+            }
+
+            Sound& operator=(const Sound& inSound)
+            {
+                // no copying
+                return *this;
+            }
+
             Mix_Chunk* mSound;
+            float mVolume;
 
             static float mMasterVolume;
             static int mChannel;

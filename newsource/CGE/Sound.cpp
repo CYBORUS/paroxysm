@@ -6,11 +6,13 @@ namespace CGE
     int Sound::mChannel = 1;
     float Sound::mMasterVolume = 1.0f;
 
-    Sound::Sound() : mSound(NULL)
+    const float MAX_VOLUME = static_cast<float>(MIX_MAX_VOLUME);
+
+    Sound::Sound() : mSound(NULL), mVolume(1.0f)
     {
     }
 
-    Sound::Sound(const char* inFile) : mSound(NULL)
+    Sound::Sound(const char* inFile) : mSound(NULL), mVolume(1.0f)
     {
         load(inFile);
     }
@@ -31,7 +33,7 @@ namespace CGE
             throw Exception(functionName, Mix_GetError());
     }
 
-    void Sound::play()
+    void Sound::play() const
     {
         static const char* functionName = "Sound::play";
 
@@ -44,20 +46,6 @@ namespace CGE
 
         mChannel = (mChannel + 1) % NUM_CHANNELS;
     }
-
-    void Sound::play(float inVolume)
-    {
-        if (inVolume < 0)
-        {
-            inVolume = 0;
-        }
-        inVolume = std::min(1.0f, inVolume);
-
-        Mix_Volume(-1, int(inVolume * mMasterVolume * MAX_VOLUME));
-        play();
-        Mix_Volume(-1, int(mMasterVolume * MAX_VOLUME));
-    }
-
 
     void Sound::playFromPosition(int inAngle, int inDistance)
     {
@@ -73,24 +61,35 @@ namespace CGE
         mChannel = (mChannel + 1) % NUM_CHANNELS;
     }
 
+    void Sound::setVolume(float inVolume)
+    {
+        mVolume = std::min(1.0f, std::max(0.0f, inVolume));
+        Mix_VolumeChunk(mSound, int(mVolume * MAX_VOLUME));
+    }
+
     void Sound::increaseVolume()
     {
-        setVolume(mMasterVolume + 0.05);
+        setVolume(mVolume + 0.05f);
     }
 
     void Sound::decreaseVolume()
     {
-        setVolume(mMasterVolume - 0.05);
+        setVolume(mVolume - 0.05f);
     }
 
-
-    void Sound::setVolume(float inVolume)
+    void Sound::increaseMasterVolume()
     {
-        if (inVolume < 0)
-        {
-            inVolume = 0;
-        }
-        mMasterVolume = std::min(1.0f, inVolume);
+        setMasterVolume(mMasterVolume + 0.05);
+    }
+
+    void Sound::decreaseMasterVolume()
+    {
+        setMasterVolume(mMasterVolume - 0.05);
+    }
+
+    void Sound::setMasterVolume(float inVolume)
+    {
+        mMasterVolume = std::min(1.0f, std::max(0.0f, inVolume));
         Mix_Volume(-1, int(mMasterVolume * MAX_VOLUME));
     }
 

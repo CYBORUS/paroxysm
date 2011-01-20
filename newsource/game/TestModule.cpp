@@ -110,8 +110,8 @@ void TestModule::onLoad(CGE::PropertyList& inList)
     mIVBO.loadData(GL_TRIANGLES, 36, indices);
 
     mTestSound = mSounds.load("data/audio/dwang.ogg");
-    mTestSound->setVolume(0.05);
     mTestSound = mSounds.load("data/audio/dwang.ogg");
+    mTestSound->setVolume(0.5f);
     mMusic = mMusicTracks.load("data/audio/portal_still_alive.ogg");
     mLua.runCommand("io.write(\"Hello, Lua!\\n\");");
     //mTex.loadImage("blah"); // uncomment this line to test exception handling
@@ -202,12 +202,14 @@ void TestModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_PAGEUP:
         {
+            //CGE::Sound::increaseMasterVolume();
             mTestSound->increaseVolume();
             break;
         }
 
         case SDLK_PAGEDOWN:
         {
+            //CGE::Sound::decreaseMasterVolume();
             mTestSound->decreaseVolume();
             break;
         }
