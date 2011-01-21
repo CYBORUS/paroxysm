@@ -72,6 +72,8 @@
 		<Unit filename="../CGE/Music.h" />
 		<Unit filename="../CGE/Mutex.cpp" />
 		<Unit filename="../CGE/Mutex.h" />
+		<Unit filename="../CGE/NetworkStream.cpp" />
+		<Unit filename="../CGE/NetworkStream.h" />
 		<Unit filename="../CGE/Platforms.h" />
 		<Unit filename="../CGE/Program.h" />
 		<Unit filename="../CGE/PropertyList.cpp" />

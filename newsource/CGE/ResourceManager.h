@@ -26,7 +26,7 @@ namespace CGE
             void unloadAll();
 
         protected:
-            /// maps each resource to it's filepath
+            /// maps each resource to its filepath
             /// so we can use that to keep track of it
             std::map<std::string, T*> mResources;
 
@@ -85,7 +85,8 @@ namespace CGE
     template<typename T>
     void ResourceManager<T>::unload(const char* inFile)
     {
-        typename std::map<std::string, T*>::iterator it = mResources.find(inFile);
+        typename std::map<std::string, T*>::iterator it =
+            mResources.find(inFile);
 
         if (it != mResources.end())
         {
