@@ -70,6 +70,8 @@
 		<Unit filename="../CGE/Module.h" />
 		<Unit filename="../CGE/Music.cpp" />
 		<Unit filename="../CGE/Music.h" />
+		<Unit filename="../CGE/Mutex.cpp" />
+		<Unit filename="../CGE/Mutex.h" />
 		<Unit filename="../CGE/Platforms.h" />
 		<Unit filename="../CGE/Program.h" />
 		<Unit filename="../CGE/PropertyList.cpp" />
@@ -83,6 +85,8 @@
 		<Unit filename="../CGE/Texture.h" />
 		<Unit filename="../CGE/Texture2D.cpp" />
 		<Unit filename="../CGE/Texture2D.h" />
+		<Unit filename="../CGE/Thread.cpp" />
+		<Unit filename="../CGE/Thread.h" />
 		<Unit filename="../CGE/Vectors.h" />
 		<Unit filename="../CGE/VertexShader.cpp" />
 		<Unit filename="../CGE/VertexShader.h" />
