@@ -96,6 +96,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../GLee/GLee.h" />
+		<Unit filename="../game/TerrainGrid.cpp" />
+		<Unit filename="../game/TerrainGrid.h" />
 		<Unit filename="../game/TestModule.cpp" />
 		<Unit filename="../game/TestModule.h" />
 		<Unit filename="../game/main.cpp" />
