@@ -1,6 +1,6 @@
 #include <CGE/Engine.h>
 #include "TestModule.h"
-#include <CGE/ResourceManager.h>
+#include "MapEditorModule.h"
 
 int main(int argc, char** argv)
 {
@@ -9,7 +9,7 @@ int main(int argc, char** argv)
     s.windowTitle2 = "paroxysm";
 
     CGE::Engine e(s);
-    e.manage(new TestModule);
+    e.manage(new MapEditorModule);
 
     return 0;
 }

@@ -16,9 +16,9 @@ namespace CGE
 
             /// module operation
             virtual void onOpen();
+            virtual void onClose();
             virtual void onLoop();
             virtual void onPulse();
-            virtual void onClose();
 
             /// input events
             virtual void onInputFocus();
