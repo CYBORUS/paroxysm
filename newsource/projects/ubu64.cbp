@@ -54,6 +54,8 @@
 		<Unit filename="../CGE/Engine.h" />
 		<Unit filename="../CGE/Exception.cpp" />
 		<Unit filename="../CGE/Exception.h" />
+		<Unit filename="../CGE/Font.cpp" />
+		<Unit filename="../CGE/Font.h" />
 		<Unit filename="../CGE/FragmentShader.cpp" />
 		<Unit filename="../CGE/FragmentShader.h" />
 		<Unit filename="../CGE/Graphics.h" />

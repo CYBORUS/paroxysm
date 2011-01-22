@@ -14,7 +14,18 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    mTerrainTexture.loadImage("assets/images/green.png");
+    //mTerrainTexture.loadImage("assets/images/green.png");
+    CGE::Image img;
+    CGE::Font f("assets/misc/DejaVuSans.ttf", 12);
+    img.loadText(f, "TEST");
+
+    int n = 1;
+    while (n < img.width()) n <<= 1;
+
+    CGE::Image img2(n, n);
+    img.blitOnto(img2);
+
+    mTerrainTexture.loadImage(img2);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -32,6 +43,8 @@ void MapEditorModule::onUnload()
 
 void MapEditorModule::onOpen()
 {
+    mRunning = true;
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glEnable(GL_DEPTH_TEST);
 
     mTerrainTexture.bind();

@@ -60,7 +60,8 @@ namespace CGE
     template<typename T>
     T* ResourceManager<T>::load(const char* inFile)
     {
-        typename std::map<std::string, T*>::iterator it = mResources.find(inFile);
+        typename std::map<std::string, T*>::iterator it =
+            mResources.find(inFile);
 
         //we don't want to make the map search for the resource
         //twice

@@ -2,6 +2,7 @@
 #define IMAGE_H
 
 #include "Graphics.h"
+#include "Font.h"
 
 namespace CGE
 {
@@ -16,6 +17,7 @@ namespace CGE
 
             inline bool isValid() { return !!mData; }
             void loadFile(const char* inFile);
+            void loadText(const Font& inFont, const char* inText);
 
             void blitOnto(Image& inImage) const;
             void loadIntoTexture(GLenum inTarget = GL_TEXTURE_2D) const;

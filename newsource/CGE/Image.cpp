@@ -77,6 +77,20 @@ namespace CGE
         findFormat();
     }
 
+    void Image::loadText(const Font& inFont, const char* inText)
+    {
+        static const char* functionName = "Image::loadText";
+
+        if (!inText || !*inText)
+            throw Exception(functionName, "invalid text");
+
+        destroy();
+
+        SDL_Color c = { 255, 255, 255, 255 };
+        mData = TTF_RenderText_Blended(inFont.mFont, inText, c);
+        findFormat();
+    }
+
     void Image::blitOnto(Image& inImage) const
     {
         if (mData && inImage.mData)
