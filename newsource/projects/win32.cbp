@@ -53,6 +53,8 @@
 		<Unit filename="..\CGE\Engine.h" />
 		<Unit filename="..\CGE\Exception.cpp" />
 		<Unit filename="..\CGE\Exception.h" />
+		<Unit filename="..\CGE\Font.cpp" />
+		<Unit filename="..\CGE\Font.h" />
 		<Unit filename="..\CGE\FragmentShader.cpp" />
 		<Unit filename="..\CGE\FragmentShader.h" />
 		<Unit filename="..\CGE\Graphics.h" />
@@ -69,6 +71,10 @@
 		<Unit filename="..\CGE\Module.h" />
 		<Unit filename="..\CGE\Music.cpp" />
 		<Unit filename="..\CGE\Music.h" />
+		<Unit filename="..\CGE\Mutex.cpp" />
+		<Unit filename="..\CGE\Mutex.h" />
+		<Unit filename="..\CGE\NetworkStream.cpp" />
+		<Unit filename="..\CGE\NetworkStream.h" />
 		<Unit filename="..\CGE\Platforms.h" />
 		<Unit filename="..\CGE\Program.h" />
 		<Unit filename="..\CGE\PropertyList.cpp" />
@@ -82,6 +88,8 @@
 		<Unit filename="..\CGE\Texture.h" />
 		<Unit filename="..\CGE\Texture2D.cpp" />
 		<Unit filename="..\CGE\Texture2D.h" />
+		<Unit filename="..\CGE\Thread.cpp" />
+		<Unit filename="..\CGE\Thread.h" />
 		<Unit filename="..\CGE\Vectors.h" />
 		<Unit filename="..\CGE\VertexShader.cpp" />
 		<Unit filename="..\CGE\VertexShader.h" />
@@ -89,6 +97,12 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\GLee\GLee.h" />
+		<Unit filename="..\game\GeneralProgram.cpp" />
+		<Unit filename="..\game\GeneralProgram.h" />
+		<Unit filename="..\game\MapEditorModule.cpp" />
+		<Unit filename="..\game\MapEditorModule.h" />
+		<Unit filename="..\game\TerrainGrid.cpp" />
+		<Unit filename="..\game\TerrainGrid.h" />
 		<Unit filename="..\game\TestModule.cpp" />
 		<Unit filename="..\game\TestModule.h" />
 		<Unit filename="..\game\main.cpp" />
