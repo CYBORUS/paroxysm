@@ -1,8 +1,8 @@
 #ifndef LUAMACHINE_H
 #define LUAMACHINE_H
 
-#include <lua.hpp>
 #include <string>
+#include <lua.hpp>
 
 namespace CGE
 {

@@ -87,7 +87,7 @@ namespace CGE
         }
 
         Mix_CloseAudio();
-        SDLNet_Quit();
+        //SDLNet_Quit();
         TTF_Quit();
         SDL_Quit();
     }
@@ -228,7 +228,8 @@ namespace CGE
             exit(1);
         }
 
-        if (SDLNet_Init() == -1)
+        //if (SDLNet_Init() == -1)
+		if (false)
         {
             cerr << "-- error on SDLNet_Init -- " << SDLNet_GetError() << endl;
             fout.close();
