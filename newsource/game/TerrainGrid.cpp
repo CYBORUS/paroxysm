@@ -11,7 +11,9 @@ TerrainGrid::~TerrainGrid()
 
 void TerrainGrid::display() const
 {
-    mVBO.display(mIVBO);
+    mVertexVBO.vertexAttribPointer(0);
+    mTextureVBO.vertexAttribPointer(1);
+    mIVBO.draw();
 }
 
 size_t TerrainGrid::toIndex(size_t inRow, size_t inCol)
@@ -90,9 +92,12 @@ void TerrainGrid::buildVBO()
         }
     }
 
-    mVBO.loadVAA(0, 3, mSize, vertices);
-    mVBO.loadVAA(1, 2, mSize, textureCoordinates);
-    mIVBO.loadData(GL_TRIANGLES, numIndices, indices);
+    //mVBO.loadVAA(0, 3, mSize, vertices);
+    mVertexVBO.loadData(vertices, mSize, 3);
+    //mVBO.loadVAA(1, 2, mSize, textureCoordinates);
+    mTextureVBO.loadData(textureCoordinates, mSize, 2);
+    mIVBO.loadData(indices, numIndices);
+    //mIVBO.loadData(GL_TRIANGLES, numIndices, indices);
 
     delete [] normals;
     delete [] vertices;

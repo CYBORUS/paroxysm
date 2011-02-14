@@ -1,7 +1,8 @@
 #ifndef TERRAINGRID_H
 #define TERRAINGRID_H
 
-#include <CGE/ClusterVBO.h>
+#include <CGE/VertexArrayObject.h>
+#include <CGE/IndexVBO.h>
 #include <iostream>
 
 class TerrainGrid
@@ -23,7 +24,8 @@ class TerrainGrid
         void buildVBO();
         void destroy();
 
-        CGE::ClusterVBO<2> mVBO;
+        CGE::VertexBufferObject mVertexVBO;
+        CGE::VertexBufferObject mTextureVBO;
         CGE::IndexVBO mIVBO;
 
         float* mHeights;

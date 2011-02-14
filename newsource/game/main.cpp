@@ -1,5 +1,4 @@
 #include <CGE/Engine.h>
-#include "TestModule.h"
 #include "MapEditorModule.h"
 
 int main(int argc, char** argv)
