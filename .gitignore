@@ -1,0 +1,10 @@
+.svn/
+/data/logs/
+
+# Codeblocks nonsense
+obj/
+bin/
+*.o
+*.depend
+*.layout
+*.cbTemp

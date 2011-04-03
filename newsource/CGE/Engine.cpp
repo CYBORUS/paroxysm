@@ -14,9 +14,6 @@
 #include <string>
 #include <list>
 
-#include <stdio.h>
-#include <stdlib.h>
-
 namespace CGE
 {
     using namespace std;
@@ -86,45 +83,44 @@ namespace CGE
             fout.close();
         }
 
-        Mix_CloseAudio();
-        //SDLNet_Quit();
+        if (mSettings.sound) Mix_CloseAudio();
+        SDLNet_Quit();
         TTF_Quit();
         SDL_Quit();
     }
 
-    void Engine::run(Module* inModule)
+    void Engine::run(Module& inModule)
     {
-        if (!inModule) return;
-
-        inModule->onOpen();
-        inModule->onResize(mDisplay->w, mDisplay->h);
+        inModule.mRunning = true;
+        inModule.onOpen();
+        inModule.onResize(mDisplay->w, mDisplay->h);
 
         Uint32 nextPulse = SDL_GetTicks() + mSettings.frameLength;
         Uint32 nextSecond = SDL_GetTicks() + 1000;
         Uint32 framesPerSecond = 0;
 
-        while (inModule->isRunning())
+        while (inModule.isRunning())
         {
             SDL_Event event;
-            while (SDL_PollEvent(&event)) inModule->onEvent(event);
+            while (SDL_PollEvent(&event)) inModule.onEvent(event);
 
             Uint32 ticks = SDL_GetTicks();
 
             if (ticks > nextPulse)
             {
-                inModule->onPulse();
+                inModule.onPulse();
                 nextPulse += mSettings.frameLength;
             }
             else
             {
-                inModule->onLoop();
+                inModule.onLoop();
                 SDL_GL_SwapBuffers();
                 ++framesPerSecond;
             }
 
             if (ticks > nextSecond)
             {
-                inModule->onSecond(framesPerSecond);
+                inModule.onSecond(framesPerSecond);
                 nextSecond += 1000;
                 framesPerSecond = 0;
             }
@@ -132,7 +128,7 @@ namespace CGE
             SDL_Delay(1); // prevent CPU abuse
         }
 
-        inModule->onClose();
+        inModule.onClose();
     }
 
     void Engine::manage(ManagedModule* inModule)
@@ -166,7 +162,7 @@ namespace CGE
                 moduleStack.pop_back();
             }
 
-            run(currentModule);
+            run(*currentModule);
 
             ManagedModule* deadModule = currentModule;
             currentModule = currentModule->nextModule();
@@ -191,7 +187,7 @@ namespace CGE
         if (!fout)
         {
             cerr << "unable to create " << logFile << '\n';
-            exit(1);
+            //exit(1);
         }
 
         {
@@ -229,34 +225,32 @@ namespace CGE
             exit(1);
         }
 
-        //if (SDLNet_Init() == -1)
-		if (false)
+		// SDL_net temporarily disabled due to OSX
+        if (SDLNet_Init() == -1)
         {
             cerr << "-- error on SDLNet_Init -- " << SDLNet_GetError() << endl;
             fout.close();
             exit(1);
         }
 
-        if (Mix_OpenAudio(mConfig.get("audio rate", 22050),
-            mConfig.get("audio format", AUDIO_S16SYS),
-            mConfig.get("audio channels", 2),
-            mConfig.get("audio buffer size", 1024)) == -1)
+        if (mSettings.sound)
         {
-            cerr << "-- error on Mix_OpenAudio -- " << Mix_GetError() << endl;
-            fout.close();
-            exit(1);
+            if (Mix_OpenAudio(mConfig.get("audio rate", 22050),
+                mConfig.get("audio format", AUDIO_S16SYS),
+                mConfig.get("audio channels", 2),
+                mConfig.get("audio buffer size", 1024)) == -1)
+            {
+                cerr << "-- error on Mix_OpenAudio -- " << Mix_GetError() << endl;
+                fout.close();
+                exit(1);
+            }
         }
 
         Mix_AllocateChannels(NUM_CHANNELS);
 
 #ifdef __WIN32__
-        //ofstream console("CON");
-        //AllocConsole();
-        // redirect output to screen (instead of text files)
         freopen("CON", "w", stdout);
         freopen("CON", "w", stderr);
-        //freopen("CON", "r+", stderr)
-        //console.close();
 #endif
 
 
@@ -290,7 +284,10 @@ namespace CGE
         if (mConfig.get("full screen", 0)) flags |= SDL_FULLSCREEN;
 
         if (!mSettings.windowTitle)
+        {
             mSettings.windowTitle = "CYBORUS Game Engine";
+            mSettings.windowTitle2 = "CGE";
+        }
 
         SDL_WM_SetCaption(mSettings.windowTitle, mSettings.windowTitle2);
 
@@ -300,7 +297,18 @@ namespace CGE
 
 #ifndef __APPLE__
         // OSX does not support window icons
-        Image("data/images/icon.bmp").setAsWindowIcon();
+        if (mSettings.iconPath && *mSettings.iconPath)
+        {
+            try
+            {
+                Image i(mSettings.iconPath);
+                i.setAsWindowIcon();
+            }
+            catch (...)
+            {
+                // Just forget the icon. =/
+            }
+        }
 #endif
 
         logOpenGL(fout);
