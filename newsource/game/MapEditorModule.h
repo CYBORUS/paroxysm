@@ -4,6 +4,7 @@
 #include <CGE/ManagedModule.h>
 #include <CGE/Texture2D.h>
 #include <CGE/Matrix4x4.h>
+#include <CGE/Camera.h>
 #include "TerrainGrid.h"
 #include "GeneralProgram.h"
 
@@ -25,8 +26,8 @@ class MapEditorModule : public CGE::ManagedModule
     private:
         GeneralProgram mProgram;
         TerrainGrid mGrid;
-        float mSpin;
 
+        CGE::Camera mCamera;
         CGE::Texture2D mTerrainTexture;
         CGE::Matrix4x4<GLfloat> mProjection;
         CGE::Matrix4x4<GLfloat> mModelView;

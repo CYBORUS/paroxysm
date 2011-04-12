@@ -33,8 +33,6 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
 
     fin >> mGrid;
     fin.close();
-
-    mSpin = 0.0f;
 }
 
 void MapEditorModule::onUnload()
@@ -44,6 +42,9 @@ void MapEditorModule::onUnload()
 void MapEditorModule::onOpen()
 {
     mRunning = true;
+    mCamera.setAngle(-45.0f);
+    mCamera.setDistance(20.0f);
+    mCamera.setPosition(100.0f, 100.0f, 0.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glEnable(GL_DEPTH_TEST);
 
@@ -58,11 +59,12 @@ void MapEditorModule::onClose()
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    mModelView.loadIdentity();
-    mModelView.translate(0.0f, 0.0f, -20.0f);
-    mModelView.rotateX(-45.0f);
-    mModelView.rotateZ(mSpin);
-    mModelView.translate(-100.0f, -100.0f, 0.0f);
+    mModelView = mCamera.matrix();
+//    mModelView.loadIdentity();
+//    mModelView.translate(0.0f, 0.0f, -20.0f);
+//    mModelView.rotateX(-45.0f);
+//    mModelView.rotateZ(mSpin);
+//    mModelView.translate(-100.0f, -100.0f, 0.0f);
 
     CGE::Matrix4x4<GLfloat> mvp(mProjection, mModelView);
     mProgram.setMatrix(mvp);
@@ -71,8 +73,8 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onPulse()
 {
-    mSpin += 1.0f;
-    if (mSpin > 180.0f) mSpin -= 360.0f;
+    mCamera.changeRotation(1.0f);
+    mCamera.update();
 }
 
 void MapEditorModule::onResize(int inWidth, int inHeight)

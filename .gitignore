@@ -1,5 +1,6 @@
 .svn/
 /data/logs/
+/paroxysm-*
 
 # Codeblocks nonsense
 obj/
