@@ -1,11 +1,17 @@
 .svn/
+CVS/
 /data/logs/
 /paroxysm-*
+*.dll
 
 # Codeblocks nonsense
 obj/
 bin/
-*.o
+*.[oa]
 *.depend
 *.layout
 *.cbTemp
+
+# SDL nonsense
+stdout.txt
+stderr.txt
