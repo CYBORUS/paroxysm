@@ -12,6 +12,10 @@ namespace CGE
     *   Keeps track of all loading/unloading of a specified
     *   resource, and ensures that that resource is not
     *   loaded more than once.
+    *
+    *   The Resource object must simply have a constructor
+    *   that takes a string (char*) that is the filepath
+    *   to the resource and loads it.
     **************************/
     template<typename T>
     class ResourceManager
