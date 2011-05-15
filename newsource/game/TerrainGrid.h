@@ -11,7 +11,7 @@ class TerrainGrid
         TerrainGrid();
         ~TerrainGrid();
 
-        void display() const;
+        void display();
 
         friend std::istream& operator>>(std::istream& inStream,
             TerrainGrid& inTerrainGrid);
