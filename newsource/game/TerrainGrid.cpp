@@ -9,11 +9,13 @@ TerrainGrid::~TerrainGrid()
 {
 }
 
-void TerrainGrid::display() const
+void TerrainGrid::display()
 {
-    mVertexVBO.vertexAttribPointer(0);
-    mTextureVBO.vertexAttribPointer(1);
+    mVertexVBO.enableVAA(0);
+    mTextureVBO.enableVAA(1);
     mIVBO.draw();
+    mTextureVBO.disableVAA();
+    mVertexVBO.disableVAA();
 }
 
 size_t TerrainGrid::toIndex(size_t inRow, size_t inCol)

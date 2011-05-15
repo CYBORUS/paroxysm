@@ -17,10 +17,12 @@ namespace CGE
             inline void bind() const { glBindBuffer(mTarget, mHandle); }
             void loadData(const GLvoid* inData, GLuint inSize,
                 GLuint inValuesPerUnit = 1);
-            void vertexAttribPointer(GLuint inIndex) const;
+            void enableVAA(GLuint inIndex);
+            void disableVAA();
 
         protected:
             GLuint mHandle;
+            GLuint mIndex;
             GLenum mTarget;
             GLenum mType;
             GLenum mUsage;
