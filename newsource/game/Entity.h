@@ -18,7 +18,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "Vector3D.h"
+#include "CGE/Vectors.h"
 #include "TerrainGrid.h"
 
 
@@ -53,9 +53,9 @@ class Entity
         bool isGameDead();
         bool isRenderDead();
 
-        const Vector3D<float>& getMomentum() const;
-        const Vector3D<float>& getPosition() const;
-        void setPosition(const Vector3D<float>& inPosition);
+        const vec4f& getMomentum() const;
+        const vec4f& getPosition() const;
+        void setPosition(const vec4f& inPosition);
 
         EntityType getWhatIAm();
         bool isAlive();
@@ -77,12 +77,12 @@ class Entity
         int mTerrainHeight;
 
 
-        Vector3D<float> mMomentum;
-        Vector3D<float> mPosition;
-        Vector3D<float> mRotation;
+        vec4f mMomentum;
+        vec4f mPosition;
+        vec4f mRotation;
 
         //for remembering where we were in case of collisions
-        Vector3D<float> mPreviousPosition;
+        vec4f mPreviousPosition;
 
         bool mAlive;
 
@@ -92,12 +92,12 @@ inline void Entity::die()
 {
     mAlive = false;
 }
-inline const Vector3D<float>& Entity::getPosition() const
+inline const vec4f& Entity::getPosition() const
 {
     return mPosition;
 }
 
-inline const Vector3D<float>& Entity::getMomentum() const
+inline const vec4f& Entity::getMomentum() const
 {
     return mMomentum;
 }

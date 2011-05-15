@@ -52,7 +52,7 @@ void Entity::setRadius(float inRadius)
     mRadius = inRadius;
 }
 
-void Entity::setPosition(const Vector3D<float>& inPosition)
+void Entity::setPosition(const vec4f& inPosition)
 {
     mPosition = inPosition;
 }

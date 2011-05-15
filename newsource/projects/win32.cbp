@@ -112,12 +112,20 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\GLee\GLee.h" />
+		<Unit filename="..\game\Entity.cpp" />
+		<Unit filename="..\game\Entity.h" />
+		<Unit filename="..\game\EntityGarbageCollector.cpp" />
+		<Unit filename="..\game\EntityGarbageCollector.h" />
 		<Unit filename="..\game\GeneralProgram.cpp" />
 		<Unit filename="..\game\GeneralProgram.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
 		<Unit filename="..\game\MapEditorModule.h" />
+		<Unit filename="..\game\Tank.cpp" />
+		<Unit filename="..\game\Tank.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />
 		<Unit filename="..\game\TerrainGrid.h" />
+		<Unit filename="..\game\TestModule.cpp" />
+		<Unit filename="..\game\TestModule.h" />
 		<Unit filename="..\game\main.cpp" />
 		<Extensions>
 			<code_completion />
