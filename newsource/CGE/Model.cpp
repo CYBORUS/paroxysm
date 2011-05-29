@@ -1,5 +1,8 @@
 #include "Model.h"
 
+using namespace std;
+using namespace CGE;
+
 Model::Model()
 {
     //ctor
@@ -66,12 +69,13 @@ void Model::loadC3M(const char* inFile)
         data = c3m->textureCoordinates.array;
         mVBO.loadVertexArray(PVBO_TEXTURE, 2, size, data);
 
-        glGenTextures(1, &mTexture);
+        //glGenTextures(1, &mTexture);
 
         string texFile = "assets/images/models/";
         texFile += c3m->textureFile;
 
-        DisplayEngine::loadTexture(texFile.c_str(), mTexture);
+        //DisplayEngine::loadTexture(texFile.c_str(), mTexture);
+        mTexture.loadImage(texFile.c_str());
     }
     else
     {
