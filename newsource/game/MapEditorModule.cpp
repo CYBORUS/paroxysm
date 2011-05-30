@@ -6,7 +6,7 @@ using namespace std;
 
 MapEditorModule::MapEditorModule()
 {
-    mModel = mManager.load("bradley_body.c3m");
+    mModel = mManager.load("bradley.c3m");
 }
 
 MapEditorModule::~MapEditorModule()
@@ -45,7 +45,7 @@ void MapEditorModule::onOpen()
 {
     mRunning = true;
     mCamera.setAngle(-45.0f);
-    mCamera.setDistance(20.0f);
+    mCamera.setDistance(8.0f);
     //mCamera.setPosition(100.0f, 100.0f, 0.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glEnable(GL_DEPTH_TEST);
