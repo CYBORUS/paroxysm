@@ -80,8 +80,8 @@ int CollisionEngine::checkCollisions(void* unused)
                     break;
                 }
 
-                float distance = 1;
-                //float distance = CGE::length3((first->getPosition() - second->getPosition()));
+                //float distance = 1;
+                float distance = CGE::length3(*(first->getPosition() - second->getPosition()));
 
                 if (distance < first->getRadius() + second->getRadius())
                 {

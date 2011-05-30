@@ -3,6 +3,8 @@
 
 #include <CGE/VertexArrayObject.h>
 #include <CGE/IndexVBO.h>
+#include <CGE/ClusterVBO.h>
+#include <CGE/Texture2D.h>
 #include <iostream>
 
 class TerrainGrid
@@ -24,9 +26,11 @@ class TerrainGrid
         void buildVBO();
         void destroy();
 
-        CGE::VertexBufferObject mVertexVBO;
-        CGE::VertexBufferObject mTextureVBO;
-        CGE::IndexVBO mIVBO;
+        CGE::ClusterVBO mVBO;
+        CGE::Texture2D mTexture;
+//        CGE::VertexBufferObject mVertexVBO;
+//        CGE::VertexBufferObject mTextureVBO;
+//        CGE::IndexVBO mIVBO;
 
         float* mHeights;
         size_t mRows;

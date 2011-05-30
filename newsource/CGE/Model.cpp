@@ -67,12 +67,15 @@ void Model::loadC3M(const char* inFile)
     buffers[1]->loadData(data, size, 3);
 
     size = c3m->colors.size;
+
+    //somethings wrong, breaking colors
+    //size = 0;
     if (size > 0)
     {
         ++clusterSize;
         data = c3m->colors.array;
         //mVBO.loadVertexArray(PVBO_COLOR, 4, size, data);
-        buffers[2] = new VertexBufferObject();
+        buffers[2] = new VertexBufferObject(GL_ARRAY_BUFFER, GL_UNSIGNED_SHORT);
         buffers[2]->loadData(data, size, 4);
     }
 
@@ -90,6 +93,7 @@ void Model::loadC3M(const char* inFile)
 
         string texFile = "assets/images/models/";
         texFile += c3m->textureFile;
+        cerr << texFile << endl;
 
         //DisplayEngine::loadTexture(texFile.c_str(), mTexture);
         mTexture.loadImage(texFile.c_str());
@@ -122,7 +126,7 @@ void Model::loadC3M(const char* inFile)
     GLuint* indices = c3m->indices.array;
     //mVBO.loadIndexArray(GL_TRIANGLES, size, indices);
     CGE::IndexVBO* index = new IndexVBO();
-    index->loadData(indices, size, 3);
+    index->loadData(indices, size);
     mVBO->mount(*index);
 
     c3mClose(c3m);

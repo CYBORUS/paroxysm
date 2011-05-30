@@ -1,8 +1,11 @@
 #include "TerrainGrid.h"
 #include <CGE/Exception.h>
 
-TerrainGrid::TerrainGrid() : mHeights(NULL), mRows(0), mCols(0), mSize(0)
+using namespace CGE;
+
+TerrainGrid::TerrainGrid() : mHeights(NULL), mRows(0), mCols(0), mSize(0), mVBO(2)
 {
+    mTexture.loadImage("assets/images/green.png");
 }
 
 TerrainGrid::~TerrainGrid()
@@ -11,11 +14,13 @@ TerrainGrid::~TerrainGrid()
 
 void TerrainGrid::display()
 {
-    mVertexVBO.enableVAA(0);
-    mTextureVBO.enableVAA(1);
-    mIVBO.draw();
-    mTextureVBO.disableVAA();
-    mVertexVBO.disableVAA();
+//    mVertexVBO.enableVAA(0);
+//    mTextureVBO.enableVAA(1);
+//    mIVBO.draw();
+//    mTextureVBO.disableVAA();
+//    mVertexVBO.disableVAA();
+    mTexture.bind();
+    mVBO.display();
 }
 
 size_t TerrainGrid::toIndex(size_t inRow, size_t inCol)
@@ -94,12 +99,24 @@ void TerrainGrid::buildVBO()
         }
     }
 
+    CGE::VertexBufferObject* buffers[2] = {NULL};
+
     //mVBO.loadVAA(0, 3, mSize, vertices);
-    mVertexVBO.loadData(vertices, mSize, 3);
+    buffers[0] = new VertexBufferObject();
+    buffers[0]->loadData(vertices, mSize, 3);
+    //mVertexVBO.loadData(vertices, mSize, 3);
     //mVBO.loadVAA(1, 2, mSize, textureCoordinates);
-    mTextureVBO.loadData(textureCoordinates, mSize, 2);
-    mIVBO.loadData(indices, numIndices);
+    buffers[1] = new VertexBufferObject();
+    buffers[1]->loadData(textureCoordinates, mSize, 2);
+    //mTextureVBO.loadData(textureCoordinates, mSize, 2);
+    IndexVBO* index = new IndexVBO();
+    index->loadData(indices, numIndices);
+    //mIVBO.loadData(indices, numIndices);
     //mIVBO.loadData(GL_TRIANGLES, numIndices, indices);
+
+    mVBO.mount(*index);
+    mVBO.mount(*buffers[0], 0);
+    mVBO.mount(*buffers[1], 1);
 
     delete [] normals;
     delete [] vertices;

@@ -6,6 +6,7 @@ using namespace std;
 
 MapEditorModule::MapEditorModule()
 {
+    mModel = mManager.load("bradley_body.c3m");
 }
 
 MapEditorModule::~MapEditorModule()
@@ -14,7 +15,7 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    mTerrainTexture.loadImage("assets/images/green.png");
+    //mTerrainTexture.loadImage("assets/images/green.png");
     //CGE::Image img;
     //CGE::Font f("assets/misc/DejaVuSans.ttf", 12);
     //img.loadText(f, "TEST");
@@ -26,6 +27,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     //img.blitOnto(img2);
 
     //mTerrainTexture.loadImage(img2);
+
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -44,11 +46,11 @@ void MapEditorModule::onOpen()
     mRunning = true;
     mCamera.setAngle(-45.0f);
     mCamera.setDistance(20.0f);
-    mCamera.setPosition(100.0f, 100.0f, 0.0f);
+    //mCamera.setPosition(100.0f, 100.0f, 0.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glEnable(GL_DEPTH_TEST);
 
-    mTerrainTexture.bind();
+    //mTerrainTexture.bind();
 }
 
 void MapEditorModule::onClose()
@@ -69,6 +71,7 @@ void MapEditorModule::onLoop()
     CGE::Matrix4x4<GLfloat> mvp(mProjection, mModelView);
     mProgram.setMatrix(mvp);
     mGrid.display();
+    mModel->display();
 }
 
 void MapEditorModule::onPulse()
