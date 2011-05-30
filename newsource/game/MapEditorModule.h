@@ -28,12 +28,11 @@ class MapEditorModule : public CGE::ManagedModule
     private:
         GeneralProgram mProgram;
         TerrainGrid mGrid;
-        Model* mModel;
-        CGE::ResourceManager<Model> mManager;
+        CGE::Model* mModel;
+        CGE::ResourceManager<CGE::Model> mManager;
 
 
         CGE::Camera mCamera;
-        //CGE::Texture2D mTerrainTexture;
         CGE::Matrix4x4<GLfloat> mProjection;
         CGE::Matrix4x4<GLfloat> mModelView;
 };

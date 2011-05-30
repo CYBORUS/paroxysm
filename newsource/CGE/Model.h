@@ -8,45 +8,29 @@
 #include <string>
 #include <iostream>
 
-class Model
+namespace CGE
 {
-    public:
-        //Model();
-        Model(const char* inFile);
-        virtual ~Model();
+    class Model
+    {
+        public:
+            Model(const char* inFile);
+            virtual ~Model();
 
-        void display();
+            inline void display()
+            {
+                mTexture.bind();
+                mClusterVBO.display();
+            }
 
-    protected:
+        private:
 
-    private:
+            void loadC3M(const char* inFile);
 
-        void loadC3M(const char* inFile);
-
-        CGE::Texture2D mTexture;
-        CGE::ClusterVBO* mVBO;
-        CGE::VertexBufferObject mBuffers[4];
-        CGE::IndexVBO mIVBO;
-};
-
-inline void Model::display()
-{
-//    if (glIsTexture(mTexture))
-//    {
-//        glEnable(GL_TEXTURE_2D);
-//        glBindTexture(GL_TEXTURE_2D, mTexture);
-//
-//        mVBO.display();
-//
-//        glDisable(GL_TEXTURE_2D);
-//    }
-//    else
-//    {
-//        mVBO.display();
-//    }
-
-    mTexture.bind();
-    mVBO->display();
+            CGE::Texture2D mTexture;
+            CGE::ClusterVBO mClusterVBO;
+            CGE::VertexBufferObject mBuffers[4];
+            CGE::IndexVBO mIVBO;
+    };
 }
 
-#endif // MODEL_H
+#endif
