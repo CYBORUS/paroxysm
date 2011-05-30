@@ -3,7 +3,8 @@
 
 using namespace CGE;
 
-TerrainGrid::TerrainGrid() : mHeights(NULL), mRows(0), mCols(0), mSize(0), mVBO(2)
+TerrainGrid::TerrainGrid() : mVBO(2), mHeights(NULL), mRows(0), mCols(0),
+    mSize(0)
 {
     mTexture.loadImage("assets/images/green.png");
 }

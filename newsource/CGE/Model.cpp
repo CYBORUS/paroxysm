@@ -102,7 +102,7 @@ namespace CGE
         //mClusterVBO.mount(mBuffers[1], 1);
 
         //just in case there aren't any colors defined
-        int nextIndex = 2;
+        //int nextIndex = 2;
 
         if (useColors)
         {
