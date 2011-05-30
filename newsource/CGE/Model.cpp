@@ -103,14 +103,18 @@ void Model::loadC3M(const char* inFile)
     mVBO->mount(*buffers[0], 0);
     mVBO->mount(*buffers[1], 1);
 
+    //just in case there aren't any colors defined
+    int nextIndex = 2;
+
     if (buffers[2] != NULL)
     {
-        mVBO->mount(*buffers[2], 2);
+        mVBO->mount(*buffers[2], nextIndex);
+        ++nextIndex;
     }
 
     if (buffers[3] != NULL)
     {
-        mVBO->mount(*buffers[3], 3);
+        mVBO->mount(*buffers[3], nextIndex);
     }
 
 
