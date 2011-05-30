@@ -75,6 +75,8 @@
 		<Unit filename="../CGE/ManagedModule.cpp" />
 		<Unit filename="../CGE/ManagedModule.h" />
 		<Unit filename="../CGE/Matrix4x4.h" />
+		<Unit filename="../CGE/Model.cpp" />
+		<Unit filename="../CGE/Model.h" />
 		<Unit filename="../CGE/Module.cpp" />
 		<Unit filename="../CGE/Module.h" />
 		<Unit filename="../CGE/Music.cpp" />
@@ -109,6 +111,10 @@
 		<Unit filename="../CGE/VertexBufferObject.h" />
 		<Unit filename="../CGE/VertexShader.cpp" />
 		<Unit filename="../CGE/VertexShader.h" />
+		<Unit filename="../CGE/c3m.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../CGE/c3m.h" />
 		<Unit filename="../GLee/GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>
