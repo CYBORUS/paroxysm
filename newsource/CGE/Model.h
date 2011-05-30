@@ -25,6 +25,8 @@ class Model
 
         CGE::Texture2D mTexture;
         CGE::ClusterVBO* mVBO;
+        CGE::VertexBufferObject mBuffers[4];
+        CGE::IndexVBO mIVBO;
 };
 
 inline void Model::display()
