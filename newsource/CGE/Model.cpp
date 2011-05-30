@@ -87,8 +87,8 @@ namespace CGE
 
             //glGenTextures(1, &mTexture);
 
-            string texFile = "assets/images/models/tank1.jpg";
-            //texFile += c3m->textureFile;
+            string texFile = "assets/images/models/";
+            texFile += c3m->textureFile;
             cerr << texFile << endl;
 
             mTexture.loadImage(texFile.c_str());
