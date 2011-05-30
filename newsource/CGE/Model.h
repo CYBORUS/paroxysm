@@ -44,6 +44,7 @@ inline void Model::display()
 //    }
 
     mTexture.bind();
+    mVBO->display();
 }
 
 #endif // MODEL_H
