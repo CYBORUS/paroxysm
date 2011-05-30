@@ -23,8 +23,8 @@ TerrainGrid* Entity::mTerrain;
 Entity::Entity()
 {
     mRadius = 1;
-    mTerrainWidth = mTerrain->getMatrix().cols();
-    mTerrainHeight = mTerrain->getMatrix().rows();
+    //mTerrainWidth = mTerrain->getMatrix().cols();
+    //mTerrainHeight = mTerrain->getMatrix().rows();
     mAlive = true;
     //mGameDead = false;
     //mRenderDead = false;

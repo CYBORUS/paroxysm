@@ -3,6 +3,7 @@
 
 #include "Texture2D.h"
 #include "c3m.h"
+#include "ClusterVBO.h"
 
 #include <string>
 #include <iostream>
@@ -10,7 +11,7 @@
 class Model
 {
     public:
-        Model();
+        //Model();
         Model(const char* inFile);
         virtual ~Model();
 
@@ -23,6 +24,7 @@ class Model
         void loadC3M(const char* inFile);
 
         CGE::Texture2D mTexture;
+        CGE::ClusterVBO* mVBO;
 };
 
 inline void Model::display()

@@ -18,15 +18,15 @@
 #ifndef TANK_H
 #define TANK_H
 
-#include "OGL.h"
+//#include "OGL.h"
 
 #include "Entity.h"
-#include "Vector3D.h"
+//#include "Vector3D.h"
 #include "TerrainGrid.h"
-#include "Matrix.h"
-#include "TSphere.h"
+//#include "Matrix.h"
+//#include "TSphere.h"
 
-#include "DisplayEngine.h"
+//#include "DisplayEngine.h"
 
 #include <iostream>
 #include <cstdlib>

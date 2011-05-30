@@ -3,14 +3,15 @@
 using namespace std;
 using namespace CGE;
 
-Model::Model()
-{
-    //ctor
-}
+//Model::Model()
+//{
+//    //ctor
+//}
 
 Model::~Model()
 {
     //dtor
+    delete mVBO;
 }
 
 /**
@@ -43,31 +44,47 @@ void Model::loadC3M(const char* inFile)
         return;
     }
 
+    CGE::VertexBufferObject* buffers[4] = {NULL};
+    int clusterSize = 2;
+
 
     int size = c3m->vertices.size;
     GLfloat* data = c3m->vertices.array;
 
-    mVBO.loadVertexArray(PVBO_VERTEX, 3, size, data);
+    //mVBO.loadVertexArray(PVBO_VERTEX, 3, size, data);
+
+    buffers[0] = new VertexBufferObject();
+    buffers[0]->loadData(data, size, 3);
+
 
 
     size = c3m->normals.size;
     data = c3m->normals.array;
 
-    mVBO.loadVertexArray(PVBO_NORMAL, 3, size, data);
+    //mVBO.loadVertexArray(PVBO_NORMAL, 3, size, data);
+
+    buffers[1] = new VertexBufferObject();
+    buffers[1]->loadData(data, size, 3);
 
     size = c3m->colors.size;
     if (size > 0)
     {
+        ++clusterSize;
         data = c3m->colors.array;
-        mVBO.loadVertexArray(PVBO_COLOR, 4, size, data);
+        //mVBO.loadVertexArray(PVBO_COLOR, 4, size, data);
+        buffers[2] = new VertexBufferObject();
+        buffers[2]->loadData(data, size, 4);
     }
 
 
     size = c3m->textureCoordinates.size;
     if (size > 0)
     {
+        ++clusterSize;
         data = c3m->textureCoordinates.array;
-        mVBO.loadVertexArray(PVBO_TEXTURE, 2, size, data);
+        //mVBO.loadVertexArray(PVBO_TEXTURE, 2, size, data);
+        buffers[3] = new VertexBufferObject();
+        buffers[3]->loadData(data, size, 2);
 
         //glGenTextures(1, &mTexture);
 
@@ -82,10 +99,27 @@ void Model::loadC3M(const char* inFile)
         cerr << "error, no texture" << endl;
     }
 
+    mVBO = new ClusterVBO(clusterSize);
+    mVBO->mount(*buffers[0], 0);
+    mVBO->mount(*buffers[1], 1);
+
+    if (buffers[2] != NULL)
+    {
+        mVBO->mount(*buffers[2], 2);
+    }
+
+    if (buffers[3] != NULL)
+    {
+        mVBO->mount(*buffers[3], 3);
+    }
+
 
     size = c3m->indices.size;
     GLuint* indices = c3m->indices.array;
-    mVBO.loadIndexArray(GL_TRIANGLES, size, indices);
+    //mVBO.loadIndexArray(GL_TRIANGLES, size, indices);
+    CGE::IndexVBO* index = new IndexVBO();
+    index->loadData(indices, size, 3);
+    mVBO->mount(*index);
 
     c3mClose(c3m);
 

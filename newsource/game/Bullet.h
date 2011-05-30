@@ -19,9 +19,9 @@
 #define BULLET_H
 
 #include "Entity.h"
-#include "TSphere.h"
-#include "OGL.h"
-#include "MathEngine.h"
+//#include "TSphere.h"
+//#include "OGL.h"
+//#include "MathEngine.h"
 
 class Bullet : public Entity
 {
@@ -41,13 +41,13 @@ class Bullet : public Entity
 
 
     protected:
-        static TSphere* mSphere;
+        //static TSphere* mSphere;
         float mSpeed;
 };
 
-inline void Bullet::setSphere(TSphere* inSphere)
-{
-    mSphere = inSphere;
-}
+//inline void Bullet::setSphere(TSphere* inSphere)
+//{
+//    mSphere = inSphere;
+//}
 
 #endif
