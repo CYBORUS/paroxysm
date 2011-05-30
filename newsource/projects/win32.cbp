@@ -45,6 +45,7 @@
 			<Add library="opengl32" />
 			<Add library="lua51" />
 			<Add library="curl" />
+			<Add library="curldll" />
 		</Linker>
 		<Unit filename="..\CGE\Camera.cpp" />
 		<Unit filename="..\CGE\Camera.h" />
@@ -109,28 +110,22 @@
 		<Unit filename="..\CGE\VertexBufferObject.h" />
 		<Unit filename="..\CGE\VertexShader.cpp" />
 		<Unit filename="..\CGE\VertexShader.h" />
+		<Unit filename="..\CGE\c3m.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\CGE\c3m.h" />
 		<Unit filename="..\GLee\GLee.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\GLee\GLee.h" />
-		<Unit filename="..\game\Bullet.cpp" />
-		<Unit filename="..\game\Bullet.h" />
-		<Unit filename="..\game\CollisionEngine.cpp" />
-		<Unit filename="..\game\CollisionEngine.h" />
 		<Unit filename="..\game\Entity.cpp" />
 		<Unit filename="..\game\Entity.h" />
-		<Unit filename="..\game\EntityGarbageCollector.cpp" />
-		<Unit filename="..\game\EntityGarbageCollector.h" />
 		<Unit filename="..\game\GeneralProgram.cpp" />
 		<Unit filename="..\game\GeneralProgram.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
 		<Unit filename="..\game\MapEditorModule.h" />
-		<Unit filename="..\game\Tank.cpp" />
-		<Unit filename="..\game\Tank.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />
 		<Unit filename="..\game\TerrainGrid.h" />
-		<Unit filename="..\game\TestModule.cpp" />
-		<Unit filename="..\game\TestModule.h" />
 		<Unit filename="..\game\main.cpp" />
 		<Extensions>
 			<code_completion />
