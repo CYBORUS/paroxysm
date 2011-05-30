@@ -44,7 +44,9 @@ void Model::loadC3M(const char* inFile)
         return;
     }
 
-    CGE::VertexBufferObject* buffers[4] = {NULL};
+    //CGE::VertexBufferObject* buffers[4] = {NULL};
+    bool useColors = false;
+    bool useTexture = false;
     int clusterSize = 2;
 
 
@@ -53,8 +55,9 @@ void Model::loadC3M(const char* inFile)
 
     //mVBO.loadVertexArray(PVBO_VERTEX, 3, size, data);
 
-    buffers[0] = new VertexBufferObject();
-    buffers[0]->loadData(data, size, 3);
+    mBuffers[0].loadData(data, size, 3);
+//    buffers[0] = new VertexBufferObject();
+//    buffers[0]->loadData(data, size, 3);
 
 
 
@@ -63,20 +66,23 @@ void Model::loadC3M(const char* inFile)
 
     //mVBO.loadVertexArray(PVBO_NORMAL, 3, size, data);
 
-    buffers[1] = new VertexBufferObject();
-    buffers[1]->loadData(data, size, 3);
+//    buffers[1] = new VertexBufferObject();
+//    buffers[1]->loadData(data, size, 3);
+    mBuffers[1].loadData(data, size, 3);
 
     size = c3m->colors.size;
 
     //somethings wrong, breaking colors
-    //size = 0;
+    size = 0;
     if (size > 0)
     {
         ++clusterSize;
+        useColors = true;
         data = c3m->colors.array;
         //mVBO.loadVertexArray(PVBO_COLOR, 4, size, data);
-        buffers[2] = new VertexBufferObject(GL_ARRAY_BUFFER, GL_UNSIGNED_SHORT);
-        buffers[2]->loadData(data, size, 4);
+//        buffers[2] = new VertexBufferObject(GL_ARRAY_BUFFER, GL_UNSIGNED_SHORT);
+//        buffers[2]->loadData(data, size, 4);
+        mBuffers[2].loadData(data, size, 4);
     }
 
 
@@ -84,10 +90,12 @@ void Model::loadC3M(const char* inFile)
     if (size > 0)
     {
         ++clusterSize;
+        useTexture = true;
         data = c3m->textureCoordinates.array;
         //mVBO.loadVertexArray(PVBO_TEXTURE, 2, size, data);
-        buffers[3] = new VertexBufferObject();
-        buffers[3]->loadData(data, size, 2);
+//        buffers[3] = new VertexBufferObject();
+//        buffers[3]->loadData(data, size, 2);
+        mBuffers[3].loadData(data, size, 2);
 
         //glGenTextures(1, &mTexture);
 
@@ -104,30 +112,31 @@ void Model::loadC3M(const char* inFile)
     }
 
     mVBO = new ClusterVBO(clusterSize);
-    mVBO->mount(*buffers[0], 0);
-    mVBO->mount(*buffers[1], 1);
+    mVBO->mount(mBuffers[0], 0);
+    mVBO->mount(mBuffers[1], 1);
 
     //just in case there aren't any colors defined
     int nextIndex = 2;
 
-    if (buffers[2] != NULL)
+    if (useColors)
     {
-        mVBO->mount(*buffers[2], nextIndex);
+        mVBO->mount(mBuffers[2], nextIndex);
         ++nextIndex;
     }
 
-    if (buffers[3] != NULL)
+    if (useTexture)
     {
-        mVBO->mount(*buffers[3], nextIndex);
+        mVBO->mount(mBuffers[3], nextIndex);
     }
 
 
     size = c3m->indices.size;
     GLuint* indices = c3m->indices.array;
     //mVBO.loadIndexArray(GL_TRIANGLES, size, indices);
-    CGE::IndexVBO* index = new IndexVBO();
-    index->loadData(indices, size);
-    mVBO->mount(*index);
+//    CGE::IndexVBO* index = new IndexVBO();
+//    index->loadData(indices, size);
+    mIVBO.loadData(indices, size);
+    mVBO->mount(mIVBO);
 
     c3mClose(c3m);
 

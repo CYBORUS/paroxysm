@@ -28,9 +28,9 @@ class TerrainGrid
 
         CGE::ClusterVBO mVBO;
         CGE::Texture2D mTexture;
-//        CGE::VertexBufferObject mVertexVBO;
-//        CGE::VertexBufferObject mTextureVBO;
-//        CGE::IndexVBO mIVBO;
+        CGE::VertexBufferObject mVertexVBO;
+        CGE::VertexBufferObject mTextureVBO;
+        CGE::IndexVBO mIVBO;
 
         float* mHeights;
         size_t mRows;
