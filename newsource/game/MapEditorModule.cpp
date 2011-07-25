@@ -7,6 +7,7 @@ using namespace std;
 MapEditorModule::MapEditorModule()
 {
     mModel = mManager.load("bradley.c3m");
+    lClickDown = false;
 }
 
 MapEditorModule::~MapEditorModule()
@@ -76,8 +77,31 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onPulse()
 {
-    mCamera.changeRotation(1.0f);
     mCamera.update();
+}
+
+void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
+    bool inLeft, bool inRight, bool inMiddle)
+{
+    if (lClickDown)
+    {
+        mCamera.changeRotation(inX - xStart);
+        mCamera.changeAngle(inY - yStart);
+        xStart = inX;
+        yStart = inY;
+    }
+}
+
+void MapEditorModule::onLButtonDown(int inX, int inY)
+{
+    lClickDown = true;
+    xStart = inX;
+    yStart = inY;
+}
+
+void MapEditorModule::onLButtonUp(int inX, int inY)
+{
+    lClickDown = false;
 }
 
 void MapEditorModule::onResize(int inWidth, int inHeight)

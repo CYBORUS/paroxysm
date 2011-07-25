@@ -22,6 +22,10 @@ class MapEditorModule : public CGE::ManagedModule
         virtual void onClose();
         virtual void onLoop();
         virtual void onPulse();
+        virtual void onLButtonDown(int inX, int inY);
+        virtual void onLButtonUp(int inX, int inY);
+        virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
+                bool inLeft, bool inRight, bool inMiddle);
 
         virtual void onResize(int inWidth, int inHeight);
 
@@ -35,6 +39,10 @@ class MapEditorModule : public CGE::ManagedModule
         CGE::Camera mCamera;
         CGE::Matrix4x4<GLfloat> mProjection;
         CGE::Matrix4x4<GLfloat> mModelView;
+
+        bool lClickDown;
+        int xStart;
+        int yStart;
 };
 
 #endif
