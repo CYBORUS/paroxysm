@@ -109,14 +109,20 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
 {
     switch (inSym)
     {
+    case SDLK_ESCAPE:
+        mRunning = false;
+        break;
     case SDLK_w:
-        mCamera.smartPan(1.0f, 0.0f);
+        mCamera.smartPan(0.0f, 1.0f);
         break;
     case SDLK_a:
+        mCamera.smartPan(-1.0f, 0.0f);
         break;
     case SDLK_s:
+        mCamera.smartPan(0.0f, -1.0f);
         break;
     case SDLK_d:
+        mCamera.smartPan(1.0f, 0.0f);
         break;
     }
 }

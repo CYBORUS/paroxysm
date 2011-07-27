@@ -77,8 +77,8 @@ namespace CGE
     {
          float theta = TO_RADIANS(mRotation);
          float dxp = cos(theta) * inX;
-         float dyp = sin(theta) * inX;
-         dxp -= sin(theta) * inY;
+         float dyp = -sin(theta) * inX;
+         dxp += sin(theta) * inY;
          dyp += cos(theta) * inY;
 
          mPosition[0] += dxp;
