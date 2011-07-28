@@ -76,7 +76,7 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onPulse()
 {
-    mCamera.changeRotation(1.0f);
+    mCamera.changeRotation(20.0f);
     mCamera.update();
 }
 

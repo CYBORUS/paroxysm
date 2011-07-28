@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="paroxysm (ubu32)" />
+		<Option title="paroxysm (win32)" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -44,8 +44,7 @@
 			<Add library="SDL" />
 			<Add library="opengl32" />
 			<Add library="lua51" />
-			<Add library="curldll" />
-			<Add library="c3m" />
+			<Add library="curl" />
 		</Linker>
 		<Unit filename="..\CGE\Camera.cpp" />
 		<Unit filename="..\CGE\Camera.h" />
