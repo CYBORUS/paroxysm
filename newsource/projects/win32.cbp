@@ -45,6 +45,7 @@
 			<Add library="opengl32" />
 			<Add library="lua51" />
 			<Add library="curl" />
+			<Add library="curldll" />
 		</Linker>
 		<Unit filename="..\CGE\Camera.cpp" />
 		<Unit filename="..\CGE\Camera.h" />

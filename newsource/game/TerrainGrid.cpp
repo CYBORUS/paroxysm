@@ -41,8 +41,7 @@ void TerrainGrid::create(size_t inRows, size_t inCols)
     mRows = inRows;
     mCols = inCols;
     mSize = mRows * mCols;
-    mHeights = new float[mSize];
-    memset(mHeights, 0, mSize * sizeof(float));
+    mHeights = Matrix<float>(inRows, inCols);
 }
 
 void TerrainGrid::buildVBO()
@@ -61,7 +60,7 @@ void TerrainGrid::buildVBO()
         {
             size_t slant = ((i % 2) + (j % 2)) % 2;
 
-            indices[t++] = toIndex(i, j);
+            indices[t++] = mHeights.toIndex(i, j);
             indices[t++] = toIndex(i + 1, j);
 
             if (slant)
@@ -118,6 +117,188 @@ void TerrainGrid::buildVBO()
     delete [] textureCoordinates;
     delete [] indices;
 }
+
+
+void TerrainGrid::set(int inRow, int inCol, float inHeight, bool inFindNormal)
+{
+    mHeights(inRow, inCol) = inHeight;
+
+    GLfloat vertex[3];
+    //GLfloat vertexNormal[3];
+
+    int k = mHeights(inRow, inCol) * 3;
+
+    vertex[0] = static_cast<GLfloat>(inCol);
+    vertex[1] = inHeight;
+    vertex[2] = static_cast<GLfloat>(inRow);
+
+//    mVertices[k] = static_cast<GLfloat>(inCol);
+//    mVertices[k + 1] = inHeight;
+//    mVertices[k + 2] = static_cast<GLfloat>(inRow);
+
+    if (inFindNormal)
+    {
+        findNormal(inRow, inCol);
+
+        if (inRow > 0)
+        {
+            findNormal(inRow - 1, inCol);
+
+            if (inCol > 0)
+            {
+                findNormal(inRow - 1, inCol - 1);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                findNormal(inRow - 1, inCol + 1);
+            }
+        }
+
+        if (inRow < mHeights.lastRow())
+        {
+            findNormal(inRow + 1, inCol);
+
+            if (inCol > 0)
+            {
+                findNormal(inRow + 1, inCol - 1);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                findNormal(inRow + 1, inCol + 1);
+            }
+        }
+
+        if (inCol > 0)
+        {
+            findNormal(inRow, inCol - 1);
+        }
+
+        if (inCol < mHeights.lastCol())
+        {
+            findNormal(inRow, inCol + 1);
+        }
+
+//        vertex[0] = mVertices[k];
+//        vertex[1] = mVertices[k + 1];
+//        vertex[2] = mVertices[k + 2];
+
+        //send the new vertex data to the video card
+        mVertexVBO.editData(vertex, k);
+//        glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
+//        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * k, sizeof(GLfloat) * 3, vertex);
+    }
+
+}
+
+
+float TerrainGrid::findHeight(float inX, float inY)
+{
+    int x = int(inX);
+    int y = int(inY);
+
+    //determine which direction the slant on each tile is
+    int slant = ((y % 2) + (x % 2)) % 2;
+
+/*
+    //we're outside the bounds of the terrain
+    if (x < 0 || x >= mHeights.cols() || z < 0 || z >= mHeights.rows())
+        return 0.0f;
+*/
+
+    //determine where we are on an individual tile
+    float xTest = inX - float(x);
+    float yTest = inY - float(y);
+
+    enum { NORTH, SOUTH, EAST, WEST } quadrant;
+
+    if (xTest + yTest < 1.0f)
+    {
+        if (xTest - yTest > 0.0f)
+            quadrant = NORTH; // north (1)
+        else
+            quadrant = WEST; // west (2)
+    }
+    else
+    {
+        if (xTest - yTest < 0.0f)
+            quadrant = SOUTH; // south (3)
+        else
+            quadrant = EAST; // east (4)
+    }
+
+    float a = 0.0f;
+    float b = 0.0f;
+    float t = 0.0f;
+
+    if (!slant)
+    {
+        switch (quadrant)
+        {
+            case NORTH:
+            case WEST:
+            {
+                a = linearInterpolate(toIndex(y, x), toIndex(y, x + 1),
+                    xTest);
+                b = linearInterpolate(toIndex(y + 1, x), toIndex(y, x + 1),
+                    xTest);
+                t = yTest / (1.0f - xTest); //need to deal with the divide by 0 case
+                break;
+            }
+
+            case SOUTH:
+            case EAST:
+            {
+                a = linearInterpolate(toIndex(y + 1, x), toIndex(y, x + 1),
+                    xTest);
+                b = linearInterpolate(toIndex(y + 1, x),
+                    toIndex(y + 1, x + 1), xTest);
+                t = (yTest - (1.0 - xTest)) / xTest; //again, possible divide by zero
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+    else
+    {
+        switch (quadrant)
+        {
+            case NORTH:
+            case EAST:
+            {
+                a = linearInterpolate(toIndex(y, x), toIndex(y, x + 1),
+                    xTest);
+                b = linearInterpolate(toIndex(y, x), toIndex(y + 1, x + 1),
+                    xTest);
+                t = yTest / xTest;
+                break;
+            }
+
+            case WEST:
+            case SOUTH:
+            {
+                a = linearInterpolate(toIndex(y + 1, x), toIndex(y + 1, x + 1),
+                    xTest);
+                b = linearInterpolate(toIndex(y, x), toIndex(y + 1, x + 1),
+                    xTest);
+                t = (1.0 - yTest) / (1.0 - xTest);
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+
+    return linearInterpolate(a, b, t);
+}
+
+
 
 void TerrainGrid::destroy()
 {

@@ -6,6 +6,8 @@
 #include <CGE/ClusterVBO.h>
 #include <CGE/Texture2D.h>
 #include <iostream>
+#include <CGE/Tools.h>
+#include <CGE/Matrix.h>
 
 class TerrainGrid
 {
@@ -20,6 +22,9 @@ class TerrainGrid
         friend std::ostream& operator<<(std::ostream& inStream,
             const TerrainGrid& inTerrainGrid);
 
+        void set(int inRow, int inCol, float inHeight, bool inFindNormal);
+        float findHeight(float inX, float inY);
+
     private:
         size_t toIndex(size_t inRow, size_t inCol);
         void create(size_t inRows, size_t inCols);
@@ -32,7 +37,7 @@ class TerrainGrid
         CGE::VertexBufferObject mTextureVBO;
         CGE::IndexVBO mIVBO;
 
-        float* mHeights;
+        Matrix<float> mHeights;
         size_t mRows;
         size_t mCols;
         size_t mSize;
