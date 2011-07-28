@@ -28,6 +28,8 @@ class MapEditorModule : public CGE::ManagedModule
                 bool inLeft, bool inRight, bool inMiddle);
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod,
                 Uint16 inUnicode);
+        virtual void onKeyUp(SDLKey inSym, SDLMod inMod,
+                Uint16 inUnicode);
 
         virtual void onResize(int inWidth, int inHeight);
 
@@ -42,9 +44,14 @@ class MapEditorModule : public CGE::ManagedModule
         CGE::Matrix4x4<GLfloat> mProjection;
         CGE::Matrix4x4<GLfloat> mModelView;
 
-        bool lClickDown;
-        int xStart;
-        int yStart;
+        bool mLeftClickDown;
+        bool mKeyDown;
+
+        int mXStart;
+        int mYStart;
+
+        float mXPan;
+        float mYPan;
 };
 
 #endif

@@ -7,7 +7,8 @@ using namespace std;
 MapEditorModule::MapEditorModule()
 {
     mModel = mManager.load("bradley.c3m");
-    lClickDown = false;
+    mLeftClickDown = false;
+    mKeyDown = false;
 }
 
 MapEditorModule::~MapEditorModule()
@@ -78,30 +79,33 @@ void MapEditorModule::onLoop()
 void MapEditorModule::onPulse()
 {
     mCamera.update();
+
+    if (mKeyDown)
+        mCamera.smartPan(mXPan, mYPan);
 }
 
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
-    if (lClickDown)
+    if (mLeftClickDown)
     {
-        mCamera.changeRotation(inX - xStart);
-        mCamera.changeAngle(inY - yStart);
-        xStart = inX;
-        yStart = inY;
+        mCamera.changeRotation(inX - mXStart);
+        mCamera.changeAngle(inY - mYStart);
+        mXStart = inX;
+        mYStart = inY;
     }
 }
 
 void MapEditorModule::onLButtonDown(int inX, int inY)
 {
-    lClickDown = true;
-    xStart = inX;
-    yStart = inY;
+    mLeftClickDown = true;
+    mXStart = inX;
+    mYStart = inY;
 }
 
 void MapEditorModule::onLButtonUp(int inX, int inY)
 {
-    lClickDown = false;
+    mLeftClickDown = false;
 }
 
 void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
@@ -113,18 +117,32 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
         mRunning = false;
         break;
     case SDLK_w:
-        mCamera.smartPan(0.0f, 1.0f);
+        mXPan = 0.0f;
+        mYPan = 0.5f;
+        mKeyDown = true;
         break;
     case SDLK_a:
-        mCamera.smartPan(-1.0f, 0.0f);
+        mXPan = -0.5f;
+        mYPan = 0.0f;
+        mKeyDown = true;
         break;
     case SDLK_s:
-        mCamera.smartPan(0.0f, -1.0f);
+        mXPan = 0.0f;
+        mYPan = -0.5f;
+        mKeyDown = true;
         break;
     case SDLK_d:
-        mCamera.smartPan(1.0f, 0.0f);
+        mXPan = 0.5f;
+        mYPan = 0.0f;
+        mKeyDown = true;
         break;
     }
+}
+
+void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod,
+    Uint16 inUnicode)
+{
+    mKeyDown = false;
 }
 
 void MapEditorModule::onResize(int inWidth, int inHeight)
