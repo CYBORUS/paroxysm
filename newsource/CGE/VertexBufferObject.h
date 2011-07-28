@@ -17,6 +17,8 @@ namespace CGE
             inline void bind() const { glBindBuffer(mTarget, mHandle); }
             void loadData(const GLvoid* inData, GLuint inSize,
                 GLuint inValuesPerUnit = 1);
+            void editData(const GLvoid* inData, GLuint inFirst,
+                GLuint inVertexCount = 1); // untested
             void enableVAA(GLuint inIndex);
             void disableVAA();
 

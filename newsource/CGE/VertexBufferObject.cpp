@@ -41,6 +41,17 @@ namespace CGE
             mUsage);
     }
 
+    void VertexBufferObject::editData(const GLvoid* inData, GLuint inFirst,
+        GLuint inVertexCount)
+    {
+        assert(inData != NULL);
+        assert(inVertexCount > 0);
+
+        bind();
+        glBufferSubData(mTarget, mTypeSize * mValuesPerUnit * inFirst,
+            mTypeSize * mValuesPerUnit * inVertexCount, inData);
+    }
+
     // enableVAA == enable vertex attrib array
     void VertexBufferObject::enableVAA(GLuint inIndex)
     {
