@@ -26,6 +26,8 @@ class MapEditorModule : public CGE::ManagedModule
         virtual void onLButtonUp(int inX, int inY);
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 bool inLeft, bool inRight, bool inMiddle);
+        virtual void onKeyDown(SDLKey inSym, SDLMod inMod,
+                Uint16 inUnicode);
 
         virtual void onResize(int inWidth, int inHeight);
 

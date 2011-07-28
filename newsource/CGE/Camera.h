@@ -21,6 +21,8 @@ namespace CGE
             void setAngle(float inAngle);
             void changeAngle(float inOffset);
             void setPosition(float inX, float inY, float inZ);
+            void changePosition(float inX, float inY, float inZ);
+            void smartPan(float inX, float inY);
 
         private:
             mat4f mMatrix;

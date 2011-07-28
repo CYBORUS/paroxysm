@@ -104,6 +104,23 @@ void MapEditorModule::onLButtonUp(int inX, int inY)
     lClickDown = false;
 }
 
+void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
+    Uint16 inUnicode)
+{
+    switch (inSym)
+    {
+    case SDLK_w:
+        mCamera.smartPan(1.0f, 0.0f);
+        break;
+    case SDLK_a:
+        break;
+    case SDLK_s:
+        break;
+    case SDLK_d:
+        break;
+    }
+}
+
 void MapEditorModule::onResize(int inWidth, int inHeight)
 {
     GLfloat ratio = static_cast<GLfloat>(inWidth)

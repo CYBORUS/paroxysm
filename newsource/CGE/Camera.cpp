@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Tools.h"
 
 namespace CGE
 {
@@ -64,4 +65,24 @@ namespace CGE
         mPosition[1] = inY;
         mPosition[2] = inZ;
     }
+
+    void Camera::changePosition(float inX, float inY, float inZ)
+    {
+        mPosition[0] = inX;
+        mPosition[1] = inY;
+        mPosition[2] = inZ;
+    }
+
+    void Camera::smartPan(float inX, float inY)
+    {
+         float theta = TO_RADIANS(mRotation);
+         float dxp = cos(theta) * inX;
+         float dyp = sin(theta) * inX;
+         dxp -= sin(theta) * inY;
+         dyp += cos(theta) * inY;
+
+         mPosition[0] += dxp;
+         mPosition[1] += dyp;
+    }
+
 }
