@@ -89,8 +89,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 {
     if (mLeftClickDown)
     {
-        mCamera.changeRotation(inX - mXStart);
-        mCamera.changeAngle(inY - mYStart);
+        mCamera.changeRotation((inX - mXStart)/2);
+        mCamera.changeAngle((inY - mYStart)/2);
         mXStart = inX;
         mYStart = inY;
     }
