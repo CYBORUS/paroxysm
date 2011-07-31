@@ -16,6 +16,14 @@ class MapEditorModule : public CGE::ManagedModule
         MapEditorModule();
         virtual ~MapEditorModule();
 
+        enum MouseState
+        {
+            NONE,
+            ROTATING,
+            PANNING,
+            EDITING_TERRAIN
+        };
+
         virtual void onLoad(CGE::PropertyList& inList);
         virtual void onUnload();
         virtual void onOpen();
