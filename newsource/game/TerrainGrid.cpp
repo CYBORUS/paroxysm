@@ -3,7 +3,7 @@
 
 using namespace CGE;
 
-TerrainGrid::TerrainGrid() : mVBO(2), mHeights(NULL), mRows(0), mCols(0),
+TerrainGrid::TerrainGrid() : mVBO(2), mHeights(4), mRows(0), mCols(0),
     mSize(0)
 {
     mTexture.loadImage("assets/images/green.png");
@@ -41,8 +41,7 @@ void TerrainGrid::create(size_t inRows, size_t inCols)
     mRows = inRows;
     mCols = inCols;
     mSize = mRows * mCols;
-    mHeights = new float[mSize];
-    memset(mHeights, 0, mSize * sizeof(float));
+    mHeights = Matrix<float>(inRows, inCols);
 }
 
 void TerrainGrid::buildVBO()
@@ -61,7 +60,7 @@ void TerrainGrid::buildVBO()
         {
             size_t slant = ((i % 2) + (j % 2)) % 2;
 
-            indices[t++] = toIndex(i, j);
+            indices[t++] = mHeights.toIndex(i, j);
             indices[t++] = toIndex(i + 1, j);
 
             if (slant)
@@ -119,16 +118,506 @@ void TerrainGrid::buildVBO()
     delete [] indices;
 }
 
+
+void TerrainGrid::set(int inRow, int inCol, float inHeight, bool inFindNormal)
+{
+    mHeights(inRow, inCol) = inHeight;
+
+    GLfloat vertex[3];
+    //GLfloat vertexNormal[3];
+
+    int k = mHeights.toIndex(inRow, inCol) * 3;
+
+    vertex[0] = static_cast<GLfloat>(inCol);
+    vertex[1] = inHeight;
+    vertex[2] = static_cast<GLfloat>(inRow);
+
+//    mVertices[k] = static_cast<GLfloat>(inCol);
+//    mVertices[k + 1] = inHeight;
+//    mVertices[k + 2] = static_cast<GLfloat>(inRow);
+
+    if (inFindNormal)
+    {
+        findNormal(inRow, inCol);
+
+        if (inRow > 0)
+        {
+            findNormal(inRow - 1, inCol);
+
+            if (inCol > 0)
+            {
+                findNormal(inRow - 1, inCol - 1);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                findNormal(inRow - 1, inCol + 1);
+            }
+        }
+
+        if (inRow < mHeights.lastRow())
+        {
+            findNormal(inRow + 1, inCol);
+
+            if (inCol > 0)
+            {
+                findNormal(inRow + 1, inCol - 1);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                findNormal(inRow + 1, inCol + 1);
+            }
+        }
+
+        if (inCol > 0)
+        {
+            findNormal(inRow, inCol - 1);
+        }
+
+        if (inCol < mHeights.lastCol())
+        {
+            findNormal(inRow, inCol + 1);
+        }
+
+//        vertex[0] = mVertices[k];
+//        vertex[1] = mVertices[k + 1];
+//        vertex[2] = mVertices[k + 2];
+
+        //send the new vertex data to the video card
+        mVertexVBO.editData(vertex, k);
+//        glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
+//        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * k, sizeof(GLfloat) * 3, vertex);
+    }
+
+}
+
+
+float TerrainGrid::findHeight(float inX, float inY)
+{
+    int x = int(inX);
+    int y = int(inY);
+
+    //determine which direction the slant on each tile is
+    int slant = ((y % 2) + (x % 2)) % 2;
+
+/*
+    //we're outside the bounds of the terrain
+    if (x < 0 || x >= mHeights.cols() || z < 0 || z >= mHeights.rows())
+        return 0.0f;
+*/
+
+    //determine where we are on an individual tile
+    float xTest = inX - float(x);
+    float yTest = inY - float(y);
+
+    enum { NORTH, SOUTH, EAST, WEST } quadrant;
+
+    if (xTest + yTest < 1.0f)
+    {
+        if (xTest - yTest > 0.0f)
+            quadrant = NORTH; // north (1)
+        else
+            quadrant = WEST; // west (2)
+    }
+    else
+    {
+        if (xTest - yTest < 0.0f)
+            quadrant = SOUTH; // south (3)
+        else
+            quadrant = EAST; // east (4)
+    }
+
+    float a = 0.0f;
+    float b = 0.0f;
+    float t = 0.0f;
+
+    if (!slant)
+    {
+        switch (quadrant)
+        {
+            case NORTH:
+            case WEST:
+            {
+                a = linearInterpolate(toIndex(y, x), toIndex(y, x + 1),
+                    xTest);
+                b = linearInterpolate(toIndex(y + 1, x), toIndex(y, x + 1),
+                    xTest);
+                t = yTest / (1.0f - xTest); //need to deal with the divide by 0 case
+                break;
+            }
+
+            case SOUTH:
+            case EAST:
+            {
+                a = linearInterpolate(toIndex(y + 1, x), toIndex(y, x + 1),
+                    xTest);
+                b = linearInterpolate(toIndex(y + 1, x),
+                    toIndex(y + 1, x + 1), xTest);
+                t = (yTest - (1.0 - xTest)) / xTest; //again, possible divide by zero
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+    else
+    {
+        switch (quadrant)
+        {
+            case NORTH:
+            case EAST:
+            {
+                a = linearInterpolate(toIndex(y, x), toIndex(y, x + 1),
+                    xTest);
+                b = linearInterpolate(toIndex(y, x), toIndex(y + 1, x + 1),
+                    xTest);
+                t = yTest / xTest;
+                break;
+            }
+
+            case WEST:
+            case SOUTH:
+            {
+                a = linearInterpolate(toIndex(y + 1, x), toIndex(y + 1, x + 1),
+                    xTest);
+                b = linearInterpolate(toIndex(y, x), toIndex(y + 1, x + 1),
+                    xTest);
+                t = (1.0 - yTest) / (1.0 - xTest);
+                break;
+            }
+
+            default:
+            {
+            }
+        }
+    }
+
+    return linearInterpolate(a, b, t);
+}
+
+
+
+void TerrainGrid::findNormal(int inRow, int inCol)
+{
+    GLfloat k = mHeights(inRow, inCol);
+    int slant = ((inRow % 2) + (inCol % 2)) % 2;
+    vector< vec3f > normals;
+
+    vec3f a;
+    vec3f b;
+    vec3f c;
+    GLfloat t;
+
+    //cout << "\nfinding normal for row " << inRow << " col " << inCol << endl;
+
+    if (!slant)
+    {
+        // center of a diamond (four triangles to average)
+
+        if (inRow > 0)
+        {
+            if (inCol > 0)
+            {
+                // upper left triangle
+                //cout << "upper left triangle" << endl;
+
+                t = mHeights(inRow, inCol - 1);
+
+                a[0] = -1.0f;
+                a[1] = 0.0f;
+                a[2] = t - k;
+
+                t = mHeights(inRow - 1, inCol);
+
+                b[0] = 0.0f;
+                b[1] = -1.0f;
+                b[2] = t - k;
+
+                //c = b ^ a;
+                cross(b.getData(), a.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                normalize3(c.getData());
+                normals.push_back(c);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                // upper right triangle
+                //cout << "upper right triangle" << endl;
+
+                t = mHeights(inRow, inCol + 1);
+
+                a[0] = 1.0f;
+                a[1] = 0.0f;
+                a[2] = t - k;
+
+                t = mHeights(inRow - 1, inCol);
+
+                b[0] = 0.0f;
+                b[1] = -1.0f;
+                b[2] = t - k;
+
+                //c = a ^ b;
+                cross(a.getData(), b.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+            }
+        }
+
+        if (inRow < mHeights.lastRow())
+        {
+            if (inCol > 0)
+            {
+                // lower left triangle
+                //cout << "lower left triangle" << endl;
+
+                t = mHeights(inRow, inCol - 1);
+
+                a[0] = -1.0f;
+                a[1] = 0.0f;
+                a[2] = t - k;
+
+                t = mHeights(inRow + 1, inCol);
+
+                b[0] = 0.0f;
+                b[1] = 1.0f;
+                b[2] = t - k;
+
+                //c = a ^ b;
+                cross(a.getData(), b.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                // lower right triangle
+                //cout << "lower right triangle" << endl;
+
+                t = mHeights(inRow, inCol + 1);
+
+                a[0] = 1.0f;
+                a[1] = 0.0f;
+                a[2] = t - k;
+
+                t = mHeights(inRow + 1, inCol);
+
+                b[0] = 0.0f;
+                b[1] = 1.0f;
+                b[2] = t - k;
+
+                //c = b ^ a;
+                cross(b.getData(), a.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+            }
+        }
+    }
+    else
+    {
+        // center of a square (eight triangles to average)
+
+        if (inRow > 0)
+        {
+            if (inCol > 0)
+            {
+                // upper left triangles
+                //cout << "upper left triangles" << endl;
+
+                t = mHeights(inRow, inCol - 1);
+
+                a[0] = -1.0f;
+                a[1] = 0.0f;
+                a[2] = t - k;
+
+                t = mHeights(inRow - 1, inCol - 1);
+
+                b[0] = -1.0f;
+                b[1] = -1.0f;
+                b[2] = t - k;
+
+                //c = b ^ a;
+                cross(b.getData(), a.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+
+                t = mHeights(inRow - 1, inCol);
+
+                a[0] = 0.0f;
+                a[1] = -1.0f;
+                a[2] = t - k;
+
+                //c = a ^ b;
+                cross(a.getData(), b.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                // upper right triangles
+                //cout << "upper right triangles" << endl;
+                t = mHeights(inRow - 1, inCol);
+
+                a[0] = 0.0f;
+                a[1] = -1.0f;
+                a[2] = t - k;
+
+                t = mHeights(inRow - 1, inCol + 1);
+
+                b[0] = 1.0f;
+                b[1] = -1.0f;
+                b[2] = t - k;
+
+                //c = b ^ a;
+                cross(b.getData(), a.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+
+                t = mHeights(inRow, inCol + 1);
+
+                a[0] = 1.0f;
+                a[1] = 0.0f;
+                a[2] = t - k;
+
+                //c = a ^ b;
+                cross(a.getData(), b.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+            }
+        }
+
+        if (inRow < mHeights.lastRow())
+        {
+            if (inCol > 0)
+            {
+                // lower left triangles
+                //cout << "lower left triangles" << endl;
+
+                t = mHeights(inRow, inCol - 1);
+
+                a[0] = -1.0f;
+                a[1] = 0.0f;
+                a[2] = t - k;
+
+                t = mHeights(inRow + 1, inCol - 1);
+
+                b[0] = -1.0f;
+                b[1] = 1.0f;
+                b[2] = t - k;
+
+                //c = a ^ b;
+                cross(a.getData(), b.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+
+                t = mHeights(inRow + 1, inCol);
+
+                a[0] = 0.0f;
+                a[1] = 1.0f;
+                a[2] = t - k;
+
+                //c = b ^ a;
+                cross(b.getData(), a.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+            }
+
+            if (inCol < mHeights.lastCol())
+            {
+                // lower right triangles
+                //cout << "lower right triangles" << endl;
+
+                t = mHeights(inRow, inCol + 1);
+
+                a[0] = 1.0f;
+                a[1] = 0.0f;
+                a[2] = t - k;
+
+                t = mHeights(inRow + 1, inCol + 1);
+
+                b[0] = 1.0f;
+                b[1] = 1.0f;
+                b[2] = t - k;
+
+                //c = b ^ a;
+                cross(b.getData(), a.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+
+                t = mHeights(inRow + 1, inCol);
+
+                a[0] = 0.0f;
+                a[1] = 1.0f;
+                a[2] = t - k;
+
+                //c = a ^ b;
+                cross(a.getData(), b.getData(), c.getData());
+                //cout << "abc: " << a << " | " << b << " | " << c << endl;
+                //c.normalize();
+                normalize3(c.getData());
+                normals.push_back(c);
+            }
+        }
+    }
+
+    vec3f normal;
+    for (size_t i = 0; i < normals.size(); ++i)
+    {
+        //normal += normals[i];
+        addVectors<float, 3>(normal.getData(), normals[i].getData(), normal.getData());
+    }
+
+    //normal.normalize();
+    normalize3(normal.getData());
+
+    //TODO: Add normal buffer and modify it here
+
+    //cout << "final " << normal << endl;
+
+//    mNormals[k] = normal[0];
+//    mNormals[k + 1] = normal[1];
+//    mNormals[k + 2] = normal[2];
+
+//    glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[NORMAL_DATA]);
+//    glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * k, sizeof(GLfloat) * 3, normal.array());
+
+}
+
+
 void TerrainGrid::destroy()
 {
-    if (mHeights)
-    {
-        delete [] mHeights;
-        mHeights = NULL;
-        mRows = 0;
-        mCols = 0;
-        mSize = 0;
-    }
+//    if (mHeights)
+//    {
+//        delete [] mHeights;
+//        mHeights = NULL;
+//        mRows = 0;
+//        mCols = 0;
+//        mSize = 0;
+//    }
 }
 
 std::istream& operator>>(std::istream& inStream, TerrainGrid& inTerrainGrid)

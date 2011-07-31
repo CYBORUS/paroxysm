@@ -104,6 +104,8 @@ namespace CGE
             inline operator T*() { return mData; }
             inline operator const T*() const { return mData; }
 
+            inline T* getData() { return mData; }
+
             inline Vector& operator=(const T* inVector)
             {
                 memcpy(mData, inVector, sizeof(T) * N);
