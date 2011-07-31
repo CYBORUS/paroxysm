@@ -73,6 +73,7 @@
 		<Unit filename="..\CGE\LuaMachine.h" />
 		<Unit filename="..\CGE\ManagedModule.cpp" />
 		<Unit filename="..\CGE\ManagedModule.h" />
+		<Unit filename="..\CGE\Matrix.h" />
 		<Unit filename="..\CGE\Matrix4x4.h" />
 		<Unit filename="..\CGE\Model.cpp" />
 		<Unit filename="..\CGE\Model.h" />

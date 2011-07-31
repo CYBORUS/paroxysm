@@ -8,6 +8,8 @@
 #include <iostream>
 #include <CGE/Tools.h>
 #include <CGE/Matrix.h>
+#include <vector>
+#include <CGE/Vectors.h>
 
 class TerrainGrid
 {
@@ -24,6 +26,7 @@ class TerrainGrid
 
         void set(int inRow, int inCol, float inHeight, bool inFindNormal);
         float findHeight(float inX, float inY);
+        void findNormal(int inRow, int inCol);
 
     private:
         size_t toIndex(size_t inRow, size_t inCol);
