@@ -85,7 +85,7 @@ void MapEditorModule::onPulse()
 }
 
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
-    bool inLeft, bool inRight, bool inMiddle)
+                                  bool inLeft, bool inRight, bool inMiddle)
 {
     if (mLeftClickDown)
     {
@@ -94,61 +94,114 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         mXStart = inX;
         mYStart = inY;
     }
+
+    switch(mMouseState)
+    {
+        case PANNING:
+        {
+            mCamera.smartPan(-inRelX * 0.1f, inRelY * 0.1f);
+            break;
+        }
+
+        case ROTATING:
+        {
+            mCamera.changeAngle(inRelY);
+            mCamera.changeRotation(inRelX);
+            break;
+        }
+    }
 }
 
 void MapEditorModule::onLButtonDown(int inX, int inY)
 {
-    mLeftClickDown = true;
-    mXStart = inX;
-    mYStart = inY;
+    Uint8 *keys = SDL_GetKeyState(NULL);
+
+    if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
+    {
+        mMouseState = PANNING;
+    }
+
 }
 
 void MapEditorModule::onLButtonUp(int inX, int inY)
 {
-    mLeftClickDown = false;
+    mMouseState = NONE;
+}
+
+void MapEditorModule::onRButtonDown(int inX, int inY)
+{
+    mMouseState = ROTATING;
+}
+
+void MapEditorModule::onRButtonUp(int inX, int inY)
+{
+    mMouseState = NONE;
 }
 
 void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
-    Uint16 inUnicode)
+                                Uint16 inUnicode)
 {
     switch (inSym)
     {
-    case SDLK_ESCAPE:
-        mRunning = false;
-        break;
-    case SDLK_w:
-        mXPan = 0.0f;
-        mYPan = 0.5f;
-        mKeyDown = true;
-        break;
-    case SDLK_a:
-        mXPan = -0.5f;
-        mYPan = 0.0f;
-        mKeyDown = true;
-        break;
-    case SDLK_s:
-        mXPan = 0.0f;
-        mYPan = -0.5f;
-        mKeyDown = true;
-        break;
-    case SDLK_d:
-        mXPan = 0.5f;
-        mYPan = 0.0f;
-        mKeyDown = true;
-        break;
+        case SDLK_ESCAPE:
+        {
+            mRunning = false;
+            break;
+        }
+        case SDLK_w:
+        {
+            mXPan = 0.0f;
+            mYPan = 0.5f;
+            mKeyDown = true;
+            break;
+        }
+        case SDLK_a:
+        {
+            mXPan = -0.5f;
+            mYPan = 0.0f;
+            mKeyDown = true;
+            break;
+        }
+        case SDLK_s:
+        {
+            mXPan = 0.0f;
+            mYPan = -0.5f;
+            mKeyDown = true;
+            break;
+        }
+        case SDLK_d:
+        {
+            mXPan = 0.5f;
+            mYPan = 0.0f;
+            mKeyDown = true;
+            break;
+        }
     }
 }
 
 void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod,
-    Uint16 inUnicode)
+                              Uint16 inUnicode)
 {
     mKeyDown = false;
+}
+
+
+void MapEditorModule::onMouseWheel(bool inUp)
+{
+    if (inUp)
+    {
+        mCamera.changeDistance(-0.5f);
+    }
+    else
+    {
+        mCamera.changeDistance(0.5f);
+    }
 }
 
 void MapEditorModule::onResize(int inWidth, int inHeight)
 {
     GLfloat ratio = static_cast<GLfloat>(inWidth)
-        / static_cast<GLfloat>(inHeight);
+                    / static_cast<GLfloat>(inHeight);
     mProjection.loadIdentity();
     mProjection.perspective(30.0f, ratio, 1.0f, 1000.0f);
     glViewport(0, 0, inWidth, inHeight);

@@ -140,12 +140,12 @@ namespace CGE
                     }
                     case SDL_BUTTON_WHEELUP:
                     {
-                        onMouseWheel(true, false);
+                        onMouseWheel(true);
                         break;
                     }
                     case SDL_BUTTON_WHEELDOWN:
                     {
-                        onMouseWheel(false, true);
+                        onMouseWheel(false);
                         break;
                     }
                 }
@@ -248,7 +248,7 @@ namespace CGE
     {
     }
 
-    void Module::onMouseWheel(bool inUp, bool inDown)
+    void Module::onMouseWheel(bool inUp)
     {
     }
 

@@ -32,12 +32,16 @@ class MapEditorModule : public CGE::ManagedModule
         virtual void onPulse();
         virtual void onLButtonDown(int inX, int inY);
         virtual void onLButtonUp(int inX, int inY);
+        virtual void onRButtonDown(int inX, int inY);
+        virtual void onRButtonUp(int inX, int inY);
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 bool inLeft, bool inRight, bool inMiddle);
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod,
                 Uint16 inUnicode);
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod,
                 Uint16 inUnicode);
+
+        virtual void onMouseWheel(bool inUp);
 
         virtual void onResize(int inWidth, int inHeight);
 
@@ -46,6 +50,8 @@ class MapEditorModule : public CGE::ManagedModule
         TerrainGrid mGrid;
         CGE::Model* mModel;
         CGE::ResourceManager<CGE::Model> mManager;
+
+        MouseState mMouseState;
 
 
         CGE::Camera mCamera;
