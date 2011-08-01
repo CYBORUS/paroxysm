@@ -35,7 +35,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
         throw CGE::Exception("", "no map to load");
-    int size = 20;
+    int size = 200;
     //fin >> mGrid;
     mGrid.create(size, size);
     mGrid.buildVBO();
@@ -128,7 +128,6 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
     else
     {
         int closestRow = int(tempPoint[1] + 0.5);
-        cerr << "y: " << tempPoint[1] << " closest: " << closestRow << endl;
         if (closestRow >= numRows)
         {
             closestRow = numRows - 1;
@@ -193,9 +192,9 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 dy = 0;
             }
             //cerr << "vertex before: " << mClickedVertex[1];
-            mClickedVertex[1] += (dy * VERTEX_STEP);
+            mClickedVertex[2] += (dy * VERTEX_STEP);
 
-
+            mGrid.set((int)mClickedVertex[0], (int)mClickedVertex[1], mClickedVertex[2], false);
 
             break;
         }
