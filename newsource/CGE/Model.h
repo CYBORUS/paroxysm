@@ -4,6 +4,7 @@
 #include "Texture2D.h"
 #include "c3m.h"
 #include "ClusterVBO.h"
+#include <CGE/Matrix4x4.h>
 
 #include <string>
 #include <iostream>
@@ -22,6 +23,10 @@ namespace CGE
                 mClusterVBO.display();
             }
 
+            void setTranslation(vec3f inTranslation);
+            vec3f getTranslation();
+            inline Matrix4x4<float> getPosition() { return mTranslation; }
+
         private:
 
             void loadC3M(const char* inFile);
@@ -30,6 +35,8 @@ namespace CGE
             CGE::ClusterVBO mClusterVBO;
             CGE::VertexBufferObject mBuffers[4];
             CGE::IndexVBO mIVBO;
+            CGE::Matrix4x4<float> mTranslation;
+            vec3f mTranslationValues;
     };
 }
 

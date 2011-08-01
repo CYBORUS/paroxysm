@@ -7,6 +7,7 @@ using namespace std;
 MapEditorModule::MapEditorModule()
 {
     mModel = mManager.load("bradley.c3m");
+    mSphere = mManager.load("cube_texture.c3m");
     mLeftClickDown = false;
     mKeyDown = false;
 }
@@ -34,7 +35,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
         throw CGE::Exception("", "no map to load");
-    int size = 500;
+    int size = 20;
     //fin >> mGrid;
     mGrid.create(size, size);
     mGrid.buildVBO();
@@ -77,6 +78,9 @@ void MapEditorModule::onLoop()
     mProgram.setMatrix(mvp);
     mGrid.display();
     mModel->display();
+
+    mProgram.setMatrix(mvp * mSphere->getPosition());
+    mSphere->display();
 }
 
 void MapEditorModule::onPulse()
@@ -92,9 +96,7 @@ vec3f MapEditorModule::selectVertex(int inX, int inY)
 {
     vec3f currentVertex;
 
-    GLdouble tempX = 0;
-    GLdouble tempY = 0;
-    GLdouble tempZ = 0;
+    vec3f tempPoint;
 
     GLfloat depthZ = 0;
 
@@ -106,34 +108,40 @@ vec3f MapEditorModule::selectVertex(int inX, int inY)
     glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
 
     //now let the glu library do the math for us :)
-    if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView, mProjection, mViewport, &tempX, &tempY, &tempZ) == GL_FALSE)
+//    if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView, mProjection, mViewport, &tempX, &tempY, &tempZ) == GL_FALSE)
+//    {
+//        cerr << "gluUnProject failed." << endl;
+//    }
+
+    if (!unproject((GLfloat)inX, (GLfloat)newY, depthZ, mProjection * mModelView, mViewport, tempPoint))
     {
-        cerr << "gluUnProject failed." << endl;
+        cerr << "unproject failed." << endl;
     }
 
-    int numRows = mTerrainGrid.getMatrix().rows();
-    int numCols = mTerrainGrid.getMatrix().cols();
+    int numRows = mGrid.getMatrix().rows();
+    int numCols = mGrid.getMatrix().cols();
 
-    if (tempZ >= numRows || tempZ < 0 || tempX >= numCols || tempX < 0)
+    if (tempPoint[1] >= numRows || tempPoint[1] < 0 || tempPoint[0] >= numCols || tempPoint[0] < 0)
     {
-        currentVertex = mSphere.getTranslation();
+        currentVertex = mSphere->getTranslation();
     }
     else
     {
-        int closestRow = int(tempZ + 0.5);
+        int closestRow = int(tempPoint[1] + 0.5);
+        cerr << "y: " << tempPoint[1] << " closest: " << closestRow << endl;
         if (closestRow >= numRows)
         {
             closestRow = numRows - 1;
         }
-        int closestColumn = int(tempX + 0.5);
+        int closestColumn = int(tempPoint[0] + 0.5);
         if (closestColumn >= numCols)
         {
             closestColumn = numCols - 1;
         }
 
-        currentVertex = mTerrainGrid.getVertex(closestRow, closestColumn);
+        currentVertex = mGrid.getVertex(closestRow, closestColumn);
     }
-
+    //currentVertex[0] = 1.0f;
     //return mTerrainGrid.getVertex(closestRow, closestColumn);
     return currentVertex;
 }
@@ -151,6 +159,17 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
     switch(mMouseState)
     {
+        case NONE:
+        {
+            vec3f hoverVertex = selectVertex(inX, inY);
+            hoverVertex[0] -= 0.5;
+            hoverVertex[1] -= 0.5;
+            hoverVertex[2] -= 0.5;
+            mSphere->setTranslation(hoverVertex);
+            //cerr << "sphere pos: " << hoverVertex[0] << ", " << hoverVertex[1] << ", " << hoverVertex[2] << endl;
+            break;
+        }
+
         case PANNING:
         {
             mCamera.smartPan(-inRelX * 0.1f, inRelY * 0.1f);
@@ -163,6 +182,14 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             mCamera.changeRotation(inRelX);
             break;
         }
+
+        case EDITING_TERRAIN:
+        {
+
+            break;
+        }
+
+
     }
 }
 
@@ -173,6 +200,11 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
     if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
     {
         mMouseState = PANNING;
+    }
+    else
+    {
+        mClickedVertex = selectVertex(inX, inY);
+        mMouseState = EDITING_TERRAIN;
     }
 
 }
@@ -259,4 +291,9 @@ void MapEditorModule::onResize(int inWidth, int inHeight)
     mProjection.loadIdentity();
     mProjection.perspective(30.0f, ratio, 1.0f, 1000.0f);
     glViewport(0, 0, inWidth, inHeight);
+    glGetIntegerv(GL_VIEWPORT, mViewport);
+//    mViewport[0] = 0;
+//    mViewport[1] = 0;
+//    mViewport[2] = inWidth;
+//    mViewport[3] = inHeight;
 }

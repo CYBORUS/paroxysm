@@ -55,7 +55,7 @@ void TerrainGrid::buildVBO()
 
     if (memChunk == NULL)
     {
-        throw CGE::Exception("", "Error: not enough memory to load terrain.  Try decreasing fog distance.")
+        throw CGE::Exception("", "Error: not enough memory to load terrain.  Try decreasing fog distance.");
     }
 
     GLuint* indices = (GLuint*)memChunk;
@@ -664,6 +664,18 @@ void TerrainGrid::destroy()
 //        mCols = 0;
 //        mSize = 0;
 //    }
+}
+
+
+vec3f TerrainGrid::getVertex(int inRow, int inCol)
+{
+    vec3f outVector;
+    outVector[0] = inCol;
+    outVector[1] = inRow;
+    outVector[2] = mHeights(inRow, inCol);
+    //for (int i = 0; i < 3; ++i) outVector[i] = mVertices[k + i];
+    return outVector;
+
 }
 
 std::istream& operator>>(std::istream& inStream, TerrainGrid& inTerrainGrid)

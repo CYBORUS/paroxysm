@@ -30,6 +30,9 @@ class TerrainGrid
         void create(size_t inRows, size_t inCols);
         void buildVBO();
 
+        inline Matrix<float> getMatrix() { return mHeights; }
+        vec3f getVertex(int inRow, int inCol);
+
     private:
         size_t toIndex(size_t inRow, size_t inCol);
         void destroy();

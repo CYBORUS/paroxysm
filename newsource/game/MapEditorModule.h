@@ -8,6 +8,7 @@
 #include <CGE/Model.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/Vectors.h>
+#include <CGE/Graphics.h>
 #include "TerrainGrid.h"
 #include "GeneralProgram.h"
 
@@ -54,13 +55,16 @@ class MapEditorModule : public CGE::ManagedModule
         CGE::Model* mModel;
         CGE::ResourceManager<CGE::Model> mManager;
 
+        CGE::Model* mSphere;
+        vec3f mClickedVertex;
+
         MouseState mMouseState;
 
 
         CGE::Camera mCamera;
         CGE::Matrix4x4<GLfloat> mProjection;
         CGE::Matrix4x4<GLfloat> mModelView;
-        vec4f mViewport;
+        CGE::Vector<GLint, 4> mViewport;
 
         bool mLeftClickDown;
         bool mKeyDown;
