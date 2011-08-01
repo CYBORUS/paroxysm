@@ -92,11 +92,11 @@ void MapEditorModule::onPulse()
 }
 
 
-vec3f MapEditorModule::selectVertex(int inX, int inY)
+vec4f MapEditorModule::selectVertex(int inX, int inY)
 {
-    vec3f currentVertex;
+    vec4f currentVertex;
 
-    vec3f tempPoint;
+    vec4f tempPoint;
 
     GLfloat depthZ = 0;
 
@@ -161,7 +161,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     {
         case NONE:
         {
-            vec3f hoverVertex = selectVertex(inX, inY);
+            vec4f hoverVertex = selectVertex(inX, inY);
             hoverVertex[0] -= 0.5;
             hoverVertex[1] -= 0.5;
             hoverVertex[2] -= 0.5;
@@ -185,6 +185,15 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
         case EDITING_TERRAIN:
         {
+            GLfloat dy = -(inRelY);
+            dy /= abs(dy);
+
+            if (dy != 1 && dy != -1)
+            {
+                dy = 0;
+            }
+            //cerr << "vertex before: " << mClickedVertex[1];
+            mClickedVertex[1] += (dy * VERTEX_STEP);
 
             break;
         }

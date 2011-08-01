@@ -131,7 +131,7 @@ namespace CGE
     }
 
 
-    void Model::setTranslation(vec3f inTranslation)
+    void Model::setTranslation(vec4f inTranslation)
     {
         mTranslation.loadIdentity();
         mTranslation.translate(inTranslation[0], inTranslation[1], inTranslation[2]);

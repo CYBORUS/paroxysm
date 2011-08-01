@@ -12,6 +12,9 @@
 #include "TerrainGrid.h"
 #include "GeneralProgram.h"
 
+#define VERTEX_STEP 0.1f
+
+
 class MapEditorModule : public CGE::ManagedModule
 {
     public:
@@ -48,7 +51,7 @@ class MapEditorModule : public CGE::ManagedModule
         virtual void onResize(int inWidth, int inHeight);
 
     private:
-        vec3f selectVertex(int inX, int inY);
+        vec4f selectVertex(int inX, int inY);
 
         GeneralProgram mProgram;
         TerrainGrid mGrid;
@@ -56,7 +59,7 @@ class MapEditorModule : public CGE::ManagedModule
         CGE::ResourceManager<CGE::Model> mManager;
 
         CGE::Model* mSphere;
-        vec3f mClickedVertex;
+        vec4f mClickedVertex;
 
         MouseState mMouseState;
 

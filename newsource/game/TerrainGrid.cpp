@@ -667,12 +667,13 @@ void TerrainGrid::destroy()
 }
 
 
-vec3f TerrainGrid::getVertex(int inRow, int inCol)
+vec4f TerrainGrid::getVertex(int inRow, int inCol)
 {
-    vec3f outVector;
+    vec4f outVector;
     outVector[0] = inCol;
     outVector[1] = inRow;
     outVector[2] = mHeights(inRow, inCol);
+    outVector[3] = 1.0f;
     //for (int i = 0; i < 3; ++i) outVector[i] = mVertices[k + i];
     return outVector;
 

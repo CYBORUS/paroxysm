@@ -23,7 +23,7 @@ namespace CGE
                 mClusterVBO.display();
             }
 
-            void setTranslation(vec3f inTranslation);
+            void setTranslation(vec4f inTranslation);
             vec3f getTranslation();
             inline Matrix4x4<float> getPosition() { return mTranslation; }
 
