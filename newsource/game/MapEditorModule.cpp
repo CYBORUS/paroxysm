@@ -195,6 +195,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             mClickedVertex[2] += (dy * VERTEX_STEP);
 
             mGrid.set((int)mClickedVertex[0], (int)mClickedVertex[1], mClickedVertex[2], false);
+            mSphere->setTranslation(mClickedVertex);
 
             break;
         }
