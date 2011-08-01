@@ -175,8 +175,8 @@ void TerrainGrid::set(int inRow, int inCol, float inHeight, bool inFindNormal)
     int k = mHeights.toIndex(inRow, inCol);
 
     vertex[0] = static_cast<GLfloat>(inCol);
-    vertex[1] = inHeight;
-    vertex[2] = static_cast<GLfloat>(inRow);
+    vertex[2] = inHeight;
+    vertex[1] = static_cast<GLfloat>(inRow);
 
 //    mVertices[k] = static_cast<GLfloat>(inCol);
 //    mVertices[k + 1] = inHeight;
