@@ -27,11 +27,11 @@ class TerrainGrid
         void set(int inRow, int inCol, float inHeight, bool inFindNormal);
         float findHeight(float inX, float inY);
         void findNormal(int inRow, int inCol);
+        void create(size_t inRows, size_t inCols);
+        void buildVBO();
 
     private:
         size_t toIndex(size_t inRow, size_t inCol);
-        void create(size_t inRows, size_t inCols);
-        void buildVBO();
         void destroy();
 
         CGE::ClusterVBO mVBO;

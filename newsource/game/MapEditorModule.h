@@ -7,6 +7,7 @@
 #include <CGE/Camera.h>
 #include <CGE/Model.h>
 #include <CGE/ResourceManager.h>
+#include <CGE/Vectors.h>
 #include "TerrainGrid.h"
 #include "GeneralProgram.h"
 
@@ -46,6 +47,8 @@ class MapEditorModule : public CGE::ManagedModule
         virtual void onResize(int inWidth, int inHeight);
 
     private:
+        vec3f selectVertex(int inX, int inY);
+
         GeneralProgram mProgram;
         TerrainGrid mGrid;
         CGE::Model* mModel;
@@ -57,6 +60,7 @@ class MapEditorModule : public CGE::ManagedModule
         CGE::Camera mCamera;
         CGE::Matrix4x4<GLfloat> mProjection;
         CGE::Matrix4x4<GLfloat> mModelView;
+        vec4f mViewport;
 
         bool mLeftClickDown;
         bool mKeyDown;

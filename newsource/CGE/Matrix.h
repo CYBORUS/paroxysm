@@ -75,9 +75,9 @@ class Matrix
         void copy(const Matrix<T>& inMatrix);
         T at(int inRow, int inCol) const;
 
-        int mRows;
-        int mCols;
-        int mSize;
+        long mRows;
+        long mCols;
+        long mSize;
         T* mMatrix;
 };
 
@@ -91,7 +91,7 @@ Matrix<T>::Matrix()
     mMatrix = new T[mSize];
 
     // default to identity matrix
-    for (int i = 0; i < mSize; ++i)
+    for (unsigned long i = 0; i < mSize; ++i)
         mMatrix[i] = (i % (mCols + 1) == 0 ? 1 : 0);
 }
 
@@ -103,7 +103,10 @@ Matrix<T>::Matrix(int inRows, int inCols)
     mSize = mRows * mCols;
     mMatrix = new T[mSize];
 
-    for (int i = 0; i < mSize; ++i) mMatrix[i] = 0;
+    for (unsigned long i = 0; i < mSize; ++i)
+    {
+        mMatrix[i] = 0;
+    }
 }
 
 template<class T>

@@ -34,9 +34,12 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
         throw CGE::Exception("", "no map to load");
-
-    fin >> mGrid;
+    int size = 500;
+    //fin >> mGrid;
+    mGrid.create(size, size);
+    mGrid.buildVBO();
     fin.close();
+    mCamera.setPosition(size / 2, size / 2, 0);
 }
 
 void MapEditorModule::onUnload()
@@ -82,6 +85,57 @@ void MapEditorModule::onPulse()
 
     if (mKeyDown)
         mCamera.smartPan(mXPan, mYPan);
+}
+
+
+vec3f MapEditorModule::selectVertex(int inX, int inY)
+{
+    vec3f currentVertex;
+
+    GLdouble tempX = 0;
+    GLdouble tempY = 0;
+    GLdouble tempZ = 0;
+
+    GLfloat depthZ = 0;
+
+    //we have to invert the y axis because of opengl's viewport
+    int newY = SDL_GetVideoSurface()->h - inY;
+
+    //read the depth buffer to determine the z coordinate at the input
+    //x,y coordinates
+    glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
+
+    //now let the glu library do the math for us :)
+    if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView, mProjection, mViewport, &tempX, &tempY, &tempZ) == GL_FALSE)
+    {
+        cerr << "gluUnProject failed." << endl;
+    }
+
+    int numRows = mTerrainGrid.getMatrix().rows();
+    int numCols = mTerrainGrid.getMatrix().cols();
+
+    if (tempZ >= numRows || tempZ < 0 || tempX >= numCols || tempX < 0)
+    {
+        currentVertex = mSphere.getTranslation();
+    }
+    else
+    {
+        int closestRow = int(tempZ + 0.5);
+        if (closestRow >= numRows)
+        {
+            closestRow = numRows - 1;
+        }
+        int closestColumn = int(tempX + 0.5);
+        if (closestColumn >= numCols)
+        {
+            closestColumn = numCols - 1;
+        }
+
+        currentVertex = mTerrainGrid.getVertex(closestRow, closestColumn);
+    }
+
+    //return mTerrainGrid.getVertex(closestRow, closestColumn);
+    return currentVertex;
 }
 
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,

@@ -46,12 +46,21 @@ void TerrainGrid::create(size_t inRows, size_t inCols)
 
 void TerrainGrid::buildVBO()
 {
+    ///allocate the largest chunk of memory needed, then reuse it
+    ///indices are the largest
     /// 1 quad = 2 triangles = 6 indices per square (3 indices per triangle)
     size_t numIndices = (mRows - 1) * (mCols - 1) * 6;
-    GLuint* indices = new GLuint[numIndices];
 
-    /// one texture (UV) coordinate for every point on the field
-    GLfloat* textureCoordinates = new GLfloat[mSize * 2];
+    void* memChunk = malloc(numIndices * sizeof(GLuint));
+
+    if (memChunk == NULL)
+    {
+        throw CGE::Exception("", "Error: not enough memory to load terrain.  Try decreasing fog distance.")
+    }
+
+    GLuint* indices = (GLuint*)memChunk;
+    //GLuint* indices = new GLuint[numIndices];
+
 
     size_t t = 0;
     for (size_t i = 0; i < mRows - 1; ++i)
@@ -61,37 +70,73 @@ void TerrainGrid::buildVBO()
             size_t slant = ((i % 2) + (j % 2)) % 2;
 
             indices[t++] = mHeights.toIndex(i, j);
-            indices[t++] = toIndex(i + 1, j);
+            indices[t++] = mHeights.toIndex(i + 1, j);
 
             if (slant)
             {
-                indices[t++] = toIndex(i + 1, j + 1);
-                indices[t++] = toIndex(i, j);
-                indices[t++] = toIndex(i + 1, j + 1);
-                indices[t++] = toIndex(i, j + 1);
+                indices[t++] = mHeights.toIndex(i + 1, j + 1);
+                indices[t++] = mHeights.toIndex(i, j);
+                indices[t++] = mHeights.toIndex(i + 1, j + 1);
+                indices[t++] = mHeights.toIndex(i, j + 1);
             }
             else
             {
-                indices[t++] = toIndex(i, j + 1);
-                indices[t++] = toIndex(i + 1, j);
-                indices[t++] = toIndex(i + 1, j + 1);
-                indices[t++] = toIndex(i, j + 1);
+                indices[t++] = mHeights.toIndex(i, j + 1);
+                indices[t++] = mHeights.toIndex(i + 1, j);
+                indices[t++] = mHeights.toIndex(i + 1, j + 1);
+                indices[t++] = mHeights.toIndex(i, j + 1);
             }
         }
     }
 
-    GLfloat* vertices = new GLfloat[mSize * 3];
-    GLfloat* normals = new GLfloat[mSize * 3];
+    mIVBO.loadData(indices, numIndices);
+    indices = NULL; //just to make sure we don't try to use this again
+
+
+    //GLfloat* vertices = new(nothrow) GLfloat[mSize * 3];
+    //GLfloat* normals = new(nothrow) GLfloat[mSize * 3];
+
+    GLfloat* vertices = (GLfloat*)memChunk;
+
+//    if (normals == NULL || vertices == NULL)
+//    {
+//        cerr << "allocation failed!" << endl;
+//        exit(5);
+//    }
 
     for (size_t i = 0; i < mRows; ++i)
     {
         for (size_t j = 0; j < mCols; ++j)
         {
-            size_t k = toIndex(i, j);
+            size_t k = mHeights.toIndex(i, j);
             GLfloat* v = vertices + (k * 3);
             v[0] = static_cast<GLfloat>(j);
             v[1] = static_cast<GLfloat>(i);
             v[2] = mHeights[k];
+
+            //k *= 2;
+            //textureCoordinates[k] = static_cast<GLfloat>(j % 2);
+            //textureCoordinates[k + 1] = static_cast<GLfloat>(i % 2);
+        }
+    }
+
+    mVertexVBO.loadData(vertices, mSize, 3);
+    vertices = NULL;
+
+    /// one texture (UV) coordinate for every point on the field
+    //GLfloat* textureCoordinates = new GLfloat[mSize * 2];
+    GLfloat* textureCoordinates = (GLfloat*)memChunk;
+
+
+    for (size_t i = 0; i < mRows; ++i)
+    {
+        for (size_t j = 0; j < mCols; ++j)
+        {
+            size_t k = mHeights.toIndex(i, j);
+            //GLfloat* v = vertices + (k * 3);
+            //v[0] = static_cast<GLfloat>(j);
+            //v[1] = static_cast<GLfloat>(i);
+            //v[2] = mHeights[k];
 
             k *= 2;
             textureCoordinates[k] = static_cast<GLfloat>(j % 2);
@@ -100,22 +145,23 @@ void TerrainGrid::buildVBO()
     }
 
 
+
     //mVBO.loadVAA(0, 3, mSize, vertices);
-    mVertexVBO.loadData(vertices, mSize, 3);
     //mVBO.loadVAA(1, 2, mSize, textureCoordinates);
     mTextureVBO.loadData(textureCoordinates, mSize, 2);
 
-    mIVBO.loadData(indices, numIndices);
     //mIVBO.loadData(GL_TRIANGLES, numIndices, indices);
 
     mVBO.mount(mIVBO);
     mVBO.mount(mVertexVBO, 0);
     mVBO.mount(mTextureVBO, 1);
 
-    delete [] normals;
-    delete [] vertices;
-    delete [] textureCoordinates;
-    delete [] indices;
+    free(memChunk);
+
+    //delete [] normals;
+    //delete [] vertices;
+    //delete [] textureCoordinates;
+    //delete [] indices;
 }
 
 
