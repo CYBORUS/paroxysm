@@ -1,0 +1,34 @@
+#ifndef SCENEGRAPHNODE_H
+#define SCENEGRAPHNODE_H
+
+#include <CGE/Matrix4x4.h>
+
+#include <list>
+
+class SceneGraphNode
+{
+    public:
+        SceneGraphNode();
+        virtual ~SceneGraphNode();
+
+        void addChildNode(SceneGraphNode& inNode);
+        void removeChildNode(SceneGraphNode& inNode);
+        void remove(); // remove self from parent node
+
+        void updateMatrices(const CGE::Matrix4x4<float>& inMatrix);
+
+        inline const CGE::Matrix4x4<float>& compositeMatrix() const
+        {
+            return mCompositeTransform;
+        }
+
+    protected:
+        CGE::Matrix4x4<float> mTransform;
+
+    private:
+        SceneGraphNode* mParent;
+        std::list<SceneGraphNode*> mNodes;
+        CGE::Matrix4x4<float> mCompositeTransform;
+};
+
+#endif

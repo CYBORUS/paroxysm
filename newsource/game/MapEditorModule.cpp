@@ -109,6 +109,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             mCamera.changeRotation(inRelX);
             break;
         }
+
+        default: {}
     }
 }
 
@@ -176,6 +178,8 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
             mKeyDown = true;
             break;
         }
+
+        default: {}
     }
 }
 
