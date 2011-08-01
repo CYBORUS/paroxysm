@@ -113,7 +113,7 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
 //        cerr << "gluUnProject failed." << endl;
 //    }
 
-    if (!unproject((GLfloat)inX, (GLfloat)newY, depthZ, mProjection * mModelView, mViewport, tempPoint))
+    if (!CGE::unproject((GLfloat)inX, (GLfloat)newY, depthZ, mProjection * mModelView, mViewport, tempPoint))
     {
         cerr << "unproject failed." << endl;
     }
@@ -162,9 +162,9 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         case NONE:
         {
             vec4f hoverVertex = selectVertex(inX, inY);
-            hoverVertex[0] -= 0.5;
-            hoverVertex[1] -= 0.5;
-            hoverVertex[2] -= 0.5;
+            hoverVertex[0] -= 0.05;
+            hoverVertex[1] -= 0.05;
+            hoverVertex[2] -= 0.05;
             mSphere->setTranslation(hoverVertex);
             //cerr << "sphere pos: " << hoverVertex[0] << ", " << hoverVertex[1] << ", " << hoverVertex[2] << endl;
             break;
@@ -194,6 +194,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             }
             //cerr << "vertex before: " << mClickedVertex[1];
             mClickedVertex[1] += (dy * VERTEX_STEP);
+
+
 
             break;
         }

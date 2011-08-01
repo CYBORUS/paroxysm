@@ -25,6 +25,7 @@ namespace CGE
         {
             //error
         }
+
     }
 
 
@@ -135,6 +136,7 @@ namespace CGE
     {
         mTranslation.loadIdentity();
         mTranslation.translate(inTranslation[0], inTranslation[1], inTranslation[2]);
+        mTranslation.scale(0.1f, 0.1f, 0.1f);
     }
 
     vec3f Model::getTranslation()
