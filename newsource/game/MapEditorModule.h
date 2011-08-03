@@ -9,6 +9,8 @@
 #include <CGE/ResourceManager.h>
 #include "TerrainGrid.h"
 #include "GeneralProgram.h"
+#include "ViewNode.h"
+#include "SimpleMatrixNode.h"
 
 class MapEditorModule : public CGE::ManagedModule
 {
@@ -48,15 +50,14 @@ class MapEditorModule : public CGE::ManagedModule
     private:
         GeneralProgram mProgram;
         TerrainGrid mGrid;
+        SimpleMatrixNode* mTerrainGridNode;
         CGE::Model* mModel;
+        SimpleMatrixNode* mModelNode;
+
         CGE::ResourceManager<CGE::Model> mManager;
 
         MouseState mMouseState;
-
-
-        CGE::Camera mCamera;
-        CGE::Matrix4x4<GLfloat> mProjection;
-        CGE::Matrix4x4<GLfloat> mModelView;
+        ViewNode mViewNode;
 
         bool mLeftClickDown;
         bool mKeyDown;

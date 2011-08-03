@@ -127,6 +127,8 @@
 		<Unit filename="../game/MapEditorModule.h" />
 		<Unit filename="../game/SceneGraphNode.cpp" />
 		<Unit filename="../game/SceneGraphNode.h" />
+		<Unit filename="../game/SimpleMatrixNode.cpp" />
+		<Unit filename="../game/SimpleMatrixNode.h" />
 		<Unit filename="../game/TerrainGrid.cpp" />
 		<Unit filename="../game/TerrainGrid.h" />
 		<Unit filename="../game/ViewNode.cpp" />

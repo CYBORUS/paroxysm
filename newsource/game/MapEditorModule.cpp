@@ -17,19 +17,11 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    //mTerrainTexture.loadImage("assets/images/green.png");
-    //CGE::Image img;
-    //CGE::Font f("assets/misc/DejaVuSans.ttf", 12);
-    //img.loadText(f, "TEST");
+    mTerrainGridNode = new SimpleMatrixNode;
+    mViewNode.addChildNode(*mTerrainGridNode);
 
-    //int n = 1;
-    //while (n < img.width()) n <<= 1;
-
-    //CGE::Image img2(n, n);
-    //img.blitOnto(img2);
-
-    //mTerrainTexture.loadImage(img2);
-
+    mModelNode = new SimpleMatrixNode;
+    mViewNode.addChildNode(*mModelNode);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -46,13 +38,10 @@ void MapEditorModule::onUnload()
 void MapEditorModule::onOpen()
 {
     mRunning = true;
-    mCamera.setAngle(-45.0f);
-    mCamera.setDistance(8.0f);
-    //mCamera.setPosition(100.0f, 100.0f, 0.0f);
+    mViewNode.setAngle(-45.0f);
+    mViewNode.setDistance(8.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glEnable(GL_DEPTH_TEST);
-
-    //mTerrainTexture.bind();
 }
 
 void MapEditorModule::onClose()
@@ -63,25 +52,21 @@ void MapEditorModule::onClose()
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    mModelView = mCamera.matrix();
-//    mModelView.loadIdentity();
-//    mModelView.translate(0.0f, 0.0f, -20.0f);
-//    mModelView.rotateX(-45.0f);
-//    mModelView.rotateZ(mSpin);
-//    mModelView.translate(-100.0f, -100.0f, 0.0f);
 
-    CGE::Matrix4x4<GLfloat> mvp(mProjection, mModelView);
-    mProgram.setMatrix(mvp);
+    mProgram.setMatrix(mTerrainGridNode->compositeMatrix());
     mGrid.display();
+
+    mProgram.setMatrix(mModelNode->compositeMatrix());
     mModel->display();
 }
 
 void MapEditorModule::onPulse()
 {
-    mCamera.update();
+    mViewNode.update();
+    mViewNode.updateMatrices(mat4f());
 
     if (mKeyDown)
-        mCamera.smartPan(mXPan, mYPan);
+        mViewNode.smartPan(mXPan, mYPan);
 }
 
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
@@ -89,8 +74,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 {
     if (mLeftClickDown)
     {
-        mCamera.changeRotation((inX - mXStart)/2);
-        mCamera.changeAngle((inY - mYStart)/2);
+        mViewNode.changeRotation((inX - mXStart)/2);
+        mViewNode.changeAngle((inY - mYStart)/2);
         mXStart = inX;
         mYStart = inY;
     }
@@ -99,14 +84,14 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     {
         case PANNING:
         {
-            mCamera.smartPan(-inRelX * 0.1f, inRelY * 0.1f);
+            mViewNode.smartPan(-inRelX * 0.1f, inRelY * 0.1f);
             break;
         }
 
         case ROTATING:
         {
-            mCamera.changeAngle(inRelY);
-            mCamera.changeRotation(inRelX);
+            mViewNode.changeAngle(inRelY);
+            mViewNode.changeRotation(inRelX);
             break;
         }
 
@@ -194,11 +179,11 @@ void MapEditorModule::onMouseWheel(bool inUp)
 {
     if (inUp)
     {
-        mCamera.changeDistance(-0.5f);
+        mViewNode.changeDistance(-0.5f);
     }
     else
     {
-        mCamera.changeDistance(0.5f);
+        mViewNode.changeDistance(0.5f);
     }
 }
 
@@ -206,7 +191,8 @@ void MapEditorModule::onResize(int inWidth, int inHeight)
 {
     GLfloat ratio = static_cast<GLfloat>(inWidth)
                     / static_cast<GLfloat>(inHeight);
-    mProjection.loadIdentity();
-    mProjection.perspective(30.0f, ratio, 1.0f, 1000.0f);
+    CGE::Matrix4x4<GLfloat> projection;
+    projection.perspective(30.0f, ratio, 1.0f, 1000.0f);
+    mViewNode.setProjection(projection);
     glViewport(0, 0, inWidth, inHeight);
 }

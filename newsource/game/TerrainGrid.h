@@ -5,11 +5,12 @@
 #include <CGE/IndexVBO.h>
 #include <CGE/ClusterVBO.h>
 #include <CGE/Texture2D.h>
-#include <iostream>
 #include <CGE/Tools.h>
 #include <CGE/Matrix.h>
-#include <vector>
 #include <CGE/Vectors.h>
+
+#include <iostream>
+#include <vector>
 
 class TerrainGrid
 {
@@ -17,7 +18,7 @@ class TerrainGrid
         TerrainGrid();
         ~TerrainGrid();
 
-        void display();
+        virtual void display();
 
         friend std::istream& operator>>(std::istream& inStream,
             TerrainGrid& inTerrainGrid);

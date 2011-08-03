@@ -34,7 +34,6 @@ void SceneGraphNode::remove()
 void SceneGraphNode::updateMatrices(const CGE::Matrix4x4<float>& inMatrix)
 {
     mCompositeTransform.multiply(inMatrix, mTransform);
-
     for (std::list<SceneGraphNode*>::iterator i = mNodes.begin();
         i != mNodes.end(); ++i)
     {
