@@ -1,0 +1,2 @@
+display height = 720
+display width = 1280

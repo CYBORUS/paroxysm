@@ -5,7 +5,8 @@
 #include <fstream>
 using namespace std;
 
-MapEditorModule::MapEditorModule() : mLeftClickDown(false)
+MapEditorModule::MapEditorModule() : mLeftClickDown(false), mXPan(0.0f),
+    mYPan(0.0f)
 {
     mModel = mManager.load("bradley.c3m");
     mSphere = mManager.load("cube_texture.c3m");
