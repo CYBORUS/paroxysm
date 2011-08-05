@@ -4,7 +4,7 @@
 #include <fstream>
 using namespace std;
 
-MapEditorModule::MapEditorModule() : mCube(2)
+MapEditorModule::MapEditorModule()
 {
     mModel = mManager.load("bradley.c3m");
     mSphere = mManager.load("cube_texture.c3m");
@@ -40,158 +40,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     mGrid.create(size, size);
     mGrid.buildVBO();
     fin.close();
-    //mCamera.setPosition(size / 2, size / 2, 0);
-
-
-
-    GLfloat vertices[24];
-
-    float a = 1.0f;
-    float b = 0.0f;
-
-    vertices[0] = b;
-    vertices[1] = b;
-    vertices[2] = b;
-
-    vertices[3] = b;
-    vertices[4] = b;
-    vertices[5] = a;
-
-    vertices[6] = b;
-    vertices[7] = a;
-    vertices[8] = a;
-
-    vertices[9] = a;
-    vertices[10] = a;
-    vertices[11] = a;
-
-    vertices[12] = a;
-    vertices[13] = b;
-    vertices[14] = b;
-
-    vertices[15] = a;
-    vertices[16] = a;
-    vertices[17] = b;
-
-    vertices[18] = b;
-    vertices[19] = a;
-    vertices[20] = b;
-
-    vertices[21] = a;
-    vertices[22] = b;
-    vertices[23] = a;
-
-
-
-
-    GLint indices[12 * 3];
-
-    indices[0] = 0;
-    indices[1] = 1;
-    indices[2] = 2;
-
-    indices[3] = 0;
-    indices[4] = 2;
-    indices[5] = 6;
-
-    indices[6] = 0;
-    indices[7] = 0;
-    indices[8] = 0;
-
-    indices[9] = 0;
-    indices[10] = 0;
-    indices[11] = 0;
-
-    indices[12] = 0;
-    indices[13] = 0;
-    indices[14] = 0;
-
-    indices[15] = 0;
-    indices[16] = 0;
-    indices[17] = 0;
-
-    indices[18] = 0;
-    indices[19] = 0;
-    indices[20] = 0;
-
-    indices[21] = 0;
-    indices[22] = 0;
-    indices[23] = 0;
-
-    indices[24] = 0;
-    indices[25] = 0;
-    indices[26] = 0;
-
-    indices[27] = 0;
-    indices[28] = 0;
-    indices[29] = 0;
-
-    indices[30] = 0;
-    indices[31] = 0;
-    indices[32] = 0;
-
-    indices[33] = 0;
-    indices[34] = 0;
-    indices[35] = 0;
-
-
-    GLfloat textures[16];
-
-    textures[0] = 0;
-    textures[1] = 0;
-
-    textures[2] = 0;
-    textures[3] = 0;
-
-    textures[4] = 0;
-    textures[5] = 0;
-
-    textures[6] = 0;
-    textures[7] = 0;
-
-    textures[8] = 0;
-    textures[9] = 0;
-
-    textures[10] = 0;
-    textures[11] = 0;
-
-    textures[12] = 0;
-    textures[13] = 0;
-
-    textures[14] = 0;
-    textures[15] = 0;
-
-
-    CGE::VertexBufferObject vertex;
-    vertex.loadData(vertices, 8, 3);
-
-    CGE::VertexBufferObject texture;
-    texture.loadData(textures, 8, 2);
-
-    CGE::IndexVBO index;
-    index.loadData(indices, 12, 3);
-
-    mTex.loadImage("assets/images/green.png");
-
-    mCube.mount(index);
-    mCube.mount(vertex, 0);
-    mCube.mount(texture, 1);
-
-//    glBegin(GL_TRIANGLES);
-//    {
-//        glVertex3f(b, b, b);
-//        glVertex3f(0.0f, 0.0f, 0.0f);
-//        glVertex3f(0.0f, 0.0f, 0.0f);
-//        glVertex3f(0.0f, 0.0f, 0.0f);
-//        glVertex3f(0.0f, 0.0f, 0.0f);
-//        glVertex3f(0.0f, 0.0f, 0.0f);
-//        glVertex3f(0.0f, 0.0f, 0.0f);
-//        glVertex3f(0.0f, 0.0f, 0.0f);
-//
-//
-//    }
-//    glEnd();
-
+    mCamera.setPosition(size / 2, size / 2, 0);
 }
 
 void MapEditorModule::onUnload()
@@ -228,9 +77,7 @@ void MapEditorModule::onLoop()
     CGE::Matrix4x4<GLfloat> mvp(mProjection, mModelView);
     mProgram.setMatrix(mvp);
     mGrid.display();
-    //mModel->display();
-    mTex.bind();
-    mCube.display();
+    mModel->display();
 
     mProgram.setMatrix(mvp * mSphere->getPosition());
     mSphere->display();

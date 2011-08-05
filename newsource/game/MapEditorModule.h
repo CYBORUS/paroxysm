@@ -58,9 +58,6 @@ class MapEditorModule : public CGE::ManagedModule
         CGE::Model* mModel;
         CGE::ResourceManager<CGE::Model> mManager;
 
-        CGE::ClusterVBO mCube;
-        CGE::Texture2D mTex;
-
         CGE::Model* mSphere;
         vec4f mClickedVertex;
 
