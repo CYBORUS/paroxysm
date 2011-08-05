@@ -13,6 +13,7 @@ class ViewNode : public SceneGraphNode
 
         void setProjection(const CGE::Matrix4x4<float>& inProjection);
         void update();
+        void updateAllMatrices();
 
         void setDistance(float inDistance);
         void changeDistance(float inOffset);

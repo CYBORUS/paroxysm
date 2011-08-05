@@ -9,10 +9,12 @@
 #include <CGE/Matrix.h>
 #include <CGE/Vectors.h>
 
+#include <CGE/Actor.h>
+
 #include <iostream>
 #include <vector>
 
-class TerrainGrid
+class TerrainGrid : public CGE::Actor
 {
     public:
         TerrainGrid();

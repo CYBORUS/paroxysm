@@ -7,10 +7,10 @@
 #include <CGE/Camera.h>
 #include <CGE/Model.h>
 #include <CGE/ResourceManager.h>
+
 #include "TerrainGrid.h"
-#include "GeneralProgram.h"
 #include "ViewNode.h"
-#include "SimpleMatrixNode.h"
+#include "GeneralBin.h"
 
 class MapEditorModule : public CGE::ManagedModule
 {
@@ -37,22 +37,20 @@ class MapEditorModule : public CGE::ManagedModule
         virtual void onRButtonDown(int inX, int inY);
         virtual void onRButtonUp(int inX, int inY);
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
-                bool inLeft, bool inRight, bool inMiddle);
+            bool inLeft, bool inRight, bool inMiddle);
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod,
-                Uint16 inUnicode);
+            Uint16 inUnicode);
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod,
-                Uint16 inUnicode);
+            Uint16 inUnicode);
 
         virtual void onMouseWheel(bool inUp);
 
         virtual void onResize(int inWidth, int inHeight);
 
     private:
-        GeneralProgram mProgram;
+        GeneralBin mBin;
         TerrainGrid mGrid;
-        SimpleMatrixNode* mTerrainGridNode;
         CGE::Model* mModel;
-        SimpleMatrixNode* mModelNode;
 
         CGE::ResourceManager<CGE::Model> mManager;
 
@@ -60,7 +58,6 @@ class MapEditorModule : public CGE::ManagedModule
         ViewNode mViewNode;
 
         bool mLeftClickDown;
-        bool mKeyDown;
 
         int mXStart;
         int mYStart;

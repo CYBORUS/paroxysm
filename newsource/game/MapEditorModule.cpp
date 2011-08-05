@@ -1,14 +1,13 @@
 #include "MapEditorModule.h"
+#include "ActorNode.h"
 #include <CGE/Exception.h>
 
 #include <fstream>
 using namespace std;
 
-MapEditorModule::MapEditorModule()
+MapEditorModule::MapEditorModule() : mLeftClickDown(false)
 {
     mModel = mManager.load("bradley.c3m");
-    mLeftClickDown = false;
-    mKeyDown = false;
 }
 
 MapEditorModule::~MapEditorModule()
@@ -17,11 +16,13 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    mTerrainGridNode = new SimpleMatrixNode;
-    mViewNode.addChildNode(*mTerrainGridNode);
+    ActorNode* an = new ActorNode(mGrid);
+    mViewNode.addChildNode(*an);
+    mBin.addNode(*an);
 
-    mModelNode = new SimpleMatrixNode;
-    mViewNode.addChildNode(*mModelNode);
+    an = new ActorNode(*mModel);
+    mViewNode.addChildNode(*an);
+    mBin.addNode(*an);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -37,7 +38,6 @@ void MapEditorModule::onUnload()
 
 void MapEditorModule::onOpen()
 {
-    mRunning = true;
     mViewNode.setAngle(-45.0f);
     mViewNode.setDistance(8.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -53,24 +53,19 @@ void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mProgram.setMatrix(mTerrainGridNode->compositeMatrix());
-    mGrid.display();
-
-    mProgram.setMatrix(mModelNode->compositeMatrix());
-    mModel->display();
+    mBin.displayAll();
 }
 
 void MapEditorModule::onPulse()
 {
-    mViewNode.update();
-    mViewNode.updateMatrices(mat4f());
+    mViewNode.smartPan(mXPan, mYPan);
 
-    if (mKeyDown)
-        mViewNode.smartPan(mXPan, mYPan);
+    mViewNode.update();
+    mViewNode.updateAllMatrices();
 }
 
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
-                                  bool inLeft, bool inRight, bool inMiddle)
+    bool inLeft, bool inRight, bool inMiddle)
 {
     if (mLeftClickDown)
     {
@@ -101,7 +96,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
 void MapEditorModule::onLButtonDown(int inX, int inY)
 {
-    Uint8 *keys = SDL_GetKeyState(NULL);
+    Uint8* keys = SDL_GetKeyState(NULL);
 
     if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
     {
@@ -126,7 +121,7 @@ void MapEditorModule::onRButtonUp(int inX, int inY)
 }
 
 void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
-                                Uint16 inUnicode)
+    Uint16 inUnicode)
 {
     switch (inSym)
     {
@@ -135,32 +130,28 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
             mRunning = false;
             break;
         }
+
         case SDLK_w:
         {
-            mXPan = 0.0f;
             mYPan = 0.5f;
-            mKeyDown = true;
             break;
         }
+
         case SDLK_a:
         {
             mXPan = -0.5f;
-            mYPan = 0.0f;
-            mKeyDown = true;
             break;
         }
+
         case SDLK_s:
         {
-            mXPan = 0.0f;
             mYPan = -0.5f;
-            mKeyDown = true;
             break;
         }
+
         case SDLK_d:
         {
             mXPan = 0.5f;
-            mYPan = 0.0f;
-            mKeyDown = true;
             break;
         }
 
@@ -169,9 +160,40 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
 }
 
 void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod,
-                              Uint16 inUnicode)
+    Uint16 inUnicode)
 {
-    mKeyDown = false;
+    switch (inSym)
+    {
+        case SDLK_w:
+        {
+            if (mYPan > 0.0f)
+                mYPan = 0.0f;
+            break;
+        }
+
+        case SDLK_s:
+        {
+            if (mYPan < 0.0f)
+                mYPan = 0.0f;
+            break;
+        }
+
+        case SDLK_a:
+        {
+            if (mXPan < 0.0f)
+                mXPan = 0.0f;
+            break;
+        }
+
+        case SDLK_d:
+        {
+            if (mXPan > 0.0f)
+                mXPan = 0.0f;
+            break;
+        }
+
+        default: {}
+    }
 }
 
 
@@ -190,7 +212,7 @@ void MapEditorModule::onMouseWheel(bool inUp)
 void MapEditorModule::onResize(int inWidth, int inHeight)
 {
     GLfloat ratio = static_cast<GLfloat>(inWidth)
-                    / static_cast<GLfloat>(inHeight);
+        / static_cast<GLfloat>(inHeight);
     CGE::Matrix4x4<GLfloat> projection;
     projection.perspective(30.0f, ratio, 1.0f, 1000.0f);
     mViewNode.setProjection(projection);

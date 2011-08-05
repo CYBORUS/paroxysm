@@ -14,6 +14,10 @@ SceneGraphNode::~SceneGraphNode()
     }
 }
 
+void SceneGraphNode::display()
+{
+}
+
 void SceneGraphNode::addChildNode(SceneGraphNode& inNode)
 {
     inNode.mParent = this;
@@ -26,7 +30,7 @@ void SceneGraphNode::removeChildNode(SceneGraphNode& inNode)
     mNodes.remove(&inNode);
 }
 
-void SceneGraphNode::remove()
+void SceneGraphNode::removeFromParentNode()
 {
     if (mParent) mParent->removeChildNode(*this);
 }

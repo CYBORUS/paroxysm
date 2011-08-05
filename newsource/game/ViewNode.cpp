@@ -21,7 +21,12 @@ void ViewNode::update()
     mView.rotateX(mAngle);
     mView.rotateZ(mRotation);
     mView.translate(-mPosition[0], -mPosition[1], -mPosition[2]);
-    mTransform.multiply(mProjection, mView);
+    mTransform = mView;
+}
+
+void ViewNode::updateAllMatrices()
+{
+    updateMatrices(mProjection);
 }
 
 void ViewNode::setDistance(float inDistance)
