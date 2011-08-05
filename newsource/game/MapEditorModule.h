@@ -11,6 +11,9 @@
 #include "TerrainGrid.h"
 #include "ViewNode.h"
 #include "GeneralBin.h"
+#include "ActorNode.h"
+
+#include <list>
 
 class MapEditorModule : public CGE::ManagedModule
 {
@@ -48,14 +51,16 @@ class MapEditorModule : public CGE::ManagedModule
         virtual void onResize(int inWidth, int inHeight);
 
     private:
+        ViewNode mViewNode; // head of the scene graph
         GeneralBin mBin;
+        std::list<ActorNode*> mActors;
+
         TerrainGrid mGrid;
         CGE::Model* mModel;
 
         CGE::ResourceManager<CGE::Model> mManager;
 
         MouseState mMouseState;
-        ViewNode mViewNode;
 
         bool mLeftClickDown;
 

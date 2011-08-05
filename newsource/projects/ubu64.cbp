@@ -136,6 +136,8 @@
 		<Unit filename="../game/SimpleMatrixNode.h" />
 		<Unit filename="../game/TerrainGrid.cpp" />
 		<Unit filename="../game/TerrainGrid.h" />
+		<Unit filename="../game/TestActorNode.cpp" />
+		<Unit filename="../game/TestActorNode.h" />
 		<Unit filename="../game/ViewNode.cpp" />
 		<Unit filename="../game/ViewNode.h" />
 		<Unit filename="../game/main.cpp" />

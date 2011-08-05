@@ -1,5 +1,5 @@
 #include "MapEditorModule.h"
-#include "ActorNode.h"
+#include "TestActorNode.h"
 #include <CGE/Exception.h>
 
 #include <fstream>
@@ -19,10 +19,12 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     ActorNode* an = new ActorNode(mGrid);
     mViewNode.addChildNode(*an);
     mBin.addNode(*an);
+    mActors.push_back(an);
 
-    an = new ActorNode(*mModel);
+    an = new TestActorNode(*mModel);
     mViewNode.addChildNode(*an);
     mBin.addNode(*an);
+    mActors.push_back(an);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -58,6 +60,12 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onPulse()
 {
+    for (list<ActorNode*>::iterator i = mActors.begin();
+        i != mActors.end(); ++i)
+    {
+        ActorNode& an = *(*i);
+        an.update();
+    }
     mViewNode.smartPan(mXPan, mYPan);
 
     mViewNode.update();
@@ -120,8 +128,7 @@ void MapEditorModule::onRButtonUp(int inX, int inY)
     mMouseState = NONE;
 }
 
-void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
-    Uint16 inUnicode)
+void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
@@ -159,8 +166,7 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
     }
 }
 
-void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod,
-    Uint16 inUnicode)
+void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
@@ -195,7 +201,6 @@ void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod,
         default: {}
     }
 }
-
 
 void MapEditorModule::onMouseWheel(bool inUp)
 {
