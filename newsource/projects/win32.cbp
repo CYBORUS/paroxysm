@@ -47,6 +47,7 @@
 			<Add library="curl" />
 			<Add library="curldll" />
 		</Linker>
+		<Unit filename="..\CGE\Actor.h" />
 		<Unit filename="..\CGE\Camera.cpp" />
 		<Unit filename="..\CGE\Camera.h" />
 		<Unit filename="..\CGE\ClusterVBO.cpp" />
@@ -120,14 +121,26 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\GLee\GLee.h" />
+		<Unit filename="..\game\ActorNode.cpp" />
+		<Unit filename="..\game\ActorNode.h" />
 		<Unit filename="..\game\Entity.cpp" />
 		<Unit filename="..\game\Entity.h" />
-		<Unit filename="..\game\GeneralProgram.cpp" />
-		<Unit filename="..\game\GeneralProgram.h" />
+		<Unit filename="..\game\GeneralBin.cpp" />
+		<Unit filename="..\game\GeneralBin.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
 		<Unit filename="..\game\MapEditorModule.h" />
+		<Unit filename="..\game\RenderBin.cpp" />
+		<Unit filename="..\game\RenderBin.h" />
+		<Unit filename="..\game\SceneGraphNode.cpp" />
+		<Unit filename="..\game\SceneGraphNode.h" />
+		<Unit filename="..\game\SimpleMatrixNode.cpp" />
+		<Unit filename="..\game\SimpleMatrixNode.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />
 		<Unit filename="..\game\TerrainGrid.h" />
+		<Unit filename="..\game\TestActorNode.cpp" />
+		<Unit filename="..\game\TestActorNode.h" />
+		<Unit filename="..\game\ViewNode.cpp" />
+		<Unit filename="..\game\ViewNode.h" />
 		<Unit filename="..\game\main.cpp" />
 		<Extensions>
 			<code_completion />
