@@ -15,11 +15,6 @@ TerrainGrid::~TerrainGrid()
 
 void TerrainGrid::display()
 {
-//    mVertexVBO.enableVAA(0);
-//    mTextureVBO.enableVAA(1);
-//    mIVBO.draw();
-//    mTextureVBO.disableVAA();
-//    mVertexVBO.disableVAA();
     mTexture.bind();
     mVBO.display();
 }

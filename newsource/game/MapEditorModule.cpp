@@ -1,15 +1,15 @@
 #include "MapEditorModule.h"
+#include "TestActorNode.h"
 #include <CGE/Exception.h>
 
 #include <fstream>
 using namespace std;
 
-MapEditorModule::MapEditorModule()
+MapEditorModule::MapEditorModule() : mLeftClickDown(false)
 {
     mModel = mManager.load("bradley.c3m");
     mSphere = mManager.load("cube_texture.c3m");
     mLeftClickDown = false;
-    mKeyDown = false;
 }
 
 MapEditorModule::~MapEditorModule()
@@ -18,19 +18,19 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    //mTerrainTexture.loadImage("assets/images/green.png");
-    //CGE::Image img;
-    //CGE::Font f("assets/misc/DejaVuSans.ttf", 12);
-    //img.loadText(f, "TEST");
+    ActorNode* an = new ActorNode(mGrid);
+    mViewNode.addChildNode(*an);
+    mBin.addNode(*an);
+    mActors.push_back(an);
 
-    //int n = 1;
-    //while (n < img.width()) n <<= 1;
+    an = new TestActorNode(*mModel);
+    mViewNode.addChildNode(*an);
+    mBin.addNode(*an);
+    mActors.push_back(an);
 
-    //CGE::Image img2(n, n);
-    //img.blitOnto(img2);
-
-    //mTerrainTexture.loadImage(img2);
-
+    mSphereNode = new SimpleMatrixNode(*mSphere);
+    mViewNode.addChildNode(*mSphereNode);
+    mBin.addNode(*mSphereNode);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -40,7 +40,6 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     mGrid.create(size, size);
     mGrid.buildVBO();
     fin.close();
-    mCamera.setPosition(size / 2, size / 2, 0);
 }
 
 void MapEditorModule::onUnload()
@@ -49,14 +48,10 @@ void MapEditorModule::onUnload()
 
 void MapEditorModule::onOpen()
 {
-    mRunning = true;
-    mCamera.setAngle(-45.0f);
-    mCamera.setDistance(8.0f);
-    //mCamera.setPosition(100.0f, 100.0f, 0.0f);
+    mViewNode.setAngle(-45.0f);
+    mViewNode.setDistance(8.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glEnable(GL_DEPTH_TEST);
-
-    //mTerrainTexture.bind();
 }
 
 void MapEditorModule::onClose()
@@ -67,28 +62,29 @@ void MapEditorModule::onClose()
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    mModelView = mCamera.matrix();
-//    mModelView.loadIdentity();
-//    mModelView.translate(0.0f, 0.0f, -20.0f);
-//    mModelView.rotateX(-45.0f);
-//    mModelView.rotateZ(mSpin);
-//    mModelView.translate(-100.0f, -100.0f, 0.0f);
 
-    CGE::Matrix4x4<GLfloat> mvp(mProjection, mModelView);
-    mProgram.setMatrix(mvp);
-    mGrid.display();
-    mModel->display();
-
-    mProgram.setMatrix(mvp * mSphere->getPosition());
-    mSphere->display();
+    //mSphere->display();
+    mBin.displayAll();
 }
 
 void MapEditorModule::onPulse()
 {
-    mCamera.update();
+    for (list<ActorNode*>::iterator i = mActors.begin();
+        i != mActors.end(); ++i)
+    {
+        ActorNode& an = *(*i);
+        an.update();
+    }
 
-    if (mKeyDown)
-        mCamera.smartPan(mXPan, mYPan);
+    mSphereNode->matrix().loadIdentity();
+    mSphereNode->matrix().translate(mSpherePosition[0], mSpherePosition[1],
+        mSpherePosition[2]);
+    mSphereNode->matrix().scale(0.1f);
+
+    mViewNode.smartPan(mXPan, mYPan);
+
+    mViewNode.update();
+    mViewNode.updateAllMatrices();
 }
 
 
@@ -113,7 +109,7 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
 //        cerr << "gluUnProject failed." << endl;
 //    }
 
-    if (!CGE::unproject((GLfloat)inX, (GLfloat)newY, depthZ, mProjection * mModelView, mViewport, tempPoint))
+    if (!CGE::unproject((GLfloat)inX, (GLfloat)newY, depthZ, mViewNode.compositeMatrix(), mViewport, tempPoint))
     {
         cerr << "unproject failed." << endl;
     }
@@ -123,7 +119,7 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
 
     if (tempPoint[1] >= numRows || tempPoint[1] < 0 || tempPoint[0] >= numCols || tempPoint[0] < 0)
     {
-        currentVertex = mSphere->getTranslation();
+        currentVertex = mSpherePosition;
     }
     else
     {
@@ -140,18 +136,17 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
 
         currentVertex = mGrid.getVertex(closestRow, closestColumn);
     }
-    //currentVertex[0] = 1.0f;
-    //return mTerrainGrid.getVertex(closestRow, closestColumn);
+
     return currentVertex;
 }
 
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
-                                  bool inLeft, bool inRight, bool inMiddle)
+    bool inLeft, bool inRight, bool inMiddle)
 {
     if (mLeftClickDown)
     {
-        mCamera.changeRotation((inX - mXStart)/2);
-        mCamera.changeAngle((inY - mYStart)/2);
+        mViewNode.changeRotation((inX - mXStart)/2);
+        mViewNode.changeAngle((inY - mYStart)/2);
         mXStart = inX;
         mYStart = inY;
     }
@@ -164,21 +159,20 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             hoverVertex[0] -= 0.05;
             hoverVertex[1] -= 0.05;
             hoverVertex[2] -= 0.05;
-            mSphere->setTranslation(hoverVertex);
-            //cerr << "sphere pos: " << hoverVertex[0] << ", " << hoverVertex[1] << ", " << hoverVertex[2] << endl;
+            mSpherePosition = hoverVertex;
             break;
         }
 
         case PANNING:
         {
-            mCamera.smartPan(-inRelX * 0.1f, inRelY * 0.1f);
+            mViewNode.smartPan(-inRelX * 0.1f, inRelY * 0.1f);
             break;
         }
 
         case ROTATING:
         {
-            mCamera.changeAngle(inRelY);
-            mCamera.changeRotation(inRelX);
+            mViewNode.changeAngle(inRelY);
+            mViewNode.changeRotation(inRelX);
             break;
         }
 
@@ -194,19 +188,20 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             //cerr << "vertex before: " << mClickedVertex[1];
             mClickedVertex[2] += (dy * VERTEX_STEP);
 
-            mGrid.set((int)mClickedVertex[1], (int)mClickedVertex[0], mClickedVertex[2], false);
-            mSphere->setTranslation(mClickedVertex);
+            mGrid.set((int)mClickedVertex[1], (int)mClickedVertex[0],
+                mClickedVertex[2], false);
 
+            mSpherePosition = mClickedVertex;
             break;
         }
 
-
+        default: {}
     }
 }
 
 void MapEditorModule::onLButtonDown(int inX, int inY)
 {
-    Uint8 *keys = SDL_GetKeyState(NULL);
+    Uint8* keys = SDL_GetKeyState(NULL);
 
     if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
     {
@@ -235,8 +230,7 @@ void MapEditorModule::onRButtonUp(int inX, int inY)
     mMouseState = NONE;
 }
 
-void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
-                                Uint16 inUnicode)
+void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     switch (inSym)
     {
@@ -245,66 +239,90 @@ void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod,
             mRunning = false;
             break;
         }
+
         case SDLK_w:
         {
-            mXPan = 0.0f;
             mYPan = 0.5f;
-            mKeyDown = true;
             break;
         }
+
         case SDLK_a:
         {
             mXPan = -0.5f;
-            mYPan = 0.0f;
-            mKeyDown = true;
             break;
         }
+
         case SDLK_s:
         {
-            mXPan = 0.0f;
             mYPan = -0.5f;
-            mKeyDown = true;
             break;
         }
+
         case SDLK_d:
         {
             mXPan = 0.5f;
-            mYPan = 0.0f;
-            mKeyDown = true;
             break;
         }
+
+        default: {}
     }
 }
 
-void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod,
-                              Uint16 inUnicode)
+void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    mKeyDown = false;
-}
+    switch (inSym)
+    {
+        case SDLK_w:
+        {
+            if (mYPan > 0.0f)
+                mYPan = 0.0f;
+            break;
+        }
 
+        case SDLK_s:
+        {
+            if (mYPan < 0.0f)
+                mYPan = 0.0f;
+            break;
+        }
+
+        case SDLK_a:
+        {
+            if (mXPan < 0.0f)
+                mXPan = 0.0f;
+            break;
+        }
+
+        case SDLK_d:
+        {
+            if (mXPan > 0.0f)
+                mXPan = 0.0f;
+            break;
+        }
+
+        default: {}
+    }
+}
 
 void MapEditorModule::onMouseWheel(bool inUp)
 {
     if (inUp)
     {
-        mCamera.changeDistance(-0.5f);
+        mViewNode.changeDistance(-0.5f);
     }
     else
     {
-        mCamera.changeDistance(0.5f);
+        mViewNode.changeDistance(0.5f);
     }
 }
 
 void MapEditorModule::onResize(int inWidth, int inHeight)
 {
     GLfloat ratio = static_cast<GLfloat>(inWidth)
-                    / static_cast<GLfloat>(inHeight);
-    mProjection.loadIdentity();
-    mProjection.perspective(30.0f, ratio, 1.0f, 1000.0f);
+        / static_cast<GLfloat>(inHeight);
+    CGE::Matrix4x4<GLfloat> projection;
+    projection.perspective(30.0f, ratio, 1.0f, 1000.0f);
+    mViewNode.setProjection(projection);
     glViewport(0, 0, inWidth, inHeight);
     glGetIntegerv(GL_VIEWPORT, mViewport);
-//    mViewport[0] = 0;
-//    mViewport[1] = 0;
-//    mViewport[2] = inWidth;
-//    mViewport[3] = inHeight;
 }

@@ -5,19 +5,22 @@
 #include <CGE/IndexVBO.h>
 #include <CGE/ClusterVBO.h>
 #include <CGE/Texture2D.h>
-#include <iostream>
 #include <CGE/Tools.h>
 #include <CGE/Matrix.h>
-#include <vector>
 #include <CGE/Vectors.h>
 
-class TerrainGrid
+#include <CGE/Actor.h>
+
+#include <iostream>
+#include <vector>
+
+class TerrainGrid : public CGE::Actor
 {
     public:
         TerrainGrid();
         ~TerrainGrid();
 
-        void display();
+        virtual void display();
 
         friend std::istream& operator>>(std::istream& inStream,
             TerrainGrid& inTerrainGrid);

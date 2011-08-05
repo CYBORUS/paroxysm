@@ -8,12 +8,16 @@
 #include <CGE/Model.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/Vectors.h>
-#include <CGE/Graphics.h>
 #include "TerrainGrid.h"
-#include "GeneralProgram.h"
+
+#include "ViewNode.h"
+#include "GeneralBin.h"
+#include "ActorNode.h"
+#include "SimpleMatrixNode.h"
+
+#include <list>
 
 #define VERTEX_STEP 0.1f
-
 
 class MapEditorModule : public CGE::ManagedModule
 {
@@ -40,11 +44,11 @@ class MapEditorModule : public CGE::ManagedModule
         virtual void onRButtonDown(int inX, int inY);
         virtual void onRButtonUp(int inX, int inY);
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
-                bool inLeft, bool inRight, bool inMiddle);
+            bool inLeft, bool inRight, bool inMiddle);
         virtual void onKeyDown(SDLKey inSym, SDLMod inMod,
-                Uint16 inUnicode);
+            Uint16 inUnicode);
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod,
-                Uint16 inUnicode);
+            Uint16 inUnicode);
 
         virtual void onMouseWheel(bool inUp);
 
@@ -53,24 +57,25 @@ class MapEditorModule : public CGE::ManagedModule
     private:
         vec4f selectVertex(int inX, int inY);
 
-        GeneralProgram mProgram;
+        ViewNode mViewNode; // head of the scene graph
+        GeneralBin mBin;
+        std::list<ActorNode*> mActors;
+
         TerrainGrid mGrid;
         CGE::Model* mModel;
+        CGE::Model* mSphere;
+        SimpleMatrixNode* mSphereNode;
+
         CGE::ResourceManager<CGE::Model> mManager;
 
-        CGE::Model* mSphere;
         vec4f mClickedVertex;
+        vec4f mSpherePosition;
 
         MouseState mMouseState;
 
-
-        CGE::Camera mCamera;
-        CGE::Matrix4x4<GLfloat> mProjection;
-        CGE::Matrix4x4<GLfloat> mModelView;
         CGE::Vector<GLint, 4> mViewport;
 
         bool mLeftClickDown;
-        bool mKeyDown;
 
         int mXStart;
         int mYStart;
