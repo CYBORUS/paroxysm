@@ -15,6 +15,7 @@ namespace CGE
             void mount(VertexBufferObject& inVBO, size_t inIndex);
             void display(GLenum inMode = GL_TRIANGLES);
             void display(const IndexVBO& inIVBO, GLenum inMode = GL_TRIANGLES);
+            void display(GLenum inMode, GLint inFirst, GLsizei inCount);
 
         private:
             size_t mSize;

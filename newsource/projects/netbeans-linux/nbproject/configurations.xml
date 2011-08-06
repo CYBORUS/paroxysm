@@ -84,6 +84,8 @@
       <itemPath>../../game/SceneGraphNode.h</itemPath>
       <itemPath>../../game/SimpleMatrixNode.cpp</itemPath>
       <itemPath>../../game/SimpleMatrixNode.h</itemPath>
+      <itemPath>../../game/SkyBox.cpp</itemPath>
+      <itemPath>../../game/SkyBox.h</itemPath>
       <itemPath>../../game/TerrainGrid.cpp</itemPath>
       <itemPath>../../game/TerrainGrid.h</itemPath>
       <itemPath>../../game/TestActorNode.cpp</itemPath>

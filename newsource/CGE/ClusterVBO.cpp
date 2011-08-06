@@ -40,4 +40,15 @@ namespace CGE
         for (size_t i = 0; i < mSize; ++i)
             mBuffers[i]->disableVAA();
     }
+    
+    void ClusterVBO::display(GLenum inMode, GLint inFirst, GLsizei inCount)
+    {
+        for (size_t i = 0; i < mSize; ++i)
+            mBuffers[i]->enableVAA(i);
+
+        glDrawArrays(inMode, inFirst, inCount);
+
+        for (size_t i = 0; i < mSize; ++i)
+            mBuffers[i]->disableVAA();
+    }
 }

@@ -44,9 +44,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1445227201/Sound.o \
 	${OBJECTDIR}/_ext/1445227201/Music.o \
 	${OBJECTDIR}/_ext/1445227201/VertexShader.o \
-	${OBJECTDIR}/_ext/1445227201/VertexBufferObject.o \
 	${OBJECTDIR}/_ext/1445227201/IndexVBO.o \
 	${OBJECTDIR}/_ext/1445227201/Engine.o \
+	${OBJECTDIR}/_ext/1445227201/VertexBufferObject.o \
+	${OBJECTDIR}/_ext/1853469074/SkyBox.o \
 	${OBJECTDIR}/_ext/1445227201/c3m.o \
 	${OBJECTDIR}/_ext/1853469074/MapEditorModule.o \
 	${OBJECTDIR}/_ext/1445227201/Download.o \
@@ -151,11 +152,6 @@ ${OBJECTDIR}/_ext/1445227201/VertexShader.o: ../../CGE/VertexShader.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/include/SDL -I/usr/include/lua5.1 -I../.. -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1445227201/VertexShader.o ../../CGE/VertexShader.cpp
 
-${OBJECTDIR}/_ext/1445227201/VertexBufferObject.o: ../../CGE/VertexBufferObject.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1445227201
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/include/SDL -I/usr/include/lua5.1 -I../.. -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1445227201/VertexBufferObject.o ../../CGE/VertexBufferObject.cpp
-
 ${OBJECTDIR}/_ext/1445227201/IndexVBO.o: ../../CGE/IndexVBO.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1445227201
 	${RM} $@.d
@@ -165,6 +161,16 @@ ${OBJECTDIR}/_ext/1445227201/Engine.o: ../../CGE/Engine.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/1445227201
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/include/SDL -I/usr/include/lua5.1 -I../.. -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1445227201/Engine.o ../../CGE/Engine.cpp
+
+${OBJECTDIR}/_ext/1445227201/VertexBufferObject.o: ../../CGE/VertexBufferObject.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1445227201
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/include/SDL -I/usr/include/lua5.1 -I../.. -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1445227201/VertexBufferObject.o ../../CGE/VertexBufferObject.cpp
+
+${OBJECTDIR}/_ext/1853469074/SkyBox.o: ../../game/SkyBox.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1853469074
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/include/SDL -I/usr/include/lua5.1 -I../.. -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1853469074/SkyBox.o ../../game/SkyBox.cpp
 
 ${OBJECTDIR}/_ext/1445227201/c3m.o: ../../CGE/c3m.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1445227201
