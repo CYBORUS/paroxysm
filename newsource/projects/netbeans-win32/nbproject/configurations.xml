@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="79">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="CGE" displayName="CGE" projectFiles="true">
+      <itemPath>../../CGE/Actor.h</itemPath>
+      <itemPath>../../CGE/Camera.cpp</itemPath>
+      <itemPath>../../CGE/Camera.h</itemPath>
+      <itemPath>../../CGE/ClusterVBO.cpp</itemPath>
+      <itemPath>../../CGE/ClusterVBO.h</itemPath>
+      <itemPath>../../CGE/CubeMap.cpp</itemPath>
+      <itemPath>../../CGE/CubeMap.h</itemPath>
+      <itemPath>../../CGE/Debug.h</itemPath>
+      <itemPath>../../CGE/Download.cpp</itemPath>
+      <itemPath>../../CGE/Download.h</itemPath>
+      <itemPath>../../CGE/Engine.cpp</itemPath>
+      <itemPath>../../CGE/Engine.h</itemPath>
+      <itemPath>../../CGE/Exception.cpp</itemPath>
+      <itemPath>../../CGE/Exception.h</itemPath>
+      <itemPath>../../CGE/Font.cpp</itemPath>
+      <itemPath>../../CGE/Font.h</itemPath>
+      <itemPath>../../CGE/FragmentShader.cpp</itemPath>
+      <itemPath>../../CGE/FragmentShader.h</itemPath>
+      <itemPath>../../CGE/Graphics.cpp</itemPath>
+      <itemPath>../../CGE/Graphics.h</itemPath>
+      <itemPath>../../CGE/Image.cpp</itemPath>
+      <itemPath>../../CGE/Image.h</itemPath>
+      <itemPath>../../CGE/IndexVBO.cpp</itemPath>
+      <itemPath>../../CGE/IndexVBO.h</itemPath>
+      <itemPath>../../CGE/LuaMachine.cpp</itemPath>
+      <itemPath>../../CGE/LuaMachine.h</itemPath>
+      <itemPath>../../CGE/ManagedModule.cpp</itemPath>
+      <itemPath>../../CGE/ManagedModule.h</itemPath>
+      <itemPath>../../CGE/Matrix.h</itemPath>
+      <itemPath>../../CGE/Matrix4x4.h</itemPath>
+      <itemPath>../../CGE/Model.cpp</itemPath>
+      <itemPath>../../CGE/Model.h</itemPath>
+      <itemPath>../../CGE/Module.cpp</itemPath>
+      <itemPath>../../CGE/Module.h</itemPath>
+      <itemPath>../../CGE/Music.cpp</itemPath>
+      <itemPath>../../CGE/Music.h</itemPath>
+      <itemPath>../../CGE/Mutex.cpp</itemPath>
+      <itemPath>../../CGE/Mutex.h</itemPath>
+      <itemPath>../../CGE/NetworkStream.cpp</itemPath>
+      <itemPath>../../CGE/NetworkStream.h</itemPath>
+      <itemPath>../../CGE/Platforms.h</itemPath>
+      <itemPath>../../CGE/Program.h</itemPath>
+      <itemPath>../../CGE/PropertyList.cpp</itemPath>
+      <itemPath>../../CGE/PropertyList.h</itemPath>
+      <itemPath>../../CGE/ResourceManager.h</itemPath>
+      <itemPath>../../CGE/Shader.cpp</itemPath>
+      <itemPath>../../CGE/Shader.h</itemPath>
+      <itemPath>../../CGE/Sound.cpp</itemPath>
+      <itemPath>../../CGE/Sound.h</itemPath>
+      <itemPath>../../CGE/StopWatch.cpp</itemPath>
+      <itemPath>../../CGE/StopWatch.h</itemPath>
+      <itemPath>../../CGE/Texture.cpp</itemPath>
+      <itemPath>../../CGE/Texture.h</itemPath>
+      <itemPath>../../CGE/Texture2D.cpp</itemPath>
+      <itemPath>../../CGE/Texture2D.h</itemPath>
+      <itemPath>../../CGE/Thread.cpp</itemPath>
+      <itemPath>../../CGE/Thread.h</itemPath>
+      <itemPath>../../CGE/Tools.cpp</itemPath>
+      <itemPath>../../CGE/Tools.h</itemPath>
+      <itemPath>../../CGE/Vectors.h</itemPath>
+      <itemPath>../../CGE/VertexArrayObject.cpp</itemPath>
+      <itemPath>../../CGE/VertexArrayObject.h</itemPath>
+      <itemPath>../../CGE/VertexBufferObject.cpp</itemPath>
+      <itemPath>../../CGE/VertexBufferObject.h</itemPath>
+      <itemPath>../../CGE/VertexShader.cpp</itemPath>
+      <itemPath>../../CGE/VertexShader.h</itemPath>
+      <itemPath>../../CGE/c3m.c</itemPath>
+      <itemPath>../../CGE/c3m.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="game" displayName="game" projectFiles="true">
+      <itemPath>../../game/ActorNode.cpp</itemPath>
+      <itemPath>../../game/ActorNode.h</itemPath>
+      <itemPath>../../game/GeneralBin.cpp</itemPath>
+      <itemPath>../../game/GeneralBin.h</itemPath>
+      <itemPath>../../game/MapEditorModule.cpp</itemPath>
+      <itemPath>../../game/MapEditorModule.h</itemPath>
+      <itemPath>../../game/RenderBin.cpp</itemPath>
+      <itemPath>../../game/RenderBin.h</itemPath>
+      <itemPath>../../game/SceneGraphNode.cpp</itemPath>
+      <itemPath>../../game/SceneGraphNode.h</itemPath>
+      <itemPath>../../game/SimpleMatrixNode.cpp</itemPath>
+      <itemPath>../../game/SimpleMatrixNode.h</itemPath>
+      <itemPath>../../game/TerrainGrid.cpp</itemPath>
+      <itemPath>../../game/TerrainGrid.h</itemPath>
+      <itemPath>../../game/TestActorNode.cpp</itemPath>
+      <itemPath>../../game/TestActorNode.h</itemPath>
+      <itemPath>../../game/ViewNode.cpp</itemPath>
+      <itemPath>../../game/ViewNode.h</itemPath>
+      <itemPath>../../game/main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="GLee" displayName="GLee" projectFiles="true">
+      <itemPath>../../GLee/GLee.c</itemPath>
+      <itemPath>../../GLee/GLee.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../../CGE</Elem>
+    <Elem>../../game</Elem>
+    <Elem>../../GLee</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>MinGW|MinGW</compilerSet>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>../..</pElem>
+            <pElem>../../../../api/curl-7.21.4-devel-mingw32/curl-7.21.4-devel-mingw32/include</pElem>
+            <pElem>../../../../api/lua/include</pElem>
+            <pElem>../../../../api/sdl/inc</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>../../../paroxysm-${CND_DISTDIR}-${CND_CONF}-${CND_PLATFORM}</output>
+          <linkerAddLib>
+            <pElem>../../../../api/sdl/lib</pElem>
+            <pElem>../../../../api/curl-7.21.4-devel-mingw32/curl-7.21.4-devel-mingw32/lib</pElem>
+            <pElem>../../../../api/lua</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerOptionItem>-lmingw32 -lSDLmain -lSDL_image -lSDL_ttf -lSDL_net -lSDL_mixer -lSDL -lopengl32 -llua5.1 -lcurldll</linkerOptionItem>
+            <linkerOptionItem>-static-libgcc -static-libstdc++</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>../..</pElem>
+            <pElem>../../../../api/curl-7.21.4-devel-mingw32/curl-7.21.4-devel-mingw32/include</pElem>
+            <pElem>../../../../api/lua/include</pElem>
+            <pElem>../../../../api/sdl/inc</pElem>
+          </incDir>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <linkerTool>
+          <output>../../../paroxysm-${CND_DISTDIR}-${CND_CONF}-${CND_PLATFORM}</output>
+          <linkerAddLib>
+            <pElem>../../../../api/sdl/lib</pElem>
+            <pElem>../../../../api/curl-7.21.4-devel-mingw32/curl-7.21.4-devel-mingw32/lib</pElem>
+            <pElem>../../../../api/lua</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerOptionItem>-lmingw32 -lSDLmain -lSDL_image -lSDL_ttf -lSDL_net -lSDL_mixer -lSDL -lopengl32 -llua5.1 -lcurldll</linkerOptionItem>
+            <linkerOptionItem>-static-libgcc -static-libstdc++</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+    </conf>
+  </confs>
+</configurationDescriptor>
