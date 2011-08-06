@@ -1,6 +1,7 @@
 .svn/
 CVS/
 /paroxysm-*
+/data/settings.txt
 *.dll
 
 # Codeblocks nonsense

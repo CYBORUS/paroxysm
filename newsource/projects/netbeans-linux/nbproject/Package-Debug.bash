@@ -14,7 +14,7 @@ NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
 OUTPUT_PATH=../../../paroxysm-${CND_DISTDIR}-${CND_CONF}-${CND_PLATFORM}
 OUTPUT_BASENAME=paroxysm-${CND_DISTDIR}-${CND_CONF}-${CND_PLATFORM}
-PACKAGE_TOP_DIR=netbeans/
+PACKAGE_TOP_DIR=netbeans-linux/
 
 # Functions
 function checkReturnCode
@@ -59,15 +59,15 @@ mkdir -p ${NBTMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory "${NBTMPDIR}/netbeans/bin"
+makeDirectory "${NBTMPDIR}/netbeans-linux/bin"
 copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/netbeans.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/netbeans-linux.tar
 cd ${NBTMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/netbeans.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/netbeans-linux.tar *
 checkReturnCode
 
 # Cleanup

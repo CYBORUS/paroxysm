@@ -12,16 +12,16 @@ CND_ARTIFACT_DIR_Debug=../../..
 CND_ARTIFACT_NAME_Debug=paroxysm-dist-Debug-GNU-Linux-x86
 CND_ARTIFACT_PATH_Debug=../../../paroxysm-dist-Debug-GNU-Linux-x86
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Debug=netbeans.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/netbeans.tar
+CND_PACKAGE_NAME_Debug=netbeans-linux.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/netbeans-linux.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux-x86
 CND_ARTIFACT_DIR_Release=../../..
 CND_ARTIFACT_NAME_Release=paroxysm-dist-Release-GNU-Linux-x86
 CND_ARTIFACT_PATH_Release=../../../paroxysm-dist-Release-GNU-Linux-x86
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Release=netbeans.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/netbeans.tar
+CND_PACKAGE_NAME_Release=netbeans-linux.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/netbeans-linux.tar
 #
 # include compiler specific variables
 #
