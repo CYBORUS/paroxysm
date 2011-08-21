@@ -16,6 +16,7 @@ namespace CGE
             void display(GLenum inMode = GL_TRIANGLES);
             void display(const IndexVBO& inIVBO, GLenum inMode = GL_TRIANGLES);
             void display(GLenum inMode, GLint inFirst, GLsizei inCount);
+            void displayLinear(GLenum inMode = GL_TRIANGLES);
 
         private:
             size_t mSize;

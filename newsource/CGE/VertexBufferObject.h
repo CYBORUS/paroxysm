@@ -9,6 +9,7 @@ namespace CGE
     {
         public:
             friend class VertexArrayObject;
+            friend class ClusterVBO;
 
             VertexBufferObject(GLenum inTarget = GL_ARRAY_BUFFER,
                 GLenum inType = GL_FLOAT, GLenum inUsage = GL_STATIC_DRAW);
