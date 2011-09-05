@@ -36,7 +36,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
         throw CGE::Exception("", "no map to load");
-    int size = 200;
+    int size = 10;
     //fin >> mGrid;
     mGrid.create(size, size);
     mGrid.buildVBO();
@@ -122,7 +122,7 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
 
     if (tempPoint[1] >= numRows || tempPoint[1] < 0 || tempPoint[0] >= numCols || tempPoint[0] < 0)
     {
-        currentVertex = mSpherePosition;
+        currentVertex = mSelectPosition;
     }
     else
     {
@@ -164,6 +164,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 && hoverVertex[1] >= 0.0f
                 && hoverVertex[1] <= float(mGrid.getMatrix().lastRow()))
             {
+                mSelectPosition = hoverVertex;
+
                 hoverVertex[0] -= 0.05;
                 hoverVertex[1] -= 0.05;
                 hoverVertex[2] -= 0.05;
