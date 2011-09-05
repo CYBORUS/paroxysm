@@ -33,7 +33,7 @@ class TerrainGrid : public CGE::Actor
         void create(size_t inRows, size_t inCols);
         void buildVBO();
 
-        inline Matrix<float> getMatrix() { return mHeights; }
+        inline const Matrix<float>& getMatrix() const { return mHeights; }
         vec4f getVertex(int inRow, int inCol);
 
     private:

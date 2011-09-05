@@ -49,6 +49,8 @@ void MapEditorModule::onUnload()
 
 void MapEditorModule::onOpen()
 {
+    mMouseState = NONE;
+
     mViewNode.setAngle(-45.0f);
     mViewNode.setDistance(8.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -157,10 +159,16 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         case NONE:
         {
             vec4f hoverVertex = selectVertex(inX, inY);
-            hoverVertex[0] -= 0.05;
-            hoverVertex[1] -= 0.05;
-            hoverVertex[2] -= 0.05;
-            mSpherePosition = hoverVertex;
+            if (hoverVertex[0] >= 0.0f
+                && hoverVertex[0] <= float(mGrid.getMatrix().lastCol())
+                && hoverVertex[1] >= 0.0f
+                && hoverVertex[1] <= float(mGrid.getMatrix().lastRow()))
+            {
+                hoverVertex[0] -= 0.05;
+                hoverVertex[1] -= 0.05;
+                hoverVertex[2] -= 0.05;
+                mSpherePosition = hoverVertex;
+            }
             break;
         }
 
