@@ -36,7 +36,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
         throw CGE::Exception("", "no map to load");
-    int size = 200;
+    int size = 10;
     //fin >> mGrid;
     mGrid.create(size, size);
     mGrid.buildVBO();
@@ -159,6 +159,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         case NONE:
         {
             vec4f hoverVertex = selectVertex(inX, inY);
+
+            cerr << "hoververtex: " << hoverVertex[0] << ", " << hoverVertex[1] << ", " << hoverVertex[2] << endl;
             if (hoverVertex[0] >= 0.0f
                 && hoverVertex[0] <= float(mGrid.getMatrix().lastCol())
                 && hoverVertex[1] >= 0.0f
