@@ -123,8 +123,6 @@
 		<Unit filename="..\GLee\GLee.h" />
 		<Unit filename="..\game\ActorNode.cpp" />
 		<Unit filename="..\game\ActorNode.h" />
-		<Unit filename="..\game\Entity.cpp" />
-		<Unit filename="..\game\Entity.h" />
 		<Unit filename="..\game\GeneralBin.cpp" />
 		<Unit filename="..\game\GeneralBin.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
@@ -135,12 +133,18 @@
 		<Unit filename="..\game\SceneGraphNode.h" />
 		<Unit filename="..\game\SimpleMatrixNode.cpp" />
 		<Unit filename="..\game\SimpleMatrixNode.h" />
+		<Unit filename="..\game\SkyBox.cpp" />
+		<Unit filename="..\game\SkyBox.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />
 		<Unit filename="..\game\TerrainGrid.h" />
 		<Unit filename="..\game\TestActorNode.cpp" />
 		<Unit filename="..\game\TestActorNode.h" />
+		<Unit filename="..\game\UserInterface.cpp" />
+		<Unit filename="..\game\UserInterface.h" />
 		<Unit filename="..\game\ViewNode.cpp" />
 		<Unit filename="..\game\ViewNode.h" />
+		<Unit filename="..\game\Widget.cpp" />
+		<Unit filename="..\game\Widget.h" />
 		<Unit filename="..\game\main.cpp" />
 		<Extensions>
 			<code_completion />
