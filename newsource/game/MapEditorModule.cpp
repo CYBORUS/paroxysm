@@ -122,7 +122,7 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
 
     if (tempPoint[1] >= numRows || tempPoint[1] < 0 || tempPoint[0] >= numCols || tempPoint[0] < 0)
     {
-        currentVertex = mSpherePosition;
+        currentVertex = mSelectPosition;
     }
     else
     {
@@ -166,6 +166,8 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 && hoverVertex[1] >= 0.0f
                 && hoverVertex[1] <= float(mGrid.getMatrix().lastRow()))
             {
+                mSelectPosition = hoverVertex;
+
                 hoverVertex[0] -= 0.05;
                 hoverVertex[1] -= 0.05;
                 hoverVertex[2] -= 0.05;
@@ -331,6 +333,9 @@ void MapEditorModule::onResize(int inWidth, int inHeight)
 {
     GLfloat ratio = static_cast<GLfloat>(inWidth)
         / static_cast<GLfloat>(inHeight);
+
+    mUI.onResize(inWidth, inHeight);
+
     CGE::Matrix4x4<GLfloat> projection;
     projection.perspective(30.0f, ratio, 1.0f, 1000.0f);
     mViewNode.setProjection(projection);

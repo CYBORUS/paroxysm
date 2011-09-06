@@ -138,8 +138,12 @@
 		<Unit filename="../game/TerrainGrid.h" />
 		<Unit filename="../game/TestActorNode.cpp" />
 		<Unit filename="../game/TestActorNode.h" />
+		<Unit filename="../game/UserInterface.cpp" />
+		<Unit filename="../game/UserInterface.h" />
 		<Unit filename="../game/ViewNode.cpp" />
 		<Unit filename="../game/ViewNode.h" />
+		<Unit filename="../game/Widget.cpp" />
+		<Unit filename="../game/Widget.h" />
 		<Unit filename="../game/main.cpp" />
 		<Extensions>
 			<code_completion />

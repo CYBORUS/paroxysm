@@ -20,6 +20,7 @@ namespace CGE
             Matrix4x4(const Matrix4x4<T>& inMatrix);
             Matrix4x4(const Matrix4x4<T>& inLMatrix,
                 const Matrix4x4<T>& inRMatrix);
+            inline ~Matrix4x4() {}
 
             void loadIdentity();
 
@@ -267,8 +268,6 @@ namespace CGE
         Matrix4x4<T> transform;
 
         transform[0] = inScale;
-        transform[5] = SCT(1);
-        transform[10] = SCT(1);
 
         multiply(Matrix4x4<T>(mData), transform);
     }
@@ -281,9 +280,7 @@ namespace CGE
     {
         Matrix4x4<T> transform;
 
-        transform[0] = SCT(1);
         transform[5] = inScale;
-        transform[10] = SCT(1);
 
         multiply(Matrix4x4<T>(mData), transform);
     }
@@ -296,8 +293,6 @@ namespace CGE
     {
         Matrix4x4<T> transform;
 
-        transform[0] = SCT(1);
-        transform[5] = SCT(1);
         transform[10] = inScale;
 
         multiply(Matrix4x4<T>(mData), transform);

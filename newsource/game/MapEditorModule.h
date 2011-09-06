@@ -14,6 +14,7 @@
 #include "GeneralBin.h"
 #include "ActorNode.h"
 #include "SimpleMatrixNode.h"
+#include "UserInterface.h"
 
 #include <list>
 
@@ -69,6 +70,7 @@ class MapEditorModule : public CGE::ManagedModule
         CGE::ResourceManager<CGE::Model> mManager;
 
         vec4f mClickedVertex;
+        vec4f mSelectPosition;
         vec4f mSpherePosition;
 
         MouseState mMouseState;
@@ -82,6 +84,8 @@ class MapEditorModule : public CGE::ManagedModule
 
         float mXPan;
         float mYPan;
+
+        UserInterface mUI;
 };
 
 #endif
