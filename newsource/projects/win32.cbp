@@ -52,6 +52,8 @@
 		<Unit filename="..\CGE\Camera.h" />
 		<Unit filename="..\CGE\ClusterVBO.cpp" />
 		<Unit filename="..\CGE\ClusterVBO.h" />
+		<Unit filename="..\CGE\Control.cpp" />
+		<Unit filename="..\CGE\Control.h" />
 		<Unit filename="..\CGE\CubeMap.cpp" />
 		<Unit filename="..\CGE\CubeMap.h" />
 		<Unit filename="..\CGE\Debug.h" />
@@ -59,6 +61,8 @@
 		<Unit filename="..\CGE\Download.h" />
 		<Unit filename="..\CGE\Engine.cpp" />
 		<Unit filename="..\CGE\Engine.h" />
+		<Unit filename="..\CGE\Entity.cpp" />
+		<Unit filename="..\CGE\Entity.h" />
 		<Unit filename="..\CGE\Exception.cpp" />
 		<Unit filename="..\CGE\Exception.h" />
 		<Unit filename="..\CGE\Font.cpp" />
@@ -123,8 +127,6 @@
 		<Unit filename="..\GLee\GLee.h" />
 		<Unit filename="..\game\ActorNode.cpp" />
 		<Unit filename="..\game\ActorNode.h" />
-		<Unit filename="..\game\Entity.cpp" />
-		<Unit filename="..\game\Entity.h" />
 		<Unit filename="..\game\GeneralBin.cpp" />
 		<Unit filename="..\game\GeneralBin.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
@@ -139,6 +141,8 @@
 		<Unit filename="..\game\TerrainGrid.h" />
 		<Unit filename="..\game\TestActorNode.cpp" />
 		<Unit filename="..\game\TestActorNode.h" />
+		<Unit filename="..\game\UserInterface.cpp" />
+		<Unit filename="..\game\UserInterface.h" />
 		<Unit filename="..\game\ViewNode.cpp" />
 		<Unit filename="..\game\ViewNode.h" />
 		<Unit filename="..\game\main.cpp" />
