@@ -3,7 +3,6 @@
 
 #include "Texture2D.h"
 #include "ClusterVBO.h"
-#include "Actor.h"
 #include "c3m.h"
 
 #include <string>
@@ -11,7 +10,7 @@
 
 namespace CGE
 {
-    class Model : public Actor
+    class Model
     {
         public:
             Model(const char* inFile);
