@@ -137,6 +137,8 @@
 		<Unit filename="..\game\SceneGraphNode.h" />
 		<Unit filename="..\game\SimpleMatrixNode.cpp" />
 		<Unit filename="..\game\SimpleMatrixNode.h" />
+		<Unit filename="..\game\SkyBox.cpp" />
+		<Unit filename="..\game\SkyBox.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />
 		<Unit filename="..\game\TerrainGrid.h" />
 		<Unit filename="..\game\TestActorNode.cpp" />
@@ -145,6 +147,8 @@
 		<Unit filename="..\game\UserInterface.h" />
 		<Unit filename="..\game\ViewNode.cpp" />
 		<Unit filename="..\game\ViewNode.h" />
+		<Unit filename="..\game\Widget.cpp" />
+		<Unit filename="..\game\Widget.h" />
 		<Unit filename="..\game\main.cpp" />
 		<Extensions>
 			<code_completion />

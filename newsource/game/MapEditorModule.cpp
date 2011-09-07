@@ -160,7 +160,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
         {
             vec4f hoverVertex = selectVertex(inX, inY);
 
-            cerr << "hoververtex: " << hoverVertex[0] << ", " << hoverVertex[1] << ", " << hoverVertex[2] << endl;
+            //cerr << "hoververtex: " << hoverVertex[0] << ", " << hoverVertex[1] << ", " << hoverVertex[2] << endl;
             if (hoverVertex[0] >= 0.0f
                 && hoverVertex[0] <= float(mGrid.getMatrix().lastCol())
                 && hoverVertex[1] >= 0.0f
