@@ -103,10 +103,7 @@ Matrix<T>::Matrix(int inRows, int inCols)
     mSize = mRows * mCols;
     mMatrix = new T[mSize];
 
-    for (unsigned long i = 0; i < mSize; ++i)
-    {
-        mMatrix[i] = 0;
-    }
+    memset(mMatrix, 0, mSize * sizeof(T));
 }
 
 template<class T>

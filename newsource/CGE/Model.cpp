@@ -12,7 +12,7 @@ namespace CGE
     /**
     *   Constructor to load a resource on construction
     */
-    Model::Model(const char* inFile) : mClusterVBO(2)
+    Model::Model(const char* inFile)
     {
         string s(inFile);
         s = s.substr(s.rfind('.') + 1);

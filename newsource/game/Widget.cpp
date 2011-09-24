@@ -1,7 +1,8 @@
 #include "Widget.h"
 
-Widget::Widget(bool inCanHaveFocus) : mEnabled(true),
-    mCanHaveFocus(inCanHaveFocus)
+Widget::Widget(bool inCanHaveFocus) : mX(0.0f), mY(0.0f), mRadiusX(0.0f),
+    mRadiusY(0.0f), mEnabled(true), mCanHaveFocus(inCanHaveFocus),
+    mVisible(true)
 {
 }
 
@@ -11,66 +12,70 @@ Widget::~Widget()
 
 void Widget::onMouseIn()
 {
-    mOnMouseIn.dispatch();
+    mOnMouseIn.dispatch(this);
 }
 
 void Widget::onMouseOut()
 {
-    mOnMouseOut.dispatch();
+    mOnMouseOut.dispatch(this);
 }
 
 void Widget::onMouseDown()
 {
-    mOnMouseDown.dispatch();
+    mOnMouseDown.dispatch(this);
 }
 
 void Widget::onMouseUp()
 {
-    mOnMouseUp.dispatch();
+    mOnMouseUp.dispatch(this);
 }
 
 void Widget::onClick()
 {
-    mOnClick.dispatch();
+    mOnClick.dispatch(this);
 }
 
 void Widget::onFocus()
 {
-    mOnFocus.dispatch();
+    mOnFocus.dispatch(this);
+}
+
+void Widget::onBlur()
+{
+    mOnBlur.dispatch(this);
 }
 
 void Widget::setMouseInListener(Listener inListener, void* inData)
 {
-    mOnMouseIn.listener = inListener;
-    mOnMouseIn.data = inData;
+    mOnMouseIn.configure(inListener, inData);
 }
 
 void Widget::setMouseOutListener(Listener inListener, void* inData)
 {
-    mOnMouseOut.listener = inListener;
-    mOnMouseOut.data = inData;
+    mOnMouseOut.configure(inListener, inData);
 }
 
 void Widget::setMouseDownListener(Listener inListener, void* inData)
 {
-    mOnMouseDown.listener = inListener;
-    mOnMouseDown.data = inData;
+    mOnMouseDown.configure(inListener, inData);
 }
 
 void Widget::setMouseUpListener(Listener inListener, void* inData)
 {
-    mOnMouseUp.listener = inListener;
-    mOnMouseUp.data = inData;
+    mOnMouseUp.configure(inListener, inData);
 }
 
 void Widget::setClickListener(Listener inListener, void* inData)
 {
-    mOnClick.listener = inListener;
-    mOnClick.data = inData;
+    mOnClick.configure(inListener, inData);
 }
 
 void Widget::setFocusListener(Listener inListener, void* inData)
 {
-    mOnFocus.listener = inListener;
-    mOnFocus.data = inData;
+    mOnFocus.configure(inListener, inData);
+}
+
+void Widget::setBlurListener(Listener inListener, void* inData)
+{
+    mOnBlur.configure(inListener, inData);
 }
