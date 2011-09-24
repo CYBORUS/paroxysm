@@ -15,6 +15,7 @@
 #include "ActorNode.h"
 #include "SimpleMatrixNode.h"
 #include "UserInterface.h"
+#include "Button.h"
 
 #include <list>
 
@@ -86,6 +87,8 @@ class MapEditorModule : public CGE::ManagedModule
         float mYPan;
 
         UserInterface mUI;
+
+        static void uiLoadMap(Widget* inWidget, void* inData);
 };
 
 #endif

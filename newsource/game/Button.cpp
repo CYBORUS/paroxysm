@@ -1,8 +1,9 @@
 #include "Button.h"
 
-Button::Button(CGE::Texture2D& inTexture, float inWidth, float inHeight)
-    : mTexture(inTexture), mFirst(0)
+Button::Button(const CGE::Image& inImage, float inWidth, float inHeight) : mFirst(0)
 {
+    mTexture.loadImage(inImage);
+
     const float Min = 0.1f;
     if (inWidth < Min) inWidth = Min;
     if (inHeight < Min) inHeight = Min;
@@ -64,5 +65,5 @@ void Button::setPosition(float inX, float inY)
 void Button::display()
 {
     mTexture.bind();
-    mClusterVBO.display(GL_TRIANGLE_FAN, 0, 4);
+    mClusterVBO.display(GL_TRIANGLE_FAN, mFirst, 4);
 }

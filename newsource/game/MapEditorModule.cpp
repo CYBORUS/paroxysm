@@ -41,6 +41,10 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     mGrid.create(size, size);
     mGrid.buildVBO();
     fin.close();
+
+    Button* button = new Button("assets/images/hud/load_map.png", 2.0f, 1.0f);
+    button->setMouseDownListener(uiLoadMap, this);
+    mUI.addWidget(button);
 }
 
 void MapEditorModule::onUnload()
@@ -158,6 +162,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     {
         case NONE:
         {
+            mUI.onMouseMove(inX, inY);
             vec4f hoverVertex = selectVertex(inX, inY);
 
             if (hoverVertex[0] >= 0.0f
@@ -214,6 +219,7 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 void MapEditorModule::onLButtonDown(int inX, int inY)
 {
     Uint8* keys = SDL_GetKeyState(NULL);
+    mUI.onMouseDown();
 
     if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
     {
@@ -340,4 +346,10 @@ void MapEditorModule::onResize(int inWidth, int inHeight)
     mViewNode.setProjection(projection);
     glViewport(0, 0, inWidth, inHeight);
     glGetIntegerv(GL_VIEWPORT, mViewport);
+}
+
+void MapEditorModule::uiLoadMap(Widget* inWidget, void* inData)
+{
+    MapEditorModule* m = reinterpret_cast<MapEditorModule*>(inData);
+    cerr << "Button pressed!\n";
 }

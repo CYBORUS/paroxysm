@@ -1,4 +1,5 @@
 #include "UserInterface.h"
+#include <iostream>
 
 UserInterface::UserInterface(float inRange) : mRange(inRange), mRatio(0.0f),
     mMouseX(0.0f), mMouseY(0.0f), mMouseOverWidget(NULL)
@@ -65,4 +66,10 @@ void UserInterface::onMouseMove(int inX, int inY)
             mMouseOverWidget = w;
         }
     }
+}
+
+void UserInterface::onMouseDown()
+{
+    std::cout << mMouseX << ", " << mMouseY << std::endl;
+    if (mMouseOverWidget) mMouseOverWidget->onMouseDown();
 }

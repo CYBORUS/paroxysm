@@ -17,6 +17,7 @@ class UserInterface : protected SceneGraphNode
 
         void onResize(int inWidth, int inHeight);
         void onMouseMove(int inX, int inY);
+        void onMouseDown();
 
     protected:
     private:
