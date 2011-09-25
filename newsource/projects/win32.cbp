@@ -131,6 +131,8 @@
 		<Unit filename="..\game\GeneralBin.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
 		<Unit filename="..\game\MapEditorModule.h" />
+		<Unit filename="..\game\ParoxysmEntity.cpp" />
+		<Unit filename="..\game\ParoxysmEntity.h" />
 		<Unit filename="..\game\RenderBin.cpp" />
 		<Unit filename="..\game\RenderBin.h" />
 		<Unit filename="..\game\SceneGraphNode.cpp" />
@@ -139,6 +141,8 @@
 		<Unit filename="..\game\SimpleMatrixNode.h" />
 		<Unit filename="..\game\SkyBox.cpp" />
 		<Unit filename="..\game\SkyBox.h" />
+		<Unit filename="..\game\Tank.cpp" />
+		<Unit filename="..\game\Tank.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />
 		<Unit filename="..\game\TerrainGrid.h" />
 		<Unit filename="..\game\TestActorNode.cpp" />
