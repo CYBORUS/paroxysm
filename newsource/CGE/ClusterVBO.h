@@ -5,22 +5,27 @@
 
 namespace CGE
 {
+    struct ClusterUnit
+    {
+        VertexBufferObject* buffer;
+        GLuint index;
+    };
+
     class ClusterVBO
     {
         public:
-            ClusterVBO(size_t inSize);
+            ClusterVBO();
             ~ClusterVBO();
 
             void mount(const IndexVBO& inIVBO);
-            void mount(VertexBufferObject& inVBO, size_t inIndex);
+            void mount(VertexBufferObject& inVBO, GLuint inIndex);
             void display(GLenum inMode = GL_TRIANGLES);
             void display(const IndexVBO& inIVBO, GLenum inMode = GL_TRIANGLES);
             void display(GLenum inMode, GLint inFirst, GLsizei inCount);
-            void displayLinear(GLenum inMode = GL_TRIANGLES);
 
         private:
-            size_t mSize;
-            VertexBufferObject** mBuffers;
+            ClusterUnit mCluster[32];
+            ClusterUnit* mTopCluster;
             const IndexVBO* mIVBO;
     };
 }

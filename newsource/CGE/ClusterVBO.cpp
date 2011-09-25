@@ -2,15 +2,13 @@
 
 namespace CGE
 {
-    ClusterVBO::ClusterVBO(size_t inSize) : mSize(inSize), mIVBO(NULL)
+    ClusterVBO::ClusterVBO() : mTopCluster(mCluster), mIVBO(NULL)
     {
-        if (!mSize) mSize = 1;
-        mBuffers = new VertexBufferObject*[mSize];
+        memset(mCluster, 0, sizeof(mCluster));
     }
 
     ClusterVBO::~ClusterVBO()
     {
-        delete [] mBuffers;
     }
 
     void ClusterVBO::mount(const IndexVBO& inIVBO)
@@ -18,11 +16,11 @@ namespace CGE
         mIVBO = &inIVBO;
     }
 
-    void ClusterVBO::mount(VertexBufferObject& inVBO, size_t inIndex)
+    void ClusterVBO::mount(VertexBufferObject& inVBO, GLuint inIndex)
     {
-        if (inIndex >= mSize) return;
-
-        mBuffers[inIndex] = &inVBO;
+        mTopCluster->buffer = &inVBO;
+        mTopCluster->index = inIndex;
+        ++mTopCluster;
     }
 
     void ClusterVBO::display(GLenum inMode)
@@ -32,34 +30,23 @@ namespace CGE
 
     void ClusterVBO::display(const IndexVBO& inIVBO, GLenum inMode)
     {
-        for (size_t i = 0; i < mSize; ++i)
-            mBuffers[i]->enableVAA(i);
+        for (ClusterUnit* i = mCluster; i->buffer; ++i)
+            i->buffer->enableVAA(i->index);
 
         inIVBO.draw(inMode);
 
-        for (size_t i = 0; i < mSize; ++i)
-            mBuffers[i]->disableVAA();
+        for (ClusterUnit* i = mCluster; i->buffer; ++i)
+            i->buffer->disableVAA();
     }
 
     void ClusterVBO::display(GLenum inMode, GLint inFirst, GLsizei inCount)
     {
-        for (size_t i = 0; i < mSize; ++i)
-            mBuffers[i]->enableVAA(i);
+        for (ClusterUnit* i = mCluster; i->buffer; ++i)
+            i->buffer->enableVAA(i->index);
 
         glDrawArrays(inMode, inFirst, inCount);
 
-        for (size_t i = 0; i < mSize; ++i)
-            mBuffers[i]->disableVAA();
-    }
-
-    void ClusterVBO::displayLinear(GLenum inMode)
-    {
-        for (size_t i = 0; i < mSize; ++i)
-            mBuffers[i]->enableVAA(i);
-
-        glDrawArrays(inMode, 0, mBuffers[0]->mSize);
-
-        for (size_t i = 0; i < mSize; ++i)
-            mBuffers[i]->disableVAA();
+        for (ClusterUnit* i = mCluster; i->buffer; ++i)
+            i->buffer->disableVAA();
     }
 }

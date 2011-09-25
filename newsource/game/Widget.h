@@ -1,63 +1,69 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include "EventListener.h"
 #include "SceneGraphNode.h"
 #include <cstring>
 
 class Widget : public SceneGraphNode
 {
     public:
-        typedef void (*Listener)(void*);
-
-        struct EventPackage
-        {
-            Listener listener;
-            void* data;
-
-            inline void dispatch() { if (listener) listener(data); }
-
-            EventPackage() { memset(this, 0, sizeof(EventPackage)); }
-        };
-
         Widget(bool inCanHaveFocus = true);
         virtual ~Widget();
 
         virtual void display() = 0;
 
-        inline bool canHaveFocus() { return mEnabled && mCanHaveFocus; }
         inline void enable(bool inEnabled = true)
         {
             mEnabled = inEnabled;
         }
 
-        void onMouseIn();
-        void onMouseOut();
-        void onMouseDown();
-        void onMouseUp();
-        void onClick();
-        void onFocus();
-        void onBlur();
+        inline bool canHaveFocus() const
+        {
+            return mEnabled && mCanHaveFocus;
+        }
 
-        void setMouseInListener(Listener inListener, void* inData);
-        void setMouseOutListener(Listener inListener, void* inData);
-        void setMouseDownListener(Listener inListener, void* inData);
-        void setMouseUpListener(Listener inListener, void* inData);
-        void setClickListener(Listener inListener, void* inData);
-        void setFocusListener(Listener inListener, void* inData);
-        void setBlurListener(Listener inListener, void* inData);
+        inline bool contains(float inX, float inY) const
+        {
+            return inX >= mX - mRadiusX
+                && inX <= mX + mRadiusX
+                && inY >= mY - mRadiusY
+                && inY <= mY + mRadiusY;
+        }
+
+        virtual void onMouseIn();
+        virtual void onMouseOut();
+        virtual void onMouseDown();
+        virtual void onMouseUp();
+        virtual void onClick();
+        virtual void onFocus();
+        virtual void onBlur();
+
+        void setMouseInListener(Listener inListener, void* inData = NULL);
+        void setMouseOutListener(Listener inListener, void* inData = NULL);
+        void setMouseDownListener(Listener inListener, void* inData = NULL);
+        void setMouseUpListener(Listener inListener, void* inData = NULL);
+        void setClickListener(Listener inListener, void* inData = NULL);
+        void setFocusListener(Listener inListener, void* inData = NULL);
+        void setBlurListener(Listener inListener, void* inData = NULL);
 
     protected:
+        float mX;
+        float mY;
+        float mRadiusX;
+        float mRadiusY;
 
     private:
         bool mEnabled;
         bool mCanHaveFocus;
-        EventPackage mOnMouseIn;
-        EventPackage mOnMouseOut;
-        EventPackage mOnMouseDown;
-        EventPackage mOnMouseUp;
-        EventPackage mOnClick;
-        EventPackage mOnFocus;
-        EventPackage mOnBlur;
+        bool mVisible;
+        EventListener mOnMouseIn;
+        EventListener mOnMouseOut;
+        EventListener mOnMouseDown;
+        EventListener mOnMouseUp;
+        EventListener mOnClick;
+        EventListener mOnFocus;
+        EventListener mOnBlur;
 };
 
 #endif

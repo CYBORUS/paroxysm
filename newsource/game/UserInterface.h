@@ -9,7 +9,7 @@
 class UserInterface : protected SceneGraphNode
 {
     public:
-        UserInterface();
+        UserInterface(float inRange = 4.0f);
         virtual ~UserInterface();
 
         void addWidget(Widget* inWidget);
@@ -21,17 +21,17 @@ class UserInterface : protected SceneGraphNode
     protected:
     private:
         mat4f mProjection;
+        float mRange;
         float mRatio;
         int mWidth;
         int mHeight;
         int mCenterX;
         int mCenterY;
-        float mMouse2D[2];
+        float mMouseX;
+        float mMouseY;
 
         Widget* mMouseOverWidget;
         std::list<Widget*> mWidgets;
-
-        static const float Range = 4.0f;
 };
 
 #endif
