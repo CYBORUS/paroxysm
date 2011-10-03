@@ -5,10 +5,39 @@ UserInterface::UserInterface(float inRange) : mRange(inRange), mRatio(0.0f),
     mMouseX(0.0f), mMouseY(0.0f), mMouseOverWidget(NULL)
 {
     if (mRange < 1.0f) mRange = 1.0f;
+
+    mVS.loadFromFile("data/shaders/ui.vs");
+    mFS.loadFromFile("data/shaders/ui.fs");
+    mProgram.attachShader(mVS);
+    mProgram.attachShader(mFS);
+    mProgram.bindAttribLocation(0, "iVertex");
+    mProgram.bindAttribLocation(1, "iTexture");
+    mProgram.link();
+    mUniMVPM = mProgram.getUniformLocation("uMVPM");
+    mUniTexture = mProgram.getUniformLocation("uTexture");
+
+    glUniform1i(mUniTexture, 0);
 }
 
 UserInterface::~UserInterface()
 {
+}
+
+void UserInterface::update()
+{
+    updateMatrices(mProjection);
+}
+
+void UserInterface::display()
+{
+    mProgram.use();
+    for (std::list<Widget*>::iterator i = mWidgets.begin();
+        i != mWidgets.end(); ++i)
+    {
+        Widget* w = *i;
+        glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, w->compositeMatrix());
+        w->display();
+    }
 }
 
 void UserInterface::addWidget(Widget* inWidget)
@@ -19,6 +48,7 @@ void UserInterface::addWidget(Widget* inWidget)
 
 void UserInterface::removeWidget(Widget* inWidget)
 {
+    if (mMouseOverWidget == inWidget) mMouseOverWidget = NULL;
     mWidgets.remove(inWidget);
     removeChildNode(*inWidget);
 }

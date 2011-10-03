@@ -2,6 +2,9 @@
 #define USERINTERFACE_H
 
 #include <CGE/Matrix4x4.h>
+#include <CGE/Program.h>
+#include <CGE/VertexShader.h>
+#include <CGE/FragmentShader.h>
 #include "SceneGraphNode.h"
 #include "Widget.h"
 #include <list>
@@ -11,6 +14,9 @@ class UserInterface : protected SceneGraphNode
     public:
         UserInterface(float inRange = 4.0f);
         virtual ~UserInterface();
+
+        void update();
+        void display();
 
         void addWidget(Widget* inWidget);
         void removeWidget(Widget* inWidget);
@@ -33,6 +39,13 @@ class UserInterface : protected SceneGraphNode
 
         Widget* mMouseOverWidget;
         std::list<Widget*> mWidgets;
+
+        CGE::Program<2> mProgram;
+        CGE::VertexShader mVS;
+        CGE::FragmentShader mFS;
+
+        GLuniform mUniMVPM;
+        GLuniform mUniTexture;
 };
 
 #endif

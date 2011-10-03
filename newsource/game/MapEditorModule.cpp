@@ -44,6 +44,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
 
     Button* button = new Button("assets/images/hud/load_map.png", 2.0f, 1.0f);
     button->setMouseDownListener(uiLoadMap, this);
+    button->setPosition(3.0f, -2.0f);
     mUI.addWidget(button);
 }
 
@@ -55,23 +56,28 @@ void MapEditorModule::onOpen()
 {
     mMouseState = NONE;
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     mViewNode.setAngle(-45.0f);
     mViewNode.setDistance(8.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glEnable(GL_DEPTH_TEST);
 }
 
 void MapEditorModule::onClose()
 {
-    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
 }
 
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //mSphere->display();
+    glEnable(GL_DEPTH_TEST);
     mBin.displayAll();
+    glDisable(GL_DEPTH_TEST);
+
+    mUI.display();
 }
 
 void MapEditorModule::onPulse()
@@ -92,6 +98,8 @@ void MapEditorModule::onPulse()
 
     mViewNode.update();
     mViewNode.updateAllMatrices();
+
+    mUI.update();
 }
 
 
@@ -124,7 +132,10 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
     int numRows = mGrid.getMatrix().rows();
     int numCols = mGrid.getMatrix().cols();
 
-    if (tempPoint[1] >= numRows || tempPoint[1] < 0 || tempPoint[0] >= numCols || tempPoint[0] < 0)
+    if (tempPoint[1] >= numRows
+        || tempPoint[1] < 0
+        || tempPoint[0] >= numCols
+        || tempPoint[0] < 0)
     {
         currentVertex = mSelectPosition;
     }

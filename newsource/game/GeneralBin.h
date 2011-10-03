@@ -13,6 +13,8 @@ class GeneralBin : public RenderBin
         GeneralBin();
         virtual ~GeneralBin();
 
+        void displayAll();
+
     protected:
         virtual void displayNode(SceneGraphNode* inNode);
 

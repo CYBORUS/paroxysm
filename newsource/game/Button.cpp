@@ -1,6 +1,7 @@
 #include "Button.h"
 
-Button::Button(const CGE::Image& inImage, float inWidth, float inHeight) : mFirst(0)
+Button::Button(const CGE::Image& inImage, float inWidth, float inHeight)
+    : mFirst(0)
 {
     mTexture.loadImage(inImage);
 
@@ -26,26 +27,28 @@ Button::Button(const CGE::Image& inImage, float inWidth, float inHeight) : mFirs
         *vertex++ = mRadiusX;
         *vertex++ = mRadiusY;
         *texCoord++ = 1.0f;
-        *texCoord++ = tcy + 0.25f;
+        *texCoord++ = tcy;
 
         *vertex++ = mRadiusX;
         *vertex++ = -mRadiusY;
         *texCoord++ = 1.0f;
-        *texCoord++ = tcy;
+        *texCoord++ = tcy + 0.25f;
 
         *vertex++ = -mRadiusX;
         *vertex++ = -mRadiusY;
         *texCoord++ = 0.0f;
-        *texCoord++ = tcy;
+        *texCoord++ = tcy + 0.25f;
 
         *vertex++ = -mRadiusX;
         *vertex++ = mRadiusY;
         *texCoord++ = 0.0f;
-        *texCoord++ = tcy + 0.25f;
+        *texCoord++ = tcy;
     }
 
     mVertexVBO.loadData(vertices, 16, 2);
     mTextureVBO.loadData(texCoords, 16, 2);
+
+    setPosition(0.0f, 0.0f);
 }
 
 Button::~Button()
