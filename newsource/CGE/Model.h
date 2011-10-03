@@ -4,13 +4,14 @@
 #include "Texture2D.h"
 #include "ClusterVBO.h"
 #include "c3m.h"
+#include "Actor.h"
 
 #include <string>
 #include <iostream>
 
 namespace CGE
 {
-    class Model
+    class Model : public Actor
     {
         public:
             Model(const char* inFile);

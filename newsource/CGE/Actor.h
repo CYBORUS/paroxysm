@@ -1,8 +1,7 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-#include "CGE/Matrix4x4.h"
-#include "CGE/Model.h"
+#include "Matrix4x4.h"
 
 namespace CGE
 {
@@ -10,18 +9,12 @@ namespace CGE
     {
 
         public:
-            virtual void display();
+            virtual void display() = 0;
 
-            inline mat4f* getMatrix() { return &mMatrix; }
+            inline mat4f& matrix() { return mMatrix; }
 
         private:
-            CGE::Model* mModel;
             mat4f mMatrix;
     };
-
-    void Actor::display()
-    {
-        mModel->display();
-    }
 }
 #endif

@@ -1,11 +1,11 @@
 #ifndef PAROXYSMENTITY_H
 #define PAROXYSMENTITY_H
 
-#include "Entity.h"
+#include <CGE/Entity.h>
 #include "TerrainGrid.h"
 
 
-class ParoxysmEntity : public Entity
+class ParoxysmEntity : public CGE::Entity
 {
     public:
         ParoxysmEntity(TerrainGrid* inTerrain);
@@ -16,4 +16,4 @@ class ParoxysmEntity : public Entity
 
 };
 
-#endif // PAROXYSMENTITY_H
+#endif
