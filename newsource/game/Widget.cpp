@@ -10,7 +10,7 @@ Widget::~Widget()
 {
 }
 
-void Widget::onMouseIn()
+void Widget::onMouseIn(bool inIsClickCandidate)
 {
     mOnMouseIn.dispatch(this);
 }

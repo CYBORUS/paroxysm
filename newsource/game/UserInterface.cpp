@@ -2,7 +2,7 @@
 #include <iostream>
 
 UserInterface::UserInterface(float inRange) : mRange(inRange), mRatio(0.0f),
-    mMouseX(0.0f), mMouseY(0.0f), mMouseOverWidget(NULL)
+    mMouseX(0.0f), mMouseY(0.0f), mMouseOverWidget(NULL), mClickCandidate(NULL)
 {
     if (mRange < 1.0f) mRange = 1.0f;
 
@@ -85,14 +85,9 @@ void UserInterface::onMouseMove(int inX, int inY)
         i != mWidgets.end(); ++i)
     {
         Widget* w = *i;
-        if (w->contains(mMouseX, mMouseY))
+        if (w != mMouseOverWidget && w->contains(mMouseX, mMouseY))
         {
-            if (mMouseOverWidget && mMouseOverWidget != w)
-            {
-                mMouseOverWidget->onMouseOut();
-            }
-
-            w->onMouseIn();
+            w->onMouseIn(w == mClickCandidate);
             mMouseOverWidget = w;
         }
     }
@@ -100,6 +95,23 @@ void UserInterface::onMouseMove(int inX, int inY)
 
 void UserInterface::onMouseDown()
 {
-    std::cout << mMouseX << ", " << mMouseY << std::endl;
-    if (mMouseOverWidget) mMouseOverWidget->onMouseDown();
+    //std::cout << mMouseX << ", " << mMouseY << std::endl;
+    if (mMouseOverWidget)
+    {
+        mMouseOverWidget->onMouseDown();
+        mClickCandidate = mMouseOverWidget;
+    }
+}
+
+void UserInterface::onMouseUp()
+{
+    if (mMouseOverWidget)
+    {
+        mMouseOverWidget->onMouseUp();
+
+        if (mMouseOverWidget == mClickCandidate)
+            mClickCandidate->onClick();
+    }
+
+    mClickCandidate = NULL;
 }

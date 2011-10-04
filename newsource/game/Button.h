@@ -15,6 +15,12 @@ class Button : public Widget
         void setPosition(float inX, float inY);
 
         virtual void display();
+
+        virtual void onMouseIn(bool inIsClickCandidate);
+        virtual void onMouseOut();
+        virtual void onMouseDown();
+        virtual void onMouseUp();
+
     protected:
     private:
         CGE::Texture2D mTexture;

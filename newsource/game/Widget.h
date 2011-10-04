@@ -18,6 +18,11 @@ class Widget : public SceneGraphNode
             mEnabled = inEnabled;
         }
 
+        inline bool isEnabled()
+        {
+            return mEnabled;
+        }
+
         inline bool canHaveFocus() const
         {
             return mEnabled && mCanHaveFocus;
@@ -31,7 +36,7 @@ class Widget : public SceneGraphNode
                 && inY <= mY + mRadiusY;
         }
 
-        virtual void onMouseIn();
+        virtual void onMouseIn(bool inIsClickCandidate);
         virtual void onMouseOut();
         virtual void onMouseDown();
         virtual void onMouseUp();

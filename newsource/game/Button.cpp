@@ -70,3 +70,27 @@ void Button::display()
     mTexture.bind();
     mClusterVBO.display(GL_TRIANGLE_FAN, mFirst, 4);
 }
+
+void Button::onMouseIn(bool inIsClickCandidate)
+{
+    Widget::onMouseIn(inIsClickCandidate);
+    mFirst = isEnabled() ? (inIsClickCandidate ? 8 : 4) : 12;
+}
+
+void Button::onMouseOut()
+{
+    Widget::onMouseOut();
+    mFirst = isEnabled() ? 0 : 12;
+}
+
+void Button::onMouseDown()
+{
+    Widget::onMouseDown();
+    mFirst = isEnabled() ? 8 : 12;
+}
+
+void Button::onMouseUp()
+{
+    Widget::onMouseUp();
+    mFirst = isEnabled() ? 4 : 12;
+}

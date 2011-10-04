@@ -24,6 +24,7 @@ class UserInterface : protected SceneGraphNode
         void onResize(int inWidth, int inHeight);
         void onMouseMove(int inX, int inY);
         void onMouseDown();
+        void onMouseUp();
 
     protected:
     private:
@@ -38,6 +39,7 @@ class UserInterface : protected SceneGraphNode
         float mMouseY;
 
         Widget* mMouseOverWidget;
+        Widget* mClickCandidate;
         std::list<Widget*> mWidgets;
 
         CGE::Program<2> mProgram;

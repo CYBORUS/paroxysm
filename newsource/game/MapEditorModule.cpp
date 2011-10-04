@@ -43,7 +43,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     fin.close();
 
     Button* button = new Button("assets/images/hud/load_map.png", 2.0f, 1.0f);
-    button->setMouseDownListener(uiLoadMap, this);
+    button->setClickListener(uiLoadMap, this);
     button->setPosition(3.0f, -2.0f);
     mUI.addWidget(button);
 }
@@ -161,6 +161,8 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
+    mUI.onMouseMove(inX, inY);
+
     if (mLeftClickDown)
     {
         mViewNode.changeRotation((inX - mXStart)/2);
@@ -173,7 +175,6 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     {
         case NONE:
         {
-            mUI.onMouseMove(inX, inY);
             vec4f hoverVertex = selectVertex(inX, inY);
 
             if (hoverVertex[0] >= 0.0f
@@ -247,6 +248,7 @@ void MapEditorModule::onLButtonDown(int inX, int inY)
 void MapEditorModule::onLButtonUp(int inX, int inY)
 {
     mMouseState = NONE;
+    mUI.onMouseUp();
 }
 
 void MapEditorModule::onRButtonDown(int inX, int inY)
@@ -361,6 +363,7 @@ void MapEditorModule::onResize(int inWidth, int inHeight)
 
 void MapEditorModule::uiLoadMap(Widget* inWidget, void* inData)
 {
+    //inWidget->enable(false);
     MapEditorModule* m = reinterpret_cast<MapEditorModule*>(inData);
     cerr << "Button pressed!\n";
 }
