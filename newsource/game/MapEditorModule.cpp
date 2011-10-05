@@ -9,7 +9,7 @@ MapEditorModule::MapEditorModule() : mLeftClickDown(false), mXPan(0.0f),
     mYPan(0.0f)
 {
     mModel = mManager.load("bradley.c3m");
-    mSphere = mManager.load("cube_texture.c3m");
+    mSphere = new CGE::Actor(mManager.load("cube_texture.c3m"));
     mLeftClickDown = false;
 }
 
@@ -19,16 +19,21 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    ActorNode* an = new ActorNode(mGrid);
-    mViewNode.addChildNode(*an);
-    mBin.addNode(*an);
-    mActors.push_back(an);
+    //ActorNode* an = new ActorNode(mGrid);
+    CGE::Actor* a = new CGE::Actor(&mGrid);
 
-    an = new TestActorNode(*mModel);
-    mViewNode.addChildNode(*an);
-    mBin.addNode(*an);
-    mActors.push_back(an);
-
+    mViewNode.addChildNode(*a);
+    mBin.addNode(*a);
+    mActors.push_back(a);
+//    mViewNode.addChildNode(*an);
+//    mBin.addNode(*an);
+//    mActors.push_back(an);
+//
+//    an = new TestActorNode(*mModel);
+//    mViewNode.addChildNode(*an);
+//    mBin.addNode(*an);
+//    mActors.push_back(an);
+//
     mSphereNode = new SimpleMatrixNode(*mSphere);
     mViewNode.addChildNode(*mSphereNode);
     mBin.addNode(*mSphereNode);
@@ -82,12 +87,12 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onPulse()
 {
-    for (list<ActorNode*>::iterator i = mActors.begin();
-        i != mActors.end(); ++i)
-    {
-        ActorNode& an = *(*i);
-        an.update();
-    }
+//    for (list<CGE::Actor*>::iterator i = mActors.begin();
+//        i != mActors.end(); ++i)
+//    {
+//        CGE::Actor& an = *(*i);
+//        an.update();
+//    }
 
     mSphereNode->matrix().loadIdentity();
     mSphereNode->matrix().translate(mSpherePosition[0], mSpherePosition[1],

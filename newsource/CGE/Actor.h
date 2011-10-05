@@ -1,20 +1,22 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
+#include "game/SceneGraphNode.h"
 #include "Matrix4x4.h"
+#include "Model.h"
 
 namespace CGE
 {
-    class Actor
+    class Actor : public SceneGraphNode
     {
 
         public:
-            virtual void display() = 0;
-
-            inline mat4f& matrix() { return mMatrix; }
+            Actor(Model* inModel) { mModel = inModel; }
+            virtual void display() { mModel->display(); };
 
         private:
-            mat4f mMatrix;
+            CGE::Model* mModel;
+
     };
 }
 #endif

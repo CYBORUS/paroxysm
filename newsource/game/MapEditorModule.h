@@ -12,7 +12,8 @@
 
 #include "ViewNode.h"
 #include "GeneralBin.h"
-#include "ActorNode.h"
+//#include "ActorNode.h"
+#include <CGE/Actor.h>
 #include "SimpleMatrixNode.h"
 #include "UserInterface.h"
 #include "Button.h"
@@ -61,11 +62,11 @@ class MapEditorModule : public CGE::ManagedModule
 
         ViewNode mViewNode; // head of the scene graph
         GeneralBin mBin;
-        std::list<ActorNode*> mActors;
+        std::list<CGE::Actor*> mActors;
 
         TerrainGrid mGrid;
         CGE::Model* mModel;
-        CGE::Model* mSphere;
+        CGE::Actor* mSphere;
         SimpleMatrixNode* mSphereNode;
 
         CGE::ResourceManager<CGE::Model> mManager;

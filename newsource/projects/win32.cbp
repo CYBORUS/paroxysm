@@ -127,6 +127,10 @@
 		<Unit filename="..\GLee\GLee.h" />
 		<Unit filename="..\game\ActorNode.cpp" />
 		<Unit filename="..\game\ActorNode.h" />
+		<Unit filename="..\game\Button.cpp" />
+		<Unit filename="..\game\Button.h" />
+		<Unit filename="..\game\EventListener.cpp" />
+		<Unit filename="..\game\EventListener.h" />
 		<Unit filename="..\game\GeneralBin.cpp" />
 		<Unit filename="..\game\GeneralBin.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
@@ -139,8 +143,6 @@
 		<Unit filename="..\game\SceneGraphNode.h" />
 		<Unit filename="..\game\SimpleMatrixNode.cpp" />
 		<Unit filename="..\game\SimpleMatrixNode.h" />
-		<Unit filename="..\game\SkyBox.cpp" />
-		<Unit filename="..\game\SkyBox.h" />
 		<Unit filename="..\game\Tank.cpp" />
 		<Unit filename="..\game\Tank.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />
