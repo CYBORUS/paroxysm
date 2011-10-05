@@ -4,14 +4,13 @@
 #include "Texture2D.h"
 #include "ClusterVBO.h"
 #include "c3m.h"
-#include "Actor.h"
 
 #include <string>
 #include <iostream>
 
 namespace CGE
 {
-    class Model : public Actor
+    class Model
     {
         public:
             Model(const char* inFile);
@@ -23,7 +22,16 @@ namespace CGE
                 mClusterVBO.display();
             }
 
-        private:
+            enum BufferObject
+            {
+                VERTEX_BUFFER = 0,
+                NORMAL_BUFFER = 1,
+                COLOR_BUFFER = 2,
+                TEXTURE_BUFFER = 3
+            };
+
+        protected:
+            Model() {};
             void loadC3M(const char* inFile);
 
             CGE::Texture2D mTexture;

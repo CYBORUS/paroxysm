@@ -19,19 +19,24 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    ActorNode* an = new ActorNode(mGrid);
-    mViewNode.addChildNode(*an);
-    mBin.addNode(*an);
-    mActors.push_back(an);
+    //ActorNode* an = new ActorNode(mGrid);
+    CGE::Actor* a = new CGE::Actor(&mGrid);
 
-    an = new TestActorNode(*mModel);
-    mViewNode.addChildNode(*an);
-    mBin.addNode(*an);
-    mActors.push_back(an);
-
-    mSphereNode = new SimpleMatrixNode(*mSphere);
-    mViewNode.addChildNode(*mSphereNode);
-    mBin.addNode(*mSphereNode);
+    mViewNode.addChildNode(*a);
+    mBin.addNode(*a);
+    mActors.push_back(a);
+//    mViewNode.addChildNode(*an);
+//    mBin.addNode(*an);
+//    mActors.push_back(an);
+//
+//    an = new TestActorNode(*mModel);
+//    mViewNode.addChildNode(*an);
+//    mBin.addNode(*an);
+//    mActors.push_back(an);
+//
+//    mSphereNode = new SimpleMatrixNode(*mSphere);
+//    mViewNode.addChildNode(*mSphereNode);
+//    mBin.addNode(*mSphereNode);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -82,12 +87,12 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onPulse()
 {
-    for (list<ActorNode*>::iterator i = mActors.begin();
-        i != mActors.end(); ++i)
-    {
-        ActorNode& an = *(*i);
-        an.update();
-    }
+//    for (list<CGE::Actor*>::iterator i = mActors.begin();
+//        i != mActors.end(); ++i)
+//    {
+//        CGE::Actor& an = *(*i);
+//        an.update();
+//    }
 
     mSphereNode->matrix().loadIdentity();
     mSphereNode->matrix().translate(mSpherePosition[0], mSpherePosition[1],

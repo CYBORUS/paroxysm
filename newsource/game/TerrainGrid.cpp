@@ -15,7 +15,7 @@ TerrainGrid::~TerrainGrid()
 void TerrainGrid::display()
 {
     mTexture.bind();
-    mVBO.display();
+    mClusterVBO.display();
 }
 
 size_t TerrainGrid::toIndex(size_t inRow, size_t inCol)
@@ -114,7 +114,7 @@ void TerrainGrid::buildVBO()
         }
     }
 
-    mVertexVBO.loadData(vertices, mSize, 3);
+    mBuffers[Model::VERTEX_BUFFER].loadData(vertices, mSize, 3);
     vertices = NULL;
 
     /// one texture (UV) coordinate for every point on the field
@@ -142,13 +142,13 @@ void TerrainGrid::buildVBO()
 
     //mVBO.loadVAA(0, 3, mSize, vertices);
     //mVBO.loadVAA(1, 2, mSize, textureCoordinates);
-    mTextureVBO.loadData(textureCoordinates, mSize, 2);
+    mBuffers[Model::TEXTURE_BUFFER].loadData(textureCoordinates, mSize, 2);
 
     //mIVBO.loadData(GL_TRIANGLES, numIndices, indices);
 
-    mVBO.mount(mIVBO);
-    mVBO.mount(mVertexVBO, 0);
-    mVBO.mount(mTextureVBO, 1);
+    mClusterVBO.mount(mIVBO);
+    mClusterVBO.mount(mBuffers[Model::VERTEX_BUFFER], 0);
+    mClusterVBO.mount(mBuffers[Model::TEXTURE_BUFFER], 1);
 
     free(memChunk);
 
@@ -229,7 +229,7 @@ void TerrainGrid::set(int inRow, int inCol, float inHeight, bool inFindNormal)
 //        glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffers[VERTEX_DATA]);
 //        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * k, sizeof(GLfloat) * 3, vertex);
     }
-    mVertexVBO.editData(vertex, k);
+    mBuffers[Model::VERTEX_BUFFER].editData(vertex, k);
 
 
 }

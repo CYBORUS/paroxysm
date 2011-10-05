@@ -50,7 +50,7 @@ namespace CGE
 
         //mVBO.loadVertexArray(PVBO_VERTEX, 3, size, data);
 
-        mBuffers[0].loadData(data, size, 3);
+        mBuffers[VERTEX_BUFFER].loadData(data, size, 3);
 
 
 
@@ -59,7 +59,7 @@ namespace CGE
 
         //mVBO.loadVertexArray(PVBO_NORMAL, 3, size, data);
 
-        mBuffers[1].loadData(data, size, 3);
+        mBuffers[NORMAL_BUFFER].loadData(data, size, 3);
 
         size = c3m->colors.size / 4;
 
@@ -72,7 +72,7 @@ namespace CGE
             data = c3m->colors.array;
             //mVBO.loadVertexArray(PVBO_COLOR, 4, size, data);
 
-            mBuffers[2].loadData(data, size, 4);
+            mBuffers[COLOR_BUFFER].loadData(data, size, 4);
         }
 
 
@@ -84,7 +84,7 @@ namespace CGE
             data = c3m->textureCoordinates.array;
             //mVBO.loadVertexArray(PVBO_TEXTURE, 2, size, data);
 
-            mBuffers[3].loadData(data, size, 2);
+            mBuffers[TEXTURE_BUFFER].loadData(data, size, 2);
 
             //glGenTextures(1, &mTexture);
 
@@ -99,7 +99,7 @@ namespace CGE
             cerr << "error, no texture" << endl;
         }
 
-        mClusterVBO.mount(mBuffers[0], 0);
+        mClusterVBO.mount(mBuffers[VERTEX_BUFFER], 0);
         //mClusterVBO.mount(mBuffers[1], 1);
 
         //just in case there aren't any colors defined
@@ -114,7 +114,7 @@ namespace CGE
         if (useTexture)
         {
             //mClusterVBO.mount(mBuffers[3], nextIndex);
-            mClusterVBO.mount(mBuffers[3], 1);
+            mClusterVBO.mount(mBuffers[TEXTURE_BUFFER], 1);
         }
 
 
