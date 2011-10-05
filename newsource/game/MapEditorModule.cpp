@@ -9,7 +9,7 @@ MapEditorModule::MapEditorModule() : mLeftClickDown(false), mXPan(0.0f),
     mYPan(0.0f)
 {
     mModel = mManager.load("bradley.c3m");
-    mSphere = mManager.load("cube_texture.c3m");
+    mSphere = new CGE::Actor(mManager.load("cube_texture.c3m"));
     mLeftClickDown = false;
 }
 
@@ -34,9 +34,9 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
 //    mBin.addNode(*an);
 //    mActors.push_back(an);
 //
-//    mSphereNode = new SimpleMatrixNode(*mSphere);
-//    mViewNode.addChildNode(*mSphereNode);
-//    mBin.addNode(*mSphereNode);
+    mSphereNode = new SimpleMatrixNode(*mSphere);
+    mViewNode.addChildNode(*mSphereNode);
+    mBin.addNode(*mSphereNode);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)

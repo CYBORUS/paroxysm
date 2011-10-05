@@ -66,7 +66,7 @@ class MapEditorModule : public CGE::ManagedModule
 
         TerrainGrid mGrid;
         CGE::Model* mModel;
-        CGE::Model* mSphere;
+        CGE::Actor* mSphere;
         SimpleMatrixNode* mSphereNode;
 
         CGE::ResourceManager<CGE::Model> mManager;
