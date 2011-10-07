@@ -96,6 +96,7 @@
 		<Unit filename="../CGE/Program.h" />
 		<Unit filename="../CGE/PropertyList.cpp" />
 		<Unit filename="../CGE/PropertyList.h" />
+		<Unit filename="../CGE/Reference.h" />
 		<Unit filename="../CGE/ResourceManager.h" />
 		<Unit filename="../CGE/Shader.cpp" />
 		<Unit filename="../CGE/Shader.h" />
