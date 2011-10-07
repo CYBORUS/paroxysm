@@ -56,6 +56,7 @@ namespace CGE
                 if (mContainer) mContainer->Release();
                 mContainer = inReference.mContainer;
                 if (mContainer) mContainer->Acquire();
+                return *this;
             }
 
         private:
