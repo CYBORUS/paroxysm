@@ -9,15 +9,23 @@ namespace CGE
 {
     class Actor : public SceneGraphNode
     {
-
         public:
-            Actor(Model* inModel) { mModel = inModel; }
-            virtual void display() { mModel->display(); };
+            friend class RenderBin;
+
+            Actor(Model* inModel);
+            virtual ~Actor();
+
+            virtual void display();
+
+            void remove();
 
             inline CGE::Matrix4x4<float>& matrix() { return mTransform; }
         private:
-            CGE::Model* mModel;
+            Model* mModel;
 
+            Actor** mHead;
+            Actor* mNextActor;
+            Actor* mPreviousActor;
     };
 }
 #endif
