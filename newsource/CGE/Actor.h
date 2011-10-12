@@ -14,6 +14,7 @@ namespace CGE
             Actor(Model* inModel) { mModel = inModel; }
             virtual void display() { mModel->display(); };
 
+            inline CGE::Matrix4x4<float>& matrix() { return mTransform; }
         private:
             CGE::Model* mModel;
 
