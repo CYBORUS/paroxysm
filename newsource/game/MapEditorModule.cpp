@@ -1,5 +1,4 @@
 #include "MapEditorModule.h"
-#include "TestActorNode.h"
 #include <CGE/Exception.h>
 
 #include <fstream>
@@ -19,24 +18,14 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    //ActorNode* an = new ActorNode(mGrid);
     CGE::Actor* a = new CGE::Actor(&mGrid);
 
-    mViewNode.addChildNode(*a);
-    mBin.addNode(*a);
+    mViewNode.addChildNode(a);
+    mBin.addNode(a);
     mActors.push_back(a);
-//    mViewNode.addChildNode(*an);
-//    mBin.addNode(*an);
-//    mActors.push_back(an);
-//
-//    an = new TestActorNode(*mModel);
-//    mViewNode.addChildNode(*an);
-//    mBin.addNode(*an);
-//    mActors.push_back(an);
-//
-    //mSphereNode = new SimpleMatrixNode(*mSphere);
-    mViewNode.addChildNode(*mSphere);
-    mBin.addNode(*mSphere);
+
+    mViewNode.addChildNode(mSphere);
+    mBin.addNode(mSphere);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -51,6 +40,10 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     button->setClickListener(uiLoadMap, this);
     button->setPosition(3.0f, -2.0f);
     mUI.addWidget(button);
+
+    EntityRenderBins bins;
+    bins.general = &mBin;
+    mTank = new Tank(&mGrid, a, bins, &mManager);
 }
 
 void MapEditorModule::onUnload()

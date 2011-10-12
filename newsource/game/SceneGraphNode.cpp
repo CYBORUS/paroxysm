@@ -18,21 +18,21 @@ void SceneGraphNode::display()
 {
 }
 
-void SceneGraphNode::addChildNode(SceneGraphNode& inNode)
+void SceneGraphNode::addChildNode(SceneGraphNode* inNode)
 {
-    inNode.mParent = this;
-    mNodes.push_back(&inNode);
+    inNode->mParent = this;
+    mNodes.push_back(inNode);
 }
 
-void SceneGraphNode::removeChildNode(SceneGraphNode& inNode)
+void SceneGraphNode::removeChildNode(SceneGraphNode* inNode)
 {
-    inNode.mParent = NULL;
-    mNodes.remove(&inNode);
+    inNode->mParent = NULL;
+    mNodes.remove(inNode);
 }
 
 void SceneGraphNode::removeFromParentNode()
 {
-    if (mParent) mParent->removeChildNode(*this);
+    if (mParent) mParent->removeChildNode(this);
 }
 
 void SceneGraphNode::updateMatrices(const CGE::Matrix4x4<float>& inMatrix)

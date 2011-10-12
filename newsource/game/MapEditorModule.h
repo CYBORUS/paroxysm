@@ -13,9 +13,10 @@
 #include "ViewNode.h"
 #include "GeneralBin.h"
 #include <CGE/Actor.h>
-#include "SimpleMatrixNode.h"
 #include "UserInterface.h"
 #include "Button.h"
+#include "ParoxysmEntity.h"
+#include "Tank.h"
 
 #include <list>
 
@@ -66,6 +67,7 @@ class MapEditorModule : public CGE::ManagedModule
         TerrainGrid mGrid;
         CGE::Model* mModel;
         CGE::Actor* mSphere;
+        Tank* mTank;
         //SimpleMatrixNode* mSphereNode;
 
         CGE::ResourceManager<CGE::Model> mManager;
