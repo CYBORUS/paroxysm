@@ -109,7 +109,7 @@ void UserInterface::onMouseUp()
     {
         mMouseOverWidget->onMouseUp();
 
-        if (mMouseOverWidget == mClickCandidate)
+        if (mMouseOverWidget == mClickCandidate && mMouseOverWidget->isEnabled())
             mClickCandidate->onClick();
     }
 
