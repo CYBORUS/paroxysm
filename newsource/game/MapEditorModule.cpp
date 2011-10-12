@@ -34,9 +34,9 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
 //    mBin.addNode(*an);
 //    mActors.push_back(an);
 //
-    mSphereNode = new SimpleMatrixNode(*mSphere);
-    mViewNode.addChildNode(*mSphereNode);
-    mBin.addNode(*mSphereNode);
+    //mSphereNode = new SimpleMatrixNode(*mSphere);
+    mViewNode.addChildNode(*mSphere);
+    mBin.addNode(*mSphere);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -94,10 +94,10 @@ void MapEditorModule::onPulse()
 //        an.update();
 //    }
 
-    mSphereNode->matrix().loadIdentity();
-    mSphereNode->matrix().translate(mSpherePosition[0], mSpherePosition[1],
+    mSphere->matrix().loadIdentity();
+    mSphere->matrix().translate(mSpherePosition[0], mSpherePosition[1],
         mSpherePosition[2]);
-    mSphereNode->matrix().scale(0.1f);
+    mSphere->matrix().scale(0.1f);
 
     mViewNode.smartPan(mXPan, mYPan);
 
