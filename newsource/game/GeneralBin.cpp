@@ -25,7 +25,7 @@ void GeneralBin::displayAll()
     RenderBin::displayAll();
 }
 
-void GeneralBin::displayNode(SceneGraphNode* inNode)
+void GeneralBin::displayNode(CGE::SceneGraphNode* inNode)
 {
     glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, inNode->compositeMatrix());
     inNode->display();

@@ -2,10 +2,10 @@
 #define WIDGET_H
 
 #include "EventListener.h"
-#include "SceneGraphNode.h"
+#include <CGE/SceneGraphNode.h>
 #include <cstring>
 
-class Widget : public SceneGraphNode
+class Widget : public CGE::SceneGraphNode
 {
     public:
         Widget(bool inCanHaveFocus = true);

@@ -2,14 +2,14 @@
 #define USERINTERFACE_H
 
 #include <CGE/Matrix4x4.h>
-#include <CGE/Program.h>
-#include <CGE/VertexShader.h>
-#include <CGE/FragmentShader.h>
-#include "SceneGraphNode.h"
+#include <CGE/OpenGL/Program.h>
+#include <CGE/OpenGL/VertexShader.h>
+#include <CGE/OpenGL/FragmentShader.h>
+#include <CGE/SceneGraphNode.h>
 #include "Widget.h"
 #include <list>
 
-class UserInterface : protected SceneGraphNode
+class UserInterface : protected CGE::SceneGraphNode
 {
     public:
         UserInterface(float inRange = 4.0f);

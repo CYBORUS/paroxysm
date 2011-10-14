@@ -1,7 +1,7 @@
 #ifndef VERTEXBUFFEROBJECT_H
 #define VERTEXBUFFEROBJECT_H
 
-#include "Graphics.h"
+#include "../Graphics.h"
 
 namespace CGE
 {

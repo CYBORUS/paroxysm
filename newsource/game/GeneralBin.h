@@ -1,9 +1,9 @@
 #ifndef GENERALBIN_H
 #define GENERALBIN_H
 
-#include <CGE/Program.h>
-#include <CGE/VertexShader.h>
-#include <CGE/FragmentShader.h>
+#include <CGE/OpenGL/Program.h>
+#include <CGE/OpenGL/VertexShader.h>
+#include <CGE/OpenGL/FragmentShader.h>
 
 #include "RenderBin.h"
 
@@ -16,7 +16,7 @@ class GeneralBin : public RenderBin
         void displayAll();
 
     protected:
-        virtual void displayNode(SceneGraphNode* inNode);
+        virtual void displayNode(CGE::SceneGraphNode* inNode);
 
     private:
         CGE::Program<2> mProgram;

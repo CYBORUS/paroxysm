@@ -3,9 +3,9 @@
 
 #include <CGE/Vectors.h>
 
-#include "SceneGraphNode.h"
+#include <CGE/SceneGraphNode.h>
 
-class ViewNode : public SceneGraphNode
+class ViewNode : public CGE::SceneGraphNode
 {
     public:
         ViewNode();

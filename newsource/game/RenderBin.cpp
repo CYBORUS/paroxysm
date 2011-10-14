@@ -8,22 +8,22 @@ RenderBin::~RenderBin()
 {
 }
 
-void RenderBin::addNode(SceneGraphNode* inNode)
+void RenderBin::addNode(CGE::SceneGraphNode* inNode)
 {
     mNodes.push_back(inNode);
 }
 
-void RenderBin::removeNode(SceneGraphNode* inNode)
+void RenderBin::removeNode(CGE::SceneGraphNode* inNode)
 {
     mNodes.remove(inNode);
 }
 
 void RenderBin::displayAll()
 {
-    for (std::list<SceneGraphNode*>::iterator i = mNodes.begin();
+    for (std::list<CGE::SceneGraphNode*>::iterator i = mNodes.begin();
         i != mNodes.end(); ++i)
     {
-        SceneGraphNode* sgn = *i;
+        CGE::SceneGraphNode* sgn = *i;
         displayNode(sgn);
     }
 }

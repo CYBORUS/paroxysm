@@ -1,11 +1,14 @@
 #include "MainMenuModule.h"
+#include <CGE/Exception.h>
 
+#include <fstream>
+using namespace std;
 
 /** @brief MainMenuModule
   *
   * @todo: Constructor
   */
- MainMenuModule::MainMenuModule()
+MainMenuModule::MainMenuModule()
 {
 
 }
@@ -118,8 +121,35 @@ void MainMenuModule::onLoad()
   *
   * @todo: Destructor
   */
-
  MainMenuModule::~MainMenuModule()
 {
 
 }
+
+/** @brief uiLoadMap
+  *
+  * @todo: uiLoadMap
+  */
+void MainMenuModule::uiLoadMap(Widget* inWidget, void* inData)
+{
+    cerr << "Button pressed!\n";
+}
+
+/** @brief onResize
+  *
+  * @todo: document this function
+  */
+void MainMenuModule::onResize(int inWidth, int inHeight)
+{
+    GLfloat ratio = static_cast<GLfloat>(inWidth)
+        / static_cast<GLfloat>(inHeight);
+
+    mUI.onResize(inWidth, inHeight);
+
+    CGE::Matrix4x4<GLfloat> projection;
+    projection.perspective(30.0f, ratio, 1.0f, 1000.0f);
+    mViewNode.setProjection(projection);
+    glViewport(0, 0, inWidth, inHeight);
+    glGetIntegerv(GL_VIEWPORT, mViewport);
+}
+

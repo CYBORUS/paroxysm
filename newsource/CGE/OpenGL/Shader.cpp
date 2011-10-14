@@ -1,7 +1,7 @@
 #include "Shader.h"
-#include "Exception.h"
+#include "../Exception.h"
 
-#include "Tools.h"
+#include "../Tools.h"
 
 namespace CGE
 {

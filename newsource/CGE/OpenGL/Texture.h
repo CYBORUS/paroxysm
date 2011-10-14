@@ -1,7 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "Graphics.h"
+#include "../Graphics.h"
 
 namespace CGE
 {

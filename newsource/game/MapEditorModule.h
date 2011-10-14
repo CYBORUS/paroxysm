@@ -2,19 +2,20 @@
 #define MAPEDITORMODULE_H
 
 #include <CGE/ManagedModule.h>
-#include <CGE/Texture2D.h>
+#include <CGE/OpenGL/Texture2D.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/Camera.h>
 #include <CGE/Model.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/Vectors.h>
-#include "TerrainGrid.h"
+#include <CGE/Actor.h>
 
+#include "UI/UserInterface.h"
+#include "UI/Button.h"
+
+#include "TerrainGrid.h"
 #include "ViewNode.h"
 #include "GeneralBin.h"
-#include <CGE/Actor.h>
-#include "UserInterface.h"
-#include "Button.h"
 #include "ParoxysmEntity.h"
 #include "Tank.h"
 
