@@ -149,6 +149,8 @@
 		<Unit filename="..\game\UI\Button.h" />
 		<Unit filename="..\game\UI\EventListener.cpp" />
 		<Unit filename="..\game\UI\EventListener.h" />
+		<Unit filename="..\game\UI\Label.cpp" />
+		<Unit filename="..\game\UI\Label.h" />
 		<Unit filename="..\game\UI\UserInterface.cpp" />
 		<Unit filename="..\game\UI\UserInterface.h" />
 		<Unit filename="..\game\UI\Widget.cpp" />

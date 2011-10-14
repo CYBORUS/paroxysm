@@ -1,6 +1,8 @@
 #include "MainMenuModule.h"
 #include <CGE/Exception.h>
+#include "MapEditorModule.h"
 
+#include <iostream>
 #include <fstream>
 using namespace std;
 
@@ -46,7 +48,7 @@ void MainMenuModule::onRButtonDown(int inX, int inY)
   */
 void MainMenuModule::onLButtonUp(int inX, int inY)
 {
-
+    mUI.onMouseUp();
 }
 
 /** @brief onLButtonDown
@@ -55,7 +57,8 @@ void MainMenuModule::onLButtonUp(int inX, int inY)
   */
 void MainMenuModule::onLButtonDown(int inX, int inY)
 {
-
+    //cout << inX << ' ' << inY << endl;
+    mUI.onMouseDown();
 }
 
 /** @brief onPulse
@@ -73,6 +76,7 @@ void MainMenuModule::onPulse()
   */
 void MainMenuModule::onLoop()
 {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     mUI.display();
 }
 
@@ -82,7 +86,7 @@ void MainMenuModule::onLoop()
   */
 void MainMenuModule::onClose()
 {
-
+    glDisable(GL_BLEND);
 }
 
 /** @brief onOpen
@@ -91,7 +95,8 @@ void MainMenuModule::onClose()
   */
 void MainMenuModule::onOpen()
 {
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 /** @brief onUnload
@@ -107,13 +112,24 @@ void MainMenuModule::onUnload()
   *
   * @todo: Load Event
   */
-void MainMenuModule::onLoad()
+void MainMenuModule::onLoad(CGE::PropertyList& inList)
 {
-
-    Button* button = new Button("assets/images/hud/load_map.png", 2.0f, 1.0f);
-    button->setClickListener(uiLoadMap, this);
-    button->setPosition(3.0f, -2.0f);
+    //MapEditorModule Button
+    Button* button = new Button("assets/images/hud/map_editor.png", 2.0f, 1.0f);
+    button->setClickListener(mapEditorButtonCallBack, this);
+    button->setPosition(0.0f, 1.5f);
     mUI.addWidget(button);
+
+    //NewGameModule Button
+    button = new Button("assets/images/hud/new_game.png", 2.0f, 1.0f);
+    button->setClickListener(newGameButtonCallBack, this);
+    button->setPosition(0.0f, 0.5f);
+    mUI.addWidget(button);
+
+    //Game Logo Label
+    Label* label = new Label("assets/images/title.png", 4.0f, 2.0f);
+    label->setPosition(0.0f, 3.0f);
+    mUI.addWidget(label);
 
 }
 
@@ -126,13 +142,22 @@ void MainMenuModule::onLoad()
 
 }
 
-/** @brief uiLoadMap
+/** @brief mapEditorButtonCallBack
   *
-  * @todo: uiLoadMap
+  * @todo: Click Listener Function for NewGameButton
   */
-void MainMenuModule::uiLoadMap(Widget* inWidget, void* inData)
+void MainMenuModule::mapEditorButtonCallBack(Widget* inWidget, void* inData)
 {
-    cerr << "Button pressed!\n";
+    reinterpret_cast<MainMenuModule*>(inData)->mapEditorButtonPress();
+}
+
+/** @brief newGameButtonCallBack
+  *
+  * @todo: Click Listener Function for NewGameButton
+  */
+void MainMenuModule::newGameButtonCallBack(Widget* inWidget, void* inData)
+{
+    reinterpret_cast<MainMenuModule*>(inData)->newGameButtonPress();
 }
 
 /** @brief onResize
@@ -153,3 +178,22 @@ void MainMenuModule::onResize(int inWidth, int inHeight)
     glGetIntegerv(GL_VIEWPORT, mViewport);
 }
 
+/** @brief mapEditorButtonPress
+  *
+  * @todo: document this function
+  */
+void MainMenuModule::mapEditorButtonPress()
+{
+    mNextModule = new MapEditorModule;
+    mRunning = false;
+}
+
+/** @brief mapEditorButtonPress
+  *
+  * @todo: document this function
+  */
+void MainMenuModule::newGameButtonPress()
+{
+    //mNextModule = new NewGameModule;
+    //mRunning = false;
+}

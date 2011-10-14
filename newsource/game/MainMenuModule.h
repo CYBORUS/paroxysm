@@ -12,12 +12,9 @@
 
 #include "UI/UserInterface.h"
 #include "UI/Button.h"
+#include "UI/Label.h"
 
-#include "TerrainGrid.h"
 #include "ViewNode.h"
-#include "GeneralBin.h"
-#include "ParoxysmEntity.h"
-#include "Tank.h"
 
 #include <list>
 
@@ -29,15 +26,7 @@ class MainMenuModule : public CGE::ManagedModule
         MainMenuModule();
         virtual ~MainMenuModule();
 
-        enum MouseState
-        {
-            NONE,
-            ROTATING,
-            PANNING,
-            EDITING_TERRAIN
-        };
-
-        virtual void onLoad();
+        virtual void onLoad(CGE::PropertyList& inList);
         virtual void onUnload();
         virtual void onOpen();
         virtual void onClose();
@@ -55,14 +44,9 @@ class MainMenuModule : public CGE::ManagedModule
     protected:
     private:
 
-
         ViewNode mViewNode; // head of the scene graph
 
-        MouseState mMouseState;
-
         CGE::Vector<GLint, 4> mViewport;
-
-        bool mLeftClickDown;
 
         int mXStart;
         int mYStart;
@@ -72,7 +56,11 @@ class MainMenuModule : public CGE::ManagedModule
 
         UserInterface mUI;
 
-        static void uiLoadMap(Widget* inWidget, void* inData);
+        static void mapEditorButtonCallBack(Widget* inWidget, void* inData);
+        static void newGameButtonCallBack(Widget* inWidget, void* inData);
+
+        void mapEditorButtonPress();
+        void newGameButtonPress();
 };
 
 #endif
