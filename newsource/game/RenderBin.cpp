@@ -8,14 +8,14 @@ RenderBin::~RenderBin()
 {
 }
 
-void RenderBin::addNode(SceneGraphNode& inNode)
+void RenderBin::addNode(SceneGraphNode* inNode)
 {
-    mNodes.push_back(&inNode);
+    mNodes.push_back(inNode);
 }
 
-void RenderBin::removeNode(SceneGraphNode& inNode)
+void RenderBin::removeNode(SceneGraphNode* inNode)
 {
-    mNodes.remove(&inNode);
+    mNodes.remove(inNode);
 }
 
 void RenderBin::displayAll()

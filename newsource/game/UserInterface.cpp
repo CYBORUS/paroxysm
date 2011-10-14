@@ -43,14 +43,14 @@ void UserInterface::display()
 void UserInterface::addWidget(Widget* inWidget)
 {
     mWidgets.push_back(inWidget);
-    addChildNode(*inWidget);
+    addChildNode(inWidget);
 }
 
 void UserInterface::removeWidget(Widget* inWidget)
 {
     if (mMouseOverWidget == inWidget) mMouseOverWidget = NULL;
     mWidgets.remove(inWidget);
-    removeChildNode(*inWidget);
+    removeChildNode(inWidget);
 }
 
 void UserInterface::onResize(int inWidth, int inHeight)

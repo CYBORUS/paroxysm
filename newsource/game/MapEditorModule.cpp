@@ -1,5 +1,4 @@
 #include "MapEditorModule.h"
-#include "TestActorNode.h"
 #include <CGE/Exception.h>
 
 #include <fstream>
@@ -19,24 +18,14 @@ MapEditorModule::~MapEditorModule()
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    //ActorNode* an = new ActorNode(mGrid);
     CGE::Actor* a = new CGE::Actor(&mGrid);
 
-    mViewNode.addChildNode(*a);
-    mBin.addNode(*a);
+    mViewNode.addChildNode(a);
+    mBin.addNode(a);
     mActors.push_back(a);
-//    mViewNode.addChildNode(*an);
-//    mBin.addNode(*an);
-//    mActors.push_back(an);
-//
-//    an = new TestActorNode(*mModel);
-//    mViewNode.addChildNode(*an);
-//    mBin.addNode(*an);
-//    mActors.push_back(an);
-//
-    //mSphereNode = new SimpleMatrixNode(*mSphere);
-    mViewNode.addChildNode(*mSphere);
-    mBin.addNode(*mSphere);
+
+    mViewNode.addChildNode(mSphere);
+    mBin.addNode(mSphere);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -51,6 +40,10 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     button->setClickListener(uiLoadMap, this);
     button->setPosition(3.0f, -2.0f);
     mUI.addWidget(button);
+
+    EntityRenderBins bins;
+    bins.general = &mBin;
+    mTank = new Tank(&mGrid, a, bins, &mManager);
 }
 
 void MapEditorModule::onUnload()
@@ -111,25 +104,18 @@ void MapEditorModule::onPulse()
 vec4f MapEditorModule::selectVertex(int inX, int inY)
 {
     vec4f currentVertex;
-
     vec4f tempPoint;
 
     GLfloat depthZ = 0;
 
-    //we have to invert the y axis because of opengl's viewport
+    // Invert the Y-coordinate (flip OpenGL coordinates).
     int newY = SDL_GetVideoSurface()->h - inY;
 
-    //read the depth buffer to determine the z coordinate at the input
-    //x,y coordinates
     glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
 
-    //now let the glu library do the math for us :)
-//    if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView, mProjection, mViewport, &tempX, &tempY, &tempZ) == GL_FALSE)
-//    {
-//        cerr << "gluUnProject failed." << endl;
-//    }
 
-    if (!CGE::unproject((GLfloat)inX, (GLfloat)newY, depthZ, mViewNode.compositeMatrix(), mViewport, tempPoint))
+    if (!CGE::unproject((GLfloat)inX, (GLfloat)newY, depthZ,
+        mViewNode.compositeMatrix(), mViewport, tempPoint))
     {
         cerr << "unproject failed." << endl;
     }
@@ -151,6 +137,7 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
         {
             closestRow = numRows - 1;
         }
+
         int closestColumn = int(tempPoint[0] + 0.5);
         if (closestColumn >= numCols)
         {
@@ -369,6 +356,6 @@ void MapEditorModule::onResize(int inWidth, int inHeight)
 void MapEditorModule::uiLoadMap(Widget* inWidget, void* inData)
 {
     //inWidget->enable(false);
-    MapEditorModule* m = reinterpret_cast<MapEditorModule*>(inData);
+    //MapEditorModule* m = reinterpret_cast<MapEditorModule*>(inData);
     cerr << "Button pressed!\n";
 }

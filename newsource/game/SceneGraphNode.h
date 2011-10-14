@@ -13,8 +13,8 @@ class SceneGraphNode
 
         virtual void display();
 
-        void addChildNode(SceneGraphNode& inNode);
-        void removeChildNode(SceneGraphNode& inNode);
+        void addChildNode(SceneGraphNode* inNode);
+        void removeChildNode(SceneGraphNode* inNode);
         void removeFromParentNode();
 
         void updateMatrices(const CGE::Matrix4x4<float>& inMatrix);

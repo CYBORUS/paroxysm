@@ -30,7 +30,6 @@ namespace CGE
 
             virtual void update();
             virtual void move() = 0;
-            virtual void display() = 0;
             virtual void changeDirection(float inDirection) = 0;
             virtual void changeSpeed(float inSpeed) = 0;
 

@@ -48,6 +48,7 @@
 			<Add library="lua5.1" />
 			<Add library="curl" />
 		</Linker>
+		<Unit filename="../CGE/Actor.cpp" />
 		<Unit filename="../CGE/Actor.h" />
 		<Unit filename="../CGE/Camera.cpp" />
 		<Unit filename="../CGE/Camera.h" />
@@ -97,6 +98,8 @@
 		<Unit filename="../CGE/PropertyList.cpp" />
 		<Unit filename="../CGE/PropertyList.h" />
 		<Unit filename="../CGE/Reference.h" />
+		<Unit filename="../CGE/RenderBin.cpp" />
+		<Unit filename="../CGE/RenderBin.h" />
 		<Unit filename="../CGE/ResourceManager.h" />
 		<Unit filename="../CGE/Shader.cpp" />
 		<Unit filename="../CGE/Shader.h" />
@@ -141,14 +144,10 @@
 		<Unit filename="../game/RenderBin.h" />
 		<Unit filename="../game/SceneGraphNode.cpp" />
 		<Unit filename="../game/SceneGraphNode.h" />
-		<Unit filename="../game/SimpleMatrixNode.cpp" />
-		<Unit filename="../game/SimpleMatrixNode.h" />
 		<Unit filename="../game/Tank.cpp" />
 		<Unit filename="../game/Tank.h" />
 		<Unit filename="../game/TerrainGrid.cpp" />
 		<Unit filename="../game/TerrainGrid.h" />
-		<Unit filename="../game/TestActorNode.cpp" />
-		<Unit filename="../game/TestActorNode.h" />
 		<Unit filename="../game/UserInterface.cpp" />
 		<Unit filename="../game/UserInterface.h" />
 		<Unit filename="../game/ViewNode.cpp" />

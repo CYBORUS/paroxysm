@@ -11,8 +11,8 @@ class RenderBin
         RenderBin();
         virtual ~RenderBin();
 
-        void addNode(SceneGraphNode& inNode);
-        void removeNode(SceneGraphNode& inNode);
+        void addNode(SceneGraphNode* inNode);
+        void removeNode(SceneGraphNode* inNode);
 
         void displayAll();
 
