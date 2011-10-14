@@ -16,7 +16,7 @@ namespace CGE
         mModel->display();
     }
 
-    void Actor::remove()
+    void Actor::removeFromBin()
     {
         if (mHead)
         {

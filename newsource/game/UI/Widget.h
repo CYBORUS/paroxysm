@@ -18,9 +18,19 @@ class Widget : public CGE::SceneGraphNode
             mEnabled = inEnabled;
         }
 
+        inline void disable()
+        {
+            mEnabled = false;
+        }
+
         inline bool isEnabled()
         {
             return mEnabled;
+        }
+
+        inline bool isDisabled()
+        {
+            return !mEnabled;
         }
 
         inline bool canHaveFocus() const

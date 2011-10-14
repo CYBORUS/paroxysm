@@ -143,8 +143,6 @@
 		<Unit filename="..\game\ParoxysmEntity.h" />
 		<Unit filename="..\game\ParoxysmModule.cpp" />
 		<Unit filename="..\game\ParoxysmModule.h" />
-		<Unit filename="..\game\RenderBin.cpp" />
-		<Unit filename="..\game\RenderBin.h" />
 		<Unit filename="..\game\Tank.cpp" />
 		<Unit filename="..\game\Tank.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />
@@ -162,7 +160,6 @@
 		<Unit filename="..\game\ViewNode.cpp" />
 		<Unit filename="..\game\ViewNode.h" />
 		<Unit filename="..\game\main.cpp" />
-		<Unit filename="osx\SDLMain.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

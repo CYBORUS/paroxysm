@@ -14,7 +14,7 @@ namespace CGE
     {
         if (!inActor) return;
 
-        inActor->remove();
+        inActor->removeFromBin();
 
         if (mHead)
         {
@@ -28,10 +28,20 @@ namespace CGE
 
     void RenderBin::renderAll()
     {
+        beforeRender();
+
         for (Actor* a = mHead; a; a = a->mNextActor)
-        {
             displayActor(a);
-        }
+
+        afterRender();
+    }
+
+    void RenderBin::beforeRender()
+    {
+    }
+
+    void RenderBin::afterRender()
+    {
     }
 
     void RenderBin::displayActor(Actor* inActor)

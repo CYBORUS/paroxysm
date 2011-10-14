@@ -1,5 +1,5 @@
-#ifndef CGERENDERBIN_H
-#define CGERENDERBIN_H
+#ifndef RENDERBIN_H
+#define RENDERBIN_H
 
 #include "Actor.h"
 
@@ -15,6 +15,8 @@ namespace CGE
             void renderAll();
 
         protected:
+            virtual void beforeRender();
+            virtual void afterRender();
             virtual void displayActor(Actor* inActor);
 
         private:

@@ -19,7 +19,7 @@ void GameModule::onLoad(CGE::PropertyList& inList)
     CGE::Actor* a = new CGE::Actor(&mGrid);
 
     mViewNode.addChildNode(a);
-    mBin.addNode(a);
+    mBin.addActor(a);
     mActors.push_back(a);
 
 
@@ -72,7 +72,7 @@ void GameModule::onLoop()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
-    mBin.displayAll();
+    mBin.renderAll();
     glDisable(GL_DEPTH_TEST);
 
     mUI.display();

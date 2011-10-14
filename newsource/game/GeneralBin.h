@@ -4,19 +4,18 @@
 #include <CGE/OpenGL/Program.h>
 #include <CGE/OpenGL/VertexShader.h>
 #include <CGE/OpenGL/FragmentShader.h>
+#include <CGE/RenderBin.h>
 
-#include "RenderBin.h"
-
-class GeneralBin : public RenderBin
+class GeneralBin : public CGE::RenderBin
 {
     public:
         GeneralBin();
         virtual ~GeneralBin();
 
-        void displayAll();
-
     protected:
-        virtual void displayNode(CGE::SceneGraphNode* inNode);
+        virtual void beforeRender();
+        //virtual void afterRender();
+        virtual void displayActor(CGE::Actor* inActor);
 
     private:
         CGE::Program<2> mProgram;

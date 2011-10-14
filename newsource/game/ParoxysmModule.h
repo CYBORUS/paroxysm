@@ -19,7 +19,6 @@ class ParoxysmModule : public CGE::ManagedModule
         ViewNode mViewNode;
 
         CGE::Vector<GLint, 4> mViewport;
-
 };
 
-#endif // PAROXYSMMODULE_H
+#endif

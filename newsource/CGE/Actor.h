@@ -17,7 +17,7 @@ namespace CGE
 
             virtual void display();
 
-            void remove();
+            void removeFromBin();
 
             inline CGE::Matrix4x4<float>& matrix() { return mTransform; }
         private:

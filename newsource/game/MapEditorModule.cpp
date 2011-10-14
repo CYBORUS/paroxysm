@@ -21,11 +21,11 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     CGE::Actor* a = new CGE::Actor(&mGrid);
 
     mViewNode.addChildNode(a);
-    mBin.addNode(a);
+    mBin.addActor(a);
     mActors.push_back(a);
 
     mViewNode.addChildNode(mSphere);
-    mBin.addNode(mSphere);
+    mBin.addActor(mSphere);
 
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
@@ -40,6 +40,8 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     button->setClickListener(uiLoadMap, this);
     button->setPosition(3.0f, -2.0f);
     mUI.addWidget(button);
+    mUI.update();
+
     mUI.update();
 
     EntityRenderBins bins;
@@ -73,7 +75,7 @@ void MapEditorModule::onLoop()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
-    mBin.displayAll();
+    mBin.renderAll();
     glDisable(GL_DEPTH_TEST);
 
     mUI.display();

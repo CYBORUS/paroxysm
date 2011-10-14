@@ -19,14 +19,13 @@ GeneralBin::~GeneralBin()
 {
 }
 
-void GeneralBin::displayAll()
+void GeneralBin::displayActor(CGE::Actor* inActor)
 {
-    mProgram.use();
-    RenderBin::displayAll();
+    glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, inActor->compositeMatrix());
+    inActor->display();
 }
 
-void GeneralBin::displayNode(CGE::SceneGraphNode* inNode)
+void GeneralBin::beforeRender()
 {
-    glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, inNode->compositeMatrix());
-    inNode->display();
+    mProgram.use();
 }

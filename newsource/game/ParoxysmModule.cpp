@@ -2,12 +2,10 @@
 
 ParoxysmModule::ParoxysmModule()
 {
-    //ctor
 }
 
 ParoxysmModule::~ParoxysmModule()
 {
-    //dtor
 }
 
 void ParoxysmModule::onResize(int inWidth, int inHeight)

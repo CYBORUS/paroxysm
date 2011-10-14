@@ -6,10 +6,9 @@ Tank::Tank(TerrainGrid* inTerrain, CGE::SceneGraphNode* inBaseNode,
 {
     mMainTank = new CGE::Actor(inManager->load("bradley.c3m"));
     inBaseNode->addChildNode(mMainTank);
-    inRenderBins.general->addNode(mMainTank);
-
     mBasePosition.rotate(90, 1, 0, 0);
     mMainTank->matrix() *= mBasePosition;
+    inRenderBins.general->addActor(mMainTank);
 }
 
 Tank::~Tank()
