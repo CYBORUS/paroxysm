@@ -58,9 +58,6 @@ class MainMenuModule : public CGE::ManagedModule
 
         static void mapEditorButtonCallBack(Widget* inWidget, void* inData);
         static void newGameButtonCallBack(Widget* inWidget, void* inData);
-
-        void mapEditorButtonPress();
-        void newGameButtonPress();
 };
 
 #endif

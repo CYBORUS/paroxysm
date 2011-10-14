@@ -149,7 +149,9 @@ void MainMenuModule::onLoad(CGE::PropertyList& inList)
   */
 void MainMenuModule::mapEditorButtonCallBack(Widget* inWidget, void* inData)
 {
-    reinterpret_cast<MainMenuModule*>(inData)->mapEditorButtonPress();
+    MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
+    m->mNextModule = new MapEditorModule;
+    m->mRunning = false;
 }
 
 /** @brief newGameButtonCallBack
@@ -158,7 +160,9 @@ void MainMenuModule::mapEditorButtonCallBack(Widget* inWidget, void* inData)
   */
 void MainMenuModule::newGameButtonCallBack(Widget* inWidget, void* inData)
 {
-    reinterpret_cast<MainMenuModule*>(inData)->newGameButtonPress();
+    MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
+    m->mNextModule = new GameModule;
+    m->mRunning = false;
 }
 
 /** @brief onResize
@@ -177,24 +181,4 @@ void MainMenuModule::onResize(int inWidth, int inHeight)
     mViewNode.setProjection(projection);
     glViewport(0, 0, inWidth, inHeight);
     glGetIntegerv(GL_VIEWPORT, mViewport);
-}
-
-/** @brief mapEditorButtonPress
-  *
-  * @todo: document this function
-  */
-void MainMenuModule::mapEditorButtonPress()
-{
-    mNextModule = new MapEditorModule;
-    mRunning = false;
-}
-
-/** @brief mapEditorButtonPress
-  *
-  * @todo: document this function
-  */
-void MainMenuModule::newGameButtonPress()
-{
-    mNextModule = new GameModule;
-    mRunning = false;
 }
