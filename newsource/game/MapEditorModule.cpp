@@ -104,25 +104,18 @@ void MapEditorModule::onPulse()
 vec4f MapEditorModule::selectVertex(int inX, int inY)
 {
     vec4f currentVertex;
-
     vec4f tempPoint;
 
     GLfloat depthZ = 0;
 
-    //we have to invert the y axis because of opengl's viewport
+    // Invert the Y-coordinate (flip OpenGL coordinates).
     int newY = SDL_GetVideoSurface()->h - inY;
 
-    //read the depth buffer to determine the z coordinate at the input
-    //x,y coordinates
     glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
 
-    //now let the glu library do the math for us :)
-//    if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView, mProjection, mViewport, &tempX, &tempY, &tempZ) == GL_FALSE)
-//    {
-//        cerr << "gluUnProject failed." << endl;
-//    }
 
-    if (!CGE::unproject((GLfloat)inX, (GLfloat)newY, depthZ, mViewNode.compositeMatrix(), mViewport, tempPoint))
+    if (!CGE::unproject((GLfloat)inX, (GLfloat)newY, depthZ,
+        mViewNode.compositeMatrix(), mViewport, tempPoint))
     {
         cerr << "unproject failed." << endl;
     }
@@ -144,6 +137,7 @@ vec4f MapEditorModule::selectVertex(int inX, int inY)
         {
             closestRow = numRows - 1;
         }
+
         int closestColumn = int(tempPoint[0] + 0.5);
         if (closestColumn >= numCols)
         {
@@ -362,6 +356,6 @@ void MapEditorModule::onResize(int inWidth, int inHeight)
 void MapEditorModule::uiLoadMap(Widget* inWidget, void* inData)
 {
     //inWidget->enable(false);
-    MapEditorModule* m = reinterpret_cast<MapEditorModule*>(inData);
+    //MapEditorModule* m = reinterpret_cast<MapEditorModule*>(inData);
     cerr << "Button pressed!\n";
 }

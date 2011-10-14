@@ -10,8 +10,9 @@
 class Tank : public ParoxysmEntity
 {
     public:
-        Tank(TerrainGrid* inTerrain, SceneGraphNode* inBaseNode, EntityRenderBins inRenderBins,
-             CGE::ResourceManager<CGE::Model>* inManager);
+        Tank(TerrainGrid* inTerrain, SceneGraphNode* inBaseNode,
+            EntityRenderBins inRenderBins,
+            CGE::ResourceManager<CGE::Model>* inManager);
         virtual ~Tank();
 
         virtual void move();
@@ -22,4 +23,4 @@ class Tank : public ParoxysmEntity
         CGE::Actor* mMainTank;
 };
 
-#endif // TANK_H
+#endif
