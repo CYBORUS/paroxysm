@@ -1,7 +1,7 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-#include "game/SceneGraphNode.h"
+#include "SceneGraphNode.h"
 #include "Matrix4x4.h"
 #include "Model.h"
 

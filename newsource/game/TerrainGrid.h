@@ -1,10 +1,10 @@
 #ifndef TERRAINGRID_H
 #define TERRAINGRID_H
 
-#include <CGE/VertexArrayObject.h>
-#include <CGE/IndexVBO.h>
-#include <CGE/ClusterVBO.h>
-#include <CGE/Texture2D.h>
+#include <CGE/OpenGL/VertexArrayObject.h>
+#include <CGE/OpenGL/IndexVBO.h>
+#include <CGE/OpenGL/ClusterVBO.h>
+#include <CGE/OpenGL/Texture2D.h>
 #include <CGE/Tools.h>
 #include <CGE/Matrix.h>
 #include <CGE/Vectors.h>

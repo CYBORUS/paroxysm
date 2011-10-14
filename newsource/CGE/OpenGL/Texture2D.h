@@ -2,7 +2,7 @@
 #define TEXTURE2D_H
 
 #include "Texture.h"
-#include "Image.h"
+#include "../Image.h"
 
 namespace CGE
 {

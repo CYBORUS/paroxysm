@@ -1,8 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "Texture2D.h"
-#include "ClusterVBO.h"
+#include "OpenGL/Texture2D.h"
+#include "OpenGL/ClusterVBO.h"
 #include "c3m.h"
 
 #include <string>

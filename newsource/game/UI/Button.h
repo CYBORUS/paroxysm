@@ -2,8 +2,8 @@
 #define BUTTON_H
 
 #include <CGE/Image.h>
-#include <CGE/Texture2D.h>
-#include <CGE/ClusterVBO.h>
+#include <CGE/OpenGL/Texture2D.h>
+#include <CGE/OpenGL/ClusterVBO.h>
 #include "Widget.h"
 
 class Button : public Widget

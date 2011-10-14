@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-Tank::Tank(TerrainGrid* inTerrain, SceneGraphNode* inBaseNode,
+Tank::Tank(TerrainGrid* inTerrain, CGE::SceneGraphNode* inBaseNode,
     EntityRenderBins inRenderBins, CGE::ResourceManager<CGE::Model>* inManager)
     : ParoxysmEntity(inTerrain, inBaseNode, inRenderBins)
 {

@@ -4,7 +4,7 @@
 #include <CGE/Entity.h>
 #include "TerrainGrid.h"
 #include "GeneralBin.h"
-#include "SceneGraphNode.h"
+#include <CGE/SceneGraphNode.h>
 
 struct EntityRenderBins
 {
@@ -14,12 +14,13 @@ struct EntityRenderBins
 class ParoxysmEntity : public CGE::Entity
 {
     public:
-        ParoxysmEntity(TerrainGrid* inTerrain, SceneGraphNode* inBaseNode, EntityRenderBins inRenderBins);
+        ParoxysmEntity(TerrainGrid* inTerrain, CGE::SceneGraphNode* inBaseNode,
+            EntityRenderBins inRenderBins);
         virtual ~ParoxysmEntity();
 
     protected:
         TerrainGrid* mTerrain;
-        SceneGraphNode* mBaseNode;
+        CGE::SceneGraphNode* mBaseNode;
         EntityRenderBins mRenderBins;
 
 };

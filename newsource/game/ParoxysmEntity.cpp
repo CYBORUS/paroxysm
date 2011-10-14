@@ -1,6 +1,7 @@
 #include "ParoxysmEntity.h"
 
-ParoxysmEntity::ParoxysmEntity(TerrainGrid* inTerrain, SceneGraphNode* inBaseNode, EntityRenderBins inRenderBins)
+ParoxysmEntity::ParoxysmEntity(TerrainGrid* inTerrain,
+    CGE::SceneGraphNode* inBaseNode, EntityRenderBins inRenderBins)
 {
     mTerrain = inTerrain;
     mBaseNode = inBaseNode;
@@ -9,5 +10,4 @@ ParoxysmEntity::ParoxysmEntity(TerrainGrid* inTerrain, SceneGraphNode* inBaseNod
 
 ParoxysmEntity::~ParoxysmEntity()
 {
-    //dtor
 }

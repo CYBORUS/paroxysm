@@ -6,11 +6,10 @@
 #include <CGE/Model.h>
 #include <CGE/Actor.h>
 
-
 class Tank : public ParoxysmEntity
 {
     public:
-        Tank(TerrainGrid* inTerrain, SceneGraphNode* inBaseNode,
+        Tank(TerrainGrid* inTerrain, CGE::SceneGraphNode* inBaseNode,
             EntityRenderBins inRenderBins,
             CGE::ResourceManager<CGE::Model>* inManager);
         virtual ~Tank();
