@@ -1,11 +1,10 @@
-#ifndef LABEL_Hx
+#ifndef LABEL_H
 #define LABEL_H
 
 #include <CGE/Image.h>
 #include <CGE/OpenGL/Texture2D.h>
 #include <CGE/OpenGL/ClusterVBO.h>
 #include "Widget.h"
-
 
 class Label : public Widget
 {
@@ -24,4 +23,4 @@ class Label : public Widget
         CGE::VertexBufferObject mTextureVBO;
         CGE::ClusterVBO mClusterVBO;
 };
-#endif // LABEL_H
+#endif

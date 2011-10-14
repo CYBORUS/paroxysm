@@ -11,7 +11,6 @@
 #include <iostream>
 #include <fstream>
 
-
 class GameModule : public ParoxysmModule
 {
     public:
