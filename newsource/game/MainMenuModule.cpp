@@ -1,6 +1,7 @@
 #include "MainMenuModule.h"
 #include <CGE/Exception.h>
 #include "MapEditorModule.h"
+#include "GameModule.h"
 
 #include <iostream>
 #include <fstream>
@@ -194,6 +195,6 @@ void MainMenuModule::mapEditorButtonPress()
   */
 void MainMenuModule::newGameButtonPress()
 {
-    //mNextModule = new NewGameModule;
-    //mRunning = false;
+    mNextModule = new GameModule;
+    mRunning = false;
 }

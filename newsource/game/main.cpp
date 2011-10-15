@@ -1,5 +1,4 @@
 #include <CGE/Engine.h>
-#include "MapEditorModule.h"
 #include "MainMenuModule.h"
 
 #include <iostream>
@@ -14,7 +13,6 @@ int main(int argc, char** argv)
 
     CGE::Engine e(s);
     e.manage(new MainMenuModule);
-    //e.manage(new MapEditorModule);
 
     return 0;
 }
