@@ -1,7 +1,6 @@
 #ifndef MAPEDITORMODULE_H
 #define MAPEDITORMODULE_H
 
-#include <CGE/ManagedModule.h>
 #include <CGE/OpenGL/Texture2D.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/Camera.h>
@@ -11,11 +10,9 @@
 #include <CGE/Actor.h>
 
 #include "ParoxysmModule.h"
-#include "UI/UserInterface.h"
 #include "UI/Button.h"
 
 #include "TerrainGrid.h"
-#include "ViewNode.h"
 #include "GeneralBin.h"
 #include "ParoxysmEntity.h"
 #include "Tank.h"
@@ -60,7 +57,6 @@ class MapEditorModule : public ParoxysmModule
     private:
         vec4f selectVertex(int inX, int inY);
 
-        //ViewNode mViewNode; // head of the scene graph
         GeneralBin mBin;
         std::list<CGE::Actor*> mActors;
 
@@ -68,7 +64,6 @@ class MapEditorModule : public ParoxysmModule
         CGE::Model* mModel;
         CGE::Actor* mSphere;
         Tank* mTank;
-        //SimpleMatrixNode* mSphereNode;
 
         CGE::ResourceManager<CGE::Model> mManager;
 
@@ -86,8 +81,6 @@ class MapEditorModule : public ParoxysmModule
 
         float mXPan;
         float mYPan;
-
-        //UserInterface mUI;
 
         static void uiLoadMap(Widget* inWidget, void* inData);
 };
