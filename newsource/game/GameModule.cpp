@@ -118,7 +118,7 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
         case PANNING:
         {
-            mViewNode.smartPan(-inRelX * 0.1f, inRelY * 0.1f);
+            mViewNode.smartPan(-inRelX * 0.01f, inRelY * 0.01f);
             break;
         }
 
