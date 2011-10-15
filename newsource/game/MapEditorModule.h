@@ -63,7 +63,6 @@ class MapEditorModule : public ParoxysmModule
         TerrainGrid mGrid;
         CGE::Model* mModel;
         CGE::Actor* mSphere;
-        Tank* mTank;
 
         CGE::ResourceManager<CGE::Model> mManager;
 

@@ -43,10 +43,6 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     mUI.update();
 
     mUI.update();
-
-    EntityRenderBins bins;
-    bins.general = &mBin;
-    mTank = new Tank(&mGrid, a, bins, &mManager);
 }
 
 void MapEditorModule::onUnload()
