@@ -1,10 +1,10 @@
 #ifndef GAMEMODULE_H
 #define GAMEMODULE_H
 
-#include "ManagedModule.h"
+#include <CGE/ManagedModule.h>
 
 
-class GameModule : public ManagedModule
+class GameModule : public CGE::ManagedModule
 {
     public:
         GameModule();
