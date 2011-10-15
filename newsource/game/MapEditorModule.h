@@ -10,6 +10,7 @@
 #include <CGE/Vectors.h>
 #include <CGE/Actor.h>
 
+#include "ParoxysmModule.h"
 #include "UI/UserInterface.h"
 #include "UI/Button.h"
 
@@ -23,7 +24,7 @@
 
 #define VERTEX_STEP 0.1f
 
-class MapEditorModule : public CGE::ManagedModule
+class MapEditorModule : public ParoxysmModule
 {
     public:
         MapEditorModule();
@@ -56,12 +57,10 @@ class MapEditorModule : public CGE::ManagedModule
 
         virtual void onMouseWheel(bool inUp);
 
-        virtual void onResize(int inWidth, int inHeight);
-
     private:
         vec4f selectVertex(int inX, int inY);
 
-        ViewNode mViewNode; // head of the scene graph
+        //ViewNode mViewNode; // head of the scene graph
         GeneralBin mBin;
         std::list<CGE::Actor*> mActors;
 
@@ -79,7 +78,6 @@ class MapEditorModule : public CGE::ManagedModule
 
         MouseState mMouseState;
 
-        CGE::Vector<GLint, 4> mViewport;
 
         bool mLeftClickDown;
 
@@ -89,7 +87,7 @@ class MapEditorModule : public CGE::ManagedModule
         float mXPan;
         float mYPan;
 
-        UserInterface mUI;
+        //UserInterface mUI;
 
         static void uiLoadMap(Widget* inWidget, void* inData);
 };

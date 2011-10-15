@@ -1,10 +1,11 @@
 #ifndef GAMEMODULE_H
 #define GAMEMODULE_H
 
-#include <CGE/ManagedModule.h>
+#include "ParoxysmModule.h"
+#include "Tank.h"
 
 
-class GameModule : public CGE::ManagedModule
+class GameModule : public ParoxysmModule
 {
     public:
         GameModule();
@@ -12,6 +13,8 @@ class GameModule : public CGE::ManagedModule
 
     protected:
     private:
+
+        Tank* mPlayerTank;
 };
 
 #endif // GAMEMODULE_H
