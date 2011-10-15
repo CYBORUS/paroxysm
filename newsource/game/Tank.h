@@ -5,6 +5,7 @@
 #include <CGE/ResourceManager.h>
 #include <CGE/Model.h>
 #include <CGE/Actor.h>
+#include <CGE/Matrix4x4.h>
 
 class Tank : public ParoxysmEntity
 {
@@ -20,6 +21,7 @@ class Tank : public ParoxysmEntity
 
     protected:
         CGE::Actor* mMainTank;
+        mat4f mBasePosition;
 };
 
 #endif
