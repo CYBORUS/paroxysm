@@ -40,6 +40,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     button->setClickListener(uiLoadMap, this);
     button->setPosition(3.0f, -2.0f);
     mUI.addWidget(button);
+    mUI.update();
 
     EntityRenderBins bins;
     bins.general = &mBin;
