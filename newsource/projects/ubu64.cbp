@@ -134,6 +134,8 @@
 		<Unit filename="../GLee/GLee.h" />
 		<Unit filename="../game/GeneralBin.cpp" />
 		<Unit filename="../game/GeneralBin.h" />
+		<Unit filename="../game/MainMenuModule.cpp" />
+		<Unit filename="../game/MainMenuModule.h" />
 		<Unit filename="../game/MapEditorModule.cpp" />
 		<Unit filename="../game/MapEditorModule.h" />
 		<Unit filename="../game/ParoxysmEntity.cpp" />

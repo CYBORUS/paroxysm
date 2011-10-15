@@ -133,6 +133,8 @@
 		<Unit filename="..\GLee\GLee.h" />
 		<Unit filename="..\game\GeneralBin.cpp" />
 		<Unit filename="..\game\GeneralBin.h" />
+		<Unit filename="..\game\MainMenuModule.cpp" />
+		<Unit filename="..\game\MainMenuModule.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
 		<Unit filename="..\game\MapEditorModule.h" />
 		<Unit filename="..\game\ParoxysmEntity.cpp" />
@@ -147,6 +149,8 @@
 		<Unit filename="..\game\UI\Button.h" />
 		<Unit filename="..\game\UI\EventListener.cpp" />
 		<Unit filename="..\game\UI\EventListener.h" />
+		<Unit filename="..\game\UI\Label.cpp" />
+		<Unit filename="..\game\UI\Label.h" />
 		<Unit filename="..\game\UI\UserInterface.cpp" />
 		<Unit filename="..\game\UI\UserInterface.h" />
 		<Unit filename="..\game\UI\Widget.cpp" />

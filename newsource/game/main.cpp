@@ -1,6 +1,6 @@
 #include <CGE/Engine.h>
 #include "MapEditorModule.h"
-#include "GameModule.h"
+#include "MainMenuModule.h"
 
 #include <iostream>
 using namespace std;
@@ -13,7 +13,8 @@ int main(int argc, char** argv)
     s.sound = false;
 
     CGE::Engine e(s);
-    e.manage(new GameModule);
+    e.manage(new MainMenuModule);
+    //e.manage(new MapEditorModule);
 
     return 0;
 }
