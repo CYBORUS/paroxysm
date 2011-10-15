@@ -131,12 +131,16 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\GLee\GLee.h" />
+		<Unit filename="..\game\GameModule.cpp" />
+		<Unit filename="..\game\GameModule.h" />
 		<Unit filename="..\game\GeneralBin.cpp" />
 		<Unit filename="..\game\GeneralBin.h" />
 		<Unit filename="..\game\MapEditorModule.cpp" />
 		<Unit filename="..\game\MapEditorModule.h" />
 		<Unit filename="..\game\ParoxysmEntity.cpp" />
 		<Unit filename="..\game\ParoxysmEntity.h" />
+		<Unit filename="..\game\ParoxysmModule.cpp" />
+		<Unit filename="..\game\ParoxysmModule.h" />
 		<Unit filename="..\game\RenderBin.cpp" />
 		<Unit filename="..\game\RenderBin.h" />
 		<Unit filename="..\game\Tank.cpp" />

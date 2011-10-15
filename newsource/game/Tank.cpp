@@ -8,7 +8,8 @@ Tank::Tank(TerrainGrid* inTerrain, CGE::SceneGraphNode* inBaseNode,
     inBaseNode->addChildNode(mMainTank);
     inRenderBins.general->addNode(mMainTank);
 
-    mMainTank->matrix().rotate(90, 1, 0, 0);
+    mBasePosition.rotate(90, 1, 0, 0);
+    mMainTank->matrix() *= mBasePosition;
 }
 
 Tank::~Tank()
@@ -21,6 +22,8 @@ void Tank::move()
 
 void Tank::changeDirection(float inDirection)
 {
+    mMainTank->matrix().loadIdentity();
+    mMainTank->matrix().rotate(90, 0, 0, 1);
 }
 
 void Tank::changeSpeed(float inSpeed)
