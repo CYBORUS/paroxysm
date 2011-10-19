@@ -92,6 +92,8 @@
 		<Unit filename="..\CGE\OpenGL\FragmentShader.h" />
 		<Unit filename="..\CGE\OpenGL\IndexVBO.cpp" />
 		<Unit filename="..\CGE\OpenGL\IndexVBO.h" />
+		<Unit filename="..\CGE\OpenGL\InterleavedVBO.cpp" />
+		<Unit filename="..\CGE\OpenGL\InterleavedVBO.h" />
 		<Unit filename="..\CGE\OpenGL\Program.h" />
 		<Unit filename="..\CGE\OpenGL\Shader.cpp" />
 		<Unit filename="..\CGE\OpenGL\Shader.h" />

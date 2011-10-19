@@ -3,7 +3,7 @@
 
 #include <CGE/Image.h>
 #include <CGE/OpenGL/Texture2D.h>
-#include <CGE/OpenGL/ClusterVBO.h>
+#include <CGE/OpenGL/InterleavedVBO.h>
 #include "Widget.h"
 
 class Button : public Widget
@@ -24,9 +24,7 @@ class Button : public Widget
     protected:
     private:
         CGE::Texture2D mTexture;
-        CGE::VertexBufferObject mVertexVBO;
-        CGE::VertexBufferObject mTextureVBO;
-        CGE::ClusterVBO mClusterVBO;
+        CGE::InterleavedVBO mVBO;
         GLint mFirst;
 };
 

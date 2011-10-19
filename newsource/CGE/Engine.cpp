@@ -92,8 +92,8 @@ namespace CGE
     void Engine::run(Module& inModule)
     {
         inModule.mRunning = true;
-        inModule.onOpen();
         inModule.onResize(mDisplay->w, mDisplay->h);
+        inModule.onOpen();
 
         Uint32 nextPulse = SDL_GetTicks() + mSettings.frameLength;
         Uint32 nextSecond = SDL_GetTicks() + 1000;
@@ -244,9 +244,9 @@ namespace CGE
                 fout.close();
                 exit(1);
             }
-        }
 
-        Mix_AllocateChannels(NUM_CHANNELS);
+            Mix_AllocateChannels(NUM_CHANNELS);
+        }
 
 #ifdef __WIN32__
         freopen("CON", "w", stdout);

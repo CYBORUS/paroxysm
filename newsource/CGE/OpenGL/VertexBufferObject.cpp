@@ -34,9 +34,10 @@ namespace CGE
         assert(inSize > 0);
         assert(inValuesPerUnit > 0);
 
-        bind();
         mSize = inSize;
         mValuesPerUnit = inValuesPerUnit;
+
+        bind();
         glBufferData(mTarget, mSize * mValuesPerUnit * mTypeSize, inData,
             mUsage);
     }
