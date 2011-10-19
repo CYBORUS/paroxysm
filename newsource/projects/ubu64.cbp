@@ -93,6 +93,8 @@
 		<Unit filename="../CGE/OpenGL/FragmentShader.h" />
 		<Unit filename="../CGE/OpenGL/IndexVBO.cpp" />
 		<Unit filename="../CGE/OpenGL/IndexVBO.h" />
+		<Unit filename="../CGE/OpenGL/InterleavedVBO.cpp" />
+		<Unit filename="../CGE/OpenGL/InterleavedVBO.h" />
 		<Unit filename="../CGE/OpenGL/Program.h" />
 		<Unit filename="../CGE/OpenGL/Shader.cpp" />
 		<Unit filename="../CGE/OpenGL/Shader.h" />
@@ -132,6 +134,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../GLee/GLee.h" />
+		<Unit filename="../game/GameModule.cpp" />
+		<Unit filename="../game/GameModule.h" />
 		<Unit filename="../game/GeneralBin.cpp" />
 		<Unit filename="../game/GeneralBin.h" />
 		<Unit filename="../game/MainMenuModule.cpp" />
@@ -140,8 +144,8 @@
 		<Unit filename="../game/MapEditorModule.h" />
 		<Unit filename="../game/ParoxysmEntity.cpp" />
 		<Unit filename="../game/ParoxysmEntity.h" />
-		<Unit filename="../game/RenderBin.cpp" />
-		<Unit filename="../game/RenderBin.h" />
+		<Unit filename="../game/ParoxysmModule.cpp" />
+		<Unit filename="../game/ParoxysmModule.h" />
 		<Unit filename="../game/Tank.cpp" />
 		<Unit filename="../game/Tank.h" />
 		<Unit filename="../game/TerrainGrid.cpp" />
@@ -150,6 +154,8 @@
 		<Unit filename="../game/UI/Button.h" />
 		<Unit filename="../game/UI/EventListener.cpp" />
 		<Unit filename="../game/UI/EventListener.h" />
+		<Unit filename="../game/UI/Label.cpp" />
+		<Unit filename="../game/UI/Label.h" />
 		<Unit filename="../game/UI/UserInterface.cpp" />
 		<Unit filename="../game/UI/UserInterface.h" />
 		<Unit filename="../game/UI/Widget.cpp" />

@@ -87,6 +87,8 @@ void UserInterface::onMouseMove(int inX, int inY)
         Widget* w = *i;
         if (w != mMouseOverWidget && w->contains(mMouseX, mMouseY))
         {
+            if (mMouseOverWidget) mMouseOverWidget->onMouseOut();
+
             w->onMouseIn(w == mClickCandidate);
             mMouseOverWidget = w;
         }
