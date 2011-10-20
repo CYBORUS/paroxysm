@@ -16,6 +16,11 @@ namespace CGE
                 glBindBuffer(GL_ARRAY_BUFFER, mHandle);
             }
 
+            inline GLuint vertexSize() const
+            {
+                return mVertexSize;
+            }
+
             void addField(GLuint inIndex, GLuint inSize = 1);
             void loadData(GLvoid* inData, GLuint inSize);
             void enableVAA();

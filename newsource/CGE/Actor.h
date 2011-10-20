@@ -15,7 +15,7 @@ namespace CGE
             Actor(Model* inModel);
             virtual ~Actor();
 
-            virtual void display();
+            inline void display() { mModel->display(); }
 
             void removeFromBin();
 

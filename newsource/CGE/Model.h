@@ -1,43 +1,15 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "OpenGL/Texture2D.h"
-#include "OpenGL/ClusterVBO.h"
-#include "c3m.h"
-
-#include <string>
-#include <iostream>
-
 namespace CGE
 {
     class Model
     {
         public:
-            Model(const char* inFile);
-            virtual ~Model();
+            Model() {}
+            virtual ~Model() {}
 
-            virtual void display()
-            {
-                mTexture.bind();
-                mClusterVBO.display();
-            }
-
-            enum BufferObject
-            {
-                VERTEX_BUFFER = 0,
-                NORMAL_BUFFER = 1,
-                COLOR_BUFFER = 2,
-                TEXTURE_BUFFER = 3
-            };
-
-        protected:
-            Model() {};
-            void loadC3M(const char* inFile);
-
-            CGE::Texture2D mTexture;
-            CGE::ClusterVBO mClusterVBO;
-            CGE::VertexBufferObject mBuffers[4];
-            CGE::IndexVBO mIVBO;
+            virtual void display() = 0;
     };
 }
 

@@ -77,6 +77,8 @@
 		<Unit filename="../CGE/Matrix4x4.h" />
 		<Unit filename="../CGE/Model.cpp" />
 		<Unit filename="../CGE/Model.h" />
+		<Unit filename="../CGE/ModelFromFile.cpp" />
+		<Unit filename="../CGE/ModelFromFile.h" />
 		<Unit filename="../CGE/Module.cpp" />
 		<Unit filename="../CGE/Module.h" />
 		<Unit filename="../CGE/Music.cpp" />

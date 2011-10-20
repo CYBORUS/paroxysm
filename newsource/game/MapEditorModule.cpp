@@ -39,9 +39,8 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     Button* button = new Button("assets/images/hud/load_map.png", 2.0f, 1.0f);
     button->setClickListener(uiLoadMap, this);
     button->setPosition(3.0f, -2.0f);
-    mUI.addWidget(button);
-    mUI.update();
 
+    mUI.addWidget(button);
     mUI.update();
 }
 

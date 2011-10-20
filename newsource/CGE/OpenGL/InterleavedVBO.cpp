@@ -24,6 +24,8 @@ namespace CGE
         mMappings[mNumMappings].size = inSize;
 
         ++mNumMappings;
+
+        assert(mVertexSize > 0);
     }
 
     void InterleavedVBO::loadData(GLvoid* inData, GLuint inSize)

@@ -51,7 +51,7 @@ class GameModule : public ParoxysmModule
         GeneralBin mBin;
         std::list<CGE::Actor*> mActors;
 
-        CGE::ResourceManager<CGE::Model> mManager;
+        CGE::ResourceManager<CGE::ModelFromFile> mManager;
 
         Tank* mPlayerTank;
 
@@ -66,4 +66,4 @@ class GameModule : public ParoxysmModule
 
 };
 
-#endif // GAMEMODULE_H
+#endif
