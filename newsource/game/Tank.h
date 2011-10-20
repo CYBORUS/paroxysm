@@ -3,7 +3,7 @@
 
 #include "ParoxysmEntity.h"
 #include <CGE/ResourceManager.h>
-#include <CGE/Model.h>
+#include <CGE/ModelFromFile.h>
 #include <CGE/Actor.h>
 #include <CGE/Matrix4x4.h>
 
@@ -12,7 +12,7 @@ class Tank : public ParoxysmEntity
     public:
         Tank(TerrainGrid* inTerrain, CGE::SceneGraphNode* inBaseNode,
             EntityRenderBins inRenderBins,
-            CGE::ResourceManager<CGE::Model>* inManager);
+            CGE::ResourceManager<CGE::ModelFromFile>* inManager);
         virtual ~Tank();
 
         virtual void move();

@@ -4,7 +4,7 @@
 #include <CGE/OpenGL/Texture2D.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/Camera.h>
-#include <CGE/Model.h>
+#include <CGE/ModelFromFile.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/Vectors.h>
 #include <CGE/Actor.h>
@@ -63,9 +63,8 @@ class MapEditorModule : public ParoxysmModule
         TerrainGrid mGrid;
         CGE::Model* mModel;
         CGE::Actor* mSphere;
-        Tank* mTank;
 
-        CGE::ResourceManager<CGE::Model> mManager;
+        CGE::ResourceManager<CGE::ModelFromFile> mManager;
 
         vec4f mClickedVertex;
         vec4f mSelectPosition;

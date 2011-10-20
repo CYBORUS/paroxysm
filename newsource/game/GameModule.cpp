@@ -5,12 +5,10 @@ using namespace std;
 GameModule::GameModule() : mXPan(0.0f),
     mYPan(0.0f)
 {
-    //ctor
 }
 
 GameModule::~GameModule()
 {
-    //dtor
 }
 
 

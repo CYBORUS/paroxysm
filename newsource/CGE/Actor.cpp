@@ -11,11 +11,6 @@ namespace CGE
     {
     }
 
-    void Actor::display()
-    {
-        mModel->display();
-    }
-
     void Actor::removeFromBin()
     {
         if (mHead)

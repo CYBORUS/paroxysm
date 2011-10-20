@@ -20,7 +20,8 @@ MainMenuModule::MainMenuModule()
   *
   * @todo: Mouse movement events
   */
-void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft, bool inRight, bool inMiddle)
+void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
+    bool inLeft, bool inRight, bool inMiddle)
 {
     mUI.onMouseMove(inX, inY);
 }
@@ -58,7 +59,6 @@ void MainMenuModule::onLButtonUp(int inX, int inY)
   */
 void MainMenuModule::onLButtonDown(int inX, int inY)
 {
-    //cout << inX << ' ' << inY << endl;
     mUI.onMouseDown();
 }
 
@@ -96,6 +96,8 @@ void MainMenuModule::onClose()
   */
 void MainMenuModule::onOpen()
 {
+    mUI.update();
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

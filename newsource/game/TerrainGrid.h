@@ -9,7 +9,7 @@
 #include <CGE/Matrix.h>
 #include <CGE/Vectors.h>
 
-#include <CGE/Model.h>
+#include <CGE/ModelFromFile.h>
 
 #include <iostream>
 #include <vector>
@@ -40,11 +40,10 @@ class TerrainGrid : public CGE::Model
         size_t toIndex(size_t inRow, size_t inCol);
         void destroy();
 
-//        CGE::ClusterVBO mVBO;
-//        CGE::Texture2D mTexture;
-//        CGE::VertexBufferObject mVertexVBO;
-//        CGE::VertexBufferObject mTextureVBO;
-//        CGE::IndexVBO mIVBO;
+        CGE::ClusterVBO mClusterVBO;
+        CGE::VertexBufferObject mBuffers[4];
+        CGE::Texture2D mTexture;
+        CGE::IndexVBO mIVBO;
 
         Matrix<float> mHeights;
         size_t mRows;

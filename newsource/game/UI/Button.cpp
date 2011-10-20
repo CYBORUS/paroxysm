@@ -12,41 +12,37 @@ Button::Button(const CGE::Image& inImage, float inWidth, float inHeight)
     mRadiusX = inWidth / 2.0f;
     mRadiusY = inHeight / 2.0f;
 
-    mClusterVBO.mount(mVertexVBO, 0);
-    mClusterVBO.mount(mTextureVBO, 1);
+    mVBO.addField(0, 2); // Vertices (XY bound on shader attrib 0)
+    mVBO.addField(1, 2); // Texture Coordinates (ST bound on shader attrib 1)
 
-    GLfloat vertices[4 * 4 * 2];
-    GLfloat* vertex = vertices;
-
-    GLfloat texCoords[4 * 4 * 2];
-    GLfloat* texCoord = texCoords;
+    GLfloat data[4 * 4 * (2 + 2)]; // 4 states of 4 vertices with XY and ST
+    GLfloat* d = data;
 
     for (size_t i = 0; i < 4; ++i)
     {
         float tcy = float(i) * 0.25f;
-        *vertex++ = mRadiusX;
-        *vertex++ = mRadiusY;
-        *texCoord++ = 1.0f;
-        *texCoord++ = tcy;
+        *d++ = mRadiusX;
+        *d++ = mRadiusY;
+        *d++ = 1.0f;
+        *d++ = tcy;
 
-        *vertex++ = mRadiusX;
-        *vertex++ = -mRadiusY;
-        *texCoord++ = 1.0f;
-        *texCoord++ = tcy + 0.25f;
+        *d++ = mRadiusX;
+        *d++ = -mRadiusY;
+        *d++ = 1.0f;
+        *d++ = tcy + 0.25f;
 
-        *vertex++ = -mRadiusX;
-        *vertex++ = -mRadiusY;
-        *texCoord++ = 0.0f;
-        *texCoord++ = tcy + 0.25f;
+        *d++ = -mRadiusX;
+        *d++ = -mRadiusY;
+        *d++ = 0.0f;
+        *d++ = tcy + 0.25f;
 
-        *vertex++ = -mRadiusX;
-        *vertex++ = mRadiusY;
-        *texCoord++ = 0.0f;
-        *texCoord++ = tcy;
+        *d++ = -mRadiusX;
+        *d++ = mRadiusY;
+        *d++ = 0.0f;
+        *d++ = tcy;
     }
 
-    mVertexVBO.loadData(vertices, 16, 2);
-    mTextureVBO.loadData(texCoords, 16, 2);
+    mVBO.loadData(data, 4 * 4);
 
     setPosition(0.0f, 0.0f);
 }
@@ -68,7 +64,7 @@ void Button::setPosition(float inX, float inY)
 void Button::display()
 {
     mTexture.bind();
-    mClusterVBO.display(GL_TRIANGLE_FAN, mFirst, 4);
+    mVBO.display(GL_TRIANGLE_FAN, mFirst, 4);
 }
 
 void Button::onMouseIn(bool inIsClickCandidate)
