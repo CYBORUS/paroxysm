@@ -14,7 +14,7 @@ class GeneralBin : public CGE::RenderBin
 
     protected:
         virtual void beforeRender();
-        //virtual void afterRender();
+        virtual void afterRender();
         virtual void displayActor(CGE::Actor* inActor);
 
     private:

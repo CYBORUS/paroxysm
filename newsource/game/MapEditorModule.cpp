@@ -52,9 +52,6 @@ void MapEditorModule::onOpen()
 {
     mMouseState = NONE;
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     mViewNode.setAngle(-45.0f);
     mViewNode.setDistance(8.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -62,29 +59,18 @@ void MapEditorModule::onOpen()
 
 void MapEditorModule::onClose()
 {
-    glDisable(GL_BLEND);
 }
 
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_DEPTH_TEST);
     mBin.renderAll();
-    glDisable(GL_DEPTH_TEST);
-
     mUI.display();
 }
 
 void MapEditorModule::onPulse()
 {
-//    for (list<CGE::Actor*>::iterator i = mActors.begin();
-//        i != mActors.end(); ++i)
-//    {
-//        CGE::Actor& an = *(*i);
-//        an.update();
-//    }
-
     mSphere->matrix().loadIdentity();
     mSphere->matrix().translate(mSpherePosition[0], mSpherePosition[1],
         mSpherePosition[2]);

@@ -31,6 +31,10 @@ void UserInterface::update()
 void UserInterface::display()
 {
     mProgram.use();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     for (std::list<Widget*>::iterator i = mWidgets.begin();
         i != mWidgets.end(); ++i)
     {
@@ -38,6 +42,8 @@ void UserInterface::display()
         glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, w->compositeMatrix());
         w->display();
     }
+
+    glDisable(GL_BLEND);
 }
 
 void UserInterface::addWidget(Widget* inWidget)

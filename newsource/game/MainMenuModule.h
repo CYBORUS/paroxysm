@@ -1,7 +1,6 @@
 #ifndef MAINMENUMODULE_H
 #define MAINMENUMODULE_H
 
-#include <CGE/ManagedModule.h>
 #include <CGE/OpenGL/Texture2D.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/Camera.h>
@@ -14,13 +13,12 @@
 #include "UI/Button.h"
 #include "UI/Label.h"
 
+#include "ParoxysmModule.h"
 #include "ViewNode.h"
 
 #include <list>
 
-#define VERTEX_STEP 0.1f
-
-class MainMenuModule : public CGE::ManagedModule
+class MainMenuModule : public ParoxysmModule
 {
     public:
         MainMenuModule();
@@ -39,22 +37,13 @@ class MainMenuModule : public CGE::ManagedModule
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
 
-        virtual void onResize(int inWidth, int inHeight);
-
     protected:
     private:
-
-        ViewNode mViewNode; // head of the scene graph
-
-        CGE::Vector<GLint, 4> mViewport;
-
         int mXStart;
         int mYStart;
 
         float mXPan;
         float mYPan;
-
-        UserInterface mUI;
 
         static void mapEditorButtonCallBack(Widget* inWidget, void* inData);
         static void newGameButtonCallBack(Widget* inWidget, void* inData);

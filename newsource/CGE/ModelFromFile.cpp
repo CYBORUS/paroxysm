@@ -116,9 +116,7 @@ namespace CGE
         //mVBO.loadIndexArray(GL_TRIANGLES, size, indices);
     //    CGE::IndexVBO* index = new IndexVBO();
     //    index->loadData(indices, size);
-        cerr << "yarr -- " << __LINE__ << '\n';
         mIVBO.loadData(indices, size, 3);
-        cerr << "yarr -- " << __LINE__ << '\n';
         //mClusterVBO.mount(mIVBO);
 
         c3mClose(c3m);

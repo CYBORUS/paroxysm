@@ -9,6 +9,8 @@ namespace CGE
     class ManagedModule : public Module
     {
         public:
+            friend class Engine;
+
             ManagedModule();
             virtual ~ManagedModule();
 
@@ -18,7 +20,6 @@ namespace CGE
             /// module operation
             virtual void onLoad(PropertyList& inList);
             virtual void onUnload();
-
 
         protected:
             bool mDead;

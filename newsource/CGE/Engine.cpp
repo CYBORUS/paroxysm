@@ -14,10 +14,10 @@
 #include <string>
 #include <list>
 
+using namespace std;
+
 namespace CGE
 {
-    using namespace std;
-
     const char* Engine::logFile = NULL;
     const char* Engine::configFile = NULL;
 
@@ -162,6 +162,8 @@ namespace CGE
                 moduleStack.pop_back();
             }
 
+            currentModule->mDead = true;
+            currentModule->mNextModule = NULL;
             run(*currentModule);
 
             ManagedModule* deadModule = currentModule;

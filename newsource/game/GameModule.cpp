@@ -20,7 +20,6 @@ void GameModule::onLoad(CGE::PropertyList& inList)
     mBin.addActor(a);
     mActors.push_back(a);
 
-
     ifstream fin("assets/maps/Shared_Map.pmf");
     if (!fin)
     {
@@ -32,12 +31,6 @@ void GameModule::onLoad(CGE::PropertyList& inList)
     mGrid.create(size, size);
     mGrid.buildVBO();
     fin.close();
-
-//    Button* button = new Button("assets/images/hud/load_map.png", 2.0f, 1.0f);
-//    button->setClickListener(uiLoadMap, this);
-//    button->setPosition(3.0f, -2.0f);
-//    mUI.addWidget(button);
-    mUI.update();
 
     EntityRenderBins bins;
     bins.general = &mBin;
@@ -52,9 +45,6 @@ void GameModule::onOpen()
 {
     mMouseState = NONE;
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     mViewNode.setAngle(-45.0f);
     mViewNode.setDistance(8.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -62,34 +52,18 @@ void GameModule::onOpen()
 
 void GameModule::onClose()
 {
-    glDisable(GL_BLEND);
 }
 
 void GameModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_DEPTH_TEST);
     mBin.renderAll();
-    glDisable(GL_DEPTH_TEST);
-
     mUI.display();
 }
 
 void GameModule::onPulse()
 {
-//    for (list<CGE::Actor*>::iterator i = mActors.begin();
-//        i != mActors.end(); ++i)
-//    {
-//        CGE::Actor& an = *(*i);
-//        an.update();
-//    }
-
-//    mSphere->matrix().loadIdentity();
-//    mSphere->matrix().translate(mSpherePosition[0], mSpherePosition[1],
-//        mSpherePosition[2]);
-//    mSphere->matrix().scale(0.1f);
-
     mViewNode.smartPan(mXPan, mYPan);
 
     mViewNode.update();
@@ -97,9 +71,6 @@ void GameModule::onPulse()
 
     mUI.update();
 }
-
-
-
 
 void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)

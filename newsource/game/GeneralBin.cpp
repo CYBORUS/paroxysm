@@ -28,4 +28,10 @@ void GeneralBin::displayActor(CGE::Actor* inActor)
 void GeneralBin::beforeRender()
 {
     mProgram.use();
+    glEnable(GL_DEPTH_TEST);
+}
+
+void GeneralBin::afterRender()
+{
+    glDisable(GL_DEPTH_TEST);
 }

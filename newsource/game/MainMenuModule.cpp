@@ -13,6 +13,14 @@ using namespace std;
   */
 MainMenuModule::MainMenuModule()
 {
+}
+
+/** @brief ~MainMenuModule
+  *
+  * @todo: Destructor
+  */
+ MainMenuModule::~MainMenuModule()
+{
 
 }
 
@@ -32,7 +40,6 @@ void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
   */
 void MainMenuModule::onRButtonUp(int inX, int inY)
 {
-
 }
 
 /** @brief onRButtonDown
@@ -41,7 +48,6 @@ void MainMenuModule::onRButtonUp(int inX, int inY)
   */
 void MainMenuModule::onRButtonDown(int inX, int inY)
 {
-
 }
 
 /** @brief onLButtonUp
@@ -87,7 +93,6 @@ void MainMenuModule::onLoop()
   */
 void MainMenuModule::onClose()
 {
-    glDisable(GL_BLEND);
 }
 
 /** @brief onOpen
@@ -96,10 +101,6 @@ void MainMenuModule::onClose()
   */
 void MainMenuModule::onOpen()
 {
-    mUI.update();
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 /** @brief onUnload
@@ -117,32 +118,22 @@ void MainMenuModule::onUnload()
   */
 void MainMenuModule::onLoad(CGE::PropertyList& inList)
 {
-    //MapEditorModule Button
+    // MapEditorModule Button
     Button* button = new Button("assets/images/hud/map_editor.png", 4.0f, 1.0f);
     button->setClickListener(mapEditorButtonCallBack, this);
     button->setPosition(0.0f, 1.5f);
     mUI.addWidget(button);
 
-    //NewGameModule Button
+    // NewGameModule Button
     button = new Button("assets/images/hud/new_game.png", 4.0f, 1.0f);
     button->setClickListener(newGameButtonCallBack, this);
     button->setPosition(0.0f, 0.5f);
     mUI.addWidget(button);
 
-    //Game Logo Label
+    // Game Logo Label
     Label* label = new Label("assets/images/title.png", 8.0f, 2.0f);
     label->setPosition(0.0f, 3.0f);
     mUI.addWidget(label);
-
-}
-
-/** @brief ~MainMenuModule
-  *
-  * @todo: Destructor
-  */
- MainMenuModule::~MainMenuModule()
-{
-
 }
 
 /** @brief mapEditorButtonCallBack
@@ -154,6 +145,7 @@ void MainMenuModule::mapEditorButtonCallBack(Widget* inWidget, void* inData)
     MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
     m->mNextModule = new MapEditorModule;
     m->mRunning = false;
+    m->mDead = false;
 }
 
 /** @brief newGameButtonCallBack
@@ -165,22 +157,5 @@ void MainMenuModule::newGameButtonCallBack(Widget* inWidget, void* inData)
     MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
     m->mNextModule = new GameModule;
     m->mRunning = false;
-}
-
-/** @brief onResize
-  *
-  * @todo: document this function
-  */
-void MainMenuModule::onResize(int inWidth, int inHeight)
-{
-    GLfloat ratio = static_cast<GLfloat>(inWidth)
-        / static_cast<GLfloat>(inHeight);
-
-    mUI.onResize(inWidth, inHeight);
-
-    CGE::Matrix4x4<GLfloat> projection;
-    projection.perspective(30.0f, ratio, 1.0f, 1000.0f);
-    mViewNode.setProjection(projection);
-    glViewport(0, 0, inWidth, inHeight);
-    glGetIntegerv(GL_VIEWPORT, mViewport);
+    m->mDead = false;
 }
