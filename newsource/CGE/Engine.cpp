@@ -69,7 +69,7 @@ namespace CGE
     }
 
     Engine::Engine(const Settings& inSettings) : mWindowIcon(NULL),
-        mSettings(inSettings)
+        mSettings(inSettings), mFullExitRequested(false)
     {
         initialize();
     }
@@ -102,7 +102,13 @@ namespace CGE
         while (inModule.isRunning())
         {
             SDL_Event event;
-            while (SDL_PollEvent(&event)) inModule.onEvent(event);
+            while (SDL_PollEvent(&event))
+            {
+                if (event.type == SDL_QUIT)
+                    mFullExitRequested = true;
+
+                inModule.onEvent(event);
+            }
 
             Uint32 ticks = SDL_GetTicks();
 

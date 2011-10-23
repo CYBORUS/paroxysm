@@ -121,18 +121,18 @@ void MainMenuModule::onLoad(CGE::PropertyList& inList)
     // MapEditorModule Button
     Button* button = new Button("assets/images/hud/map_editor.png", 4.0f, 1.0f);
     button->setClickListener(mapEditorButtonCallBack, this);
-    button->setPosition(0.0f, 1.5f);
+    button->setPosition(0.0f, 0.5f);
     mUI.addWidget(button);
 
     // NewGameModule Button
     button = new Button("assets/images/hud/new_game.png", 4.0f, 1.0f);
     button->setClickListener(newGameButtonCallBack, this);
-    button->setPosition(0.0f, 0.5f);
+    button->setPosition(0.0f, -0.5f);
     mUI.addWidget(button);
 
     // Game Logo Label
     Label* label = new Label("assets/images/title.png", 8.0f, 2.0f);
-    label->setPosition(0.0f, 3.0f);
+    label->setPosition(0.0f, 2.5f);
     mUI.addWidget(label);
 }
 

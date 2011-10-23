@@ -42,6 +42,7 @@ namespace CGE
             Surface mWindowIcon;
             SDL_Rect** mModes;
             Settings mSettings;
+            bool mFullExitRequested;
 
             static void logOpenGL(std::ostream& inStream);
             static void prepareFiles();
