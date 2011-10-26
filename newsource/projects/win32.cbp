@@ -147,6 +147,8 @@
 		<Unit filename="..\game\ParoxysmEntity.h" />
 		<Unit filename="..\game\ParoxysmModule.cpp" />
 		<Unit filename="..\game\ParoxysmModule.h" />
+		<Unit filename="..\game\PlayerControl.cpp" />
+		<Unit filename="..\game\PlayerControl.h" />
 		<Unit filename="..\game\Tank.cpp" />
 		<Unit filename="..\game\Tank.h" />
 		<Unit filename="..\game\TerrainGrid.cpp" />

@@ -43,6 +43,10 @@ namespace CGE
 
             const vec4f& getMomentum() const;
             const vec4f& getPosition() const;
+            inline float getMaxSpeed() { return mMaxSpeed; }
+            inline float getCurrentSpeed() { return mCurrentSpeed; }
+            inline void setMaxSpeed(float inSpeed) { mMaxSpeed = inSpeed; }
+            inline void setCurrentSpeed(float inSpeed) { mCurrentSpeed = inSpeed; }
             void setPosition(const vec4f& inPosition);
 
             bool isAlive();
@@ -57,6 +61,8 @@ namespace CGE
             vec4f mMomentum;
             vec4f mPosition;
             vec4f mRotation;
+            float mMaxSpeed;
+            float mCurrentSpeed;
 
             bool mAlive;
 
