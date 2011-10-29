@@ -58,6 +58,8 @@
 		<Unit filename="../source/GameModule.h" />
 		<Unit filename="../source/GeneralBin.cpp" />
 		<Unit filename="../source/GeneralBin.h" />
+		<Unit filename="../source/LuaAPI.cpp" />
+		<Unit filename="../source/LuaAPI.h" />
 		<Unit filename="../source/MainMenuModule.cpp" />
 		<Unit filename="../source/MainMenuModule.h" />
 		<Unit filename="../source/MapEditorModule.cpp" />

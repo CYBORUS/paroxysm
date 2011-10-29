@@ -34,7 +34,7 @@ void GameModule::onLoad(CGE::PropertyList& inList)
 
     EntityRenderBins bins;
     bins.general = &mBin;
-    mPlayerTank = new Tank(&mGrid, a, bins, &mManager);
+    mPlayerTank = new Tank(mGrid, a, bins, mManager);
 }
 
 void GameModule::onUnload()

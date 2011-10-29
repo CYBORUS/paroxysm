@@ -1,11 +1,11 @@
 #include "Tank.h"
 
-Tank::Tank(TerrainGrid* inTerrain, CGE::SceneGraphNode* inBaseNode,
+Tank::Tank(TerrainGrid& inTerrain, CGE::SceneGraphNode* inBaseNode,
     EntityRenderBins inRenderBins,
-    CGE::ResourceManager<CGE::ModelFromFile>* inManager)
+    CGE::ResourceManager<CGE::ModelFromFile>& inManager)
     : ParoxysmEntity(inTerrain, inBaseNode, inRenderBins)
 {
-    mMainTank = new CGE::Actor(inManager->load("bradley.c3m"));
+    mMainTank = new CGE::Actor(inManager.load("bradley.c3m"));
     inBaseNode->addChildNode(mMainTank);
     mBasePosition.rotate(90, 1, 0, 0);
     mMainTank->matrix() *= mBasePosition;
@@ -16,16 +16,12 @@ Tank::~Tank()
 {
 }
 
-void Tank::move()
-{
-}
-
-void Tank::changeDirection(float inDirection)
+void Tank::changeDirection(double inDirection)
 {
     mMainTank->matrix().loadIdentity();
     mMainTank->matrix().rotate(90, 0, 0, 1);
 }
 
-void Tank::changeSpeed(float inSpeed)
+void Tank::changeSpeed(double inSpeed)
 {
 }

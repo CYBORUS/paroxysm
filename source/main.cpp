@@ -1,13 +1,10 @@
 #include <CGE/Engine.h>
 #include "MainMenuModule.h"
 
-#include <iostream>
-using namespace std;
-
 int main(int argc, char** argv)
 {
     CGE::Engine::Settings s;
-    s.windowTitle = "paroxysm 0.1";
+    s.windowTitle = "paroxysm 0.2";
     s.windowTitle2 = "paroxysm";
     s.sound = false;
 

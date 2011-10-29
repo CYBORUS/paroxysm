@@ -14,12 +14,12 @@ struct EntityRenderBins
 class ParoxysmEntity : public CGE::Entity
 {
     public:
-        ParoxysmEntity(TerrainGrid* inTerrain, CGE::SceneGraphNode* inBaseNode,
+        ParoxysmEntity(TerrainGrid& inTerrain, CGE::SceneGraphNode* inBaseNode,
             EntityRenderBins inRenderBins);
         virtual ~ParoxysmEntity();
 
     protected:
-        TerrainGrid* mTerrain;
+        TerrainGrid& mTerrain;
         CGE::SceneGraphNode* mBaseNode;
         EntityRenderBins mRenderBins;
 
