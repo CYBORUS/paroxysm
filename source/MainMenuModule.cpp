@@ -1,163 +1,161 @@
-/**
- *  This file is part of "Paroxysm".
- *
- *  "Paroxysm" is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  "Paroxysm" is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include "MainMenuModule.h"
-#include "PlainPic.h"
-#include "seniorproject/FieldModule.h"
+#include <CGE/Exception.h>
+#include "MapEditorModule.h"
+#include "GameModule.h"
 
-bool MainMenuModule::onLoad()
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+/** @brief MainMenuModule
+  *
+  * @todo: Constructor
+  */
+MainMenuModule::MainMenuModule()
 {
-    Button* b = new Button("map_editor", MAP_EDITOR);
-    b->setLocation(0.0f, -1.0f);
-    b->setSize(8.0f, 2.0f);
-    mHUD.addWidget(b);
-
-    b = new Button("new_game", NEW_GAME);
-    b->setLocation(0.0f, 1.0f);
-    b->setSize(8.0f, 2.0f);
-    mHUD.addWidget(b);
-
-    PlainPic* pp = new PlainPic;
-    pp->setImage(DisplayEngine::loadImage("assets/images/title.png"));
-    pp->setLocation(0.0f, 6.0f);
-    pp->setSize(24.0f, 6.0f);
-    mHUD.addWidget(pp);
-
-    return true;
 }
 
-void MainMenuModule::onOpen()
+/** @brief ~MainMenuModule
+  *
+  * @todo: Destructor
+  */
+ MainMenuModule::~MainMenuModule()
 {
-    mRunning = true;
-    mDead = true;
-    mNextModule = NULL;
 
-    GLdouble ratio = 0;
-    int w = SDL_GetVideoSurface()->w;
-    int h = SDL_GetVideoSurface()->h;
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    //glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-
-    //we need to deal with the possibility of a monitor on it's side
-    if (w >= h)
-    {
-        ratio = (GLdouble)w / (GLdouble)h;
-        glOrtho(-MAIN_MENU_RANGE * ratio, MAIN_MENU_RANGE * ratio, -MAIN_MENU_RANGE, MAIN_MENU_RANGE, -10.0, 10.0);
-    }
-    else
-    {
-        ratio = (GLdouble)h / (GLdouble)w;
-        glOrtho(-MAIN_MENU_RANGE, MAIN_MENU_RANGE, -MAIN_MENU_RANGE * ratio, MAIN_MENU_RANGE * ratio, 1.0, 10.0);
-    }
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    mDisplay.x = SDL_GetVideoSurface()->w;
-    mDisplay.y = SDL_GetVideoSurface()->h;
-
-    mHUD.setDisplay(mDisplay, MAIN_MENU_RANGE);
 }
 
+/** @brief onMouseMove
+  *
+  * @todo: Mouse movement events
+  */
+void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
+    bool inLeft, bool inRight, bool inMiddle)
+{
+    mUI.onMouseMove(inX, inY);
+}
+
+/** @brief onRButtonUp
+  *
+  * @todo: Mouse Right Button Up Event
+  */
+void MainMenuModule::onRButtonUp(int inX, int inY)
+{
+}
+
+/** @brief onRButtonDown
+  *
+  * @todo: Mouse Right Button Down Event
+  */
+void MainMenuModule::onRButtonDown(int inX, int inY)
+{
+}
+
+/** @brief onLButtonUp
+  *
+  * @todo: Mouse Left Button Up Event
+  */
+void MainMenuModule::onLButtonUp(int inX, int inY)
+{
+    mUI.onMouseUp();
+}
+
+/** @brief onLButtonDown
+  *
+  * @todo: Mouse Left Button Down Event
+  */
+void MainMenuModule::onLButtonDown(int inX, int inY)
+{
+    mUI.onMouseDown();
+}
+
+/** @brief onPulse
+  *
+  * @todo: Pulse Event
+  */
+void MainMenuModule::onPulse()
+{
+    mUI.update();
+}
+
+/** @brief onLoop
+  *
+  * @todo: Loop Event
+  */
 void MainMenuModule::onLoop()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    mHUD.display();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    mUI.display();
 }
 
-void MainMenuModule::onFrame()
+/** @brief onClose
+  *
+  * @todo: Close Event
+  */
+void MainMenuModule::onClose()
+{
+}
+
+/** @brief onOpen
+  *
+  * @todo: Open Event
+  */
+void MainMenuModule::onOpen()
+{
+}
+
+/** @brief onUnload
+  *
+  * @todo: Unload Event
+  */
+void MainMenuModule::onUnload()
 {
 
 }
 
-Module* MainMenuModule::next()
+/** @brief onLoad
+  *
+  * @todo: Load Event
+  */
+void MainMenuModule::onLoad(CGE::PropertyList& inList)
 {
-    return mNextModule;
+    // MapEditorModule Button
+    Button* button = new Button("assets/images/hud/map_editor.png", 4.0f, 1.0f);
+    button->setClickListener(mapEditorButtonCallBack, this);
+    button->setPosition(0.0f, 0.5f);
+    mUI.addWidget(button);
+
+    // NewGameModule Button
+    button = new Button("assets/images/hud/new_game.png", 4.0f, 1.0f);
+    button->setClickListener(newGameButtonCallBack, this);
+    button->setPosition(0.0f, -0.5f);
+    mUI.addWidget(button);
+
+    // Game Logo Label
+    Label* label = new Label("assets/images/title.png", 8.0f, 2.0f);
+    label->setPosition(0.0f, 2.5f);
+    mUI.addWidget(label);
 }
 
-
-void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
-            bool inLeft, bool inRight, bool inMiddle)
+/** @brief mapEditorButtonCallBack
+  *
+  * @todo: Click Listener Function for NewGameButton
+  */
+void MainMenuModule::mapEditorButtonCallBack(Widget* inWidget, void* inData)
 {
-    if (inLeft)
-    {
-        mHUD.setStates(inX, inY, true);
-    }
-    else
-    {
-        mHUD.setStates(inX, inY, false);
-    }
-
+    MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
+    m->mNextModule = new MapEditorModule;
+    m->mRunning = false;
+    m->mDead = false;
 }
 
-void MainMenuModule::onButtonPress(int inID)
+/** @brief newGameButtonCallBack
+  *
+  * @todo: Click Listener Function for NewGameButton
+  */
+void MainMenuModule::newGameButtonCallBack(Widget* inWidget, void* inData)
 {
-    switch(inID)
-    {
-        case MAP_EDITOR:
-        {
-            mNextModule = new LoadMapModule;
-            mRunning = false;
-            mDead = false;
-            break;
-        }
-        case NEW_GAME:
-        {
-            mNextModule = new LoadGameModule;
-            mRunning = false;
-            mDead = false;
-            break;
-        }
-        default:
-        {
-            break;
-        }
-    }
-}
-
-
-bool MainMenuModule::isDead()
-{
-    return mDead;
-}
-
-void MainMenuModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
-{
-    switch (inSym)
-    {
-        case SDLK_ESCAPE:
-        {
-            mRunning = false;
-            break;
-        }
-
-        case SDLK_s:
-        {
-            mNextModule = new FieldModule;
-            mRunning = false;
-            mDead = false;
-            break;
-        }
-
-        default:
-        {
-        }
-    }
+    MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
+    m->mNextModule = new GameModule;
+    m->mRunning = false;
+    m->mDead = false;
 }

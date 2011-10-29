@@ -1,480 +1,189 @@
-/**
- *  This file is part of "Paroxysm".
- *
- *  "Paroxysm" is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  "Paroxysm" is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include "MapEditorModule.h"
-#include "DisplayEngine.h"
-#include "Config.h"
-#include "EditVertexAction.h"
+#include <CGE/Exception.h>
 
-bool MapEditorModule::onLoad()
+#include <fstream>
+using namespace std;
+
+MapEditorModule::MapEditorModule() : mLeftClickDown(false), mXPan(0.0f),
+    mYPan(0.0f)
 {
-    mMouseMode = MM_DEFAULT;
-    mEditMode = EM_TERRAIN;
-    mCurrentAction = NULL;
-    mSphere.setScale(0.05, 0.05, 0.05);
+    mModel = mManager.load("bradley.c3m");
+    mSphere = new CGE::Actor(mManager.load("cube_texture.c3m"));
+    mLeftClickDown = false;
+}
 
-    mProjection = Matrix<GLdouble>(4);
-    mModelView = Matrix<GLdouble>(4);
+MapEditorModule::~MapEditorModule()
+{
+}
 
-    mSceneChanged = true;
+void MapEditorModule::onLoad(CGE::PropertyList& inList)
+{
+    CGE::Actor* a = new CGE::Actor(&mGrid);
 
-    mTrackball[0] = 22.0f;
-    mTrackball[2] = 20.0f;
-    mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
-    mPanning[2] = static_cast<GLfloat>(mTerrainSize.y) / -2.0f;
+    mViewNode.addChildNode(a);
+    mBin.addActor(a);
+    mActors.push_back(a);
 
-    mDisplay.x = SDL_GetVideoSurface()->w;
-    mCenter.x = mDisplay.x / 2;
-    mDisplay.y = SDL_GetVideoSurface()->h;
-    mCenter.y = mDisplay.y / 2;
+    mViewNode.addChildNode(mSphere);
+    mBin.addActor(mSphere);
 
-    mHUD.setDisplay(mDisplay);
+    ifstream fin("assets/maps/Shared_Map.pmf");
+    if (!fin)
+        throw CGE::Exception("", "no map to load");
+    size_t size = 20;
+    //fin >> mGrid;
+    mGrid.create(size, size);
+    mGrid.buildVBO();
+    fin.close();
 
-    mButtons[B_UNDO] = new Button("undo", B_UNDO);
-    mButtons[B_UNDO]->setLocation(-1.0f, 8.0f);
-    mButtons[B_UNDO]->setSize(1.0f, 1.0f);
-    mButtons[B_UNDO]->disable();
-    mHUD.addWidget(mButtons[B_UNDO]);
+    Button* button = new Button("assets/images/hud/load_map.png", 2.0f, 1.0f);
+    button->setClickListener(uiLoadMap, this);
+    button->setPosition(3.0f, -2.0f);
 
-    mButtons[B_REDO] = new Button("redo", B_REDO);
-    mButtons[B_REDO]->setLocation(0.25f, 8.0f);
-    mButtons[B_REDO]->setSize(1.0f, 1.0f);
-    mButtons[B_REDO]->disable();
-    mHUD.addWidget(mButtons[B_REDO]);
+    mUI.addWidget(button);
+    mUI.update();
+}
 
-//    mButtons[B_TERRAIN_MODE] = new Button("terrain", B_TERRAIN_MODE);
-//    mButtons[B_TERRAIN_MODE]->setLocation(MB_POS_X, MB_POS_Y);
-//    mButtons[B_TERRAIN_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
-//    mHUD.addWidget(mButtons[B_TERRAIN_MODE]);
-//
-//    mButtons[B_TILE_MODE] = new Button("tile", B_TILE_MODE);
-//    mButtons[B_TILE_MODE]->setLocation(MB_POS_X, MB_POS_Y);
-//    mButtons[B_TILE_MODE]->setSize(MB_WIDTH, MB_HEIGHT);
-//    mButtons[B_TILE_MODE]->setVisible(false);
-//    mHUD.addWidget(mButtons[B_TILE_MODE]);
-
-    mSaveBox = new TextBox(B_SAVE);
-    mSaveBox->setSize(8.0f, 1.0f);
-    mSaveBox->setVisible(false);
-    mSaveBox->hideOnEnter(true);
-    mSaveBox->setTextColor(Vector3D<float>(0.0f, 0.5f, 1.0f));
-    mHUD.addWidget(mSaveBox);
-
-    mFPSLabel = new Label("0", FPS);
-    mFPSLabel->setFontColor(0.0f, 0.6f, 0.8f, 1.0f);
-    mFPSLabel->setFontSize(24);
-    mFPSLabel->setLocation(6.0f, -6.0f);
-    mFPSLabel->setSize(3.0f, 1.0f);
-
-    mHUD.addWidget(mFPSLabel);
-    return true;
+void MapEditorModule::onUnload()
+{
 }
 
 void MapEditorModule::onOpen()
 {
-    mRunning = true;
-    mDead = true;
-    mNextModule = NULL;
+    mMouseState = NONE;
 
-    mFPS = 0;
+    mViewNode.setAngle(-45.0f);
+    mViewNode.setDistance(8.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+}
 
-
-    SoundEngine::loadBackgroundMusic("portal_still_alive.wav");
-
-    //glViewport(0, 0, (GLsizei)mDisplay.x, (GLsizei)mDisplay.y);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(FIELD_OF_VIEW, (GLdouble)mDisplay.x / (GLdouble)mDisplay.y,
-        NEAR_CP, FAR_CP);
-
-    glMatrixMode(GL_MODELVIEW);
-
-    glGetDoublev(GL_PROJECTION_MATRIX, mProjection.array());
-    //mProjection.transpose();
-
-    glGetIntegerv(GL_VIEWPORT, mViewport.array());
-
-    //cerr << "\nProjection Matrix: \n" << mProjection << endl;
-    //glLoadIdentity();
-
-    glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CCW);
-    glShadeModel(GL_SMOOTH);
-
-    glEnable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-
-    mLight.diffuse.set(1.0f);
-    mLight.direction[1] = -1.0f;
-    mLight.position[1] = 10.0f;
-    mLight.position[3] = 0.0f; // distant light source
-
-    glEnable(GL_LIGHT0);
-    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mLight.ambient.array());
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+void MapEditorModule::onClose()
+{
 }
 
 void MapEditorModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
 
-    glTranslatef(0.0f, 0.0f, -mTrackball[2]);
-    glRotatef(mTrackball[0], 1.0f, 0.0f, 0.0f);
-    glRotatef(mTrackball[1], 0.0f, 1.0f, 0.0f);
-
-    glTranslatef(mPanning[0], mPanning[1], mPanning[2]);
-
-    glLightfv(GL_LIGHT0, GL_AMBIENT, mLight.ambient.array());
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, mLight.diffuse.array());
-    glLightfv(GL_LIGHT0, GL_SPECULAR, mLight.specular.array());
-    glLightfv(GL_LIGHT0, GL_POSITION, mLight.position.array());
-
-    if (mSceneChanged)
-    {
-        glGetDoublev(GL_MODELVIEW_MATRIX, mModelView.array());
-        mSceneChanged = false;
-    }
-
-    mTerrainGrid.display();
-
-    // reference Y-axis
-    glPushAttrib(GL_LIGHTING_BIT);
-    {
-        glDisable(GL_LIGHTING);
-        glBegin(GL_LINES);
-        {
-            glVertex3f(0.0f, 0.0f, 0.0f);
-            glVertex3f(0.0f, 10.0f, 0.0f);
-        }
-        glEnd();
-    }
-    glPopAttrib();
-
-    if (mEditMode == EM_TERRAIN)
-    {
-        glPushAttrib(GL_POLYGON_BIT);
-        {
-            glPushAttrib(GL_LIGHTING_BIT);
-            {
-                glDisable(GL_LIGHTING);
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                mSphere.display();
-            }
-            glPopAttrib();
-        }
-        glPopAttrib();
-    }
-
-    mHUD.display();
+    mBin.renderAll();
+    mUI.display();
 }
 
-void MapEditorModule::onFrame()
+void MapEditorModule::onPulse()
 {
-    if (mFPS != DisplayEngine::mFPS)
-    {
-        mFPS = DisplayEngine::mFPS;
-        stringstream s;
-        s << mFPS << " FPS";
-        mFPSLabel->setText(s.str().c_str());
-    }
+    mSphere->matrix().loadIdentity();
+    mSphere->matrix().translate(mSpherePosition[0], mSpherePosition[1],
+        mSpherePosition[2]);
+    mSphere->matrix().scale(0.1f);
 
-    if (mSaveBox->isLockedIn())
-    {
-        string f(Config::getUserFolder());
-        f += "maps/";
+    mViewNode.smartPan(mXPan, mYPan);
 
-        string s(mSaveBox->getText());
-        if (s.length() < 1) return;
+    mViewNode.update();
+    mViewNode.updateAllMatrices();
 
-        size_t x;
-
-        x = s.find_first_of("./\\ ");
-        while (x != string::npos)
-        {
-            s[x] = '_';
-            x = s.find_first_of("./\\ ");
-        }
-
-        f += s;
-        f += ".pmf";
-
-        //cerr << "file: " << f << endl;
-
-        ofstream saveMap;
-        saveMap.open(f.c_str());
-        if (saveMap.fail())
-        {
-            cerr << "failed to save file: " << f << endl;
-            return;
-        }
-        saveMap << mTerrainGrid;
-        saveMap.close();
-    }
-}
-
-void MapEditorModule::onClose()
-{
-    glDisable(GL_DEPTH_TEST);
-    //glDisable(GL_CULL_FACE);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_COLOR_MATERIAL);
-}
-
-void MapEditorModule::onUnload()
-{
-    while (!mUndo.empty())
-    {
-        delete mUndo.back();
-        mUndo.pop_back();
-    }
-
-    while (!mRedo.empty())
-    {
-        delete mRedo.back();
-        mRedo.pop_back();
-    }
-
-    SoundEngine::stopBackgroundMusic();
-}
-
-void MapEditorModule::setSize(int inX, int inY)
-{
-    mTerrainSize.x = inX;
-    mTerrainSize.y = inY;
-    mTerrainGrid.create(mTerrainSize.y, mTerrainSize.x);
-}
-
-void MapEditorModule::loadMapFile(const char* inFile)
-{
-    string base(Config::getUserFolder());
-    base += "maps/";
-
-    base += inFile;
-    ifstream input(base.c_str());
-
-    if (!input.fail())
-    {
-        input >> mTerrainGrid;
-        mTerrainSize.x = mTerrainGrid.getMatrix().cols();
-        mTerrainSize.y = mTerrainGrid.getMatrix().rows();
-        input.close();
-    }
-    else
-    {
-        cerr << "failed to open input file." << endl;
-    }
+    mUI.update();
 }
 
 
-Vector3D<float> MapEditorModule::selectVertex(int inX, int inY)
+vec4f MapEditorModule::selectVertex(int inX, int inY)
 {
-    Vector3D<float> currentVertex;
-
-    GLdouble tempX = 0;
-    GLdouble tempY = 0;
-    GLdouble tempZ = 0;
+    vec4f currentVertex;
+    vec4f tempPoint;
 
     GLfloat depthZ = 0;
 
-    //we have to invert the y axis because of opengl's viewport
+    // Invert the Y-coordinate (flip OpenGL coordinates).
     int newY = SDL_GetVideoSurface()->h - inY;
 
-    //read the depth buffer to determine the z coordinate at the input
-    //x,y coordinates
     glReadPixels(inX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthZ);
 
-    //now let the glu library do the math for us :)
-    if (gluUnProject((GLdouble)inX, (GLdouble)newY, depthZ, mModelView.array(), mProjection.array(), mViewport.array(), &tempX, &tempY, &tempZ) == GL_FALSE)
+
+    if (!CGE::unproject((GLfloat)inX, (GLfloat)newY, depthZ,
+        mViewNode.compositeMatrix(), mViewport, tempPoint))
     {
-        cerr << "gluUnProject failed." << endl;
+        cerr << "unproject failed." << endl;
     }
 
-    int numRows = mTerrainGrid.getMatrix().rows();
-    int numCols = mTerrainGrid.getMatrix().cols();
+    int numRows = mGrid.getMatrix().rows();
+    int numCols = mGrid.getMatrix().cols();
 
-    if (tempZ >= numRows || tempZ < 0 || tempX >= numCols || tempX < 0)
+    if (tempPoint[1] >= numRows
+        || tempPoint[1] < 0
+        || tempPoint[0] >= numCols
+        || tempPoint[0] < 0)
     {
-        currentVertex = mSphere.getTranslation();
+        currentVertex = mSelectPosition;
     }
     else
     {
-        int closestRow = int(tempZ + 0.5);
+        int closestRow = int(tempPoint[1] + 0.5);
         if (closestRow >= numRows)
         {
             closestRow = numRows - 1;
         }
-        int closestColumn = int(tempX + 0.5);
+
+        int closestColumn = int(tempPoint[0] + 0.5);
         if (closestColumn >= numCols)
         {
             closestColumn = numCols - 1;
         }
 
-        currentVertex = mTerrainGrid.getVertex(closestRow, closestColumn);
+        currentVertex = mGrid.getVertex(closestRow, closestColumn);
     }
 
-    //return mTerrainGrid.getVertex(closestRow, closestColumn);
     return currentVertex;
-}
-
-
-void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
-{
-    switch (inSym)
-    {
-        case SDLK_z:
-        {
-            if (inMod & (KMOD_LCTRL | KMOD_RCTRL))
-            {
-                if (inMod & (KMOD_LSHIFT | KMOD_RSHIFT))
-                    redoAction();
-                else
-                    undoAction();
-            }
-            break;
-        }
-
-        case SDLK_a:
-        {
-            SoundEngine::playBackgroundMusic();
-            break;
-        }
-
-        case SDLK_s:
-        {
-            if (inMod & (KMOD_LCTRL | KMOD_RCTRL))
-            {
-                mSaveBox->setText("");
-                mHUD.setFocus(mSaveBox);
-                mSaveBox->setVisible(true);
-            }
-            else
-            {
-                SoundEngine::stopBackgroundMusic();
-            }
-
-            break;
-        }
-
-        case SDLK_ESCAPE:
-        {
-            mRunning = false;
-            break;
-        }
-
-        case SDLK_SPACE:
-        {
-            mTrackball[0] = 22.0f;
-            mTrackball[1] = 0.0f;
-            mTrackball[2] = 20.0f;
-            mPanning[0] = static_cast<GLfloat>(mTerrainSize.x) / -2.0f;
-            mPanning[2] = static_cast<GLfloat>(mTerrainSize.y) / -2.0f;
-            mSceneChanged = true;
-            break;
-        }
-
-        case SDLK_TAB:
-        {
-            if (mMouseMode != MM_DEFAULT) break;
-
-            switchModes();
-
-            break;
-        }
-
-        default:
-        {
-            break;
-        }
-    }
-}
-
-void MapEditorModule::onMouseWheel(bool inUp, bool inDown)
-{
-    if (inUp)
-        mTrackball[2] -= TRACKBALL_STEP;
-    else if (inDown)
-        mTrackball[2] += TRACKBALL_STEP;
-
-    if (mTrackball[2] < 0.0f) mTrackball[2] = 0.0f;
-
-    mSceneChanged = true;
 }
 
 void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
-    bool lockMouse = false;
+    mUI.onMouseMove(inX, inY);
 
-    switch (mMouseMode)
+    if (mLeftClickDown)
     {
-        case MM_ROTATING:
-        case MM_PANNING:
+        mViewNode.changeRotation((inX - mXStart)/2);
+        mViewNode.changeAngle((inY - mYStart)/2);
+        mXStart = inX;
+        mYStart = inY;
+    }
+
+    switch(mMouseState)
+    {
+        case NONE:
         {
-            if (abs(inX - mCenter.x) > 100 || abs(inY - mCenter.y) > 100)
+            vec4f hoverVertex = selectVertex(inX, inY);
+
+            if (hoverVertex[0] >= 0.0f
+                && hoverVertex[0] <= float(mGrid.getMatrix().lastCol())
+                && hoverVertex[1] >= 0.0f
+                && hoverVertex[1] <= float(mGrid.getMatrix().lastRow()))
             {
-                return;
+                mSelectPosition = hoverVertex;
+
+                hoverVertex[0] -= 0.05;
+                hoverVertex[1] -= 0.05;
+                hoverVertex[2] -= 0.05;
+                mSpherePosition = hoverVertex;
             }
             break;
         }
-    }
 
-    switch (mMouseMode)
-    {
-        case MM_ROTATING:
+        case PANNING:
         {
-            lockMouse = true;
-
-            mTrackball[1] += static_cast<GLfloat>(inX - mCenter.x) * TRACKBALL_STEP;
-            if (mTrackball[1] < -180.0f)
-                mTrackball[1] += 360.0f;
-            else if (mTrackball[1] > 180.0f)
-                mTrackball[1] -= 360.0f;
-
-            mTrackball[0] += static_cast<GLfloat>(inY - mCenter.y) * TRACKBALL_STEP;
-            if (mTrackball[0] < -180.0f)
-                mTrackball[0] += 360.0f;
-            else if (mTrackball[0] > 180.0f)
-                mTrackball[0] -= 360.0f;
+            mViewNode.smartPan(-inRelX * 0.1f, inRelY * 0.1f);
             break;
         }
-        case MM_PANNING:
+
+        case ROTATING:
         {
-            lockMouse = true;
-            GLfloat dx = static_cast<GLfloat>(inX - mCenter.x) * PANNING_STEP;
-            GLfloat dy = static_cast<GLfloat>(inY - mCenter.y) * PANNING_STEP;
-
-            GLfloat theta = TO_RADIANS(mTrackball[1]);
-            GLfloat dxp = cos(theta) * dx;
-            GLfloat dyp = sin(theta) * dx;
-            dxp -= sin(theta) * dy;
-            dyp += cos(theta) * dy;
-
-            mPanning[0] += dxp;
-            mPanning[2] += dyp;
+            mViewNode.changeAngle(inRelY);
+            mViewNode.changeRotation(inRelX);
             break;
         }
-        case MM_EDITING_VERTEX:
+
+        case EDITING_TERRAIN:
         {
-            lockMouse = true;
-            GLfloat dy = -(inY - mCenter.y);
+            GLfloat dy = -(inRelY);
             dy /= abs(dy);
 
             if (dy != 1 && dy != -1)
@@ -482,227 +191,142 @@ void MapEditorModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
                 dy = 0;
             }
             //cerr << "vertex before: " << mClickedVertex[1];
-            mClickedVertex[1] += (dy * VERTEX_STEP);
-            //cerr << " dy: " << dy << " vertex: " << mClickedVertex[1] << endl;
+            mClickedVertex[2] += (dy * VERTEX_STEP);
 
-            EditVertexAction* eva =
-                dynamic_cast<EditVertexAction*>(mCurrentAction);
-            eva->setAfter(mClickedVertex[1]);
-            eva->execute();
+            mGrid.set((int)mClickedVertex[1], (int)mClickedVertex[0],
+                mClickedVertex[2], false);
 
-            mSphere.moveSphere(mClickedVertex[0], mClickedVertex[1],
-                mClickedVertex[2]);
+            mSpherePosition = mClickedVertex;
             break;
         }
-        case MM_BUTTON_PRESS:
-        {
-            mHUD.setStates(inX, inY, true);
-            break;
-        }
-        case MM_DEFAULT:
-        {
-            Vector3D<float> hoverVertex = selectVertex(inX, inY);
-            mSphere.moveSphere(hoverVertex[0], hoverVertex[1], hoverVertex[2]);
 
-            mHUD.setStates(inX, inY, false);
-            break;
-        }
-    }
-
-    if (lockMouse && (inX != mCenter.x || inY != mCenter.y))
-    {
-        SDL_WarpMouse(mCenter.x, mCenter.y);
+        default: {}
     }
 }
 
 void MapEditorModule::onLButtonDown(int inX, int inY)
 {
-    if (mMouseMode != MM_DEFAULT) return;
+    Uint8* keys = SDL_GetKeyState(NULL);
+    mUI.onMouseDown();
 
-
-    Uint8* keyState = SDL_GetKeyState(NULL);
-
-    if (keyState[SDLK_LSHIFT] || keyState[SDLK_RSHIFT])
+    if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
     {
-        SDL_ShowCursor(SDL_DISABLE);
-        mOldMouse.x = inX;
-        mOldMouse.y = inY;
-        SDL_WarpMouse(mCenter.x, mCenter.y);
-        mMouseMode = MM_PANNING;
+        mMouseState = PANNING;
     }
-    else if (mEditMode == EM_TERRAIN)
+    else
     {
         mClickedVertex = selectVertex(inX, inY);
-        EditVertexAction* eva = new EditVertexAction(&mTerrainGrid);
-        eva->setBefore((int)mClickedVertex[2], (int)mClickedVertex[0],
-            mClickedVertex[1]);
-        eva->setAfter(mClickedVertex[1]);
-        mCurrentAction = eva;
-
-        SDL_ShowCursor(SDL_DISABLE);
-        mOldMouse.x = inX;
-        mOldMouse.y = inY;
-        SDL_WarpMouse(mCenter.x, mCenter.y);
-        mMouseMode = MM_EDITING_VERTEX;
+        mMouseState = EDITING_TERRAIN;
     }
+
 }
 
 void MapEditorModule::onLButtonUp(int inX, int inY)
 {
-    switch (mMouseMode)
-    {
-        case MM_PANNING:
-        {
-            mMouseMode = MM_DEFAULT;
-            SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
-            SDL_ShowCursor(SDL_ENABLE);
-            mSceneChanged = true;
-            break;
-        }
-        case MM_EDITING_VERTEX:
-        {
-            doAction();
-            mCurrentAction = NULL;
-            mMouseMode = MM_DEFAULT;
-            SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
-            SDL_ShowCursor(SDL_ENABLE);
-            break;
-        }
-        default:
-        {
-            break;
-        }
-    }
+    mMouseState = NONE;
+    mUI.onMouseUp();
 }
 
 void MapEditorModule::onRButtonDown(int inX, int inY)
 {
-    if (mMouseMode == MM_DEFAULT)
-    {
-        SDL_ShowCursor(SDL_DISABLE);
-        mOldMouse.x = inX;
-        mOldMouse.y = inY;
-        SDL_WarpMouse(mCenter.x, mCenter.y);
-        mMouseMode = MM_ROTATING;
-    }
+    mMouseState = ROTATING;
 }
 
 void MapEditorModule::onRButtonUp(int inX, int inY)
 {
-    if (mMouseMode == MM_ROTATING)
+    mMouseState = NONE;
+}
+
+void MapEditorModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    switch (inSym)
     {
-        mMouseMode = MM_DEFAULT;
-        SDL_WarpMouse(mOldMouse.x, mOldMouse.y);
-        SDL_ShowCursor(SDL_ENABLE);
-        mSceneChanged = true;
+        case SDLK_ESCAPE:
+        {
+            mRunning = false;
+            break;
+        }
+
+        case SDLK_w:
+        {
+            mYPan = 0.5f;
+            break;
+        }
+
+        case SDLK_a:
+        {
+            mXPan = -0.5f;
+            break;
+        }
+
+        case SDLK_s:
+        {
+            mYPan = -0.5f;
+            break;
+        }
+
+        case SDLK_d:
+        {
+            mXPan = 0.5f;
+            break;
+        }
+
+        default: {}
     }
 }
 
-void MapEditorModule::doAction()
+void MapEditorModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    while (!mRedo.empty())
+    switch (inSym)
     {
-        delete mRedo.back();
-        mRedo.pop_back();
-    }
-
-    mUndo.push_back(mCurrentAction);
-    mCurrentAction->execute();
-    mCurrentAction = NULL;
-    mButtons[B_UNDO]->enable();
-    mButtons[B_REDO]->disable();
-}
-
-void MapEditorModule::redoAction()
-{
-    if (mRedo.empty()) return;
-
-    MapEditorAction* action = mRedo.back();
-    action->execute();
-
-    mUndo.push_back(action);
-    mRedo.pop_back();
-    mButtons[B_UNDO]->enable();
-    mButtons[B_REDO]->enable(!mRedo.empty());
-}
-
-void MapEditorModule::undoAction()
-{
-    if (mUndo.empty()) return;
-
-    MapEditorAction* action = mUndo.back();
-    action->undo();
-
-    mRedo.push_back(action);
-    mUndo.pop_back();
-    mButtons[B_REDO]->enable();
-    mButtons[B_UNDO]->enable(!mUndo.empty());
-}
-
-void MapEditorModule::onButtonPress(int inID)
-{
-    switch (inID)
-    {
-        case B_TERRAIN_MODE:
-        case B_TILE_MODE:
+        case SDLK_w:
         {
-            switchModes();
+            if (mYPan > 0.0f)
+                mYPan = 0.0f;
             break;
         }
 
-        case B_UNDO:
+        case SDLK_s:
         {
-            undoAction();
+            if (mYPan < 0.0f)
+                mYPan = 0.0f;
             break;
         }
 
-        case B_REDO:
+        case SDLK_a:
         {
-            redoAction();
+            if (mXPan < 0.0f)
+                mXPan = 0.0f;
             break;
         }
 
-        case -1:
-        default:
+        case SDLK_d:
         {
+            if (mXPan > 0.0f)
+                mXPan = 0.0f;
             break;
         }
+
+        default: {}
     }
 }
 
-void MapEditorModule::switchModes()
+void MapEditorModule::onMouseWheel(bool inUp)
 {
-    mEditMode = !mEditMode;
-
-    switch(mEditMode)
+    if (inUp)
     {
-        case EM_TERRAIN:
-        {
-            mButtons[B_TERRAIN_MODE]->setVisible(true);
-            mButtons[B_TILE_MODE]->setVisible(false);
-            break;
-        }
-
-        case EM_TILE:
-        {
-            mButtons[B_TERRAIN_MODE]->setVisible(false);
-            mButtons[B_TILE_MODE]->setVisible(true);
-            break;
-        }
-
-        default:
-        {
-            break;
-        }
+        mViewNode.changeDistance(-0.5f);
+    }
+    else
+    {
+        mViewNode.changeDistance(0.5f);
     }
 }
 
-bool MapEditorModule::isDead()
-{
-    return mDead;
-}
 
-Module* MapEditorModule::next()
+void MapEditorModule::uiLoadMap(Widget* inWidget, void* inData)
 {
-    return mNextModule;
+    //inWidget->enable(false);
+    //MapEditorModule* m = reinterpret_cast<MapEditorModule*>(inData);
+    cerr << "Button pressed!\n";
 }

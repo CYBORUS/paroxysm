@@ -1,74 +1,52 @@
-/**
- *  This file is part of "Paroxysm".
- *
- *  "Paroxysm" is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  "Paroxysm" is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #ifndef MAINMENUMODULE_H
 #define MAINMENUMODULE_H
 
-#include "Module.h"
-#include "DisplayEngine.h"
-#include "Point2D.h"
-#include "HUD.h"
+#include <CGE/OpenGL/Texture2D.h>
+#include <CGE/Matrix4x4.h>
+#include <CGE/Camera.h>
+#include <CGE/Model.h>
+#include <CGE/ResourceManager.h>
+#include <CGE/Vectors.h>
+#include <CGE/Actor.h>
 
-//#include "MapEditorModule.h"
-#include "LoadMapModule.h"
-#include "LoadGameModule.h"
+#include "UI/UserInterface.h"
+#include "UI/Button.h"
+#include "UI/Label.h"
 
-#include "Button.h"
+#include "ParoxysmModule.h"
+#include "ViewNode.h"
 
-#include "OGL.h"
+#include <list>
 
-#include <sstream>
-#include <iostream>
-using namespace std;
-
-
-#define MAIN_MENU_RANGE 10.0
-
-#define NUM_TEXTURES 20
-
-
-//define the controls here
-#define NO_CONTROL_CLICKED 100
-#define MAP_EDITOR 101
-#define NEW_GAME 102
-
-class MainMenuModule : public Module
+class MainMenuModule : public ParoxysmModule
 {
     public:
-        virtual bool onLoad();
-        virtual void onOpen();
-        virtual void onLoop();
-        virtual void onFrame();
-        virtual Module* next();
-        virtual bool isDead();
+        MainMenuModule();
+        virtual ~MainMenuModule();
 
-    protected:
-        virtual void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        virtual void onLoad(CGE::PropertyList& inList);
+        virtual void onUnload();
+        virtual void onOpen();
+        virtual void onClose();
+        virtual void onLoop();
+        virtual void onPulse();
+        virtual void onLButtonDown(int inX, int inY);
+        virtual void onLButtonUp(int inX, int inY);
+        virtual void onRButtonDown(int inX, int inY);
+        virtual void onRButtonUp(int inX, int inY);
         virtual void onMouseMove(int inX, int inY, int inRelX, int inRelY,
             bool inLeft, bool inRight, bool inMiddle);
 
-        virtual void onButtonPress(int inID);
-
+    protected:
     private:
-        Module* mNextModule;
+        int mXStart;
+        int mYStart;
 
-        Point2D<int> mDisplay;
+        float mXPan;
+        float mYPan;
 
-        bool mDead;
+        static void mapEditorButtonCallBack(Widget* inWidget, void* inData);
+        static void newGameButtonCallBack(Widget* inWidget, void* inData);
 };
 
 #endif

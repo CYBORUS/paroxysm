@@ -1,35 +1,18 @@
-/**
- *  This file is part of "Paroxysm".
- *
- *  "Paroxysm" is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  "Paroxysm" is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
- */
-
-#include "Config.h"
-#include "DisplayEngine.h"
-#include "SoundEngine.h"
+#include <CGE/Engine.h>
 #include "MainMenuModule.h"
-#include "CollisionEngine.h"
-#include "BenchmarkModule.h"
+
+#include <iostream>
+using namespace std;
 
 int main(int argc, char** argv)
 {
-    Config::initialize(argc, argv);
-    DisplayEngine::initialize();
-    SoundEngine::initialize();
-    //Config::outputSettings();
-    DisplayEngine::start(new MainMenuModule);
-    //DisplayEngine::start(new BenchmarkModule);
-    SoundEngine::cleanup();
+    CGE::Engine::Settings s;
+    s.windowTitle = "paroxysm 0.1";
+    s.windowTitle2 = "paroxysm";
+    s.sound = false;
+
+    CGE::Engine e(s);
+    e.manage(new MainMenuModule);
+
     return 0;
 }
