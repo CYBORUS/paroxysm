@@ -8,7 +8,7 @@
 
 class LuaAPI
 {
-    typedef CGE::Reference< CGE::Entity > EntityRef;
+    typedef CGE::Reference<CGE::Entity> EntityRef;
 
     public:
         LuaAPI();
