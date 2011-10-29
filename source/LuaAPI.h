@@ -8,16 +8,26 @@
 
 class LuaAPI
 {
+    typedef CGE::Reference< CGE::Entity > EntityRef;
+
     public:
         LuaAPI();
         virtual ~LuaAPI();
 
+        inline void activate() { luaThis = this; }
+
     protected:
     private:
+        size_t addEntity();
+        void removeEntity(size_t inIndex);
+
         CGE::LuaMachine mLua;
 
-        std::vector<size_t> mEntityHoles;
-        std::vector< CGE::Reference<CGE::Entity> > mEntities;
+        std::vector<size_t> mHoles;
+        std::vector<EntityRef> mEntities;
+
+        static LuaAPI* luaThis;
+        static int luaAddEntity(lua_State* inState);
 };
 
 #endif
