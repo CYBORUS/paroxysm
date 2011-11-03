@@ -21,6 +21,12 @@ UserInterface::UserInterface(float inRange) : mRange(inRange), mRatio(0.0f),
 
 UserInterface::~UserInterface()
 {
+    for (std::list<Widget*>::iterator i = mWidgets.begin();
+        i != mWidgets.end(); ++i)
+    {
+        Widget* w = *i;
+        delete w;
+    }
 }
 
 void UserInterface::update()
@@ -55,6 +61,7 @@ void UserInterface::addWidget(Widget* inWidget)
 void UserInterface::removeWidget(Widget* inWidget)
 {
     if (mMouseOverWidget == inWidget) mMouseOverWidget = NULL;
+
     mWidgets.remove(inWidget);
     removeChildNode(inWidget);
 }
@@ -103,7 +110,6 @@ void UserInterface::onMouseMove(int inX, int inY)
 
 void UserInterface::onMouseDown()
 {
-    //std::cout << mMouseX << ", " << mMouseY << std::endl;
     if (mMouseOverWidget)
     {
         mMouseOverWidget->onMouseDown();

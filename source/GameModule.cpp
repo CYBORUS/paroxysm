@@ -2,8 +2,7 @@
 
 using namespace std;
 
-GameModule::GameModule() : mXPan(0.0f),
-    mYPan(0.0f)
+GameModule::GameModule() : mLuaAPI(mViewNode), mXPan(0.0f), mYPan(0.0f)
 {
 }
 
@@ -11,30 +10,8 @@ GameModule::~GameModule()
 {
 }
 
-
 void GameModule::onLoad(CGE::PropertyList& inList)
 {
-    CGE::Actor* a = new CGE::Actor(&mGrid);
-
-    mViewNode.addChildNode(a);
-    mBin.addActor(a);
-    mActors.push_back(a);
-
-    ifstream fin("assets/maps/Shared_Map.pmf");
-    if (!fin)
-    {
-        cerr << "Error: Map could not be loaded!";
-        return;
-    }
-    size_t size = 20;
-    //fin >> mGrid;
-    mGrid.create(size, size);
-    mGrid.buildVBO();
-    fin.close();
-
-    EntityRenderBins bins;
-    bins.general = &mBin;
-    mPlayerTank = new Tank(mGrid, a, bins, mManager);
 }
 
 void GameModule::onUnload()
@@ -58,7 +35,7 @@ void GameModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mBin.renderAll();
+    mLuaAPI.display();
     mUI.display();
 }
 
@@ -68,6 +45,8 @@ void GameModule::onPulse()
 
     mViewNode.update();
     mViewNode.updateAllMatrices();
+
+    mLuaAPI.update();
 
     mUI.update();
 }

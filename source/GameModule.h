@@ -1,12 +1,11 @@
 #ifndef GAMEMODULE_H
 #define GAMEMODULE_H
 
-#include "ParoxysmModule.h"
-#include "Tank.h"
 #include <CGE/Actor.h>
 #include <CGE/Model.h>
-#include "GeneralBin.h"
+#include "ParoxysmModule.h"
 #include "TerrainGrid.h"
+#include "LuaAPI.h"
 
 #include <iostream>
 #include <fstream>
@@ -46,15 +45,7 @@ class GameModule : public ParoxysmModule
 
     protected:
     private:
-        TerrainGrid mGrid;
-
-        GeneralBin mBin;
-        std::list<CGE::Actor*> mActors;
-
-        CGE::ResourceManager<CGE::ModelFromFile> mManager;
-
-        Tank* mPlayerTank;
-
+        LuaAPI mLuaAPI;
         MouseState mMouseState;
 
         int mXStart;

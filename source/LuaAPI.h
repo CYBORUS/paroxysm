@@ -1,33 +1,64 @@
+/// This file is part of "Paroxysm".
+///
+/// "Paroxysm" is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+///
+/// "Paroxysm" is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+///
+/// You should have received a copy of the GNU General Public License
+/// along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
+
 #ifndef LUAAPI_H
 #define LUAAPI_H
 
 #include <CGE/LuaMachine.h>
-#include <CGE/Reference.h>
 #include <CGE/Entity.h>
+#include <CGE/ResourceManager.h>
+#include <CGE/ModelFromFile.h>
+#include "GeneralBin.h"
+#include "TerrainGrid.h"
 #include <vector>
+#include <string>
 
 class LuaAPI
 {
-    typedef CGE::Reference<CGE::Entity> EntityRef;
-
     public:
-        LuaAPI();
+        LuaAPI(CGE::SceneGraphNode& inHeadNode);
         virtual ~LuaAPI();
 
         inline void activate() { luaThis = this; }
+
+        void display();
+        void update();
 
     protected:
     private:
         size_t addEntity();
         void removeEntity(size_t inIndex);
+        void addActor(size_t inIndex, const std::string& inModel);
+        void setEntityPosition(size_t inIndex, double inX, double inY,
+            double inZ);
+
+        TerrainGrid mGrid;
+        GeneralBin mBin;
 
         CGE::LuaMachine mLua;
+        CGE::SceneGraphNode& mHeadNode;
+        CGE::ResourceManager<CGE::ModelFromFile> mModels;
 
         std::vector<size_t> mHoles;
-        std::vector<EntityRef> mEntities;
+        std::vector<CGE::Entity*> mEntities;
 
         static LuaAPI* luaThis;
         static int luaAddEntity(lua_State* inState);
+        static int luaRemoveEntity(lua_State* inState);
+        static int luaSetEntityPosition(lua_State* inState);
+        static int luaAddActor(lua_State* inState);
 };
 
 #endif

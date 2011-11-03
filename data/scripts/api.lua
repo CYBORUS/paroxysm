@@ -5,6 +5,9 @@
 
 -- Lua Sandbox
 
+math.randomseed(os.time())
+math.random()
+
 -- This is strictly to create a safe Lua environment to prevent malicious
 -- scripts from doing any damage to the system.
 arg = nil
