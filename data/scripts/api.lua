@@ -15,7 +15,7 @@ debug.debug = nil
 debug.getfenv = getfenv
 debug.getregistry = nil
 dofile = nil
-io = { write = wcLog }
+io = { write = io.write }
 loadfile = nil
 os.execute = nil
 os.getenv = nil

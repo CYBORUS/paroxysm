@@ -1,4 +1,4 @@
-NumberOfTanks = 50
+NumberOfTanks = 25
 allTheTanks = {}
 Tank = {}
 
@@ -39,6 +39,14 @@ function Tank:setDirection(x, y, z)
     self.direction.z = z
 end
 
+function Tank:getMass()
+    return getEntityMass(self.index)
+end
+
+function Tank:setMass(mass)
+    setEntityMass(self.index, mass)
+end
+
 function Tank:new()
     local newTank = {
         index = addEntity(),
@@ -46,7 +54,9 @@ function Tank:new()
         direction = { x = 0, y = 0, z = 0 },
         setPosition = Tank.setPosition,
         setDirection = Tank.setDirection,
-        update = Tank.update,
+        getMass = Tank.getMass,
+        setMass = Tank.setMass,
+        update = Tank.update
         }
     
     setEntityDefaultRotation(newTank.index, 90, 0, 0)
@@ -61,9 +71,6 @@ end
 
 function randomDirection()
     return (math.random() - 0.5) * 0.05
-end
-
-function onSecond()
 end
 
 function update()
@@ -84,6 +91,8 @@ function allTheThings()
             randomLocation(), 0)
         allTheTanks[i]:setDirection(randomDirection(),
             randomDirection(), 0)
+        allTheTanks[i]:setMass(math.random() + 0.1)
+        print("tank mass = " .. allTheTanks[i]:getMass())
     end
 end
 

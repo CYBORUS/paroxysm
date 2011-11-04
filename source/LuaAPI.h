@@ -39,6 +39,7 @@ class LuaAPI
     protected:
     private:
         size_t addEntity();
+        CGE::Entity* getEntity(size_t inIndex);
         void removeEntity(size_t inIndex);
         void addActor(size_t inIndex, const std::string& inModel);
         void setEntityDefaultRotation(size_t inIndex, double inX, double inY,
@@ -61,6 +62,10 @@ class LuaAPI
         static int luaRemoveEntity(lua_State* inState);
         static int luaSetEntityDefaultRotation(lua_State* inState);
         static int luaSetEntityPosition(lua_State* inState);
+        static int luaGetEntityMass(lua_State* inState);
+        static int luaSetEntityMass(lua_State* inState);
+        static int luaGetEntityRadius(lua_State* inState);
+        static int luaSetEntityRadius(lua_State* inState);
         static int luaAddActor(lua_State* inState);
 };
 

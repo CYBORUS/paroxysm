@@ -37,6 +37,8 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("addActor", luaAddActor);
     mLua.addFunction("setEntityDefaultRotation", luaSetEntityDefaultRotation);
     mLua.addFunction("setEntityPosition", luaSetEntityPosition);
+    mLua.addFunction("getEntityMass", luaGetEntityMass);
+    mLua.addFunction("setEntityMass", luaSetEntityMass);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -79,6 +81,11 @@ size_t LuaAPI::addEntity()
     }
 
     return outIndex;
+}
+
+CGE::Entity* LuaAPI::getEntity(size_t inIndex)
+{
+    return inIndex < mEntities.size() ? mEntities[inIndex] : NULL;
 }
 
 void LuaAPI::removeEntity(size_t inIndex)
@@ -200,6 +207,39 @@ int LuaAPI::luaSetEntityPosition(lua_State* inState)
     double z = lua_tonumber(inState, 4);
 
     luaThis->setEntityPosition(index, x, y, z);
+
+    return 0;
+}
+
+int LuaAPI::luaGetEntityMass(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+    lua_Number mass = 0.0;
+
+    if (argc > 0 && lua_isnumber(inState, 1))
+    {
+        size_t index = lua_tointeger(inState, 1);
+        CGE::Entity* e = luaThis->getEntity(index);
+        if (e) mass = e->getMass();
+    }
+
+    lua_pushnumber(inState, mass);
+    return 1;
+}
+
+int LuaAPI::luaSetEntityMass(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 1 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2))
+    {
+        size_t index = lua_tointeger(inState, 1);
+        lua_Number mass = lua_tonumber(inState, 2);
+        CGE::Entity* e = luaThis->getEntity(index);
+        if (e) e->setMass(mass);
+    }
 
     return 0;
 }
