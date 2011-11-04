@@ -51,6 +51,8 @@ void LuaAPI::display()
 
 void LuaAPI::update()
 {
+    mLua.runCommand("update()");
+
     for (size_t i = 0; i < mEntities.size(); ++i)
     {
         CGE::Entity* e = mEntities[i];
