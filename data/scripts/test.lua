@@ -1,6 +1,11 @@
 NumberOfTanks = 25
 allTheTanks = {}
+
 Tank = {}
+
+function Tank:getPosition()
+    return getEntityPosition(self.index)
+end
 
 function Tank:setPosition(x, y, z)
     self.position.x = x
@@ -52,6 +57,7 @@ function Tank:new()
         index = addEntity(),
         position = { x = 0, y = 0, z = 0 },
         direction = { x = 0, y = 0, z = 0 },
+        getPosition = Tank.getPosition,
         setPosition = Tank.setPosition,
         setDirection = Tank.setDirection,
         getMass = Tank.getMass,
@@ -91,8 +97,14 @@ function allTheThings()
             randomLocation(), 0)
         allTheTanks[i]:setDirection(randomDirection(),
             randomDirection(), 0)
-        allTheTanks[i]:setMass(math.random() + 0.1)
-        print("tank mass = " .. allTheTanks[i]:getMass())
+        
+        local x = 0
+        local y = 0
+        local z = 0
+        
+        x, y, z = allTheTanks[i]:getPosition()
+        
+        print("tank is at " .. x .. " " .. y .. " " .. z)
     end
 end
 

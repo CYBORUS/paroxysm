@@ -36,9 +36,12 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("removeEntity", luaRemoveEntity);
     mLua.addFunction("addActor", luaAddActor);
     mLua.addFunction("setEntityDefaultRotation", luaSetEntityDefaultRotation);
+    mLua.addFunction("getEntityPosition", luaGetEntityPosition);
     mLua.addFunction("setEntityPosition", luaSetEntityPosition);
     mLua.addFunction("getEntityMass", luaGetEntityMass);
     mLua.addFunction("setEntityMass", luaSetEntityMass);
+    mLua.addFunction("getEntityRadius", luaGetEntityRadius);
+    mLua.addFunction("setEntityRadius", luaSetEntityRadius);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -187,6 +190,34 @@ int LuaAPI::luaSetEntityDefaultRotation(lua_State* inState)
     return 0;
 }
 
+int LuaAPI::luaGetEntityPosition(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    lua_Number x = 1.0;
+    lua_Number y = 1.0;
+    lua_Number z = 1.0;
+
+    if (argc > 0 && lua_isnumber(inState, 1))
+    {
+        size_t index = lua_tointeger(inState, 1);
+        CGE::Entity* e = luaThis->getEntity(index);
+        if (e)
+        {
+            const vec3d& v = e->getPosition();
+            x = v[0];
+            y = v[1];
+            z = v[2];
+        }
+    }
+
+    lua_pushnumber(inState, x);
+    lua_pushnumber(inState, y);
+    lua_pushnumber(inState, z);
+    return 3;
+}
+
 int LuaAPI::luaSetEntityPosition(lua_State* inState)
 {
     assert(luaThis != NULL);
@@ -239,6 +270,39 @@ int LuaAPI::luaSetEntityMass(lua_State* inState)
         lua_Number mass = lua_tonumber(inState, 2);
         CGE::Entity* e = luaThis->getEntity(index);
         if (e) e->setMass(mass);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaGetEntityRadius(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+    lua_Number radius = 0.0;
+
+    if (argc > 0 && lua_isnumber(inState, 1))
+    {
+        size_t index = lua_tointeger(inState, 1);
+        CGE::Entity* e = luaThis->getEntity(index);
+        if (e) radius = e->getMass();
+    }
+
+    lua_pushnumber(inState, radius);
+    return 1;
+}
+
+int LuaAPI::luaSetEntityRadius(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 1 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2))
+    {
+        size_t index = lua_tointeger(inState, 1);
+        lua_Number radius = lua_tonumber(inState, 2);
+        CGE::Entity* e = luaThis->getEntity(index);
+        if (e) e->setRadius(radius);
     }
 
     return 0;

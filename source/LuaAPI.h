@@ -61,6 +61,7 @@ class LuaAPI
         static int luaAddEntity(lua_State* inState);
         static int luaRemoveEntity(lua_State* inState);
         static int luaSetEntityDefaultRotation(lua_State* inState);
+        static int luaGetEntityPosition(lua_State* inState);
         static int luaSetEntityPosition(lua_State* inState);
         static int luaGetEntityMass(lua_State* inState);
         static int luaSetEntityMass(lua_State* inState);
