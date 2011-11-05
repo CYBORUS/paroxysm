@@ -46,9 +46,10 @@ function Tank:new()
         direction = { x = 0, y = 0, z = 0 },
         setPosition = Tank.setPosition,
         setDirection = Tank.setDirection,
-        update = Tank.update
+        update = Tank.update,
         }
     
+    setEntityDefaultRotation(newTank.index, 90, 0, 0)
     addActor(newTank.index, "bradley.c3m")
     
     return newTank

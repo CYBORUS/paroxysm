@@ -41,6 +41,8 @@ class LuaAPI
         size_t addEntity();
         void removeEntity(size_t inIndex);
         void addActor(size_t inIndex, const std::string& inModel);
+        void setEntityDefaultRotation(size_t inIndex, double inX, double inY,
+                                      double inZ);
         void setEntityPosition(size_t inIndex, double inX, double inY,
             double inZ);
 
@@ -57,6 +59,7 @@ class LuaAPI
         static LuaAPI* luaThis;
         static int luaAddEntity(lua_State* inState);
         static int luaRemoveEntity(lua_State* inState);
+        static int luaSetEntityDefaultRotation(lua_State* inState);
         static int luaSetEntityPosition(lua_State* inState);
         static int luaAddActor(lua_State* inState);
 };

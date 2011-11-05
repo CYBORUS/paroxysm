@@ -35,6 +35,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("addEntity", luaAddEntity);
     mLua.addFunction("removeEntity", luaRemoveEntity);
     mLua.addFunction("addActor", luaAddActor);
+    mLua.addFunction("setEntityDefaultRotation", luaSetEntityDefaultRotation);
     mLua.addFunction("setEntityPosition", luaSetEntityPosition);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
@@ -101,6 +102,19 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
     }
 }
 
+void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
+                                      double inZ)
+{
+    if (inIndex < mEntities.size() && mEntities[inIndex])
+    {
+        vec3d v;
+        v[0] = inX;
+        v[1] = inY;
+        v[2] = inZ;
+        mEntities[inIndex]->setDefaultRotation(v);
+    }
+}
+
 void LuaAPI::setEntityPosition(size_t inIndex, double inX, double inY,
     double inZ)
 {
@@ -136,6 +150,32 @@ int LuaAPI::luaRemoveEntity(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         luaThis->removeEntity(index);
     }
+
+    return 0;
+}
+
+int LuaAPI::luaSetEntityDefaultRotation(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc < 4) return 0;
+
+    // Make sure we have 4 numbers
+    for (int i = 1; i <= 4; ++i)
+    {
+        if (!lua_isnumber(inState, i))
+        {
+            return 0;
+        }
+    }
+
+    size_t index = lua_tointeger(inState, 1);
+    double x = lua_tonumber(inState, 2);
+    double y = lua_tonumber(inState, 3);
+    double z = lua_tonumber(inState, 4);
+
+    luaThis->setEntityDefaultRotation(index, x, y, z);
 
     return 0;
 }
