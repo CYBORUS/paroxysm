@@ -8,40 +8,36 @@ function Tank:getPosition()
 end
 
 function Tank:setPosition(x, y, z)
-    self.position.x = x
-    self.position.y = y
-    self.position.z = z
     setEntityPosition(self.index, x, y, z)
 end
 
-function Tank:update()
-    self.position.x = self.position.x + self.direction.x
-    self.position.y = self.position.y + self.direction.y
-    self.position.z = self.position.z + self.direction.z
-    setEntityPosition(self.index, self.position.x,
-        self.position.y, self.position.z)
-    
-    if self.position.x < 0.5 and self.direction.x < 0 then
-        self.direction.x = -self.direction.x
-    end
-    
-    if self.position.x > 18.5 and self.direction.x > 0 then
-        self.direction.x = -self.direction.x
-    end
-    
-    if self.position.y < 0.5 and self.direction.y < 0 then
-        self.direction.y = -self.direction.y
-    end
-    
-    if self.position.y > 18.5 and self.direction.y > 0 then
-        self.direction.y = -self.direction.y
-    end    
+function Tank:getVelocity()
+    return getEntityVelocity(self.index)
 end
 
-function Tank:setDirection(x, y, z)
-    self.direction.x = x
-    self.direction.y = y
-    self.direction.z = z
+function Tank:setVelocity(x, y, z)
+    return setEntityVelocity(self.index, x, y, z)
+end
+
+function Tank:update()
+    local px = 0
+    local py = 0
+    local pz = 0
+    
+    px, py, pz = self:getPosition()
+    
+    local vx = 0
+    local vy = 0
+    local vz = 0
+    
+    vx, vy, vz = self:getVelocity()
+    
+    --print(px .. " " .. py .. " " .. pz .. " " .. vx .. " " .. vy .. " " .. vz)
+    
+    if px < 0.5 and vx < 0 then self:setVelocity(-vx, vy, vz) end
+    if px > 18.5 and vx > 0 then self:setVelocity(-vx, vy, vz) end
+    if py < 0.5 and vy < 0 then self:setVelocity(vx, -vy, vz) end
+    if py > 18.5 and vy > 0 then self:setVelocity(vx, -vy, vz) end    
 end
 
 function Tank:getMass()
@@ -52,16 +48,25 @@ function Tank:setMass(mass)
     setEntityMass(self.index, mass)
 end
 
+function Tank:getRadius()
+    return getEntityRadius(self.index)
+end
+
+function Tank:setRadius(radius)
+    setEntityRadius(self.index, radius)
+end
+
 function Tank:new()
     local newTank = {
         index = addEntity(),
-        position = { x = 0, y = 0, z = 0 },
-        direction = { x = 0, y = 0, z = 0 },
         getPosition = Tank.getPosition,
         setPosition = Tank.setPosition,
-        setDirection = Tank.setDirection,
+        getVelocity = Tank.getVelocity,
+        setVelocity = Tank.setVelocity,
         getMass = Tank.getMass,
         setMass = Tank.setMass,
+        getRadius = Tank.getRadius,
+        setRadius = Tank.setRadius,
         update = Tank.update
         }
     
@@ -81,12 +86,13 @@ end
 
 function update()
     for i = 1, NumberOfTanks do
+        allTheTanks[i]:update()
+        
         local chance = math.random()
         if chance > 0.992  then
-            allTheTanks[i]:setDirection(randomDirection(),
+            allTheTanks[i]:setVelocity(randomDirection(),
                 randomDirection(), 0)
         end
-        allTheTanks[i]:update()
     end
 end
 
@@ -95,16 +101,16 @@ function allTheThings()
         allTheTanks[i] = Tank:new()
         allTheTanks[i]:setPosition(randomLocation(),
             randomLocation(), 0)
-        allTheTanks[i]:setDirection(randomDirection(),
+        allTheTanks[i]:setVelocity(randomDirection(),
             randomDirection(), 0)
         
         local x = 0
         local y = 0
         local z = 0
         
-        x, y, z = allTheTanks[i]:getPosition()
+        x, y, z = allTheTanks[i]:getVelocity()
         
-        print("tank is at " .. x .. " " .. y .. " " .. z)
+        --print("tank velocity : " .. x .. " " .. y .. " " .. z)
     end
 end
 

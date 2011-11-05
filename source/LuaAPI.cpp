@@ -42,6 +42,8 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("setEntityMass", luaSetEntityMass);
     mLua.addFunction("getEntityRadius", luaGetEntityRadius);
     mLua.addFunction("setEntityRadius", luaSetEntityRadius);
+    mLua.addFunction("getEntityVelocity", luaGetEntityVelocity);
+    mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -304,6 +306,61 @@ int LuaAPI::luaSetEntityRadius(lua_State* inState)
         CGE::Entity* e = luaThis->getEntity(index);
         if (e) e->setRadius(radius);
     }
+
+    return 0;
+}
+
+int LuaAPI::luaGetEntityVelocity(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    lua_Number x = 1.0;
+    lua_Number y = 1.0;
+    lua_Number z = 1.0;
+
+    if (argc > 0 && lua_isnumber(inState, 1))
+    {
+        size_t index = lua_tointeger(inState, 1);
+        CGE::Entity* e = luaThis->getEntity(index);
+        if (e)
+        {
+            const vec3d& v = e->getVelocity();
+            x = v[0];
+            y = v[1];
+            z = v[2];
+        }
+    }
+
+    lua_pushnumber(inState, x);
+    lua_pushnumber(inState, y);
+    lua_pushnumber(inState, z);
+    return 3;
+}
+
+int LuaAPI::luaSetEntityVelocity(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc < 4) return 0;
+
+    // Make sure we have 4 numeric parameters.
+    for (int i = 1; i <= 4; ++i)
+    {
+        if (!lua_isnumber(inState, i))
+            return 0;
+    }
+
+    size_t index = lua_tointeger(inState, 1);
+
+    vec3d v;
+    v[0] = lua_tonumber(inState, 2);
+    v[1] = lua_tonumber(inState, 3);
+    v[2] = lua_tonumber(inState, 4);
+
+    CGE::Entity* e = luaThis->getEntity(index);
+    if (e) e->setVelocity(v);
 
     return 0;
 }
