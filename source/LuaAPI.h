@@ -70,6 +70,9 @@ class LuaAPI
         static int luaGetEntityVelocity(lua_State* inState);
         static int luaSetEntityVelocity(lua_State* inState);
         static int luaAddActor(lua_State* inState);
+
+        static int luaSendTableToC(lua_State* inState);
+        static int luaSendFunctionToC(lua_State* inState);
 };
 
 #endif

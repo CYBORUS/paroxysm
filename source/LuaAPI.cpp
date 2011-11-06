@@ -44,6 +44,8 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("setEntityRadius", luaSetEntityRadius);
     mLua.addFunction("getEntityVelocity", luaGetEntityVelocity);
     mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
+    mLua.addFunction("sendTableToC", luaSendTableToC);
+    mLua.addFunction("sendFunctionToC", luaSendFunctionToC);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -378,6 +380,41 @@ int LuaAPI::luaAddActor(lua_State* inState)
         const char* model = lua_tolstring(inState, 2, &length);
 
         if (model && length) luaThis->addActor(index, model);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaSendTableToC(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_istable(inState, 1))
+    {
+        const void* p = lua_topointer(inState, 1);
+        cerr << "received pointer: " << p << endl;
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaSendFunctionToC(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isfunction(inState, 1))
+    {
+        const void* p = lua_topointer(inState, 1);
+        cerr << "Yup! It's a function! " << p << endl;
+
+        int r = luaL_ref(inState, LUA_REGISTRYINDEX);
+
+        lua_rawgeti(inState, LUA_REGISTRYINDEX, r);
+        lua_call(inState, 0, 0);
+
+        luaL_unref(inState, LUA_REGISTRYINDEX, r);
     }
 
     return 0;
