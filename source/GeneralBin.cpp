@@ -6,7 +6,7 @@ GeneralBin::GeneralBin()
     mFS.loadFromFile("data/shaders/general.fs");
     mProgram.attachShader(mVS);
     mProgram.attachShader(mFS);
-    mProgram.bindAttribLocation(0, "iVertex");
+    mProgram.bindAttribLocation(0, "iPosition");
     mProgram.bindAttribLocation(1, "iTexture");
     mProgram.link();
     mUniMVPM = mProgram.getUniformLocation("uMVPM");
