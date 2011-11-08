@@ -3,8 +3,8 @@ allTheTanks = {}
 
 Tank = {}
 
-function Tank:setCollisionCallback(callback, data)
-    setEntityCollisionCR(self.index, callback, data)
+function Tank:setCollisionCallback(callback)
+    setEntityCollisionCR(self.index, callback, self)
 end
 
 function Tank:getPosition()
@@ -81,13 +81,41 @@ function Tank:new()
     addActor(newTank.index, "assets/models/bradley_turret.c3m")
     
     newTank.onCollision = function(entity)
-            if self then print(self) end
-            print(" collided with ")
-            if entity then print(entity) end
-            print(" ")
+            print("BLAM!")
+            local px = 0
+            local py = 0
+            local pz = 0
+            
+            px, py, pz = self:getPosition()
+            
+            local vx = 0
+            local vy = 0
+            local vz = 0
+            
+            vx, vy, vz = self:getVelocity()
+            
+            local px2 = 0
+            local py2 = 0
+            local pz2 = 0
+            
+            px2, py2, pz2 = entity:getPosition()
+            
+            local vx2 = 0
+            local vy2 = 0
+            local vz2 = 0
+            
+            vx2, vy2, vz2 = entity:getVelocity()
+            
+            if px < px2 and vx > 0 then vx = -vx end
+            if px > px2 and vx < 0 then vx = -vx end
+            
+            if py > py2 and vy < 0 then vy = -vy end
+            if py < py2 and vy > 0 then vy = -vy end
+            
+            self:setVelocity(vx, vy, vz)
         end
     
-    newTank:setCollisionCallback(newTank.onCollision, newTank)
+    newTank:setCollisionCallback(newTank.onCollision)
     
     return newTank
 end
