@@ -395,7 +395,7 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         CGE::Entity* e = luaThis->getEntity(index);
 
-        if (e) e->setCollisionCR(luaL_ref(inState, LUA_REGISTRYINDEX));
+        //if (e) e->setCollisionCR(luaL_ref(inState, LUA_REGISTRYINDEX));
     }
 
     return 0;
@@ -416,10 +416,10 @@ int LuaAPI::luaCheckForCollisions(lua_State* inState)
           CGE::Entity* e2 = *j;
           if (e1->isInRangeOf(e2))
           {
-              int r = e1->getCollisionCR();
+              //int r = e1->getCollisionCR();
 
-              lua_rawgeti(inState, LUA_REGISTRYINDEX, r);
-              lua_call(inState, 0, 0);
+              //lua_rawgeti(inState, LUA_REGISTRYINDEX, r);
+              //lua_call(inState, 0, 0);
           }
          }
     }
