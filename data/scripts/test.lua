@@ -1,4 +1,4 @@
-NumberOfTanks = 6
+NumberOfTanks = 8
 allTheTanks = {}
 
 Tank = {}
