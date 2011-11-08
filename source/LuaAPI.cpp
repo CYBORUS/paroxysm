@@ -203,8 +203,8 @@ int LuaAPI::luaGetEntityPosition(lua_State* inState)
     int argc = lua_gettop(inState);
 
     lua_Number x = 1.0;
-    lua_Number y = 1.0;
-    lua_Number z = 1.0;
+    lua_Number y = 2.0;
+    lua_Number z = 3.0;
 
     if (argc > 0 && lua_isnumber(inState, 1))
     {
@@ -414,7 +414,7 @@ void LuaAPI::checkForCollisions()
     {
          std::list<CGE::Entity*>::iterator j = i;
          ++j;
-         for ( ;j != mCollisionEntities.end(); ++j)
+         for (; j != mCollisionEntities.end(); ++j)
          {
               CGE::Entity* e1 = *i;
               CGE::Entity* e2 = *j;

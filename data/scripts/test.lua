@@ -1,4 +1,4 @@
-NumberOfTanks = 8
+NumberOfTanks = 50
 allTheTanks = {}
 
 Tank = {}
@@ -35,8 +35,6 @@ function Tank:update()
     local vz = 0
     
     vx, vy, vz = self:getVelocity()
-    
-    --print(px .. " " .. py .. " " .. pz .. " " .. vx .. " " .. vy .. " " .. vz)
     
     if px < 0.5 and vx < 0 then self:setVelocity(-vx, vy, vz) end
     if px > 18.5 and vx > 0 then self:setVelocity(-vx, vy, vz) end
@@ -76,23 +74,25 @@ function Tank:new()
         }
     
     setEntityDefaultRotation(newTank.index, 90, 0, 0)
+    newTank:setRadius(0.5)
     addActor(newTank.index, "assets/models/bradley_body.c3m")
     addActor(newTank.index, "assets/models/bradley_head.c3m")
     addActor(newTank.index, "assets/models/bradley_turret.c3m")
     
     newTank.onCollision = function(entity)
-            print("BLAM!")
+            --print("BLAM!")
+            
             local px = 0
             local py = 0
             local pz = 0
             
-            px, py, pz = self:getPosition()
+            px, py, pz = newTank:getPosition()
             
             local vx = 0
             local vy = 0
             local vz = 0
             
-            vx, vy, vz = self:getVelocity()
+            vx, vy, vz = newTank:getVelocity()
             
             local px2 = 0
             local py2 = 0
@@ -106,13 +106,16 @@ function Tank:new()
             
             vx2, vy2, vz2 = entity:getVelocity()
             
+            --print("self: " .. px .. " " .. py .. " " .. pz .. " " .. vx
+            --    .. " " .. vy .. " " .. vz)
+            
             if px < px2 and vx > 0 then vx = -vx end
             if px > px2 and vx < 0 then vx = -vx end
             
             if py > py2 and vy < 0 then vy = -vy end
             if py < py2 and vy > 0 then vy = -vy end
             
-            self:setVelocity(vx, vy, vz)
+            newTank:setVelocity(vx, vy, vz)
         end
     
     newTank:setCollisionCallback(newTank.onCollision)
@@ -133,7 +136,7 @@ function update()
         allTheTanks[i]:update()
         
         local chance = math.random()
-        if chance > 0.992  then
+        if false then
             allTheTanks[i]:setVelocity(randomDirection(),
                 randomDirection(), 0)
         end
