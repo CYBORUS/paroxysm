@@ -54,8 +54,6 @@
 			<Add library="lua5.1" />
 			<Add directory="..\..\cyborus-game-engine" />
 		</Linker>
-		<Unit filename="..\source\CollisionEngine.cpp" />
-		<Unit filename="..\source\CollisionEngine.h" />
 		<Unit filename="..\source\GameModule.cpp" />
 		<Unit filename="..\source\GameModule.h" />
 		<Unit filename="..\source\GeneralBin.cpp" />
