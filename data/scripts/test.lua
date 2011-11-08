@@ -37,7 +37,7 @@ function Tank:update()
     if px < 0.5 and vx < 0 then self:setVelocity(-vx, vy, vz) end
     if px > 18.5 and vx > 0 then self:setVelocity(-vx, vy, vz) end
     if py < 0.5 and vy < 0 then self:setVelocity(vx, -vy, vz) end
-    if py > 18.5 and vy > 0 then self:setVelocity(vx, -vy, vz) end    
+    if py > 18.5 and vy > 0 then self:setVelocity(vx, -vy, vz) end
 end
 
 function Tank:getMass()
@@ -71,7 +71,9 @@ function Tank:new()
         }
     
     setEntityDefaultRotation(newTank.index, 90, 0, 0)
-    addActor(newTank.index, "bradley.c3m")
+    addActor(newTank.index, "assets/models/bradley_body.c3m")
+    addActor(newTank.index, "assets/models/bradley_head.c3m")
+    addActor(newTank.index, "assets/models/bradley_turret.c3m")
     
     return newTank
 end
