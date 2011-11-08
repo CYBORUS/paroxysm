@@ -73,6 +73,7 @@ class LuaAPI
 
         static int luaSendTableToC(lua_State* inState);
         static int luaSendFunctionToC(lua_State* inState);
+        static int luaSendBoth(lua_State* inState);
 };
 
 #endif

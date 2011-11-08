@@ -14,7 +14,7 @@
 /// along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
 
 #include "LuaAPI.h"
-#include "Tank.h"
+#include <CGE/LuaReference.h>
 #include <cassert>
 #include <iostream>
 
@@ -46,6 +46,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
     mLua.addFunction("sendTableToC", luaSendTableToC);
     mLua.addFunction("sendFunctionToC", luaSendFunctionToC);
+    mLua.addFunction("sendBoth", luaSendBoth);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -415,6 +416,26 @@ int LuaAPI::luaSendFunctionToC(lua_State* inState)
         lua_call(inState, 0, 0);
 
         luaL_unref(inState, LUA_REGISTRYINDEX, r);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaSendBoth(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 1 && lua_isfunction(inState, 1) && lua_istable(inState, 2))
+    {
+        if (argc > 2) lua_pop(inState, argc - 2);
+
+        CGE::LuaReference table(inState);
+        CGE::LuaReference func(inState);
+
+        func.get();
+        table.get();
+        lua_call(inState, 1, 0);
     }
 
     return 0;
