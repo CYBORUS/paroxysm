@@ -56,6 +56,7 @@ class LuaAPI
 
         std::vector<size_t> mHoles;
         std::vector<CGE::Entity*> mEntities;
+        std::list<CGE::Entity*> mCollisionEntities;
 
         static LuaAPI* luaThis;
         static int luaAddEntity(lua_State* inState);
@@ -71,8 +72,9 @@ class LuaAPI
         static int luaSetEntityVelocity(lua_State* inState);
         static int luaAddActor(lua_State* inState);
 
-        static int luaSendTableToC(lua_State* inState);
-        static int luaSendFunctionToC(lua_State* inState);
+        static int luaSetEntityCollisionCR(lua_State* inState);
+        void checkForCollisions();
+
         static int luaSendBoth(lua_State* inState);
 };
 

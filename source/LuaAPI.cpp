@@ -44,8 +44,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("setEntityRadius", luaSetEntityRadius);
     mLua.addFunction("getEntityVelocity", luaGetEntityVelocity);
     mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
-    mLua.addFunction("sendTableToC", luaSendTableToC);
-    mLua.addFunction("sendFunctionToC", luaSendFunctionToC);
+    mLua.addFunction("setEntityCollisionCR", luaSetEntityCollisionCR);
     mLua.addFunction("sendBoth", luaSendBoth);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
@@ -86,6 +85,7 @@ size_t LuaAPI::addEntity()
     else
     {
         mEntities.push_back(entity);
+        mCollisionEntities.push_back(entity);
     }
 
     return outIndex;
@@ -386,39 +386,42 @@ int LuaAPI::luaAddActor(lua_State* inState)
     return 0;
 }
 
-int LuaAPI::luaSendTableToC(lua_State* inState)
+int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
 {
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
 
-    if (argc > 0 && lua_istable(inState, 1))
+    if (argc > 2 && lua_isnumber(inState, 1) && lua_isfunction(inState, 2) && lua_istable(inState, 3))
     {
-        const void* p = lua_topointer(inState, 1);
-        cerr << "received pointer: " << p << endl;
+        if (argc > 3) lua_pop(inState, argc - 3);
+
+        size_t index = lua_tointeger(inState, 1);
+        CGE::Entity* e = luaThis->getEntity(index);
+
+        if (e) e->setCollisionCB(inState);
     }
 
     return 0;
 }
 
-int LuaAPI::luaSendFunctionToC(lua_State* inState)
+void LuaAPI::checkForCollisions()
 {
-    assert(luaThis != NULL);
-    int argc = lua_gettop(inState);
-
-    if (argc > 0 && lua_isfunction(inState, 1))
+    for (std::list<CGE::Entity*>::iterator i = mCollisionEntities.begin();
+         i != mCollisionEntities.end(); ++i)
     {
-        const void* p = lua_topointer(inState, 1);
-        cerr << "Yup! It's a function! " << p << endl;
-
-        int r = luaL_ref(inState, LUA_REGISTRYINDEX);
-
-        lua_rawgeti(inState, LUA_REGISTRYINDEX, r);
-        lua_call(inState, 0, 0);
-
-        luaL_unref(inState, LUA_REGISTRYINDEX, r);
+         std::list<CGE::Entity*>::iterator j = i;
+         ++j;
+         for ( ;j != mCollisionEntities.end(); ++j)
+         {
+              CGE::Entity* e1 = *i;
+              CGE::Entity* e2 = *j;
+              if (e1->isInRangeOf(e2))
+              {
+                  e1->onCollision(mLua.getState(), e2);
+                  e2->onCollision(mLua.getState(), e1);
+              }
+         }
     }
-
-    return 0;
 }
 
 int LuaAPI::luaSendBoth(lua_State* inState)
