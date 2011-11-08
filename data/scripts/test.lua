@@ -100,6 +100,10 @@ function sayHello()
     print("Hello!")
 end
 
+function sayThings(inTable)
+    print(inTable.message)
+end
+
 function allTheThings()
     for i = 1, NumberOfTanks do
         allTheTanks[i] = Tank:new()
@@ -117,16 +121,8 @@ function allTheThings()
         --print("tank velocity : " .. x .. " " .. y .. " " .. z)
     end
     
-    local a = { cash = 100 }
-    print("table reference: ")
-    print(a)
-    sendTableToC(a)
-    
-    print("function reference: ")
-    print(sayHello)
-    sendFunctionToC(sayHello)
-    print("testing it on a table:")
-    sendFunctionToC(a)
+    local t = { message = "HUZZAH!" }
+    sendBoth(sayThings, t, 1, 3, nil, "bai")
 end
 
 allTheThings()

@@ -73,7 +73,9 @@ class LuaAPI
         static int luaAddActor(lua_State* inState);
 
         static int luaSetEntityCollisionCR(lua_State* inState);
-        int luaCheckForCollisions(lua_State* inState);
+        void checkForCollisions();
+
+        static int luaSendBoth(lua_State* inState);
 };
 
 #endif

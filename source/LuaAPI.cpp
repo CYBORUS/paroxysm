@@ -14,7 +14,7 @@
 /// along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
 
 #include "LuaAPI.h"
-#include "Tank.h"
+#include <CGE/LuaReference.h>
 #include <cassert>
 #include <iostream>
 
@@ -45,6 +45,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("getEntityVelocity", luaGetEntityVelocity);
     mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
     mLua.addFunction("setEntityCollisionCR", luaSetEntityCollisionCR);
+    mLua.addFunction("sendBoth", luaSendBoth);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -390,21 +391,21 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
 
-    if (argc > 0 && lua_isfunction(inState, 1))
+    if (argc > 2 && lua_isnumber(inState, 1) && lua_isfunction(inState, 2) && lua_istable(inState, 3))
     {
+        if (argc > 3) lua_pop(inState, argc - 3);
+
         size_t index = lua_tointeger(inState, 1);
         CGE::Entity* e = luaThis->getEntity(index);
 
-        //if (e) e->setCollisionCR(luaL_ref(inState, LUA_REGISTRYINDEX));
+        if (e) e->setCollisionCB(inState);
     }
 
     return 0;
 }
 
-int LuaAPI::luaCheckForCollisions(lua_State* inState)
+void LuaAPI::checkForCollisions()
 {
-    assert(luaThis != NULL);
-
     for (std::list<CGE::Entity*>::iterator i = mCollisionEntities.begin();
          i != mCollisionEntities.end(); ++i)
     {
@@ -412,16 +413,32 @@ int LuaAPI::luaCheckForCollisions(lua_State* inState)
          ++j;
          for ( ;j != mCollisionEntities.end(); ++j)
          {
-          CGE::Entity* e1 = *i;
-          CGE::Entity* e2 = *j;
-          if (e1->isInRangeOf(e2))
-          {
-              //int r = e1->getCollisionCR();
-
-              //lua_rawgeti(inState, LUA_REGISTRYINDEX, r);
-              //lua_call(inState, 0, 0);
-          }
+              CGE::Entity* e1 = *i;
+              CGE::Entity* e2 = *j;
+              if (e1->isInRangeOf(e2))
+              {
+                  e1->onCollision(mLua.getState(), e2);
+                  e2->onCollision(mLua.getState(), e1);
+              }
          }
+    }
+}
+
+int LuaAPI::luaSendBoth(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 1 && lua_isfunction(inState, 1) && lua_istable(inState, 2))
+    {
+        if (argc > 2) lua_pop(inState, argc - 2);
+
+        CGE::LuaReference table(inState);
+        CGE::LuaReference func(inState);
+
+        func.get();
+        table.get();
+        lua_call(inState, 1, 0);
     }
 
     return 0;
