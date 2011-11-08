@@ -1,7 +1,11 @@
-NumberOfTanks = 25
+NumberOfTanks = 6
 allTheTanks = {}
 
 Tank = {}
+
+function Tank:setCollisionCallback(callback, data)
+    setEntityCollisionCR(self.index, callback, data)
+end
 
 function Tank:getPosition()
     return getEntityPosition(self.index)
@@ -59,6 +63,7 @@ end
 function Tank:new()
     local newTank = {
         index = addEntity(),
+        setCollisionCallback = Tank.setCollisionCallback,
         getPosition = Tank.getPosition,
         setPosition = Tank.setPosition,
         getVelocity = Tank.getVelocity,
@@ -74,6 +79,15 @@ function Tank:new()
     addActor(newTank.index, "assets/models/bradley_body.c3m")
     addActor(newTank.index, "assets/models/bradley_head.c3m")
     addActor(newTank.index, "assets/models/bradley_turret.c3m")
+    
+    newTank.onCollision = function(entity)
+            if self then print(self) end
+            print(" collided with ")
+            if entity then print(entity) end
+            print(" ")
+        end
+    
+    newTank:setCollisionCallback(newTank.onCollision, newTank)
     
     return newTank
 end

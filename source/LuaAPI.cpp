@@ -62,6 +62,7 @@ void LuaAPI::display()
 void LuaAPI::update()
 {
     mLua.runCommand("update()");
+    checkForCollisions();
 
     for (size_t i = 0; i < mEntities.size(); ++i)
     {
@@ -73,6 +74,7 @@ void LuaAPI::update()
 size_t LuaAPI::addEntity()
 {
     CGE::Entity* entity = new CGE::Entity;
+    mCollisionEntities.push_back(entity);
     mHeadNode.addChildNode(entity);
     size_t outIndex = mEntities.size();
 
@@ -85,7 +87,6 @@ size_t LuaAPI::addEntity()
     else
     {
         mEntities.push_back(entity);
-        mCollisionEntities.push_back(entity);
     }
 
     return outIndex;
@@ -100,6 +101,7 @@ void LuaAPI::removeEntity(size_t inIndex)
 {
     if (inIndex < mEntities.size() && mEntities[inIndex])
     {
+        mCollisionEntities.remove(mEntities[inIndex]);
         delete mEntities[inIndex];
         mEntities[inIndex] = NULL;
         mHoles.push_back(inIndex);
@@ -391,7 +393,8 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
 
-    if (argc > 2 && lua_isnumber(inState, 1) && lua_isfunction(inState, 2) && lua_istable(inState, 3))
+    if (argc > 2 && lua_isnumber(inState, 1) && lua_isfunction(inState, 2)
+        && lua_istable(inState, 3))
     {
         if (argc > 3) lua_pop(inState, argc - 3);
 
