@@ -2,7 +2,8 @@
 
 using namespace std;
 
-GameModule::GameModule() : mLuaAPI(mViewNode), mXPan(0.0f), mYPan(0.0f)
+GameModule::GameModule() : mLuaAPI(mViewNode), mSound("data/audio/bird.wav"),
+    mXPan(0.0f), mYPan(0.0f)
 {
 }
 
@@ -134,6 +135,12 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_ESCAPE:
         {
             mRunning = false;
+            break;
+        }
+
+        case SDLK_SPACE:
+        {
+            mSound.play();
             break;
         }
 

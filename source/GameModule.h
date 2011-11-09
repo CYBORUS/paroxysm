@@ -1,6 +1,7 @@
 #ifndef GAMEMODULE_H
 #define GAMEMODULE_H
 
+#include <CGE/OpenAL/Sound.h>
 #include <CGE/Actor.h>
 #include <CGE/Model.h>
 #include "ParoxysmModule.h"
@@ -47,6 +48,7 @@ class GameModule : public ParoxysmModule
     private:
         LuaAPI mLuaAPI;
         MouseState mMouseState;
+        CGE::Sound mSound;
 
         int mXStart;
         int mYStart;

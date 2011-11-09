@@ -46,12 +46,13 @@
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
 			<Add library="SDL_ttf" />
-			<Add library="SDL_mixer" />
 			<Add library="SDL_net" />
 			<Add library="SDL" />
 			<Add library="opengl32" />
 			<Add library="curldll" />
 			<Add library="lua5.1" />
+			<Add library="OpenAL32" />
+			<Add library="ALURE32" />
 			<Add directory="..\..\cyborus-game-engine" />
 		</Linker>
 		<Unit filename="..\source\GameModule.cpp" />
