@@ -71,27 +71,6 @@ void LuaAPI::update()
     }
 }
 
-size_t LuaAPI::addEntity()
-{
-    CGE::Entity* entity = new CGE::Entity;
-    mCollisionEntities.push_back(entity);
-    mHeadNode.addChildNode(entity);
-    size_t outIndex = mEntities.size();
-
-    if (mHoles.size() > 0)
-    {
-        outIndex = mHoles.back();
-        mHoles.pop_back();
-        mEntities[outIndex] = entity;
-    }
-    else
-    {
-        mEntities.push_back(entity);
-    }
-
-    return outIndex;
-}
-
 CGE::Entity* LuaAPI::getEntity(size_t inIndex)
 {
     return inIndex < mEntities.size() ? mEntities[inIndex] : NULL;
@@ -150,7 +129,22 @@ int LuaAPI::luaAddEntity(lua_State* inState)
 {
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
-    size_t index = luaThis->addEntity();
+
+    CGE::Entity* entity = new CGE::Entity(inState);
+    luaThis->mCollisionEntities.push_back(entity);
+    luaThis->mHeadNode.addChildNode(entity);
+    size_t index = luaThis->mEntities.size();
+
+    if (luaThis->mHoles.size() > 0)
+    {
+        index = luaThis->mHoles.back();
+        luaThis->mHoles.pop_back();
+        luaThis->mEntities[index] = entity;
+    }
+    else
+    {
+        luaThis->mEntities.push_back(entity);
+    }
 
     lua_Integer outIndex = index;
     lua_pushinteger(inState, outIndex);
@@ -393,10 +387,9 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
 
-    if (argc > 2 && lua_isnumber(inState, 1) && lua_isfunction(inState, 2)
-        && lua_istable(inState, 3))
+    if (argc > 1 && lua_isnumber(inState, 1) && lua_isfunction(inState, 2))
     {
-        if (argc > 3) lua_pop(inState, argc - 3);
+        if (argc > 2) lua_pop(inState, argc - 2);
 
         size_t index = lua_tointeger(inState, 1);
         CGE::Entity* e = luaThis->getEntity(index);

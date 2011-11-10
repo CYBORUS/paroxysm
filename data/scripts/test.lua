@@ -4,7 +4,7 @@ allTheTanks = {}
 Tank = {}
 
 function Tank:setCollisionCallback(callback)
-    setEntityCollisionCR(self.index, callback, self)
+    setEntityCollisionCR(self.index, callback)
 end
 
 function Tank:getPosition()
@@ -60,7 +60,6 @@ end
 
 function Tank:new()
     local newTank = {
-        index = addEntity(),
         setCollisionCallback = Tank.setCollisionCallback,
         getPosition = Tank.getPosition,
         setPosition = Tank.setPosition,
@@ -72,6 +71,8 @@ function Tank:new()
         setRadius = Tank.setRadius,
         update = Tank.update
         }
+		
+	newTank.index = addEntity(newTank)
     
     setEntityDefaultRotation(newTank.index, 90, 0, 0)
     newTank:setRadius(0.5)

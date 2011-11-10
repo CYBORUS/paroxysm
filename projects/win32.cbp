@@ -64,14 +64,10 @@
 		<Unit filename="..\source\MainMenuModule.h" />
 		<Unit filename="..\source\MapEditorModule.cpp" />
 		<Unit filename="..\source\MapEditorModule.h" />
-		<Unit filename="..\source\ParoxysmEntity.cpp" />
-		<Unit filename="..\source\ParoxysmEntity.h" />
 		<Unit filename="..\source\ParoxysmModule.cpp" />
 		<Unit filename="..\source\ParoxysmModule.h" />
 		<Unit filename="..\source\PlayerControl.cpp" />
 		<Unit filename="..\source\PlayerControl.h" />
-		<Unit filename="..\source\Tank.cpp" />
-		<Unit filename="..\source\Tank.h" />
 		<Unit filename="..\source\TerrainGrid.cpp" />
 		<Unit filename="..\source\TerrainGrid.h" />
 		<Unit filename="..\source\UI\Button.cpp" />

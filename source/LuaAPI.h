@@ -38,7 +38,6 @@ class LuaAPI
 
     protected:
     private:
-        size_t addEntity();
         CGE::Entity* getEntity(size_t inIndex);
         void removeEntity(size_t inIndex);
         void addActor(size_t inIndex, const std::string& inModel);
