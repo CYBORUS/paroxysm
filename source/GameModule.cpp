@@ -42,6 +42,8 @@ void GameModule::onLoop()
 
 void GameModule::onPulse()
 {
+    alureUpdate();
+
     mViewNode.smartPan(mXPan, mYPan);
 
     mViewNode.update();
