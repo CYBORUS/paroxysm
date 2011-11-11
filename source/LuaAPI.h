@@ -22,6 +22,7 @@
 #include <CGE/ModelFromFile.h>
 #include "GeneralBin.h"
 #include "TerrainGrid.h"
+#include "SkyBox.h"
 #include <vector>
 #include <string>
 
@@ -46,6 +47,7 @@ class LuaAPI
         void setEntityPosition(size_t inIndex, double inX, double inY,
             double inZ);
 
+        SkyBox mSkyBox;
         TerrainGrid mGrid;
         GeneralBin mBin;
 

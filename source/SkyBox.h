@@ -12,6 +12,7 @@ class SkyBox : CGE::Model
     public:
         SkyBox();
         virtual ~SkyBox();
+        virtual void display();
     protected:
     private:
         CGE::InterleavedVBO mVBO;
