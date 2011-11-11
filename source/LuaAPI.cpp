@@ -22,7 +22,8 @@ using namespace std;
 
 LuaAPI* LuaAPI::luaThis = NULL;
 
-LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
+LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode),
+    mSkyBoxActor(&mSkyBox)
 {
     activate();
     mGrid.create(20, 20);
@@ -31,6 +32,11 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     CGE::Actor* a = new CGE::Actor(&mGrid);
     inHeadNode.addChildNode(a);
     mBin.addActor(a);
+
+    mSkyBoxBin.addActor(&mSkyBoxActor);
+    mHeadNode.addChildNode(&mSkyBoxActor);
+    mSkyBoxActor.matrix().translate(10.0f, 10.0f, 0.0f);
+    mSkyBoxActor.matrix().scale(100.0f);
 
     mLua.addFunction("addEntity", luaAddEntity);
     mLua.addFunction("removeEntity", luaRemoveEntity);
@@ -57,6 +63,7 @@ LuaAPI::~LuaAPI()
 void LuaAPI::display()
 {
     mBin.renderAll();
+    mSkyBoxBin.renderAll();
 }
 
 void LuaAPI::update()

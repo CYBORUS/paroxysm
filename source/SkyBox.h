@@ -5,9 +5,9 @@
 #include <CGE/OpenGL/InterleavedVBO.h>
 #include <CGE/OpenGL/IndexVBO.h>
 #include <CGE/OpenGL/CubeMap.h>
-#include <CGE/Image.cpp>
+#include <CGE/Image.h>
 
-class SkyBox : CGE::Model
+class SkyBox : public CGE::Model
 {
     public:
         SkyBox();

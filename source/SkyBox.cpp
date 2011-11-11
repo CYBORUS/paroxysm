@@ -1,4 +1,8 @@
 #include "SkyBox.h"
+#include <CGE/Exception.h>
+
+#include <iostream>
+using namespace std;
 
 SkyBox::SkyBox()
 {
@@ -31,14 +35,22 @@ SkyBox::SkyBox()
 
     mIVBO.loadData(indices, 12, 3);
 
-    mImages[0].loadFile("data/images/skyboxsun5degTop.png");     // top
-    mImages[1].loadFile("data/images/skyboxsun5degBottom.png");  // bottom
-    mImages[2].loadFile("data/images/skyboxsun5degRight.png");   // right
-    mImages[3].loadFile("data/images/skyboxsun5degLeft.png");    // left
-    mImages[4].loadFile("data/images/skyboxsun5degFront.png");   // front
-    mImages[5].loadFile("data/images/skyboxsun5degBack.png");    // back
+    try
+    {
+        mImages[0].loadFile("data/images/skyboxsun5degTop.png");     // top
+        mImages[1].loadFile("data/images/skyboxsun5degBottom.png");  // bottom
+        mImages[2].loadFile("data/images/skyboxsun5degRight.png");   // right
+        mImages[3].loadFile("data/images/skyboxsun5degLeft.png");    // left
+        mImages[4].loadFile("data/images/skyboxsun5degFront.png");   // front
+        mImages[5].loadFile("data/images/skyboxsun5degRear.png");    // back
+    }
+    catch (CGE::Exception e)
+    {
+        cerr << e.header << " : " << e.message << '\n';
+    }
 
-    mCubeMap.loadImages(mImages[2], mImages[3], mImages[4], mImages[5], mImages[0], mImages[1]);
+    mCubeMap.loadImages(mImages[2], mImages[3], mImages[4], mImages[5],
+        mImages[0], mImages[1]);
 
 }
 

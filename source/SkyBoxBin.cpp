@@ -32,10 +32,14 @@ void SkyBoxBin::beforeRender()
     mProgram.use();
     glActiveTexture(GL_TEXTURE0);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CCW);
+    glCullFace(GL_BACK);
 }
 
 void SkyBoxBin::afterRender()
 {
+    glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
 }
 

@@ -49,6 +49,7 @@ class LuaAPI
             double inZ);
 
         SkyBox mSkyBox;
+        CGE::Actor mSkyBoxActor;
         TerrainGrid mGrid;
         GeneralBin mBin;
         SkyBoxBin mSkyBoxBin;
