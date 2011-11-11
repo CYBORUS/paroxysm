@@ -2,7 +2,7 @@
 
 using namespace std;
 
-GameModule::GameModule() : mLuaAPI(mViewNode), mSound("data/audio/bird.wav"),
+GameModule::GameModule() : mLuaAPI(mViewNode), mSound("data/audio/squeak.ogg"),
     mXPan(0.0f), mYPan(0.0f)
 {
 }

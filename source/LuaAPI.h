@@ -16,6 +16,7 @@
 #ifndef LUAAPI_H
 #define LUAAPI_H
 
+#include <CGE/OpenAL/Sound.h>
 #include <CGE/LuaMachine.h>
 #include <CGE/Entity.h>
 #include <CGE/ResourceManager.h>
@@ -53,6 +54,7 @@ class LuaAPI
         CGE::LuaMachine mLua;
         CGE::SceneGraphNode& mHeadNode;
         CGE::ResourceManager<CGE::ModelFromFile> mModels;
+        CGE::ResourceManager<CGE::Sound> mSounds;
 
         std::vector<size_t> mHoles;
         std::vector<CGE::Entity*> mEntities;
@@ -71,6 +73,7 @@ class LuaAPI
         static int luaGetEntityVelocity(lua_State* inState);
         static int luaSetEntityVelocity(lua_State* inState);
         static int luaAddActor(lua_State* inState);
+        static int luaPlaySound(lua_State* inState);
 
         static int luaSetEntityCollisionCR(lua_State* inState);
         void checkForCollisions();

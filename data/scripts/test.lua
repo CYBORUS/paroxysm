@@ -1,4 +1,4 @@
-NumberOfTanks = 50
+NumberOfTanks = 20
 allTheTanks = {}
 
 Tank = {}
@@ -109,11 +109,29 @@ function Tank:new()
             --print("self: " .. px .. " " .. py .. " " .. pz .. " " .. vx
             --    .. " " .. vy .. " " .. vz)
             
-            if px < px2 and vx > 0 then vx = -vx end
-            if px > px2 and vx < 0 then vx = -vx end
+            local sound = false
             
-            if py > py2 and vy < 0 then vy = -vy end
-            if py < py2 and vy > 0 then vy = -vy end
+            if px < px2 and vx > 0 then
+                vx = -vx
+                sound = true
+            end
+            
+            if px > px2 and vx < 0 then
+                vx = -vx
+                sound = true
+            end
+            
+            if py > py2 and vy < 0 then
+                vy = -vy
+                sound = true
+            end
+            
+            if py < py2 and vy > 0 then
+                vy = -vy
+                sound = true
+            end
+            
+            if sound then playSound("data/audio/squeak.ogg") end
             
             newTank:setVelocity(vx, vy, vz)
         end
@@ -170,6 +188,8 @@ function allTheThings()
     
     local t = { message = "HUZZAH!" }
     sendBoth(sayThings, t, 1, 3, nil, "bai")
+    
+    playSound("data/audio/squeak.ogg")
 end
 
 allTheThings()

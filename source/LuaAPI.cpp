@@ -45,6 +45,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode)
     mLua.addFunction("getEntityVelocity", luaGetEntityVelocity);
     mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
     mLua.addFunction("setEntityCollisionCR", luaSetEntityCollisionCR);
+    mLua.addFunction("playSound", luaPlaySound);
     mLua.addFunction("sendBoth", luaSendBoth);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
@@ -383,6 +384,21 @@ int LuaAPI::luaAddActor(lua_State* inState)
         const char* model = lua_tolstring(inState, 2, &length);
 
         if (model && length) luaThis->addActor(index, model);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaPlaySound(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isstring(inState, 1))
+    {
+        const char* path = lua_tostring(inState, 1);
+        CGE::Sound* s = luaThis->mSounds.load(path);
+        s->play();
     }
 
     return 0;
