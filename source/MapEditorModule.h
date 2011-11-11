@@ -14,8 +14,6 @@
 
 #include "TerrainGrid.h"
 #include "GeneralBin.h"
-#include "ParoxysmEntity.h"
-#include "Tank.h"
 
 #include <list>
 

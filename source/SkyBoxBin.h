@@ -1,15 +1,14 @@
-#ifndef GENERALBIN_H
-#define GENERALBIN_H
+#ifndef SKYBOXBIN_H
+#define SKYBOXBIN_H
 
 #include <CGE/OpenGL/Program.h>
 #include <CGE/RenderBin.h>
 
-class GeneralBin : public CGE::RenderBin
+class SkyBoxBin : public CGE::RenderBin
 {
     public:
-        GeneralBin();
-        virtual ~GeneralBin();
-
+        SkyBoxBin();
+        virtual ~SkyBoxBin();
     protected:
         virtual void beforeRender();
         virtual void afterRender();

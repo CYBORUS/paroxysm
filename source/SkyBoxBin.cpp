@@ -1,14 +1,14 @@
-#include "GeneralBin.h"
+#include "SkyBoxBin.h"
 #include <CGE/OpenGL/VertexShader.h>
 #include <CGE/OpenGL/FragmentShader.h>
 
-GeneralBin::GeneralBin()
+SkyBoxBin::SkyBoxBin()
 {
     CGE::VertexShader vs;
     CGE::FragmentShader fs;
 
-    vs.loadFromFile("data/shaders/general.vs");
-    fs.loadFromFile("data/shaders/general.fs");
+    vs.loadFromFile("data/shaders/skybox.vs");
+    fs.loadFromFile("data/shaders/skybox.fs");
 
     mProgram.attachShader(vs);
     mProgram.attachShader(fs);
@@ -23,28 +23,24 @@ GeneralBin::GeneralBin()
     glUniform1i(mUniTexture, 0);
 }
 
-GeneralBin::~GeneralBin()
+SkyBoxBin::~SkyBoxBin()
 {
 }
 
-void GeneralBin::displayActor(CGE::Actor* inActor)
-{
-    glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, inActor->compositeMatrix());
-    inActor->display();
-}
-
-void GeneralBin::beforeRender()
+void SkyBoxBin::beforeRender()
 {
     mProgram.use();
     glActiveTexture(GL_TEXTURE0);
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CCW);
-    glCullFace(GL_BACK);
 }
 
-void GeneralBin::afterRender()
+void SkyBoxBin::afterRender()
 {
-    //glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
+}
+
+void SkyBoxBin::displayActor(CGE::Actor* inActor)
+{
+    glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, inActor->compositeMatrix());
+    inActor->display();
 }

@@ -21,8 +21,9 @@
 #include <CGE/ResourceManager.h>
 #include <CGE/ModelFromFile.h>
 #include "GeneralBin.h"
-#include "TerrainGrid.h"
+#include "SkyBoxBin.h"
 #include "SkyBox.h"
+#include "TerrainGrid.h"
 #include <vector>
 #include <string>
 
@@ -50,6 +51,7 @@ class LuaAPI
         SkyBox mSkyBox;
         TerrainGrid mGrid;
         GeneralBin mBin;
+        SkyBoxBin mSkyBoxBin;
 
         CGE::LuaMachine mLua;
         CGE::SceneGraphNode& mHeadNode;
