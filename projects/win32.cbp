@@ -70,6 +70,8 @@
 		<Unit filename="..\source\PlayerControl.h" />
 		<Unit filename="..\source\SkyBox.cpp" />
 		<Unit filename="..\source\SkyBox.h" />
+		<Unit filename="..\source\SkyBoxBin.cpp" />
+		<Unit filename="..\source\SkyBoxBin.h" />
 		<Unit filename="..\source\TerrainGrid.cpp" />
 		<Unit filename="..\source\TerrainGrid.h" />
 		<Unit filename="..\source\UI\Button.cpp" />
