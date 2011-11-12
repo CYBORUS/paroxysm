@@ -22,8 +22,8 @@ using namespace std;
 
 LuaAPI* LuaAPI::luaThis = NULL;
 
-LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode),
-    mSkyBoxActor(&mSkyBox)
+LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
+    mHeadNode(inHeadNode)
 {
     activate();
     mGrid.create(20, 20);
@@ -42,6 +42,8 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mHeadNode(inHeadNode),
     mLua.addFunction("removeEntity", luaRemoveEntity);
     mLua.addFunction("addActor", luaAddActor);
     mLua.addFunction("setEntityDefaultRotation", luaSetEntityDefaultRotation);
+    mLua.addFunction("setEntityActorRotation", luaSetEntityActorRotation);
+    mLua.addFunction("resetEntityActorMatrix", luaResetEntityActorMatrix);
     mLua.addFunction("getEntityPosition", luaGetEntityPosition);
     mLua.addFunction("setEntityPosition", luaSetEntityPosition);
     mLua.addFunction("getEntityMass", luaGetEntityMass);
@@ -100,9 +102,10 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
     {
         CGE::ModelFromFile* mff = mModels.load(inModel);
         CGE::Actor* actor = new CGE::Actor(mff);
-        mEntities[inIndex]->addActor(actor);
+        size_t index = mEntities[inIndex]->addActor(actor);
         mBin.addActor(actor);
     }
+
 }
 
 void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
@@ -115,6 +118,33 @@ void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
         v[1] = inY;
         v[2] = inZ;
         mEntities[inIndex]->setDefaultRotation(v);
+    }
+}
+
+void LuaAPI::setEntityActorRotation(size_t inEntity, size_t inActor, double inX,
+                            double inY, double inZ)
+{
+    if (inEntity < mEntities.size() && mEntities[inEntity])
+    {
+        CGE::Entity* which = mEntities[inEntity];
+
+        if (inActor < which->numActors())
+        {
+            which->rotateActor(inActor, inX, inY, inZ);
+        }
+    }
+}
+
+void LuaAPI::resetEntityActorMatrix(size_t inEntity, size_t inActor)
+{
+    if (inEntity < mEntities.size() && mEntities[inEntity])
+    {
+        CGE::Entity* which = mEntities[inEntity];
+
+        if (inActor < which->numActors())
+        {
+            which->resetActorMatrix(inActor);
+        }
     }
 }
 
@@ -195,6 +225,55 @@ int LuaAPI::luaSetEntityDefaultRotation(lua_State* inState)
 
     luaThis->setEntityDefaultRotation(index, x, y, z);
 
+    return 0;
+}
+
+
+int LuaAPI::luaSetEntityActorRotation(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc < 5) return 0;
+
+    for (int i = 1; i <= 5; ++i)
+    {
+        if (!lua_isnumber(inState, i))
+        {
+            return 0;
+        }
+    }
+
+    size_t entityIndex = lua_tointeger(inState, 1);
+    size_t actorIndex = lua_tointeger(inState, 2);
+    double x = lua_tonumber(inState, 3);
+    double y = lua_tonumber(inState, 4);
+    double z = lua_tonumber(inState, 5);
+
+    luaThis->setEntityActorRotation(entityIndex, actorIndex, x, y, z);
+
+    return 0;
+}
+
+int LuaAPI::luaResetEntityActorMatrix(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc < 2) return 0;
+
+    for (int i = 1; i <= 2; ++i)
+    {
+        if (!lua_isnumber(inState, i))
+        {
+            return 0;
+        }
+    }
+
+    size_t entityIndex = lua_tointeger(inState, 1);
+    size_t actorIndex = lua_tointeger(inState, 2);
+
+    luaThis->resetEntityActorMatrix(entityIndex, actorIndex);
     return 0;
 }
 
@@ -375,6 +454,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
 {
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
+    size_t actorIndex = 0;
 
     if (argc > 1 && lua_isnumber(inState, 1) && lua_isstring(inState, 2))
     {
@@ -383,10 +463,22 @@ int LuaAPI::luaAddActor(lua_State* inState)
         size_t length = 0;
         const char* model = lua_tolstring(inState, 2, &length);
 
-        if (model && length) luaThis->addActor(index, model);
+        if (model && length)// luaThis->addActor(index, model);
+        {
+            if (index < luaThis->mEntities.size() && luaThis->mEntities[index])
+            {
+                CGE::ModelFromFile* mff = luaThis->mModels.load(model);
+                CGE::Actor* actor = new CGE::Actor(mff);
+                actorIndex = luaThis->mEntities[index]->addActor(actor);
+                luaThis->mBin.addActor(actor);
+            }
+        }
     }
 
-    return 0;
+    lua_Integer output = actorIndex;
+    lua_pushinteger(inState, output);
+
+    return 1;
 }
 
 int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)

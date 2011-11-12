@@ -35,6 +35,9 @@ function Tank:update()
     local vz = 0
     
     vx, vy, vz = self:getVelocity()
+    --resetEntityActorMatrix(self.index, self.actors.body)
+    --setEntityPosition(self.index, px, py, pz)
+    setEntityActorRotation(self.index, self.actors.body, 0, 0, px)
     
     if px < 0.5 and vx < 0 then self:setVelocity(-vx, vy, vz) end
     if px > 18.5 and vx > 0 then self:setVelocity(-vx, vy, vz) end
@@ -69,16 +72,18 @@ function Tank:new()
         setMass = Tank.setMass,
         getRadius = Tank.getRadius,
         setRadius = Tank.setRadius,
-        update = Tank.update
+        update = Tank.update,
         }
 		
 	newTank.index = addEntity(newTank)
     
     setEntityDefaultRotation(newTank.index, 90, 0, 0)
     newTank:setRadius(0.5)
-    addActor(newTank.index, "assets/models/bradley_body.c3m")
-    addActor(newTank.index, "assets/models/bradley_head.c3m")
-    addActor(newTank.index, "assets/models/bradley_turret.c3m")
+    
+    newTank.actors = {}
+    newTank.actors.body = addActor(newTank.index, "assets/models/bradley_body.c3m")
+    newTank.actors.head = addActor(newTank.index, "assets/models/bradley_head.c3m")
+    newTank.actors.turret = addActor(newTank.index, "assets/models/bradley_turret.c3m")
     
     newTank.onCollision = function(entity)
             --print("BLAM!")
