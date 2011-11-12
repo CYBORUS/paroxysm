@@ -35,9 +35,9 @@ function Tank:update()
     local vz = 0
     
     vx, vy, vz = self:getVelocity()
-    --resetEntityActorMatrix(self.index, self.actors.body)
+    resetEntityActorMatrix(self.index, self.actors.body)
     --setEntityPosition(self.index, px, py, pz)
-    setEntityActorRotation(self.index, self.actors.body, 0, 0, px)
+    setEntityActorRotation(self.index, self.actors.body, 0, px * 10, 0)
     
     if px < 0.5 and vx < 0 then self:setVelocity(-vx, vy, vz) end
     if px > 18.5 and vx > 0 then self:setVelocity(-vx, vy, vz) end
