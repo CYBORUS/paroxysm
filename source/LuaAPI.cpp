@@ -456,12 +456,13 @@ int LuaAPI::luaAddActor(lua_State* inState)
     int argc = lua_gettop(inState);
     size_t actorIndex = 0;
 
-    if (argc > 1 && lua_isnumber(inState, 1) && lua_isstring(inState, 2))
+    if (argc > 2 && lua_isnumber(inState, 1) && lua_isstring(inState, 2) && lua_isnumber(inState, 3))
     {
         size_t index = lua_tointeger(inState, 1);
 
         size_t length = 0;
         const char* model = lua_tolstring(inState, 2, &length);
+        size_t parentActor = lua_tointeger(inState, 3);
 
         if (model && length)// luaThis->addActor(index, model);
         {
@@ -469,7 +470,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
             {
                 CGE::ModelFromFile* mff = luaThis->mModels.load(model);
                 CGE::Actor* actor = new CGE::Actor(mff);
-                actorIndex = luaThis->mEntities[index]->addActor(actor);
+                actorIndex = luaThis->mEntities[index]->addActor(actor, parentActor);
                 luaThis->mBin.addActor(actor);
             }
         }

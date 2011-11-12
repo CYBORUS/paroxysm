@@ -81,9 +81,9 @@ function Tank:new()
     newTank:setRadius(0.5)
     
     newTank.actors = {}
-    newTank.actors.body = addActor(newTank.index, "assets/models/bradley_body.c3m")
-    newTank.actors.head = addActor(newTank.index, "assets/models/bradley_head.c3m")
-    newTank.actors.turret = addActor(newTank.index, "assets/models/bradley_turret.c3m")
+    newTank.actors.body = addActor(newTank.index, "assets/models/bradley_body.c3m", -1)
+    newTank.actors.head = addActor(newTank.index, "assets/models/bradley_head.c3m", newTank.actors.body)
+    newTank.actors.turret = addActor(newTank.index, "assets/models/bradley_turret.c3m", newTank.actors.head)
     
     newTank.onCollision = function(entity)
             --print("BLAM!")
