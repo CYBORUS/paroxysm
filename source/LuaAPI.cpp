@@ -102,10 +102,9 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
     {
         CGE::ModelFromFile* mff = mModels.load(inModel);
         CGE::Actor* actor = new CGE::Actor(mff);
-        size_t index = mEntities[inIndex]->addActor(actor);
+        mEntities[inIndex]->addActor(actor);
         mBin.addActor(actor);
     }
-
 }
 
 void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
@@ -166,24 +165,29 @@ int LuaAPI::luaAddEntity(lua_State* inState)
 {
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
+    lua_Integer outIndex = -1;
 
-    CGE::Entity* entity = new CGE::Entity(inState);
-    luaThis->mCollisionEntities.push_back(entity);
-    luaThis->mHeadNode.addChildNode(entity);
-    size_t index = luaThis->mEntities.size();
-
-    if (luaThis->mHoles.size() > 0)
+    if (argc > 0 && lua_istable(inState, 1))
     {
-        index = luaThis->mHoles.back();
-        luaThis->mHoles.pop_back();
-        luaThis->mEntities[index] = entity;
-    }
-    else
-    {
-        luaThis->mEntities.push_back(entity);
+        CGE::Entity* entity = new CGE::Entity(inState);
+        luaThis->mCollisionEntities.push_back(entity);
+        luaThis->mHeadNode.addChildNode(entity);
+        size_t index = luaThis->mEntities.size();
+
+        if (luaThis->mHoles.size() > 0)
+        {
+            index = luaThis->mHoles.back();
+            luaThis->mHoles.pop_back();
+            luaThis->mEntities[index] = entity;
+        }
+        else
+        {
+            luaThis->mEntities.push_back(entity);
+        }
+
+        outIndex = index;
     }
 
-    lua_Integer outIndex = index;
     lua_pushinteger(inState, outIndex);
     return 1;
 }
@@ -456,23 +460,31 @@ int LuaAPI::luaAddActor(lua_State* inState)
     int argc = lua_gettop(inState);
     size_t actorIndex = 0;
 
-    if (argc > 2 && lua_isnumber(inState, 1) && lua_isstring(inState, 2) && lua_isnumber(inState, 3))
+    if (argc > 1 && lua_isnumber(inState, 1) && lua_isstring(inState, 2))
     {
         size_t index = lua_tointeger(inState, 1);
-
         size_t length = 0;
         const char* model = lua_tolstring(inState, 2, &length);
-        size_t parentActor = lua_tointeger(inState, 3);
+        CGE::Entity* e = luaThis->getEntity(index);
 
-        if (model && length)// luaThis->addActor(index, model);
+        if (e && model && length)
         {
-            if (index < luaThis->mEntities.size() && luaThis->mEntities[index])
+            CGE::ModelFromFile* mff = luaThis->mModels.load(model);
+            CGE::Actor* actor = new CGE::Actor(mff);
+
+            if (argc > 2 && lua_isnumber(inState, 3))
             {
-                CGE::ModelFromFile* mff = luaThis->mModels.load(model);
-                CGE::Actor* actor = new CGE::Actor(mff);
-                actorIndex = luaThis->mEntities[index]->addActor(actor, parentActor);
-                luaThis->mBin.addActor(actor);
+                size_t parentActor = lua_tointeger(inState, 3);
+
+                actorIndex = luaThis->mEntities[index]->addActor(actor,
+                    parentActor);
             }
+            else
+            {
+                actorIndex = luaThis->mEntities[index]->addActor(actor);
+            }
+
+            luaThis->mBin.addActor(actor);
         }
     }
 
