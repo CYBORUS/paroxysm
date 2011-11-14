@@ -458,7 +458,6 @@ int LuaAPI::luaAddActor(lua_State* inState)
 {
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
-    size_t actorIndex = 0;
 
     if (argc > 1 && lua_isnumber(inState, 1) && lua_isstring(inState, 2))
     {
@@ -471,6 +470,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
         {
             CGE::ModelFromFile* mff = luaThis->mModels.load(model);
             CGE::Actor* actor = new CGE::Actor(mff);
+            size_t actorIndex = 0;
 
             if (argc > 2 && lua_isnumber(inState, 3))
             {
@@ -485,12 +485,14 @@ int LuaAPI::luaAddActor(lua_State* inState)
             }
 
             luaThis->mBin.addActor(actor);
+
+            lua_Integer outIndex = actorIndex;
+            lua_pushinteger(inState, outIndex);
+            return 1;
         }
     }
 
-    lua_Integer output = actorIndex;
-    lua_pushinteger(inState, output);
-
+    lua_pushnil(inState);
     return 1;
 }
 
