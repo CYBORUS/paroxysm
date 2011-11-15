@@ -26,7 +26,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
     mHeadNode(inHeadNode)
 {
     activate();
-    mGrid.create(20, 20);
+    mGrid.setSize(20, 20);
     mGrid.buildVBO();
 
     CGE::Actor* a = new CGE::Actor(&mGrid);
@@ -53,6 +53,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
     mLua.addFunction("getEntityVelocity", luaGetEntityVelocity);
     mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
     mLua.addFunction("setEntityCollisionCR", luaSetEntityCollisionCR);
+    mLua.addFunction("setTerrainSize", luaSetTerrainSize);
     mLua.addFunction("sendBoth", luaSendBoth);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
@@ -549,6 +550,26 @@ int LuaAPI::luaSendBoth(lua_State* inState)
         func.get();
         table.get();
         lua_call(inState, 1, 0);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaSetTerrainSize(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 1 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2))
+    {
+        LUA_INTEGER height = lua_tointeger(inState, 1);
+        LUA_INTEGER width = lua_tointeger(inState, 2);
+
+        if (height > 0 && height < 1000 && width > 0 && width < 1000)
+        {
+         luaThis->mGrid.setSize(height, width);
+         luaThis->mGrid.buildVBO();
+        }
     }
 
     return 0;

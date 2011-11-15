@@ -32,7 +32,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
         throw CGE::Exception("", "no map to load");
     size_t size = 20;
     //fin >> mGrid;
-    mGrid.create(size, size);
+    mGrid.setSize(size, size);
     mGrid.buildVBO();
     fin.close();
 

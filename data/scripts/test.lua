@@ -158,6 +158,7 @@ function sayThings(inTable)
 end
 
 function allTheThings()
+	setTerrainSize(500, 500)
     for i = 1, NumberOfTanks do
         allTheTanks[i] = Tank:new()
         allTheTanks[i]:setPosition(randomLocation(),
