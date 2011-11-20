@@ -46,10 +46,10 @@
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
 			<Add library="SDL_ttf" />
-			<Add library="SDL_mixer" />
 			<Add library="SDL_net" />
 			<Add library="SDL" />
 			<Add library="opengl32" />
+			<Add library="openal32" />
 			<Add library="curldll" />
 			<Add library="lua5.1" />
 			<Add directory="..\..\cyborus-game-engine" />

@@ -77,10 +77,8 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
             break;
         }
 
-
         default: {}
     }
-
 }
 
 void GameModule::onMouseWheel(bool inUp)
