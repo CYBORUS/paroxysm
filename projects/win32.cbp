@@ -52,6 +52,10 @@
 			<Add library="openal32" />
 			<Add library="curldll" />
 			<Add library="lua5.1" />
+			<Add library="vorbisfile" />
+			<Add library="vorbisenc" />
+			<Add library="vorbis" />
+			<Add library="ogg" />
 			<Add directory="..\..\cyborus-game-engine" />
 		</Linker>
 		<Unit filename="..\source\GameModule.cpp" />
