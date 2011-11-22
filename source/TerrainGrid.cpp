@@ -5,7 +5,11 @@ using namespace CGE;
 
 TerrainGrid::TerrainGrid() : mHeights(4), mRows(0), mCols(0), mSize(0)
 {
-    mTexture.loadImage("assets/images/green.png");
+    mTexture.loadImage("data/images/green.png");
+
+    mClusterVBO.mount(mIVBO);
+    mClusterVBO.mount(mBuffers[ModelFromFile::VERTEX_BUFFER], 0);
+    mClusterVBO.mount(mBuffers[ModelFromFile::TEXTURE_BUFFER], 1);
 }
 
 TerrainGrid::~TerrainGrid()
@@ -23,9 +27,9 @@ size_t TerrainGrid::toIndex(size_t inRow, size_t inCol)
     return inRow * mCols + inCol;
 }
 
-void TerrainGrid::create(size_t inRows, size_t inCols)
+void TerrainGrid::setSize(size_t inRows, size_t inCols)
 {
-    static const char* functionName = "TerrainGrid::create";
+    static const char* functionName = "TerrainGrid::setSize";
 
     if (!inRows || !inCols)
         throw CGE::Exception(functionName, "invalid size parameters");
@@ -146,10 +150,6 @@ void TerrainGrid::buildVBO()
         2);
 
     //mIVBO.loadData(GL_TRIANGLES, numIndices, indices);
-
-    mClusterVBO.mount(mIVBO);
-    mClusterVBO.mount(mBuffers[ModelFromFile::VERTEX_BUFFER], 0);
-    mClusterVBO.mount(mBuffers[ModelFromFile::TEXTURE_BUFFER], 1);
 
     free(memChunk);
 
@@ -679,7 +679,7 @@ std::istream& operator>>(std::istream& inStream, TerrainGrid& inTerrainGrid)
     size_t rows;
     size_t cols;
     inStream >> rows >> cols;
-    inTerrainGrid.create(rows, cols);
+    inTerrainGrid.setSize(rows, cols);
 
     for (size_t i = 0; i < inTerrainGrid.mSize; ++i)
         inStream >> inTerrainGrid.mHeights[i];

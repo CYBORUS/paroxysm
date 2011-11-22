@@ -30,7 +30,7 @@ class TerrainGrid : public CGE::Model
         void set(int inRow, int inCol, float inHeight, bool inFindNormal);
         float findHeight(float inX, float inY);
         void findNormal(int inRow, int inCol);
-        void create(size_t inRows, size_t inCols);
+        void setSize(size_t inRows, size_t inCols);
         void buildVBO();
 
         inline const Matrix<float>& getMatrix() const { return mHeights; }
