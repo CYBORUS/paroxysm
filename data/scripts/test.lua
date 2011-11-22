@@ -83,7 +83,7 @@ function Tank:new()
     newTank.actors = {}
     newTank.actors.body = addActor(newTank.index, "assets/models/bradley_body.c3m")
     newTank.actors.head = addActor(newTank.index, "assets/models/bradley_head.c3m", newTank.actors.body)
-    newTank.actors.turret = addActor(newTank.index, "assets/models/bradley_turret.c3m", newTank.actors.head)
+    newTank.actors.turret = addActor(newTank.index, "assets/models/bradley_turret.c3m")
     
     newTank.onCollision = function(entity)
             --print("BLAM!")
