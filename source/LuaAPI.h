@@ -16,6 +16,7 @@
 #ifndef LUAAPI_H
 #define LUAAPI_H
 
+#include <CGE/OpenAL/SoundBuffer.h>
 #include <CGE/LuaMachine.h>
 #include <CGE/Entity.h>
 #include <CGE/ResourceManager.h>
@@ -60,6 +61,7 @@ class LuaAPI
         CGE::LuaMachine mLua;
         CGE::SceneGraphNode& mHeadNode;
         CGE::ResourceManager<CGE::ModelFromFile> mModels;
+        CGE::SoundBuffer mSoundTest;
 
         std::vector<size_t> mHoles;
         std::vector<CGE::Entity*> mEntities;
