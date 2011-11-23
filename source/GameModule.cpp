@@ -1,9 +1,11 @@
 #include "GameModule.h"
+#include <CGE/Download.h>
 
 using namespace std;
 
 GameModule::GameModule() : mLuaAPI(mViewNode), mXPan(0.0f), mYPan(0.0f)
 {
+    CGE::Download d; // only here for testing curl linking
 }
 
 GameModule::~GameModule()

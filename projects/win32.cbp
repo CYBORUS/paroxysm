@@ -39,6 +39,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-DCURL_STATICLIB" />
 			<Add directory="..\..\cyborus-game-engine" />
 		</Compiler>
 		<Linker>
@@ -50,12 +51,15 @@
 			<Add library="SDL" />
 			<Add library="opengl32" />
 			<Add library="openal32" />
-			<Add library="curldll" />
-			<Add library="lua5.1" />
+			<Add library="lua" />
 			<Add library="vorbisfile" />
 			<Add library="vorbisenc" />
 			<Add library="vorbis" />
 			<Add library="ogg" />
+			<Add library="curl" />
+			<Add library="ws2_32" />
+			<Add library="winmm" />
+			<Add library="wldap32" />
 			<Add directory="..\..\cyborus-game-engine" />
 		</Linker>
 		<Unit filename="..\source\GameModule.cpp" />
