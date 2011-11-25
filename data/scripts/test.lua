@@ -1,5 +1,8 @@
-NumberOfTanks = 50
+NumberOfTanks = 500
 allTheTanks = {}
+
+terrainSizeX = 200
+terrainSizeY = 200
 
 Tank = {}
 
@@ -40,9 +43,9 @@ function Tank:update()
     setEntityActorRotation(self.index, self.actors.body, 0, px * 10, 0)
     
     if px < 0.5 and vx < 0 then self:setVelocity(-vx, vy, vz) end
-    if px > 18.5 and vx > 0 then self:setVelocity(-vx, vy, vz) end
+    if px > terrainSizeX - 1.5 and vx > 0 then self:setVelocity(-vx, vy, vz) end
     if py < 0.5 and vy < 0 then self:setVelocity(vx, -vy, vz) end
-    if py > 18.5 and vy > 0 then self:setVelocity(vx, -vy, vz) end
+    if py > terrainSizeY - 1.5 and vy > 0 then self:setVelocity(vx, -vy, vz) end
 end
 
 function Tank:getMass()
@@ -147,7 +150,7 @@ function update()
 end
 
 function allTheThings()
-	setTerrainSize(200, 200)
+	setTerrainSize(terrainSizeX, terrainSizeY)
     for i = 1, NumberOfTanks do
         allTheTanks[i] = Tank:new()
         allTheTanks[i]:setPosition(randomLocation(),

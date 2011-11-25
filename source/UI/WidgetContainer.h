@@ -1,7 +1,7 @@
 #ifndef WIDGETCONTAINER_H
 #define WIDGETCONTAINER_H
 
-#include <Widget.h>
+#include "Widget.h"
 
 
 class WidgetContainer : public Widget
@@ -9,7 +9,6 @@ class WidgetContainer : public Widget
    public:
       WidgetContainer();
       virtual ~WidgetContainer();
-   protected:
    private:
 };
 
