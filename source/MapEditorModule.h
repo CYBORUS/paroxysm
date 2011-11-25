@@ -59,7 +59,6 @@ class MapEditorModule : public ParoxysmModule
         std::list<CGE::Actor*> mActors;
 
         TerrainGrid mGrid;
-        CGE::Model* mModel;
         CGE::Actor* mSphere;
 
         CGE::ResourceManager<CGE::ModelFromFile> mManager;
@@ -69,7 +68,6 @@ class MapEditorModule : public ParoxysmModule
         vec4f mSpherePosition;
 
         MouseState mMouseState;
-
 
         bool mLeftClickDown;
 

@@ -116,9 +116,9 @@ function Tank:new()
     newTank:setRadius(0.5)
     
     newTank.actors = {}
-    newTank.actors.body = addActor(newTank.index, "assets/models/bradley_body.c3m")
-    newTank.actors.head = addActor(newTank.index, "assets/models/bradley_head.c3m", newTank.actors.body)
-    newTank.actors.turret = addActor(newTank.index, "assets/models/bradley_turret.c3m")
+    newTank.actors.body = addActor(newTank.index, "data/models/bradley_body.c3m")
+    newTank.actors.head = addActor(newTank.index, "data/models/bradley_head.c3m", newTank.actors.body)
+    newTank.actors.turret = addActor(newTank.index, "data/models/bradley_turret.c3m")
     
     local collisionCallback = function(entity) newTank:onCollision(entity) end
     newTank:setCollisionCallback(collisionCallback)
@@ -146,14 +146,6 @@ function update()
     end
 end
 
-function sayHello()
-    print("Hello!")
-end
-
-function sayThings(inTable)
-    print(inTable.message)
-end
-
 function allTheThings()
 	setTerrainSize(200, 200)
     for i = 1, NumberOfTanks do
@@ -168,12 +160,7 @@ function allTheThings()
         local z = 0
         
         x, y, z = allTheTanks[i]:getVelocity()
-        
-        --print("tank velocity : " .. x .. " " .. y .. " " .. z)
     end
-    
-    local t = { message = "HUZZAH!" }
-    sendBoth(sayThings, t, 1, 3, nil, "bai")
 end
 
 allTheThings()
