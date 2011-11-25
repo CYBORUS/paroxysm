@@ -61,6 +61,40 @@ function Tank:setRadius(radius)
     setEntityRadius(self.index, radius)
 end
 
+function Tank:onCollision(entity)
+    local px = 0
+    local py = 0
+    local pz = 0
+    
+    px, py, pz = self:getPosition()
+    
+    local vx = 0
+    local vy = 0
+    local vz = 0
+    
+    vx, vy, vz = self:getVelocity()
+    
+    local px2 = 0
+    local py2 = 0
+    local pz2 = 0
+    
+    px2, py2, pz2 = entity:getPosition()
+    
+    local vx2 = 0
+    local vy2 = 0
+    local vz2 = 0
+    
+    vx2, vy2, vz2 = entity:getVelocity()
+    
+    if px < px2 and vx > 0 then vx = -vx end
+    if px > px2 and vx < 0 then vx = -vx end
+    
+    if py > py2 and vy < 0 then vy = -vy end
+    if py < py2 and vy > 0 then vy = -vy end
+    
+    self:setVelocity(vx, vy, vz)
+end
+
 function Tank:new()
     local newTank = {
         setCollisionCallback = Tank.setCollisionCallback,
@@ -72,7 +106,8 @@ function Tank:new()
         setMass = Tank.setMass,
         getRadius = Tank.getRadius,
         setRadius = Tank.setRadius,
-        update = Tank.update,
+        onCollision = Tank.onCollision,
+        update = Tank.update
         }
 		
 	newTank.index = addEntity(newTank)
@@ -85,46 +120,8 @@ function Tank:new()
     newTank.actors.head = addActor(newTank.index, "assets/models/bradley_head.c3m", newTank.actors.body)
     newTank.actors.turret = addActor(newTank.index, "assets/models/bradley_turret.c3m")
     
-    newTank.onCollision = function(entity)
-            --print("BLAM!")
-            
-            local px = 0
-            local py = 0
-            local pz = 0
-            
-            px, py, pz = newTank:getPosition()
-            
-            local vx = 0
-            local vy = 0
-            local vz = 0
-            
-            vx, vy, vz = newTank:getVelocity()
-            
-            local px2 = 0
-            local py2 = 0
-            local pz2 = 0
-            
-            px2, py2, pz2 = entity:getPosition()
-            
-            local vx2 = 0
-            local vy2 = 0
-            local vz2 = 0
-            
-            vx2, vy2, vz2 = entity:getVelocity()
-            
-            --print("self: " .. px .. " " .. py .. " " .. pz .. " " .. vx
-            --    .. " " .. vy .. " " .. vz)
-            
-            if px < px2 and vx > 0 then vx = -vx end
-            if px > px2 and vx < 0 then vx = -vx end
-            
-            if py > py2 and vy < 0 then vy = -vy end
-            if py < py2 and vy > 0 then vy = -vy end
-            
-            newTank:setVelocity(vx, vy, vz)
-        end
-    
-    newTank:setCollisionCallback(newTank.onCollision)
+    local collisionCallback = function(entity) newTank:onCollision(entity) end
+    newTank:setCollisionCallback(collisionCallback)
     
     return newTank
 end

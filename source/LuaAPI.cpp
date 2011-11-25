@@ -29,7 +29,8 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
     mGrid.setSize(20, 20);
     mGrid.buildVBO();
 
-    mSoundTest.loadFile("data/audio/dwang.ogg");
+    //mSoundTest.loadFile("data/audio/dwang.ogg");
+    mSoundTest.loadFile("data/audio/pew.wav");
 
     CGE::Actor* a = new CGE::Actor(&mGrid);
     inHeadNode.addChildNode(a);
