@@ -23,12 +23,13 @@ using namespace std;
 LuaAPI* LuaAPI::luaThis = NULL;
 
 LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
-    mHeadNode(inHeadNode)
+    mHeadNode(inHeadNode), mSourceTest(mSoundTest)
 {
     activate();
     mGrid.setSize(20, 20);
     mGrid.buildVBO();
 
+    //mSoundTest.loadFile("data/audio/dwang.ogg");
     mSoundTest.loadFile("data/audio/pew.wav");
 
     CGE::Actor* a = new CGE::Actor(&mGrid);
@@ -73,6 +74,7 @@ void LuaAPI::display()
 
 void LuaAPI::update()
 {
+    mSourceTest.update();
     mLua.runCommand("update()");
     checkForCollisions();
 

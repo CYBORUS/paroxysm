@@ -7,8 +7,7 @@ using namespace std;
 MapEditorModule::MapEditorModule() : mLeftClickDown(false), mXPan(0.0f),
     mYPan(0.0f)
 {
-    mModel = mManager.load("bradley.c3m");
-    mSphere = new CGE::Actor(mManager.load("cube_texture.c3m"));
+    mSphere = new CGE::Actor(mManager.load("data/models/cube_texture.c3m"));
     mLeftClickDown = false;
 }
 
@@ -27,7 +26,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     mViewNode.addChildNode(mSphere);
     mBin.addActor(mSphere);
 
-    ifstream fin("assets/maps/Shared_Map.pmf");
+    ifstream fin("data/maps/Shared_Map.pmf");
     if (!fin)
         throw CGE::Exception("", "no map to load");
     size_t size = 20;
@@ -36,7 +35,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     mGrid.buildVBO();
     fin.close();
 
-    Button* button = new Button("assets/images/hud/load_map.png", 2.0f, 1.0f);
+    Button* button = new Button("data/images/hud/load_map.png", 2.0f, 1.0f);
     button->setClickListener(uiLoadMap, this);
     button->setPosition(3.0f, -2.0f);
 
