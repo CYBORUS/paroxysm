@@ -139,6 +139,10 @@ function update()
     end
 end
 
+function sayHello()
+    print("SageMage is a baddie")
+end
+
 function allTheThings()
 	setTerrainSize(terrainSizeX, terrainSizeY)
 	createCommand("testing", sayHello)
@@ -155,6 +159,8 @@ function allTheThings()
         
         x, y, z = allTheTanks[i]:getVelocity()
     end
+    
+    setUpdateCallback(update)
 end
 
 allTheThings()

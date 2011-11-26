@@ -56,6 +56,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
     mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
     mLua.addFunction("setEntityCollisionCR", luaSetEntityCollisionCR);
     mLua.addFunction("setTerrainSize", luaSetTerrainSize);
+    mLua.addFunction("setUpdateCallback", luaSetUpdateCallback);
     mLua.addFunction("sendBoth", luaSendBoth);
     mLua.addFunction("createCommand", luaCreateCommand);
     mLua.loadFile("data/scripts/api.lua");
@@ -75,7 +76,12 @@ void LuaAPI::display()
 void LuaAPI::update()
 {
     mSourceTest.update();
-    mLua.runCommand("update()");
+    if (mLuaUpdateCallback.isSet())
+    {
+        mLuaUpdateCallback.get();
+        lua_call(mLua.getState(), 0, 0);
+    }
+
     checkForCollisions();
 
     for (size_t i = 0; i < mEntities.size(); ++i)
@@ -589,6 +595,21 @@ int LuaAPI::luaCreateCommand(lua_State* inState)
         if (argc > 2) lua_pop(inState, argc - 2);
 
         luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaSetUpdateCallback(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isfunction(inState, 1))
+    {
+        if (argc > 1) lua_pop(inState, argc - 1);
+
+        luaThis->mLuaUpdateCallback.set(inState);
     }
 
     return 0;

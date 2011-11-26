@@ -3,17 +3,15 @@
 #include <cassert>
 using namespace std;
 
-LuaInputCommand::LuaInputCommand(lua_State* inState)
+LuaInputCommand::LuaInputCommand(lua_State* inState) : mState(inState)
 {
     assert(inState != NULL);
     mCallbackName = lua_tostring(inState, 1);
     mLuaCallback.set(inState);
-    mState = inState;
 }
 
 LuaInputCommand::~LuaInputCommand()
 {
-    //dtor
 }
 
 void LuaInputCommand::issueCommand(double inIntensity) const

@@ -18,4 +18,4 @@ class LuaInputCommand
         std::string mCallbackName;
 };
 
-#endif // LUAINPUTCOMMAND_H
+#endif
