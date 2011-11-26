@@ -29,7 +29,6 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
     mGrid.setSize(20, 20);
     mGrid.buildVBO();
 
-    //mSoundTest.loadFile("data/audio/dwang.ogg");
     mSoundTest.loadFile("data/audio/pew.wav");
 
     CGE::Actor* a = new CGE::Actor(&mGrid);
@@ -58,6 +57,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
     mLua.addFunction("setEntityCollisionCR", luaSetEntityCollisionCR);
     mLua.addFunction("setTerrainSize", luaSetTerrainSize);
     mLua.addFunction("sendBoth", luaSendBoth);
+    mLua.addFunction("createCommand", luaCreateCommand);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -574,6 +574,21 @@ int LuaAPI::luaSetTerrainSize(lua_State* inState)
          luaThis->mGrid.setSize(height, width);
          luaThis->mGrid.buildVBO();
         }
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCreateCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 1 && lua_isstring(inState, 1) && lua_isfunction(inState, 2))
+    {
+        if (argc > 2) lua_pop(inState, argc - 2);
+
+        luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
     }
 
     return 0;

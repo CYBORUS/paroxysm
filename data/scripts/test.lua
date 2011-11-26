@@ -141,6 +141,7 @@ end
 
 function allTheThings()
 	setTerrainSize(terrainSizeX, terrainSizeY)
+	createCommand("testing", sayHello)
     for i = 1, NumberOfTanks do
         allTheTanks[i] = Tank:new()
         allTheTanks[i]:setPosition(randomLocation(),
