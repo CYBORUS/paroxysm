@@ -18,6 +18,7 @@
 
 #include <CGE/OpenAL/SoundBuffer.h>
 #include <CGE/LuaMachine.h>
+#include "LuaInputCommand.h"
 #include <CGE/Entity.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/ModelFromFile.h>
@@ -38,6 +39,7 @@ class LuaAPI
 
         void display();
         void update();
+        inline const vector<LuaInputCommand*>& getLuaInputCommands() const { return mLuaInputCommands;};
 
     protected:
     private:
@@ -65,6 +67,7 @@ class LuaAPI
 
         std::vector<size_t> mHoles;
         std::vector<CGE::Entity*> mEntities;
+        std::vector<LuaInputCommand*> mLuaInputCommands;
         std::list<CGE::Entity*> mCollisionEntities;
 
         static LuaAPI* luaThis;
@@ -83,6 +86,7 @@ class LuaAPI
         static int luaSetEntityVelocity(lua_State* inState);
         static int luaSetTerrainSize(lua_State* inState);
         static int luaAddActor(lua_State* inState);
+        static int luaCreateCommand(lua_State* inState);
 
         static int luaSetEntityCollisionCR(lua_State* inState);
         void checkForCollisions();

@@ -57,6 +57,7 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
     mLua.addFunction("setEntityCollisionCR", luaSetEntityCollisionCR);
     mLua.addFunction("setTerrainSize", luaSetTerrainSize);
     mLua.addFunction("sendBoth", luaSendBoth);
+    mLua.addFunction("createCommand", luaCreateCommand);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -564,6 +565,7 @@ int LuaAPI::luaSetTerrainSize(lua_State* inState)
 
     if (argc > 1 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2))
     {
+
         LUA_INTEGER height = lua_tointeger(inState, 1);
         LUA_INTEGER width = lua_tointeger(inState, 2);
 
@@ -572,6 +574,21 @@ int LuaAPI::luaSetTerrainSize(lua_State* inState)
          luaThis->mGrid.setSize(height, width);
          luaThis->mGrid.buildVBO();
         }
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCreateCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 1 && lua_isstring(inState, 1) && lua_isfunction(inState, 2))
+    {
+        if (argc > 2) lua_pop(inState, argc - 2);
+
+        luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
     }
 
     return 0;

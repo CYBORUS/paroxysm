@@ -6,6 +6,7 @@
 #include "ParoxysmModule.h"
 #include "TerrainGrid.h"
 #include "LuaAPI.h"
+#include "LuaInputCommand.h"
 
 #include <iostream>
 #include <fstream>
