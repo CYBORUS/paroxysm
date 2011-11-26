@@ -1,10 +1,11 @@
-NumberOfTanks = 500
+NumberOfTanks = 200
 allTheTanks = {}
 
-terrainSizeX = 200
-terrainSizeY = 200
+terrainSizeX = 100
+terrainSizeY = 100
 
-Tank = {}
+Tank = { mt = {} }
+Tank.mt.__index = Tank
 
 function Tank:setCollisionCallback(callback)
     setEntityCollisionCR(self.index, callback)
@@ -99,19 +100,8 @@ function Tank:onCollision(entity)
 end
 
 function Tank:new()
-    local newTank = {
-        setCollisionCallback = Tank.setCollisionCallback,
-        getPosition = Tank.getPosition,
-        setPosition = Tank.setPosition,
-        getVelocity = Tank.getVelocity,
-        setVelocity = Tank.setVelocity,
-        getMass = Tank.getMass,
-        setMass = Tank.setMass,
-        getRadius = Tank.getRadius,
-        setRadius = Tank.setRadius,
-        onCollision = Tank.onCollision,
-        update = Tank.update
-        }
+    local newTank = {}
+    setmetatable(newTank, Tank.mt)
 		
 	newTank.index = addEntity(newTank)
     
@@ -130,7 +120,7 @@ function Tank:new()
 end
 
 function randomLocation()
-    return math.random() * 20
+    return math.random() * terrainSizeX
 end
 
 function randomDirection()
