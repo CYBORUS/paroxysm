@@ -3,7 +3,7 @@
 
 using namespace std;
 
-GameModule::GameModule() : mLuaAPI(mViewNode), mXPan(0.0f), mYPan(0.0f)
+GameModule::GameModule() : mXPan(0.0f), mYPan(0.0f)
 {
     CGE::Download d; // only here for testing curl linking
     memset(mKeyCommands, 0, sizeof(mKeyCommands));
@@ -30,7 +30,7 @@ void GameModule::onOpen()
     mViewNode.setDistance(8.0f);
 
     // Prevent the first-frame flicker.
-    mLuaAPI.update();
+    mLuaAPI.update(mProjection);
     mViewNode.update();
     mViewNode.updateAllMatrices();
 
@@ -56,7 +56,7 @@ void GameModule::onPulse()
     mViewNode.update();
     mViewNode.updateAllMatrices();
 
-    mLuaAPI.update();
+    mLuaAPI.update(mProjection);
 
     mUI.update();
 }
@@ -216,16 +216,18 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
 void GameModule::loadKeyCommands()
 {
-    const vector<LuaInputCommand*>& inputCommands = mLuaAPI.getLuaInputCommands();
-    for (int i = 0; i < inputCommands.size(); i++)
+    const vector<LuaInputCommand*>& inputCommands =
+        mLuaAPI.getLuaInputCommands();
+
+    for (size_t i = 0; i < inputCommands.size(); i++)
     {
         lua_Integer keyNum = inputCommands[i]->getKeyNum();
         mKeyCommands[keyNum] = inputCommands[i];
     }
 }
 
-void GameModule::issueLuaCommand(SDLKey inKey, int inIntensity)
+void GameModule::issueLuaCommand(SDLKey inKey, double inIntensity)
 {
-    if (mKeyCommands[inKey])
-        mKeyCommands[inKey]->issueCommand(inIntensity);
+    const LuaInputCommand* lic = mKeyCommands[inKey];
+    if (lic) lic->issueCommand(inIntensity);
 }

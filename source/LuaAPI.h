@@ -18,6 +18,8 @@
 
 #include <CGE/OpenAL/SoundBuffer.h>
 #include <CGE/OpenAL/SoundSource.h>
+#include <CGE/Camera.h>
+#include <CGE/PublicMatrixNode.h>
 #include <CGE/LuaMachine.h>
 #include <CGE/LuaReference.h>
 #include <CGE/Entity.h>
@@ -36,13 +38,13 @@
 class LuaAPI
 {
     public:
-        LuaAPI(CGE::SceneGraphNode& inHeadNode);
+        LuaAPI();
         virtual ~LuaAPI();
 
         inline void activate() { luaThis = this; }
 
         void display();
-        void update();
+        void update(const mat4f& inProjection);
 
         inline const vector<LuaInputCommand*>& getLuaInputCommands() const
         {
@@ -52,6 +54,7 @@ class LuaAPI
     protected:
     private:
         CGE::Entity* getEntity(size_t inIndex);
+        void checkForCollisions();
         void removeEntity(size_t inIndex);
         void addActor(size_t inIndex, const std::string& inModel);
         void setEntityDefaultRotation(size_t inIndex, double inX, double inY,
@@ -65,13 +68,16 @@ class LuaAPI
         SkyBox mSkyBox;
         CGE::Actor mSkyBoxActor;
         TerrainGrid mGrid;
+        CGE::Actor mGridActor;
         GeneralBin mBin;
         SkyBoxBin mSkyBoxBin;
 
         CGE::LuaMachine mLua;
         CGE::LuaReference mLuaUpdateCallback;
-        CGE::SceneGraphNode& mHeadNode;
         CGE::ResourceManager<CGE::ModelFromFile> mModels;
+        CGE::Camera mCamera;
+        CGE::PublicMatrixNode mCameraAnglesNode;
+        CGE::PublicMatrixNode mCameraTranslationNode;
         CGE::SoundBuffer mSoundTest;
         CGE::SoundSource mSourceTest;
 
@@ -81,6 +87,8 @@ class LuaAPI
         std::list<CGE::Entity*> mCollisionEntities;
 
         static LuaAPI* luaThis;
+
+        /// Entity management functions
         static int luaAddEntity(lua_State* inState);
         static int luaRemoveEntity(lua_State* inState);
         static int luaSetEntityDefaultRotation(lua_State* inState);
@@ -95,14 +103,17 @@ class LuaAPI
         static int luaGetEntityVelocity(lua_State* inState);
         static int luaSetEntityVelocity(lua_State* inState);
         static int luaSetTerrainSize(lua_State* inState);
-        static int luaSetUpdateCallback(lua_State* inState);
         static int luaAddActor(lua_State* inState);
-        static int luaCreateCommand(lua_State* inState);
-
         static int luaSetEntityCollisionCR(lua_State* inState);
-        void checkForCollisions();
 
+        /// General game state management
+        static int luaSetUpdateCallback(lua_State* inState);
+        static int luaCreateCommand(lua_State* inState);
         static int luaSendBoth(lua_State* inState);
+
+        /// Camera control
+        static int luaMoveCamera(lua_State* inState);
+        static int luaSetCameraPosition(lua_State* inState);
 };
 
 #endif

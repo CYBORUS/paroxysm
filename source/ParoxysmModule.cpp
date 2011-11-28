@@ -16,9 +16,9 @@ void ParoxysmModule::onResize(int inWidth, int inHeight)
     mUI.onResize(inWidth, inHeight);
     mUI.update();
 
-    CGE::Matrix4x4<GLfloat> projection;
-    projection.perspective(30.0f, ratio, 1.0f, 1000.0f);
-    mViewNode.setProjection(projection);
+    mProjection.loadIdentity();
+    mProjection.perspective(30.0f, ratio, 1.0f, 1000.0f);
+    mViewNode.setProjection(mProjection);
     mViewNode.updateAllMatrices();
 
     glViewport(0, 0, inWidth, inHeight);

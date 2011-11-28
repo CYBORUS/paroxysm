@@ -48,6 +48,7 @@ class GameModule : public ParoxysmModule
     protected:
     private:
         void loadKeyCommands();
+        void issueLuaCommand(SDLKey inKey, double inIntensity);
 
         LuaAPI mLuaAPI;
         MouseState mMouseState;
@@ -59,10 +60,6 @@ class GameModule : public ParoxysmModule
         float mYPan;
 
         const LuaInputCommand* mKeyCommands[SDLK_LAST];
-
-        void issueLuaCommand(SDLKey inKey, int inIntensity);
-
-
 };
 
 #endif
