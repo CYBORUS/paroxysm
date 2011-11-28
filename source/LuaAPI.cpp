@@ -586,9 +586,23 @@ int LuaAPI::luaCreateCommand(lua_State* inState)
 
     if (argc > 1 && lua_isstring(inState, 1) && lua_isfunction(inState, 2))
     {
-        if (argc > 2) lua_pop(inState, argc - 2);
-
-        luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
+        if ( argc > 2)
+        {
+            if (lua_isnumber(inState, 3))
+            {
+             lua_pop(inState, argc - 3);
+             lua_Integer keyNum = lua_tointeger(inState, 3);
+             lua_pop(inState, argc - 2);
+             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState, keyNum));
+            }
+            else
+            {
+             lua_pop(inState, argc - 2);
+             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
+            }
+        }
+        else
+            luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
     }
 
     return 0;

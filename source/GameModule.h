@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
 
 class GameModule : public ParoxysmModule
 {
@@ -46,6 +47,8 @@ class GameModule : public ParoxysmModule
 
     protected:
     private:
+        void loadKeyCommands();
+
         LuaAPI mLuaAPI;
         MouseState mMouseState;
 
@@ -54,6 +57,10 @@ class GameModule : public ParoxysmModule
 
         float mXPan;
         float mYPan;
+
+        const LuaInputCommand* mKeyCommands[SDLK_LAST];
+
+        void issueLuaCommand(SDLKey inKey, int inIntensity);
 
 
 };
