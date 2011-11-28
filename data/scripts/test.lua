@@ -1,5 +1,6 @@
 NumberOfTanks = 200
 allTheTanks = {}
+playerTank = {}
 
 terrainSizeX = 100
 terrainSizeY = 100
@@ -86,7 +87,11 @@ function Tank:onCollision(entity)
     if py > py2 and vy < 0 then vy = -vy end
     if py < py2 and vy > 0 then vy = -vy end
     
-    self:setVelocity(vx, vy, vz)
+	if self.isPlayerTank then 
+		self:setVelocity(0, 0, 0)
+	else
+		self:setVelocity(vx, vy, vz)
+	end
 end
 
 function Tank:new()
@@ -133,20 +138,34 @@ function update()
 end
 
 function onMoveForward(intensity)
-    print("command callback -- " .. intensity)
+    playerTank:setVelocity(.05,.05,0)
+end
+function onMoveBackward(intensity)
+    playerTank:setVelocity(-.05,-.05,0)
+end
+function onMoveLeft(intensity)
+	playerTank:setVelocity(-.05,.05,0)
+end
+function onMoveRight(intensity)
+    playerTank:setVelocity(.05,-.05,0)
 end
 
 function allTheThings()
 	setTerrainSize(terrainSizeX, terrainSizeY)
 	createCommand("Move Forward", onMoveForward, 119)
+	createCommand("Move Backward", onMoveBackward, 115)
+	createCommand("Move Left", onMoveLeft, 97)
+	createCommand("Move Right", onMoveRight, 100)
     for i = 1, NumberOfTanks do
         local t = Tank:new()
         t:setPosition(randomLocation(), randomLocation(), 0)
         t:setVelocity(randomDirection(), randomDirection(), 0)
         allTheTanks[i] = t
-        
-        local x, y, z = allTheTanks[i]:getVelocity()
     end
+	playerTank = Tank:new()
+	playerTank:setPosition(5, 5, 0)
+    playerTank:setVelocity(0, 0, 0)
+	playerTank.isPlayerTank = true
     
     setUpdateCallback(update)
 end
