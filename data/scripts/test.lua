@@ -4,41 +4,66 @@ allTheTanks = {}
 terrainSizeX = 100
 terrainSizeY = 100
 
-Tank = { mt = {} }
-Tank.mt.__index = Tank
+Entity = {}
 
-function Tank:setCollisionCallback(callback)
+function Entity:setCollisionCallback(callback)
     setEntityCollisionCR(self.index, callback)
 end
 
-function Tank:getPosition()
+function Entity:getPosition()
     return getEntityPosition(self.index)
 end
 
-function Tank:setPosition(x, y, z)
+function Entity:setPosition(x, y, z)
     setEntityPosition(self.index, x, y, z)
 end
 
-function Tank:getVelocity()
+function Entity:getVelocity()
     return getEntityVelocity(self.index)
 end
 
-function Tank:setVelocity(x, y, z)
+function Entity:setVelocity(x, y, z)
     return setEntityVelocity(self.index, x, y, z)
 end
 
+function Entity:getMass()
+    return getEntityMass(self.index)
+end
+
+function Entity:setMass(mass)
+    setEntityMass(self.index, mass)
+end
+
+function Entity:getRadius()
+    return getEntityRadius(self.index)
+end
+
+function Entity:setRadius(radius)
+    setEntityRadius(self.index, radius)
+end
+
+function Entity:new()
+    local newEntity = {
+        setCollisionCallback = Entity.setCollisionCallback,
+        getPosition = Entity.getPosition,
+        setPosition = Entity.setPosition,
+        getVelocity = Entity.getVelocity,
+        setVelocity = Entity.setVelocity,
+        getMass = Entity.getMass,
+        setMass = Entity.setMass,
+        getRadius = Entity.getRadius,
+        setRadius = Entity.setRadius
+        }
+        
+    return newEntity
+end
+
+Tank = {}
+
 function Tank:update()
-    local px = 0
-    local py = 0
-    local pz = 0
+    local px, py, pz = self:getPosition()    
+    local vx, vy, vz = self:getVelocity()
     
-    px, py, pz = self:getPosition()
-    
-    local vx = 0
-    local vy = 0
-    local vz = 0
-    
-    vx, vy, vz = self:getVelocity()
     resetEntityActorMatrix(self.index, self.actors.body)
     --setEntityPosition(self.index, px, py, pz)
     setEntityActorRotation(self.index, self.actors.body, 0, px * 10, 0)
@@ -49,46 +74,11 @@ function Tank:update()
     if py > terrainSizeY - 1.5 and vy > 0 then self:setVelocity(vx, -vy, vz) end
 end
 
-function Tank:getMass()
-    return getEntityMass(self.index)
-end
-
-function Tank:setMass(mass)
-    setEntityMass(self.index, mass)
-end
-
-function Tank:getRadius()
-    return getEntityRadius(self.index)
-end
-
-function Tank:setRadius(radius)
-    setEntityRadius(self.index, radius)
-end
-
 function Tank:onCollision(entity)
-    local px = 0
-    local py = 0
-    local pz = 0
-    
-    px, py, pz = self:getPosition()
-    
-    local vx = 0
-    local vy = 0
-    local vz = 0
-    
-    vx, vy, vz = self:getVelocity()
-    
-    local px2 = 0
-    local py2 = 0
-    local pz2 = 0
-    
-    px2, py2, pz2 = entity:getPosition()
-    
-    local vx2 = 0
-    local vy2 = 0
-    local vz2 = 0
-    
-    vx2, vy2, vz2 = entity:getVelocity()
+    local px, py, pz = self:getPosition()    
+    local vx, vy, vz = self:getVelocity()    
+    local px2, py2, pz2 = entity:getPosition()    
+    local vx2, vy2, vz2 = entity:getVelocity()
     
     if px < px2 and vx > 0 then vx = -vx end
     if px > px2 and vx < 0 then vx = -vx end
@@ -100,8 +90,9 @@ function Tank:onCollision(entity)
 end
 
 function Tank:new()
-    local newTank = {}
-    setmetatable(newTank, Tank.mt)
+    local newTank = Entity:new()
+    newTank.update = Tank.update
+    newTank.onCollision = Tank.onCollision
 		
 	newTank.index = addEntity(newTank)
     
@@ -109,9 +100,12 @@ function Tank:new()
     newTank:setRadius(0.5)
     
     newTank.actors = {}
-    newTank.actors.body = addActor(newTank.index, "data/models/bradley_body.c3m")
-    newTank.actors.head = addActor(newTank.index, "data/models/bradley_head.c3m", newTank.actors.body)
-    newTank.actors.turret = addActor(newTank.index, "data/models/bradley_turret.c3m")
+    newTank.actors.body = addActor(newTank.index,
+        "data/models/bradley_body.c3m")
+    newTank.actors.head = addActor(newTank.index,
+        "data/models/bradley_head.c3m", newTank.actors.body)
+    newTank.actors.turret = addActor(newTank.index,
+        "data/models/bradley_turret.c3m")
     
     local collisionCallback = function(entity) newTank:onCollision(entity) end
     newTank:setCollisionCallback(collisionCallback)
@@ -133,31 +127,25 @@ function update()
         
         local chance = math.random()
         if false then
-            allTheTanks[i]:setVelocity(randomDirection(),
-                randomDirection(), 0)
+            allTheTanks[i]:setVelocity(randomDirection(), randomDirection(), 0)
         end
     end
 end
 
-function sayHello()
-    print("SageMage is a baddie")
+function onMoveForward(intensity)
+    print("command callback -- " .. intensity)
 end
 
 function allTheThings()
 	setTerrainSize(terrainSizeX, terrainSizeY)
-	createCommand("testing", sayHello)
+	createCommand("Move Forward", onMoveForward)
     for i = 1, NumberOfTanks do
-        allTheTanks[i] = Tank:new()
-        allTheTanks[i]:setPosition(randomLocation(),
-            randomLocation(), 0)
-        allTheTanks[i]:setVelocity(randomDirection(),
-            randomDirection(), 0)
+        local t = Tank:new()
+        t:setPosition(randomLocation(), randomLocation(), 0)
+        t:setVelocity(randomDirection(), randomDirection(), 0)
+        allTheTanks[i] = t
         
-        local x = 0
-        local y = 0
-        local z = 0
-        
-        x, y, z = allTheTanks[i]:getVelocity()
+        local x, y, z = allTheTanks[i]:getVelocity()
     end
     
     setUpdateCallback(update)

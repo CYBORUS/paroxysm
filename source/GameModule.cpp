@@ -145,9 +145,12 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_w:
         {
-            const vector<LuaInputCommand*>& inputCommands = mLuaAPI.getLuaInputCommands();
+            const vector<LuaInputCommand*>& inputCommands =
+                mLuaAPI.getLuaInputCommands();
+
             if (inputCommands.size() > 0)
                 inputCommands[0]->issueCommand(1);
+
             mYPan = 0.5f;
             break;
         }
