@@ -10,6 +10,15 @@ LuaInputCommand::LuaInputCommand(lua_State* inState) : mState(inState)
     mLuaCallback.set(inState);
 }
 
+LuaInputCommand::LuaInputCommand(lua_State* inState, LUA_INTEGER inKeyNum)
+{
+    assert(inState != NULL);
+    mCallbackName = lua_tostring(inState, 1);
+    mLuaCallback.set(inState);
+    mState = inState;
+    mKeyNum = inKeyNum;
+}
+
 LuaInputCommand::~LuaInputCommand()
 {
 }

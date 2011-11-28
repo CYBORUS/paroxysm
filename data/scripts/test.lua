@@ -138,7 +138,7 @@ end
 
 function allTheThings()
 	setTerrainSize(terrainSizeX, terrainSizeY)
-	createCommand("Move Forward", onMoveForward)
+	createCommand("Move Forward", onMoveForward, 119)
     for i = 1, NumberOfTanks do
         local t = Tank:new()
         t:setPosition(randomLocation(), randomLocation(), 0)

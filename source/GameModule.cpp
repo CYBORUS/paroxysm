@@ -6,6 +6,8 @@ using namespace std;
 GameModule::GameModule() : mLuaAPI(mViewNode), mXPan(0.0f), mYPan(0.0f)
 {
     CGE::Download d; // only here for testing curl linking
+    memset(mKeyCommands, 0, sizeof(mKeyCommands));
+    loadKeyCommands();
 }
 
 GameModule::~GameModule()
@@ -139,36 +141,35 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     {
         case SDLK_ESCAPE:
         {
+            issueLuaCommand(SDLK_ESCAPE, 1);
             mRunning = false;
             break;
         }
 
         case SDLK_w:
         {
-            const vector<LuaInputCommand*>& inputCommands =
-                mLuaAPI.getLuaInputCommands();
-
-            if (inputCommands.size() > 0)
-                inputCommands[0]->issueCommand(1);
-
+            issueLuaCommand(SDLK_w, 1);
             mYPan = 0.5f;
             break;
         }
 
         case SDLK_a:
         {
+            issueLuaCommand(SDLK_a, 1);
             mXPan = -0.5f;
             break;
         }
 
         case SDLK_s:
         {
+            issueLuaCommand(SDLK_s, 1);
             mYPan = -0.5f;
             break;
         }
 
         case SDLK_d:
         {
+            issueLuaCommand(SDLK_d, 1);
             mXPan = 0.5f;
             break;
         }
@@ -211,4 +212,20 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         default: {}
     }
+}
+
+void GameModule::loadKeyCommands()
+{
+    const vector<LuaInputCommand*>& inputCommands = mLuaAPI.getLuaInputCommands();
+    for (int i = 0; i < inputCommands.size(); i++)
+    {
+        lua_Integer keyNum = inputCommands[i]->getKeyNum();
+        mKeyCommands[keyNum] = inputCommands[i];
+    }
+}
+
+void GameModule::issueLuaCommand(SDLKey inKey, int inIntensity)
+{
+    if (mKeyCommands[inKey])
+        mKeyCommands[inKey]->issueCommand(inIntensity);
 }
