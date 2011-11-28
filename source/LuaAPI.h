@@ -19,14 +19,17 @@
 #include <CGE/OpenAL/SoundBuffer.h>
 #include <CGE/OpenAL/SoundSource.h>
 #include <CGE/LuaMachine.h>
-#include "LuaInputCommand.h"
+#include <CGE/LuaReference.h>
 #include <CGE/Entity.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/ModelFromFile.h>
+
 #include "GeneralBin.h"
 #include "SkyBoxBin.h"
 #include "SkyBox.h"
 #include "TerrainGrid.h"
+#include "LuaInputCommand.h"
+
 #include <vector>
 #include <string>
 
@@ -40,7 +43,11 @@ class LuaAPI
 
         void display();
         void update();
-        inline const vector<LuaInputCommand*>& getLuaInputCommands() const { return mLuaInputCommands;};
+
+        inline const vector<LuaInputCommand*>& getLuaInputCommands() const
+        {
+            return mLuaInputCommands;
+        }
 
     protected:
     private:
@@ -48,9 +55,9 @@ class LuaAPI
         void removeEntity(size_t inIndex);
         void addActor(size_t inIndex, const std::string& inModel);
         void setEntityDefaultRotation(size_t inIndex, double inX, double inY,
-                                      double inZ);
+            double inZ);
         void setEntityActorRotation(size_t inEntity, size_t inActor, double inX,
-                                    double inY, double inZ);
+            double inY, double inZ);
         void resetEntityActorMatrix(size_t inEntity, size_t inActor);
         void setEntityPosition(size_t inIndex, double inX, double inY,
             double inZ);
@@ -62,6 +69,7 @@ class LuaAPI
         SkyBoxBin mSkyBoxBin;
 
         CGE::LuaMachine mLua;
+        CGE::LuaReference mLuaUpdateCallback;
         CGE::SceneGraphNode& mHeadNode;
         CGE::ResourceManager<CGE::ModelFromFile> mModels;
         CGE::SoundBuffer mSoundTest;
@@ -87,6 +95,7 @@ class LuaAPI
         static int luaGetEntityVelocity(lua_State* inState);
         static int luaSetEntityVelocity(lua_State* inState);
         static int luaSetTerrainSize(lua_State* inState);
+        static int luaSetUpdateCallback(lua_State* inState);
         static int luaAddActor(lua_State* inState);
         static int luaCreateCommand(lua_State* inState);
 

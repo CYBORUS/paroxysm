@@ -28,6 +28,12 @@ void GameModule::onOpen()
 
     mViewNode.setAngle(-45.0f);
     mViewNode.setDistance(8.0f);
+
+    // Prevent the first-frame flicker.
+    mLuaAPI.update();
+    mViewNode.update();
+    mViewNode.updateAllMatrices();
+
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 

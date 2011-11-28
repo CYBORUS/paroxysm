@@ -21,4 +21,4 @@ class LuaInputCommand
         lua_Integer mKeyNum;
 };
 
-#endif // LUAINPUTCOMMAND_H
+#endif
