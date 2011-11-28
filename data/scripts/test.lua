@@ -26,6 +26,15 @@ end
 function Entity:setVelocity(x, y, z)
     return setEntityVelocity(self.index, x, y, z)
 end
+	
+--Something is wrong with this function, needs looking at
+function Entity:addVelocity(x1, y1, z1)
+	local x2, y2, z2 = getVelocity()
+	local x = x1 + x2
+	local y = y1 + y2
+	local z = z1 + z2
+	self:setVelocity(x, y, z)
+end
 
 function Entity:getMass()
     return getEntityMass(self.index)
@@ -138,16 +147,23 @@ function update()
 end
 
 function onMoveForward(intensity)
-    playerTank:setVelocity(0,.05,0)
+	local x, y, z = playerTank:getVelocity()
+    playerTank:setVelocity(x, y + intensity, z)
 end
+
 function onMoveBackward(intensity)
-    playerTank:setVelocity(0,-.05,0)
+	local x, y, z = playerTank:getVelocity()
+    playerTank:setVelocity(x, y - intensity, z)
 end
+
 function onMoveLeft(intensity)
-	playerTank:setVelocity(-.05,0,0)
+	local x, y, z = playerTank:getVelocity()
+	playerTank:setVelocity(x - intensity, y, z)
 end
+
 function onMoveRight(intensity)
-    playerTank:setVelocity(.05,0,0)
+	local x, y, z = playerTank:getVelocity()
+    playerTank:setVelocity(x + intensity, y, z)
 end
 
 function allTheThings()

@@ -8,6 +8,7 @@ GameModule::GameModule() : mXPan(0.0f), mYPan(0.0f)
     CGE::Download d; // only here for testing curl linking
     memset(mKeyCommands, 0, sizeof(mKeyCommands));
     loadKeyCommands();
+    mIntensity = 0.05;
 }
 
 GameModule::~GameModule()
@@ -141,35 +142,35 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     {
         case SDLK_ESCAPE:
         {
-            issueLuaCommand(SDLK_ESCAPE, 1);
+            issueLuaCommand(SDLK_ESCAPE, mIntensity);
             mRunning = false;
             break;
         }
 
         case SDLK_w:
         {
-            issueLuaCommand(SDLK_w, 1);
+            issueLuaCommand(SDLK_w, mIntensity);
             mYPan = 0.5f;
             break;
         }
 
         case SDLK_a:
         {
-            issueLuaCommand(SDLK_a, 1);
+            issueLuaCommand(SDLK_a, mIntensity);
             mXPan = -0.5f;
             break;
         }
 
         case SDLK_s:
         {
-            issueLuaCommand(SDLK_s, 1);
+            issueLuaCommand(SDLK_s, mIntensity);
             mYPan = -0.5f;
             break;
         }
 
         case SDLK_d:
         {
-            issueLuaCommand(SDLK_d, 1);
+            issueLuaCommand(SDLK_d, mIntensity);
             mXPan = 0.5f;
             break;
         }
@@ -184,6 +185,7 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     {
         case SDLK_w:
         {
+            issueLuaCommand(SDLK_w, -mIntensity);
             if (mYPan > 0.0f)
                 mYPan = 0.0f;
             break;
@@ -191,6 +193,7 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_s:
         {
+            issueLuaCommand(SDLK_s, -mIntensity);
             if (mYPan < 0.0f)
                 mYPan = 0.0f;
             break;
@@ -198,6 +201,7 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_a:
         {
+            issueLuaCommand(SDLK_a, -mIntensity);
             if (mXPan < 0.0f)
                 mXPan = 0.0f;
             break;
@@ -205,6 +209,7 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
         case SDLK_d:
         {
+            issueLuaCommand(SDLK_d, -mIntensity);
             if (mXPan > 0.0f)
                 mXPan = 0.0f;
             break;
