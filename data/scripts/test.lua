@@ -138,16 +138,16 @@ function update()
 end
 
 function onMoveForward(intensity)
-    playerTank:setVelocity(.05,.05,0)
+    playerTank:setVelocity(0,.05,0)
 end
 function onMoveBackward(intensity)
-    playerTank:setVelocity(-.05,-.05,0)
+    playerTank:setVelocity(0,-.05,0)
 end
 function onMoveLeft(intensity)
-	playerTank:setVelocity(-.05,.05,0)
+	playerTank:setVelocity(-.05,0,0)
 end
 function onMoveRight(intensity)
-    playerTank:setVelocity(.05,-.05,0)
+    playerTank:setVelocity(.05,0,0)
 end
 
 function allTheThings()
