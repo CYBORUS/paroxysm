@@ -37,8 +37,8 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
 
     mSkyBoxBin.addActor(&mSkyBoxActor);
     mHeadNode.addChildNode(&mSkyBoxActor);
-    mSkyBoxActor.matrix().translate(10.0f, 10.0f, 0.0f);
-    mSkyBoxActor.matrix().scale(100.0f);
+    mSkyBoxActor.translate(10.0f, 10.0f, 0.0f);
+    mSkyBoxActor.scale(100.0f);
 
     mLua.addFunction("addEntity", luaAddEntity);
     mLua.addFunction("removeEntity", luaRemoveEntity);

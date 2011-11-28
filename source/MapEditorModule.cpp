@@ -70,10 +70,10 @@ void MapEditorModule::onLoop()
 
 void MapEditorModule::onPulse()
 {
-    mSphere->matrix().loadIdentity();
-    mSphere->matrix().translate(mSpherePosition[0], mSpherePosition[1],
+    mSphere->resetMatrix();
+    mSphere->translate(mSpherePosition[0], mSpherePosition[1],
         mSpherePosition[2]);
-    mSphere->matrix().scale(0.1f);
+    mSphere->scale(0.1f);
 
     mViewNode.smartPan(mXPan, mYPan);
 
