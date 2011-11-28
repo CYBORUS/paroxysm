@@ -112,6 +112,7 @@ class LuaAPI
         static int luaSendBoth(lua_State* inState);
 
         /// Camera control
+        static int luaCameraFollow(lua_State* inState);
         static int luaMoveCamera(lua_State* inState);
         static int luaSetCameraPosition(lua_State* inState);
 };

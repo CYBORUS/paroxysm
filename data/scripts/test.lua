@@ -162,10 +162,12 @@ function allTheThings()
         t:setVelocity(randomDirection(), randomDirection(), 0)
         allTheTanks[i] = t
     end
+    
 	playerTank = Tank:new()
 	playerTank:setPosition(5, 5, 0)
     playerTank:setVelocity(0, 0, 0)
 	playerTank.isPlayerTank = true
+	cameraFollow(playerTank.index)
     
     setUpdateCallback(update)
 end

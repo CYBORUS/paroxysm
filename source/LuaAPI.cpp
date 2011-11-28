@@ -27,7 +27,7 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
 {
     activate();
 
-    mCamera.setAngle(-45.0f);
+    mCamera.setAngle(-60.0f);
     mCamera.setDistance(8.0f);
     mCamera.update();
 
@@ -66,6 +66,7 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("createCommand", luaCreateCommand);
     mLua.addFunction("moveCamera", luaMoveCamera);
     mLua.addFunction("setCameraPosition", luaSetCameraPosition);
+    mLua.addFunction("cameraFollow", luaCameraFollow);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -614,7 +615,8 @@ int LuaAPI::luaCreateCommand(lua_State* inState)
              lua_pop(inState, argc - 3);
              lua_Integer keyNum = lua_tointeger(inState, 3);
              lua_pop(inState, argc - 2);
-             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState, keyNum));
+             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState,
+                keyNum));
             }
             else
             {
@@ -639,6 +641,21 @@ int LuaAPI::luaSetUpdateCallback(lua_State* inState)
         if (argc > 1) lua_pop(inState, argc - 1);
 
         luaThis->mLuaUpdateCallback.set(inState);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCameraFollow(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isnumber(inState, 1))
+    {
+        size_t index = lua_tointeger(inState, 1);
+        CGE::Entity* e = luaThis->getEntity(index);
+        if (e) luaThis->mCamera.follow(e);
     }
 
     return 0;
