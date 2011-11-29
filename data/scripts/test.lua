@@ -74,6 +74,8 @@ function Entity:new()
         setRadius = Entity.setRadius,
         delete = Entity.delete
         }
+    
+    newEntity.index = addEntity(newEntity)
         
     return newEntity
 end
@@ -118,8 +120,6 @@ function Tank:new()
     local newTank = Entity:new()
     newTank.update = Tank.update
     newTank.onCollision = Tank.onCollision
-		
-	newTank.index = addEntity(newTank)
     
     setEntityDefaultRotation(newTank.index, 90, 0, 0)
     newTank:setRadius(0.5)

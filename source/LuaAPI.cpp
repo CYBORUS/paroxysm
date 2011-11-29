@@ -103,6 +103,25 @@ void LuaAPI::update(const mat4f& inProjection)
         if (e) e->update();
     }
 
+    if (mDeadEntities.size() > 0)
+    {
+        LDB;
+        for (size_t i = 0; i < mDeadEntities.size(); ++i)
+        {
+            DeadEntity& de = mDeadEntities[i]; LDB;
+            if (de.entity)
+            {
+                mCollisionEntities.remove(de.entity); LDB;
+                delete de.entity; LDB;
+                mEntities[de.index] = NULL; LDB;
+                mHoles.push_back(de.index); LDB;
+            }
+        }
+
+        mDeadEntities.clear();
+        mDebug = true;
+    }
+
     mCamera.update();
 
     mCameraAnglesNode.matrix() = mCamera.getAngleMatrix();
