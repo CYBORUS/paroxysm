@@ -84,14 +84,14 @@ void ViewNode::changePosition(float inX, float inY, float inZ)
 
 void ViewNode::smartPan(float inX, float inY)
 {
-     float theta = TO_RADIANS(mRotation);
-     float c = cos(theta);
-     float s = sin(theta);
-     float dxp = c * inX;
-     float dyp = -s * inX;
-     dxp += s * inY;
-     dyp += c * inY;
+    float theta = TO_RADIANS(mRotation);
+    float c = cos(theta);
+    float s = sin(theta);
+    float dxp = c * inX;
+    float dyp = -s * inX;
+    dxp += s * inY;
+    dyp += c * inY;
 
-     mPosition[0] += dxp;
-     mPosition[1] += dyp;
+    mPosition[0] += dxp;
+    mPosition[1] += dyp;
 }

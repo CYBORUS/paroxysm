@@ -1,7 +1,6 @@
 NumberOfTanks = 200
 TankSpeed = 0.05
 allTheTanks = {}
-playerTank = {}
 
 terrainSizeX = 100
 terrainSizeY = 100
@@ -149,55 +148,46 @@ function update()
 end
 
 function onMoveForward(intensity)
-	local x, y, z = playerTank:getVelocity()
-	if intensity == 1 then
-		playerTank:addVelocity(0, TankSpeed, 0)
-	else
-		if y ~= 0 then
-			playerTank:addVelocity(0, -TankSpeed, 0)
-		end
-	end
+    playerTank.velocity.y = 0.05 * intensity
+    playerTank:updateVelocity()
 end
 
 function onMoveBackward(intensity)
-	local x, y, z = playerTank:getVelocity()
-	if intensity == 1 then
-		playerTank:addVelocity(0, -TankSpeed, 0)
-	else
-		if y ~= 0 then
-			playerTank:addVelocity(0, TankSpeed, 0)
-		end
-	end
+    playerTank.velocity.y = -0.05 * intensity
+    playerTank:updateVelocity()
 end
 
 function onMoveLeft(intensity)
-	local x, y, z = playerTank:getVelocity()
-	if intensity == 1 then
-		playerTank:addVelocity(-TankSpeed, 0, 0)
-	else
-		if x ~= 0 then
-			playerTank:addVelocity(TankSpeed, 0, 0)
-		end
-	end
+	playerTank.velocity.x = -0.05 * intensity
+    playerTank:updateVelocity()
 end
 
 function onMoveRight(intensity)
-	local x, y, z = playerTank:getVelocity()
-	if intensity == 1 then
-		playerTank:addVelocity(TankSpeed, 0, 0)
-	else
-		if x ~= 0 then
-			playerTank:addVelocity(-TankSpeed, 0, 0)
-		end
-	end
+    playerTank.velocity.x = 0.05 * intensity
+    playerTank:updateVelocity()
+end
+
+function onSpace(intensity)
+    if intensity < 1 then return end
+    
+    if playerTank.isBeingFollowed then
+        playerTank.isBeingFollowed = false
+        cameraUnfollow(true)
+    else
+        playerTank.isBeingFollowed = true
+        cameraFollow(playerTank.index)
+    end
 end
 
 function allTheThings()
 	setTerrainSize(terrainSizeX, terrainSizeY)
+	
 	createCommand("Move Forward", onMoveForward, 119)
 	createCommand("Move Backward", onMoveBackward, 115)
 	createCommand("Move Left", onMoveLeft, 97)
 	createCommand("Move Right", onMoveRight, 100)
+	createCommand("Space", onSpace, 32)
+	
     for i = 1, NumberOfTanks do
         local t = Tank:new()
         t:setPosition(randomLocation(), randomLocation(), 0)
@@ -209,6 +199,13 @@ function allTheThings()
 	playerTank:setPosition(5, 5, 0)
     playerTank:setVelocity(0, 0, 0)
 	playerTank.isPlayerTank = true
+	playerTank.isBeingFollowed = true
+	playerTank.velocity = { x = 0, y = 0, z = 0 }
+	
+	function playerTank:updateVelocity()
+	    self:setVelocity(self.velocity.x, self.velocity.y, self.velocity.z)
+	end
+	
 	cameraFollow(playerTank.index)
     
     setUpdateCallback(update)

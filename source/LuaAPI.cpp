@@ -67,6 +67,7 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("moveCamera", luaMoveCamera);
     mLua.addFunction("setCameraPosition", luaSetCameraPosition);
     mLua.addFunction("cameraFollow", luaCameraFollow);
+    mLua.addFunction("cameraUnfollow", luaCameraUnfollow);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -690,6 +691,38 @@ int LuaAPI::luaSetCameraPosition(lua_State* inState)
         lua_Number y = lua_tonumber(inState, 2);
         lua_Number z = lua_tonumber(inState, 3);
         luaThis->mCamera.setPosition(x, y, z);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCameraUnfollow(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0)
+    {
+        if (lua_isboolean(inState, 1))
+        {
+            bool flag = lua_toboolean(inState, 1);
+            luaThis->mCamera.unfollow(flag);
+        }
+        else if (lua_isnumber(inState, 1))
+        {
+            size_t index = lua_tointeger(inState, 1);
+            CGE::Entity* e = luaThis->getEntity(index);
+
+            if (argc > 1 && lua_isboolean(inState, 2))
+            {
+                bool flag = lua_toboolean(inState, 2);
+                luaThis->mCamera.unfollow(e, flag);
+            }
+            else
+            {
+                luaThis->mCamera.unfollow(e);
+            }
+        }
     }
 
     return 0;

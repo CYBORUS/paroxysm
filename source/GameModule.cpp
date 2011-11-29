@@ -137,12 +137,28 @@ void GameModule::onRButtonUp(int inX, int inY)
 
 void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    issueLuaCommand(inSym, 1);
+    issueLuaCommand(inSym, 1.0);
+
+    switch (inSym)
+    {
+        case SDLK_ESCAPE:
+        {
+            mRunning = false;
+            break;
+        }
+
+        default: {}
+    }
 }
 
 void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    issueLuaCommand(inSym, 0);
+    issueLuaCommand(inSym, 0.0);
+
+    switch (inSym)
+    {
+        default: {}
+    }
 }
 
 void GameModule::loadKeyCommands()
