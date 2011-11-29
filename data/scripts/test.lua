@@ -52,6 +52,14 @@ function Entity:setRadius(radius)
     setEntityRadius(self.index, radius)
 end
 
+function Entity:delete()
+    print("deleting " .. self.index)
+    --allTheTanks[self.index] = nil
+    removeEntity(self.index)
+    --self.index = nil
+    print("baleted")
+end
+
 function Entity:new()
     local newEntity = {
         setCollisionCallback = Entity.setCollisionCallback,
@@ -63,7 +71,8 @@ function Entity:new()
         getMass = Entity.getMass,
         setMass = Entity.setMass,
         getRadius = Entity.getRadius,
-        setRadius = Entity.setRadius
+        setRadius = Entity.setRadius,
+        delete = Entity.delete
         }
         
     return newEntity
@@ -98,7 +107,8 @@ function Tank:onCollision(entity)
     if py < py2 and vy > 0 then vy = -vy end
     
 	if self.isPlayerTank then 
-		self:setVelocity(0, 0, 0)
+		--self:setVelocity(0, 0, 0)
+        entity:delete()
 	else
 		self:setVelocity(vx, vy, vz)
 	end
@@ -138,11 +148,12 @@ end
 
 function update()
     for i = 1, NumberOfTanks do
-        allTheTanks[i]:update()
+        local t = allTheTanks[i]
+        if t and t.index then t:update() end
         
         local chance = math.random()
         if false then
-            allTheTanks[i]:setVelocity(randomDirection(), randomDirection(), 0)
+            t:setVelocity(randomDirection(), randomDirection(), 0)
         end
     end
 end
@@ -208,7 +219,7 @@ function allTheThings()
 	
 	cameraFollow(playerTank.index)
     
-    setUpdateCallback(update)
+    --setUpdateCallback(update)
 end
 
 allTheThings()

@@ -20,11 +20,14 @@
 
 using namespace std;
 
+#define LDB cerr << "debug -- line : " << __LINE__ << '\n'
+
 LuaAPI* LuaAPI::luaThis = NULL;
 
 LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
-    mSourceTest(mSoundTest)
+    mBusyColliding(false), mSourceTest(mSoundTest)
 {
+    mDebug = false;
     activate();
 
     mCamera.setAngle(-60.0f);
@@ -115,13 +118,32 @@ CGE::Entity* LuaAPI::getEntity(size_t inIndex)
 
 void LuaAPI::removeEntity(size_t inIndex)
 {
-    if (inIndex < mEntities.size() && mEntities[inIndex])
+    CGE::Entity* e = getEntity(inIndex);
+    if (e)
     {
-        mCollisionEntities.remove(mEntities[inIndex]);
-        delete mEntities[inIndex];
-        mEntities[inIndex] = NULL;
-        mHoles.push_back(inIndex);
+        // We have to check to see if we are in the middle of a collision.
+        // Removing an entity from mCollisionEntities will invalidate the
+        // iterator and cause a crash. So, instead, we store all the dead
+        // entities to be destroyed after the collisions are done.
+
+        LDB;
+
+        if (mBusyColliding)
+        {
+            DeadEntity de; LDB;
+            de.entity = e; LDB;
+            de.index = inIndex; LDB;
+            mDeadEntities.push_back(de); LDB;
+        }
+        else
+        {
+            mCollisionEntities.remove(e); LDB;
+            delete e; LDB;
+            mEntities[inIndex] = NULL; LDB;
+            mHoles.push_back(inIndex); LDB;
+        }
     }
+     LDB;
 }
 
 void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
@@ -544,6 +566,8 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
 
 void LuaAPI::checkForCollisions()
 {
+    mBusyColliding = true;
+
     for (std::list<CGE::Entity*>::iterator i = mCollisionEntities.begin();
          i != mCollisionEntities.end(); ++i)
     {
@@ -560,6 +584,8 @@ void LuaAPI::checkForCollisions()
               }
          }
     }
+
+    mBusyColliding = false;
 }
 
 int LuaAPI::luaSendBoth(lua_State* inState)
