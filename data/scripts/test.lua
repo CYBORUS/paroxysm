@@ -1,5 +1,6 @@
 NumberOfTanks = 200
 allTheTanks = {}
+playerTank = {}
 
 terrainSizeX = 100
 terrainSizeY = 100
@@ -24,6 +25,15 @@ end
 
 function Entity:setVelocity(x, y, z)
     return setEntityVelocity(self.index, x, y, z)
+end
+	
+--Something is wrong with this function, needs looking at
+function Entity:addVelocity(x1, y1, z1)
+	local x2, y2, z2 = getVelocity()
+	local x = x1 + x2
+	local y = y1 + y2
+	local z = z1 + z2
+	self:setVelocity(x, y, z)
 end
 
 function Entity:getMass()
@@ -86,7 +96,11 @@ function Tank:onCollision(entity)
     if py > py2 and vy < 0 then vy = -vy end
     if py < py2 and vy > 0 then vy = -vy end
     
-    self:setVelocity(vx, vy, vz)
+	if self.isPlayerTank then 
+		self:setVelocity(0, 0, 0)
+	else
+		self:setVelocity(vx, vy, vz)
+	end
 end
 
 function Tank:new()
@@ -133,20 +147,43 @@ function update()
 end
 
 function onMoveForward(intensity)
-    print("command callback -- " .. intensity)
+	local x, y, z = playerTank:getVelocity()
+    playerTank:setVelocity(x, y + intensity, z)
+end
+
+function onMoveBackward(intensity)
+	local x, y, z = playerTank:getVelocity()
+    playerTank:setVelocity(x, y - intensity, z)
+end
+
+function onMoveLeft(intensity)
+	local x, y, z = playerTank:getVelocity()
+	playerTank:setVelocity(x - intensity, y, z)
+end
+
+function onMoveRight(intensity)
+	local x, y, z = playerTank:getVelocity()
+    playerTank:setVelocity(x + intensity, y, z)
 end
 
 function allTheThings()
 	setTerrainSize(terrainSizeX, terrainSizeY)
 	createCommand("Move Forward", onMoveForward, 119)
+	createCommand("Move Backward", onMoveBackward, 115)
+	createCommand("Move Left", onMoveLeft, 97)
+	createCommand("Move Right", onMoveRight, 100)
     for i = 1, NumberOfTanks do
         local t = Tank:new()
         t:setPosition(randomLocation(), randomLocation(), 0)
         t:setVelocity(randomDirection(), randomDirection(), 0)
         allTheTanks[i] = t
-        
-        local x, y, z = allTheTanks[i]:getVelocity()
     end
+    
+	playerTank = Tank:new()
+	playerTank:setPosition(5, 5, 0)
+    playerTank:setVelocity(0, 0, 0)
+	playerTank.isPlayerTank = true
+	cameraFollow(playerTank.index)
     
     setUpdateCallback(update)
 end

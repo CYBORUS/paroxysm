@@ -17,6 +17,7 @@ class ParoxysmModule : public CGE::ManagedModule
     protected:
         UserInterface mUI;
         ViewNode mViewNode;
+        mat4f mProjection;
 
         CGE::Vector<GLint, 4> mViewport;
 };

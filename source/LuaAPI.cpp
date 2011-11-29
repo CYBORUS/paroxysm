@@ -22,23 +22,28 @@ using namespace std;
 
 LuaAPI* LuaAPI::luaThis = NULL;
 
-LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
-    mHeadNode(inHeadNode), mSourceTest(mSoundTest)
+LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
+    mSourceTest(mSoundTest)
 {
     activate();
+
+    mCamera.setAngle(-60.0f);
+    mCamera.setDistance(8.0f);
+    mCamera.update();
+
     mGrid.setSize(20, 20);
     mGrid.buildVBO();
 
     mSoundTest.loadFile("data/audio/pew.wav");
-
-    CGE::Actor* a = new CGE::Actor(&mGrid);
-    inHeadNode.addChildNode(a);
-    mBin.addActor(a);
+    mBin.addActor(&mGridActor);
 
     mSkyBoxBin.addActor(&mSkyBoxActor);
-    mHeadNode.addChildNode(&mSkyBoxActor);
     mSkyBoxActor.translate(10.0f, 10.0f, 0.0f);
     mSkyBoxActor.scale(100.0f);
+
+    mCameraAnglesNode.addChildNode(&mSkyBoxActor);
+    mCameraAnglesNode.addChildNode(&mCameraTranslationNode);
+    mCameraTranslationNode.addChildNode(&mGridActor);
 
     mLua.addFunction("addEntity", luaAddEntity);
     mLua.addFunction("removeEntity", luaRemoveEntity);
@@ -59,6 +64,9 @@ LuaAPI::LuaAPI(CGE::SceneGraphNode& inHeadNode) : mSkyBoxActor(&mSkyBox),
     mLua.addFunction("setUpdateCallback", luaSetUpdateCallback);
     mLua.addFunction("sendBoth", luaSendBoth);
     mLua.addFunction("createCommand", luaCreateCommand);
+    mLua.addFunction("moveCamera", luaMoveCamera);
+    mLua.addFunction("setCameraPosition", luaSetCameraPosition);
+    mLua.addFunction("cameraFollow", luaCameraFollow);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -73,9 +81,10 @@ void LuaAPI::display()
     mSkyBoxBin.renderAll();
 }
 
-void LuaAPI::update()
+void LuaAPI::update(const mat4f& inProjection)
 {
     mSourceTest.update();
+
     if (mLuaUpdateCallback.isSet())
     {
         mLuaUpdateCallback.get();
@@ -89,6 +98,13 @@ void LuaAPI::update()
         CGE::Entity* e = mEntities[i];
         if (e) e->update();
     }
+
+    mCamera.update();
+
+    mCameraAnglesNode.matrix() = mCamera.getAngleMatrix();
+    mCameraTranslationNode.matrix() = mCamera.getTranslateMatrix();
+
+    mCameraAnglesNode.updateMatrices(inProjection);
 }
 
 CGE::Entity* LuaAPI::getEntity(size_t inIndex)
@@ -119,7 +135,7 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
 }
 
 void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
-                                      double inZ)
+    double inZ)
 {
     if (inIndex < mEntities.size() && mEntities[inIndex])
     {
@@ -182,7 +198,7 @@ int LuaAPI::luaAddEntity(lua_State* inState)
     {
         CGE::Entity* entity = new CGE::Entity(inState);
         luaThis->mCollisionEntities.push_back(entity);
-        luaThis->mHeadNode.addChildNode(entity);
+        luaThis->mGridActor.addChildNode(entity);
         size_t index = luaThis->mEntities.size();
 
         if (luaThis->mHoles.size() > 0)
@@ -599,7 +615,8 @@ int LuaAPI::luaCreateCommand(lua_State* inState)
              lua_pop(inState, argc - 3);
              lua_Integer keyNum = lua_tointeger(inState, 3);
              lua_pop(inState, argc - 2);
-             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState, keyNum));
+             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState,
+                keyNum));
             }
             else
             {
@@ -624,6 +641,55 @@ int LuaAPI::luaSetUpdateCallback(lua_State* inState)
         if (argc > 1) lua_pop(inState, argc - 1);
 
         luaThis->mLuaUpdateCallback.set(inState);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCameraFollow(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isnumber(inState, 1))
+    {
+        size_t index = lua_tointeger(inState, 1);
+        CGE::Entity* e = luaThis->getEntity(index);
+        if (e) luaThis->mCamera.follow(e);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaMoveCamera(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 2 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2)
+        && lua_isnumber(inState, 3))
+    {
+        lua_Number x = lua_tonumber(inState, 1);
+        lua_Number y = lua_tonumber(inState, 2);
+        lua_Number z = lua_tonumber(inState, 3);
+        luaThis->mCamera.changePosition(x, y, z);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaSetCameraPosition(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 2 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2)
+        && lua_isnumber(inState, 3))
+    {
+        lua_Number x = lua_tonumber(inState, 1);
+        lua_Number y = lua_tonumber(inState, 2);
+        lua_Number z = lua_tonumber(inState, 3);
+        luaThis->mCamera.setPosition(x, y, z);
     }
 
     return 0;
