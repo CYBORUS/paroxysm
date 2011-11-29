@@ -8,7 +8,6 @@ GameModule::GameModule() : mXPan(0.0f), mYPan(0.0f)
     CGE::Download d; // only here for testing curl linking
     memset(mKeyCommands, 0, sizeof(mKeyCommands));
     loadKeyCommands();
-    mIntensity = 0.05;
 }
 
 GameModule::~GameModule()
