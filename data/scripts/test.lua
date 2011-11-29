@@ -1,4 +1,5 @@
 NumberOfTanks = 200
+TankSpeed = 0.05
 allTheTanks = {}
 playerTank = {}
 
@@ -29,7 +30,7 @@ end
 	
 --Something is wrong with this function, needs looking at
 function Entity:addVelocity(x1, y1, z1)
-	local x2, y2, z2 = getVelocity()
+	local x2, y2, z2 = self:getVelocity()
 	local x = x1 + x2
 	local y = y1 + y2
 	local z = z1 + z2
@@ -59,6 +60,7 @@ function Entity:new()
         setPosition = Entity.setPosition,
         getVelocity = Entity.getVelocity,
         setVelocity = Entity.setVelocity,
+		addVelocity = Entity.addVelocity,
         getMass = Entity.getMass,
         setMass = Entity.setMass,
         getRadius = Entity.getRadius,
@@ -148,22 +150,46 @@ end
 
 function onMoveForward(intensity)
 	local x, y, z = playerTank:getVelocity()
-    playerTank:setVelocity(x, y + intensity, z)
+	if intensity == 1 then
+		playerTank:addVelocity(0, TankSpeed, 0)
+	else
+		if y ~= 0 then
+			playerTank:addVelocity(0, -TankSpeed, 0)
+		end
+	end
 end
 
 function onMoveBackward(intensity)
 	local x, y, z = playerTank:getVelocity()
-    playerTank:setVelocity(x, y - intensity, z)
+	if intensity == 1 then
+		playerTank:addVelocity(0, -TankSpeed, 0)
+	else
+		if y ~= 0 then
+			playerTank:addVelocity(0, TankSpeed, 0)
+		end
+	end
 end
 
 function onMoveLeft(intensity)
 	local x, y, z = playerTank:getVelocity()
-	playerTank:setVelocity(x - intensity, y, z)
+	if intensity == 1 then
+		playerTank:addVelocity(-TankSpeed, 0, 0)
+	else
+		if x ~= 0 then
+			playerTank:addVelocity(TankSpeed, 0, 0)
+		end
+	end
 end
 
 function onMoveRight(intensity)
 	local x, y, z = playerTank:getVelocity()
-    playerTank:setVelocity(x + intensity, y, z)
+	if intensity == 1 then
+		playerTank:addVelocity(TankSpeed, 0, 0)
+	else
+		if x ~= 0 then
+			playerTank:addVelocity(-TankSpeed, 0, 0)
+		end
+	end
 end
 
 function allTheThings()
