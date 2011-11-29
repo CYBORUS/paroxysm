@@ -38,7 +38,6 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
 			<Add option="-DCURL_STATICLIB" />
 			<Add directory="..\..\cyborus-game-engine" />
 		</Compiler>
