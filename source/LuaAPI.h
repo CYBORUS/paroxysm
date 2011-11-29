@@ -71,6 +71,8 @@ class LuaAPI
         CGE::Actor mGridActor;
         GeneralBin mBin;
         SkyBoxBin mSkyBoxBin;
+        bool mBusyColliding;
+        bool mDebug;
 
         CGE::LuaMachine mLua;
         CGE::LuaReference mLuaUpdateCallback;
@@ -85,6 +87,14 @@ class LuaAPI
         std::vector<CGE::Entity*> mEntities;
         std::vector<LuaInputCommand*> mLuaInputCommands;
         std::list<CGE::Entity*> mCollisionEntities;
+
+        struct DeadEntity
+        {
+            CGE::Entity* entity;
+            size_t index;
+        };
+
+        std::vector<DeadEntity> mDeadEntities;
 
         static LuaAPI* luaThis;
 
