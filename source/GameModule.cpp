@@ -138,85 +138,12 @@ void GameModule::onRButtonUp(int inX, int inY)
 
 void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    switch (inSym)
-    {
-        case SDLK_ESCAPE:
-        {
-            issueLuaCommand(SDLK_ESCAPE, mIntensity);
-            mRunning = false;
-            break;
-        }
-
-        case SDLK_w:
-        {
-            issueLuaCommand(SDLK_w, mIntensity);
-            mYPan = 0.5f;
-            break;
-        }
-
-        case SDLK_a:
-        {
-            issueLuaCommand(SDLK_a, mIntensity);
-            mXPan = -0.5f;
-            break;
-        }
-
-        case SDLK_s:
-        {
-            issueLuaCommand(SDLK_s, mIntensity);
-            mYPan = -0.5f;
-            break;
-        }
-
-        case SDLK_d:
-        {
-            issueLuaCommand(SDLK_d, mIntensity);
-            mXPan = 0.5f;
-            break;
-        }
-
-        default: {}
-    }
+    issueLuaCommand(inSym, 1);
 }
 
 void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    switch (inSym)
-    {
-        case SDLK_w:
-        {
-            issueLuaCommand(SDLK_w, -mIntensity);
-            if (mYPan > 0.0f)
-                mYPan = 0.0f;
-            break;
-        }
-
-        case SDLK_s:
-        {
-            issueLuaCommand(SDLK_s, -mIntensity);
-            if (mYPan < 0.0f)
-                mYPan = 0.0f;
-            break;
-        }
-
-        case SDLK_a:
-        {
-            issueLuaCommand(SDLK_a, -mIntensity);
-            if (mXPan < 0.0f)
-                mXPan = 0.0f;
-            break;
-        }
-
-        case SDLK_d:
-        {
-            issueLuaCommand(SDLK_d, -mIntensity);
-            if (mXPan > 0.0f)
-                mXPan = 0.0f;
-            break;
-        }
-
-        default: {}
-    }
+    issueLuaCommand(inSym, 0);
 }
 
 void GameModule::loadKeyCommands()

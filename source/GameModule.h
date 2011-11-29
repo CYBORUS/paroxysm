@@ -60,8 +60,6 @@ class GameModule : public ParoxysmModule
         float mYPan;
 
         const LuaInputCommand* mKeyCommands[SDLK_LAST];
-
-        double mIntensity;
 };
 
 #endif
