@@ -31,7 +31,7 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     activate();
 
     mCamera.setAngle(-60.0f);
-    mCamera.setDistance(8.0f);
+    mCamera.setDistance(16.0f);
     mCamera.update();
 
     mGrid.setSize(20, 20);

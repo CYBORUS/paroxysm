@@ -1,9 +1,9 @@
-NumberOfTanks = 200
-TankSpeed = 0.05
+NumberOfTanks = 50
+TankSpeed = 0.1
 allTheTanks = {}
 
-terrainSizeX = 100
-terrainSizeY = 100
+terrainSizeX = 16
+terrainSizeY = 16
 
 Entity = {}
 
@@ -219,7 +219,7 @@ function allTheThings()
 	
 	cameraFollow(playerTank.index)
     
-    --setUpdateCallback(update)
+    setUpdateCallback(update)
 end
 
 allTheThings()
