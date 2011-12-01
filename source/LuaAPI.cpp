@@ -20,8 +20,6 @@
 
 using namespace std;
 
-#define LDB cerr << "debug -- line : " << __LINE__ << '\n'
-
 LuaAPI* LuaAPI::luaThis = NULL;
 
 LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
@@ -105,16 +103,16 @@ void LuaAPI::update(const mat4f& inProjection)
 
     if (mDeadEntities.size() > 0)
     {
-        LDB;
+
         for (size_t i = 0; i < mDeadEntities.size(); ++i)
         {
-            DeadEntity& de = mDeadEntities[i]; LDB;
+            DeadEntity& de = mDeadEntities[i];
             if (de.entity)
             {
-                mCollisionEntities.remove(de.entity); LDB;
-                delete de.entity; LDB;
-                mEntities[de.index] = NULL; LDB;
-                mHoles.push_back(de.index); LDB;
+                mCollisionEntities.remove(de.entity);
+                delete de.entity;
+                mEntities[de.index] = NULL;
+                mHoles.push_back(de.index);
             }
         }
 
@@ -145,24 +143,24 @@ void LuaAPI::removeEntity(size_t inIndex)
         // iterator and cause a crash. So, instead, we store all the dead
         // entities to be destroyed after the collisions are done.
 
-        LDB;
+
 
         if (mBusyColliding)
         {
-            DeadEntity de; LDB;
-            de.entity = e; LDB;
-            de.index = inIndex; LDB;
-            mDeadEntities.push_back(de); LDB;
+            DeadEntity de;
+            de.entity = e;
+            de.index = inIndex;
+            mDeadEntities.push_back(de);
         }
         else
         {
-            mCollisionEntities.remove(e); LDB;
-            delete e; LDB;
-            mEntities[inIndex] = NULL; LDB;
-            mHoles.push_back(inIndex); LDB;
+            mCollisionEntities.remove(e);
+            delete e;
+            mEntities[inIndex] = NULL;
+            mHoles.push_back(inIndex);
         }
     }
-     LDB;
+
 }
 
 void LuaAPI::addActor(size_t inIndex, const std::string& inModel)

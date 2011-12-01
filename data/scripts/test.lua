@@ -53,11 +53,7 @@ function Entity:setRadius(radius)
 end
 
 function Entity:delete()
-    print("deleting " .. self.index)
-    --allTheTanks[self.index] = nil
     removeEntity(self.index)
-    --self.index = nil
-    print("baleted")
 end
 
 function Entity:new()
