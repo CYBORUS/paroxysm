@@ -119,9 +119,9 @@ function Tank:new()
     newTank.actors.body = addActor(newTank.index,
         "data/models/bradley_body.c3m")
     newTank.actors.head = addActor(newTank.index,
-        "data/models/bradley_head.c3m", newTank.actors.body)
+        "data/models/bradley_head.c3m")
     newTank.actors.turret = addActor(newTank.index,
-        "data/models/bradley_turret.c3m")
+        "data/models/bradley_turret.c3m", newTank.actors.head)
     
     local collisionCallback = function(entity) newTank:onCollision(entity) end
     newTank:setCollisionCallback(collisionCallback)
