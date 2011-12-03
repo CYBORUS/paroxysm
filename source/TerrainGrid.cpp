@@ -5,7 +5,7 @@ using namespace CGE;
 
 TerrainGrid::TerrainGrid() : mHeights(4), mRows(0), mCols(0), mSize(0)
 {
-    mTexture.loadImage("data/images/green.png");
+    mTexture.loadImage("data/images/wood.png");
 
     mClusterVBO.mount(mIVBO);
     mClusterVBO.mount(mBuffers[ModelFromFile::VERTEX_BUFFER], 0);

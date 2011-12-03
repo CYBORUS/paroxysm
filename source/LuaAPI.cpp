@@ -23,12 +23,13 @@ using namespace std;
 LuaAPI* LuaAPI::luaThis = NULL;
 
 LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
-    mSourceTest(mSoundTest)
+    mBusyColliding(false), mSourceTest(mSoundTest)
 {
+    mDebug = false;
     activate();
 
     mCamera.setAngle(-60.0f);
-    mCamera.setDistance(8.0f);
+    mCamera.setDistance(16.0f);
     mCamera.update();
 
     mGrid.setSize(20, 20);
@@ -67,6 +68,7 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("moveCamera", luaMoveCamera);
     mLua.addFunction("setCameraPosition", luaSetCameraPosition);
     mLua.addFunction("cameraFollow", luaCameraFollow);
+    mLua.addFunction("cameraUnfollow", luaCameraUnfollow);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -99,6 +101,25 @@ void LuaAPI::update(const mat4f& inProjection)
         if (e) e->update();
     }
 
+    if (mDeadEntities.size() > 0)
+    {
+
+        for (size_t i = 0; i < mDeadEntities.size(); ++i)
+        {
+            DeadEntity& de = mDeadEntities[i];
+            if (de.entity)
+            {
+                mCollisionEntities.remove(de.entity);
+                delete de.entity;
+                mEntities[de.index] = NULL;
+                mHoles.push_back(de.index);
+            }
+        }
+
+        mDeadEntities.clear();
+        mDebug = true;
+    }
+
     mCamera.update();
 
     mCameraAnglesNode.matrix() = mCamera.getAngleMatrix();
@@ -114,13 +135,32 @@ CGE::Entity* LuaAPI::getEntity(size_t inIndex)
 
 void LuaAPI::removeEntity(size_t inIndex)
 {
-    if (inIndex < mEntities.size() && mEntities[inIndex])
+    CGE::Entity* e = getEntity(inIndex);
+    if (e)
     {
-        mCollisionEntities.remove(mEntities[inIndex]);
-        delete mEntities[inIndex];
-        mEntities[inIndex] = NULL;
-        mHoles.push_back(inIndex);
+        // We have to check to see if we are in the middle of a collision.
+        // Removing an entity from mCollisionEntities will invalidate the
+        // iterator and cause a crash. So, instead, we store all the dead
+        // entities to be destroyed after the collisions are done.
+
+
+
+        if (mBusyColliding)
+        {
+            DeadEntity de;
+            de.entity = e;
+            de.index = inIndex;
+            mDeadEntities.push_back(de);
+        }
+        else
+        {
+            mCollisionEntities.remove(e);
+            delete e;
+            mEntities[inIndex] = NULL;
+            mHoles.push_back(inIndex);
+        }
     }
+
 }
 
 void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
@@ -543,6 +583,8 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
 
 void LuaAPI::checkForCollisions()
 {
+    mBusyColliding = true;
+
     for (std::list<CGE::Entity*>::iterator i = mCollisionEntities.begin();
          i != mCollisionEntities.end(); ++i)
     {
@@ -559,6 +601,8 @@ void LuaAPI::checkForCollisions()
               }
          }
     }
+
+    mBusyColliding = false;
 }
 
 int LuaAPI::luaSendBoth(lua_State* inState)
@@ -690,6 +734,38 @@ int LuaAPI::luaSetCameraPosition(lua_State* inState)
         lua_Number y = lua_tonumber(inState, 2);
         lua_Number z = lua_tonumber(inState, 3);
         luaThis->mCamera.setPosition(x, y, z);
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCameraUnfollow(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0)
+    {
+        if (lua_isboolean(inState, 1))
+        {
+            bool flag = lua_toboolean(inState, 1);
+            luaThis->mCamera.unfollow(flag);
+        }
+        else if (lua_isnumber(inState, 1))
+        {
+            size_t index = lua_tointeger(inState, 1);
+            CGE::Entity* e = luaThis->getEntity(index);
+
+            if (argc > 1 && lua_isboolean(inState, 2))
+            {
+                bool flag = lua_toboolean(inState, 2);
+                luaThis->mCamera.unfollow(e, flag);
+            }
+            else
+            {
+                luaThis->mCamera.unfollow(e);
+            }
+        }
     }
 
     return 0;
