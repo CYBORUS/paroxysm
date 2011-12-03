@@ -35,6 +35,7 @@ void GameModule::onOpen()
     mViewNode.updateAllMatrices();
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    cerr << "done" << endl;
 }
 
 void GameModule::onClose()
@@ -43,14 +44,19 @@ void GameModule::onClose()
 
 void GameModule::onLoop()
 {
+    //cerr << "start loop" << endl;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //cerr << "clear passed" << endl;
 
     mLuaAPI.display();
+    //cerr << "lua display" << endl;
     mUI.display();
+    //cerr << "ui display" << endl;
 }
 
 void GameModule::onPulse()
 {
+    //cerr << "start pulse" << endl;
     mViewNode.smartPan(mXPan, mYPan);
 
     mViewNode.update();
@@ -59,6 +65,7 @@ void GameModule::onPulse()
     mLuaAPI.update(mProjection);
 
     mUI.update();
+    //cerr << "end pulse" << endl;
 }
 
 void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
