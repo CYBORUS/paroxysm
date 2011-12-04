@@ -25,6 +25,7 @@
 #include <CGE/Entity.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/ModelFromFile.h>
+#include <CGE/Reference.h>
 
 #include "GeneralBin.h"
 #include "SkyBoxBin.h"
@@ -34,6 +35,8 @@
 
 #include <vector>
 #include <string>
+
+typedef CGE::Reference<CGE::Entity> EntityRef;
 
 class LuaAPI
 {
@@ -53,7 +56,7 @@ class LuaAPI
 
     protected:
     private:
-        CGE::Entity* getEntity(size_t inIndex);
+        EntityRef getEntity(size_t inIndex);
         void checkForCollisions();
         void removeEntity(size_t inIndex);
         void addActor(size_t inIndex, const std::string& inModel);
@@ -71,8 +74,8 @@ class LuaAPI
         CGE::Actor mGridActor;
         GeneralBin mBin;
         SkyBoxBin mSkyBoxBin;
-        bool mBusyColliding;
-        bool mDebug;
+        //bool mBusyColliding;
+        //bool mDebug;
 
         CGE::LuaMachine mLua;
         CGE::LuaReference mLuaUpdateCallback;
@@ -84,17 +87,17 @@ class LuaAPI
         CGE::SoundSource mSourceTest;
 
         std::vector<size_t> mHoles;
-        std::vector<CGE::Entity*> mEntities;
+        std::vector<EntityRef> mEntities;
         std::vector<LuaInputCommand*> mLuaInputCommands;
-        std::list<CGE::Entity*> mCollisionEntities;
+        std::list<EntityRef> mCollisionEntities;
 
-        struct DeadEntity
-        {
-            CGE::Entity* entity;
-            size_t index;
-        };
-
-        std::vector<DeadEntity> mDeadEntities;
+//        struct DeadEntity
+//        {
+//            EntityRef entity;
+//            size_t index;
+//        };
+//
+//        std::vector<DeadEntity> mDeadEntities;
 
         static LuaAPI* luaThis;
 
