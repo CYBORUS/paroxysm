@@ -91,14 +91,6 @@ class LuaAPI
         std::vector<LuaInputCommand*> mLuaInputCommands;
         std::list<EntityRef> mCollisionEntities;
 
-//        struct DeadEntity
-//        {
-//            EntityRef entity;
-//            size_t index;
-//        };
-//
-//        std::vector<DeadEntity> mDeadEntities;
-
         static LuaAPI* luaThis;
 
         /// Entity management functions

@@ -238,7 +238,7 @@ int LuaAPI::luaAddEntity(lua_State* inState)
 
     if (argc > 0 && lua_istable(inState, 1))
     {
-        CGE::Entity* entity = new CGE::Entity(inState);
+        EntityRef entity = new CGE::Entity(inState);
         luaThis->mCollisionEntities.push_back(entity);
         luaThis->mGridActor.addChildNode(entity);
         size_t index = luaThis->mEntities.size();
@@ -721,7 +721,7 @@ int LuaAPI::luaCameraFollow(lua_State* inState)
     {
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->getEntity(index);
-        if (!e.isNull()) luaThis->mCamera.follow((CGE::Entity*)e);
+        if (!e.isNull()) luaThis->mCamera.follow(e);
     }
 
     return 0;
@@ -785,7 +785,7 @@ int LuaAPI::luaCameraUnfollow(lua_State* inState)
             }
             else
             {
-                luaThis->mCamera.unfollow((CGE::Entity*)e);
+                luaThis->mCamera.unfollow(e);
             }
         }
     }
