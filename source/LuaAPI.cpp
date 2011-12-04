@@ -68,6 +68,7 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("setCameraPosition", luaSetCameraPosition);
     mLua.addFunction("cameraFollow", luaCameraFollow);
     mLua.addFunction("cameraUnfollow", luaCameraUnfollow);
+    mLua.addFunction("debugOutput", luaDebugOutput);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -796,6 +797,19 @@ int LuaAPI::luaCameraUnfollow(lua_State* inState)
             }
         }
     }
+
+    return 0;
+}
+
+int LuaAPI::luaDebugOutput(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    //int argc = lua_gettop(inState);
+
+    cerr << "collision entities -- " << luaThis->mCollisionEntities.size()
+        << "\nnormal entities -- " << luaThis->mEntities.size()
+        << "\nholes -- " << luaThis->mHoles.size()
+        << "\n";
 
     return 0;
 }

@@ -194,6 +194,7 @@ function allTheThings()
 	createCommand("Move Left", onMoveLeft, 97)
 	createCommand("Move Right", onMoveRight, 100)
 	createCommand("Space", onSpace, 32)
+	createCommand("Debug Output", debugOutput, 92)
 	
     for i = 1, NumberOfTanks do
         local t = Tank:new()

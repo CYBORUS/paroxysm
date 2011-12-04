@@ -93,6 +93,9 @@ class LuaAPI
 
         static LuaAPI* luaThis;
 
+        /// Debug functions
+        static int luaDebugOutput(lua_State* inState);
+
         /// Entity management functions
         static int luaAddEntity(lua_State* inState);
         static int luaRemoveEntity(lua_State* inState);
