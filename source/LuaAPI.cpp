@@ -97,8 +97,8 @@ void LuaAPI::update(const mat4f& inProjection)
 
     for (size_t i = 0; i < mEntities.size(); ++i)
     {
-        CGE::Entity* e = mEntities[i];
-        if (e) e->update();
+        EntityRef e = mEntities[i];
+        if (e.isNull()) e->update();
     }
 
     if (mDeadEntities.size() > 0)
@@ -128,14 +128,14 @@ void LuaAPI::update(const mat4f& inProjection)
     mCameraAnglesNode.updateMatrices(inProjection);
 }
 
-CGE::Entity* LuaAPI::getEntity(size_t inIndex)
+EntityRef LuaAPI::getEntity(size_t inIndex)
 {
     return inIndex < mEntities.size() ? mEntities[inIndex] : NULL;
 }
 
 void LuaAPI::removeEntity(size_t inIndex)
 {
-    CGE::Entity* e = getEntity(inIndex);
+    EntityRef e = getEntity(inIndex);
     if (e)
     {
         // We have to check to see if we are in the middle of a collision.

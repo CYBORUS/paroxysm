@@ -25,6 +25,7 @@
 #include <CGE/Entity.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/ModelFromFile.h>
+#include <CGE/Reference.h>
 
 #include "GeneralBin.h"
 #include "SkyBoxBin.h"
