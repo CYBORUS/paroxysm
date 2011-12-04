@@ -106,9 +106,7 @@ function Tank:onCollision(entity)
     
 	if self.isPlayerTank then 
 		--self:setVelocity(0, 0, 0)
-        print("deleting tank")
         entity:delete()
-        print("tank deleted")
 	else
 		self:setVelocity(vx, vy, vz)
 	end

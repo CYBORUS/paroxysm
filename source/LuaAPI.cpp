@@ -141,10 +141,11 @@ void LuaAPI::removeEntity(size_t inIndex)
         // Removing an entity from mCollisionEntities will invalidate the
         // iterator and cause a crash. So, instead, we store all the dead
         // entities to be destroyed after the collisions are done.
-
+        cerr << "remove entity..";
         e->setIsBeingDeleted();
         mEntities[inIndex] = NULL;
         mHoles.push_back(inIndex);
+        cerr << "done." << endl;
 
 //        if (mBusyColliding)
 //        {
@@ -594,25 +595,28 @@ void LuaAPI::checkForCollisions()
             EntityRef e1 = *i;
             EntityRef e2 = *j;
 
+
             bool entityWasDeleted = false;
 
-//            if (e1->getIsBeingDeleted())
-//            {
-//                cerr << "deleting entity" << endl;
-//                //e1 = NULL;
-//                //*i = NULL;
-//                i = mCollisionEntities.erase(i);
-//                entityWasDeleted = true;
-//            }
-//
-//            if (e2->getIsBeingDeleted())
-//            {
-//                cerr << "deleting entity" << endl;
-//                //e2 = NULL;
-//                //*j = NULL;
-//                j = mCollisionEntities.erase(j);
-//                entityWasDeleted = true;
-//            }
+            if (e1->getIsBeingDeleted())
+            {
+                e1 = NULL;
+                *i = NULL;
+                cerr << "deleting entity...";
+                i = mCollisionEntities.erase(i);
+                cerr << "done." << endl;
+                entityWasDeleted = true;
+            }
+
+            if (e2->getIsBeingDeleted())
+            {
+                e2 = NULL;
+                *j = NULL;
+                cerr << "deleting entity...";
+                j = mCollisionEntities.erase(j);
+                cerr << "done." << endl;
+                entityWasDeleted = true;
+            }
 
             if (!entityWasDeleted && e1->isInRangeOf(e2))
             {

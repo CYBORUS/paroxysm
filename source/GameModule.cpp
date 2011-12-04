@@ -35,7 +35,6 @@ void GameModule::onOpen()
     mViewNode.updateAllMatrices();
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    cerr << "done" << endl;
 }
 
 void GameModule::onClose()
