@@ -588,9 +588,6 @@ void LuaAPI::checkForCollisions()
     std::list<EntityRef>::iterator i = mCollisionEntities.begin();
     while (i != mCollisionEntities.end())
     {
-        std::list<EntityRef>::iterator j = i;
-        ++j;
-
         EntityRef e1 = *i;
         if (e1->getIsBeingDeleted())
         {
@@ -602,6 +599,8 @@ void LuaAPI::checkForCollisions()
         }
         else
         {
+            std::list<EntityRef>::iterator j = i;
+            ++j;
             while (j != mCollisionEntities.end())
             {
                 EntityRef e2 = *j;
