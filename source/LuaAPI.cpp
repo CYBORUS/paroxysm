@@ -585,44 +585,47 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
 
 void LuaAPI::checkForCollisions()
 {
-    for (std::list<EntityRef>::iterator i = mCollisionEntities.begin();
-            i != mCollisionEntities.end(); ++i)
+    std::list<EntityRef>::iterator i = mCollisionEntities.begin();
+    while (i != mCollisionEntities.end())
     {
         std::list<EntityRef>::iterator j = i;
         ++j;
-        for (; j != mCollisionEntities.end(); ++j)
+
+        EntityRef e1 = *i;
+        if (e1->getIsBeingDeleted())
         {
-            EntityRef e1 = *i;
-            EntityRef e2 = *j;
-
-
-            bool entityWasDeleted = false;
-
-            if (e1->getIsBeingDeleted())
+            *i = NULL;
+            e1 = NULL;
+            cerr << "deleting entity...";
+            i = mCollisionEntities.erase(i);
+            cerr << "done." << endl;
+        }
+        else
+        {
+            while (j != mCollisionEntities.end())
             {
-                e1 = NULL;
-                *i = NULL;
-                cerr << "deleting entity...";
-                i = mCollisionEntities.erase(i);
-                cerr << "done." << endl;
-                entityWasDeleted = true;
-            }
+                EntityRef e2 = *j;
 
-            if (e2->getIsBeingDeleted())
-            {
-                e2 = NULL;
-                *j = NULL;
-                cerr << "deleting entity...";
-                j = mCollisionEntities.erase(j);
-                cerr << "done." << endl;
-                entityWasDeleted = true;
-            }
+                if (e2->getIsBeingDeleted())
+                {
+                    *j = NULL;
+                    e2 = NULL;
+                    cerr << "deleting entity...";
+                    j = mCollisionEntities.erase(j);
+                    cerr << "done." << endl;
+                }
+                else
+                {
+                    if (e1->isInRangeOf(e2))
+                    {
+                        e1->onCollision(mLua.getState(), e2);
+                        e2->onCollision(mLua.getState(), e1);
+                    }
+                    ++j;
+                }
 
-            if (!entityWasDeleted && e1->isInRangeOf(e2))
-            {
-                e1->onCollision(mLua.getState(), e2);
-                e2->onCollision(mLua.getState(), e1);
             }
+            ++i;
         }
     }
 }
