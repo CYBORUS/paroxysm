@@ -116,7 +116,7 @@ void LuaAPI::update(const mat4f& inProjection)
 //        }
 //
 //        mDeadEntities.clear();
-        //mDebug = true;
+    //mDebug = true;
     //}
 
     mCamera.update();
@@ -176,7 +176,7 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
 }
 
 void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
-    double inZ)
+                                      double inZ)
 {
     if (inIndex < mEntities.size() && !mEntities[inIndex].isNull())
     {
@@ -189,7 +189,7 @@ void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
 }
 
 void LuaAPI::setEntityActorRotation(size_t inEntity, size_t inActor, double inX,
-                            double inY, double inZ)
+                                    double inY, double inZ)
 {
     if (inEntity < mEntities.size() && !mEntities[inEntity].isNull())
     {
@@ -216,7 +216,7 @@ void LuaAPI::resetEntityActorMatrix(size_t inEntity, size_t inActor)
 }
 
 void LuaAPI::setEntityPosition(size_t inIndex, double inX, double inY,
-    double inZ)
+                               double inZ)
 {
     if (inIndex < mEntities.size() && !mEntities[inIndex].isNull())
     {
@@ -545,7 +545,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
                 size_t parentActor = lua_tointeger(inState, 3);
 
                 actorIndex = luaThis->mEntities[index]->addActor(actor,
-                    parentActor);
+                             parentActor);
             }
             else
             {
@@ -585,20 +585,41 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
 void LuaAPI::checkForCollisions()
 {
     for (std::list<EntityRef>::iterator i = mCollisionEntities.begin();
-         i != mCollisionEntities.end(); ++i)
+            i != mCollisionEntities.end(); ++i)
     {
-         std::list<EntityRef>::iterator j = i;
-         ++j;
-         for (; j != mCollisionEntities.end(); ++j)
-         {
-              EntityRef e1 = *i;
-              EntityRef e2 = *j;
-              if (e1->isInRangeOf(e2))
-              {
-                  e1->onCollision(mLua.getState(), e2);
-                  e2->onCollision(mLua.getState(), e1);
-              }
-         }
+        std::list<EntityRef>::iterator j = i;
+        ++j;
+        for (; j != mCollisionEntities.end(); ++j)
+        {
+            EntityRef e1 = *i;
+            EntityRef e2 = *j;
+
+            bool entityWasDeleted = false;
+
+//            if (e1->getIsBeingDeleted())
+//            {
+//                cerr << "deleting entity" << endl;
+//                //e1 = NULL;
+//                //*i = NULL;
+//                i = mCollisionEntities.erase(i);
+//                entityWasDeleted = true;
+//            }
+//
+//            if (e2->getIsBeingDeleted())
+//            {
+//                cerr << "deleting entity" << endl;
+//                //e2 = NULL;
+//                //*j = NULL;
+//                j = mCollisionEntities.erase(j);
+//                entityWasDeleted = true;
+//            }
+
+            if (!entityWasDeleted && e1->isInRangeOf(e2))
+            {
+                e1->onCollision(mLua.getState(), e2);
+                e2->onCollision(mLua.getState(), e1);
+            }
+        }
     }
 }
 
@@ -634,8 +655,8 @@ int LuaAPI::luaSetTerrainSize(lua_State* inState)
 
         if (height > 0 && height < 1000 && width > 0 && width < 1000)
         {
-         luaThis->mGrid.setSize(height, width);
-         luaThis->mGrid.buildVBO();
+            luaThis->mGrid.setSize(height, width);
+            luaThis->mGrid.buildVBO();
         }
     }
 
@@ -653,16 +674,16 @@ int LuaAPI::luaCreateCommand(lua_State* inState)
         {
             if (lua_isnumber(inState, 3))
             {
-             lua_pop(inState, argc - 3);
-             lua_Integer keyNum = lua_tointeger(inState, 3);
-             lua_pop(inState, argc - 2);
-             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState,
-                keyNum));
+                lua_pop(inState, argc - 3);
+                lua_Integer keyNum = lua_tointeger(inState, 3);
+                lua_pop(inState, argc - 2);
+                luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState,
+                                                     keyNum));
             }
             else
             {
-             lua_pop(inState, argc - 2);
-             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
+                lua_pop(inState, argc - 2);
+                luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
             }
         }
         else
@@ -708,7 +729,7 @@ int LuaAPI::luaMoveCamera(lua_State* inState)
     int argc = lua_gettop(inState);
 
     if (argc > 2 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2)
-        && lua_isnumber(inState, 3))
+            && lua_isnumber(inState, 3))
     {
         lua_Number x = lua_tonumber(inState, 1);
         lua_Number y = lua_tonumber(inState, 2);
@@ -725,7 +746,7 @@ int LuaAPI::luaSetCameraPosition(lua_State* inState)
     int argc = lua_gettop(inState);
 
     if (argc > 2 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2)
-        && lua_isnumber(inState, 3))
+            && lua_isnumber(inState, 3))
     {
         lua_Number x = lua_tonumber(inState, 1);
         lua_Number y = lua_tonumber(inState, 2);
