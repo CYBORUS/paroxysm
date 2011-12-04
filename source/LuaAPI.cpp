@@ -602,6 +602,7 @@ void LuaAPI::checkForCollisions()
             cerr << "deleting entity...";
             i = mCollisionEntities.erase(i);
             cerr << "done." << endl;
+            assert(mCollisionEntities.size() == (mEntities.size() - mHoles.size()));
         }
         else
         {
@@ -618,6 +619,7 @@ void LuaAPI::checkForCollisions()
                     cerr << "deleting entity...";
                     j = mCollisionEntities.erase(j);
                     cerr << "done." << endl;
+                    assert(mCollisionEntities.size() == (mEntities.size() - mHoles.size()));
                 }
                 else
                 {
