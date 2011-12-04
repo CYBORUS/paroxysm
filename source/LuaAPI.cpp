@@ -255,7 +255,12 @@ int LuaAPI::luaAddEntity(lua_State* inState)
         }
 
         outIndex = index;
+
+        assert(!entity->getIsBeingDeleted());
+
     }
+
+    assert(luaThis->mCollisionEntities.size() == (luaThis->mEntities.size() - luaThis->mHoles.size()));
 
     lua_pushinteger(inState, outIndex);
     return 1;
