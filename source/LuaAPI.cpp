@@ -583,7 +583,7 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->getEntity(index);
 
-        if (!e.isNull()) e->setCollisionCB(inState);
+        if (!e.isNull()) e->setCollisionCallback(inState);
     }
 
     return 0;

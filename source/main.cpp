@@ -9,7 +9,7 @@ int main(int argc, char** argv)
     CGE::Engine::Settings s;
     s.windowTitle = "paroxysm 0.2";
     s.windowTitle2 = "paroxysm";
-    s.sound = false;
+    //s.sound = false;
 
     CGE::Engine e(s);
     try
