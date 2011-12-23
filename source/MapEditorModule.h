@@ -2,6 +2,7 @@
 #define MAPEDITORMODULE_H
 
 #include <CGE/OpenGL/Texture2D.h>
+#include <CGE/UI/Button.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/Camera.h>
 #include <CGE/ModelFromFile.h>
@@ -10,7 +11,6 @@
 #include <CGE/Actor.h>
 
 #include "ParoxysmModule.h"
-#include "UI/Button.h"
 
 #include "TerrainGrid.h"
 #include "GeneralBin.h"
@@ -77,7 +77,7 @@ class MapEditorModule : public ParoxysmModule
         float mXPan;
         float mYPan;
 
-        static void uiLoadMap(Widget* inWidget, void* inData);
+        static void uiLoadMap(CGE::Widget* inWidget, void* inData);
 };
 
 #endif

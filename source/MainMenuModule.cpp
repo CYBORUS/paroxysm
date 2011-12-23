@@ -119,19 +119,20 @@ void MainMenuModule::onUnload()
 void MainMenuModule::onLoad(CGE::PropertyList& inList)
 {
     // MapEditorModule Button
-    Button* button = new Button("data/images/hud/map_editor.png", 4.0f, 1.0f);
+    CGE::Button* button = new CGE::Button("data/images/hud/map_editor.png",
+        4.0f, 1.0f);
     button->setClickListener(mapEditorButtonCallBack, this);
     button->setPosition(0.0f, -0.5f);
     mUI.addWidget(button);
 
     // NewGameModule Button
-    button = new Button("data/images/hud/new_game.png", 4.0f, 1.0f);
+    button = new CGE::Button("data/images/hud/new_game.png", 4.0f, 1.0f);
     button->setClickListener(newGameButtonCallBack, this);
     button->setPosition(0.0f, 0.5f);
     mUI.addWidget(button);
 
     // Game Logo Label
-    Label* label = new Label("data/images/title.png", 8.0f, 2.0f);
+    CGE::Label* label = new CGE::Label("data/images/title.png", 8.0f, 2.0f);
     label->setPosition(0.0f, 2.5f);
     mUI.addWidget(label);
 }
@@ -140,7 +141,7 @@ void MainMenuModule::onLoad(CGE::PropertyList& inList)
   *
   * @todo: Click Listener Function for NewGameButton
   */
-void MainMenuModule::mapEditorButtonCallBack(Widget* inWidget, void* inData)
+void MainMenuModule::mapEditorButtonCallBack(CGE::Widget* inWidget, void* inData)
 {
     MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
     m->mNextModule = new MapEditorModule;
@@ -152,7 +153,7 @@ void MainMenuModule::mapEditorButtonCallBack(Widget* inWidget, void* inData)
   *
   * @todo: Click Listener Function for NewGameButton
   */
-void MainMenuModule::newGameButtonCallBack(Widget* inWidget, void* inData)
+void MainMenuModule::newGameButtonCallBack(CGE::Widget* inWidget, void* inData)
 {
     MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
     m->mNextModule = new GameModule;

@@ -2,16 +2,15 @@
 #define MAINMENUMODULE_H
 
 #include <CGE/OpenGL/Texture2D.h>
+#include <CGE/UI/UserInterface.h>
+#include <CGE/UI/Button.h>
+#include <CGE/UI/Label.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/Camera.h>
 #include <CGE/Model.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/Vectors.h>
 #include <CGE/Actor.h>
-
-#include "UI/UserInterface.h"
-#include "UI/Button.h"
-#include "UI/Label.h"
 
 #include "ParoxysmModule.h"
 #include "ViewNode.h"
@@ -45,8 +44,9 @@ class MainMenuModule : public ParoxysmModule
         float mXPan;
         float mYPan;
 
-        static void mapEditorButtonCallBack(Widget* inWidget, void* inData);
-        static void newGameButtonCallBack(Widget* inWidget, void* inData);
+        static void mapEditorButtonCallBack(CGE::Widget* inWidget,
+            void* inData);
+        static void newGameButtonCallBack(CGE::Widget* inWidget, void* inData);
 };
 
 #endif
