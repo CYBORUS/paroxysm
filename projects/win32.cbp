@@ -83,16 +83,6 @@
 		<Unit filename="..\source\SkyBoxBin.h" />
 		<Unit filename="..\source\TerrainGrid.cpp" />
 		<Unit filename="..\source\TerrainGrid.h" />
-		<Unit filename="..\source\UI\Button.cpp" />
-		<Unit filename="..\source\UI\Button.h" />
-		<Unit filename="..\source\UI\EventListener.cpp" />
-		<Unit filename="..\source\UI\EventListener.h" />
-		<Unit filename="..\source\UI\Label.cpp" />
-		<Unit filename="..\source\UI\Label.h" />
-		<Unit filename="..\source\UI\UserInterface.cpp" />
-		<Unit filename="..\source\UI\UserInterface.h" />
-		<Unit filename="..\source\UI\Widget.cpp" />
-		<Unit filename="..\source\UI\Widget.h" />
 		<Unit filename="..\source\ViewNode.cpp" />
 		<Unit filename="..\source\ViewNode.h" />
 		<Unit filename="..\source\main.cpp" />
