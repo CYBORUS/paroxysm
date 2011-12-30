@@ -11,7 +11,7 @@ using namespace std;
   *
   * @todo: Constructor
   */
-MainMenuModule::MainMenuModule()
+MainMenuModule::MainMenuModule() : mFont("data/fonts/DejaVuSans.ttf", 16)
 {
 }
 
@@ -135,6 +135,10 @@ void MainMenuModule::onLoad(CGE::PropertyList& inList)
     CGE::Label* label = new CGE::Label("data/images/title.png", 8.0f, 2.0f);
     label->setPosition(0.0f, 2.5f);
     mUI.addWidget(label);
+
+    CGE::TextBox* textBox = new CGE::TextBox(mFont);
+    textBox->setText("Hello, World!");
+    mUI.addWidget(textBox);
 }
 
 /** @brief mapEditorButtonCallBack

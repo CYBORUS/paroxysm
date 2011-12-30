@@ -5,6 +5,7 @@
 #include <CGE/UI/UserInterface.h>
 #include <CGE/UI/Button.h>
 #include <CGE/UI/Label.h>
+#include <CGE/UI/TextBox.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/Camera.h>
 #include <CGE/Model.h>
@@ -43,6 +44,8 @@ class MainMenuModule : public ParoxysmModule
 
         float mXPan;
         float mYPan;
+
+        CGE::Font mFont;
 
         static void mapEditorButtonCallBack(CGE::Widget* inWidget,
             void* inData);
