@@ -7,115 +7,63 @@
 #include <fstream>
 using namespace std;
 
-/** @brief MainMenuModule
-  *
-  * @todo: Constructor
-  */
-MainMenuModule::MainMenuModule() : mFont("data/fonts/DejaVuSans.ttf", 16)
+MainMenuModule::MainMenuModule() : mFont("data/fonts/DejaVuSans.ttf", 24)
 {
 }
 
-/** @brief ~MainMenuModule
-  *
-  * @todo: Destructor
-  */
  MainMenuModule::~MainMenuModule()
 {
 
 }
 
-/** @brief onMouseMove
-  *
-  * @todo: Mouse movement events
-  */
 void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
     mUI.onMouseMove(inX, inY);
 }
 
-/** @brief onRButtonUp
-  *
-  * @todo: Mouse Right Button Up Event
-  */
 void MainMenuModule::onRButtonUp(int inX, int inY)
 {
 }
 
-/** @brief onRButtonDown
-  *
-  * @todo: Mouse Right Button Down Event
-  */
 void MainMenuModule::onRButtonDown(int inX, int inY)
 {
 }
 
-/** @brief onLButtonUp
-  *
-  * @todo: Mouse Left Button Up Event
-  */
 void MainMenuModule::onLButtonUp(int inX, int inY)
 {
     mUI.onMouseUp();
 }
 
-/** @brief onLButtonDown
-  *
-  * @todo: Mouse Left Button Down Event
-  */
 void MainMenuModule::onLButtonDown(int inX, int inY)
 {
     mUI.onMouseDown();
 }
 
-/** @brief onPulse
-  *
-  * @todo: Pulse Event
-  */
 void MainMenuModule::onPulse()
 {
     mUI.update();
 }
 
-/** @brief onLoop
-  *
-  * @todo: Loop Event
-  */
 void MainMenuModule::onLoop()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     mUI.display();
 }
 
-/** @brief onClose
-  *
-  * @todo: Close Event
-  */
 void MainMenuModule::onClose()
 {
 }
 
-/** @brief onOpen
-  *
-  * @todo: Open Event
-  */
 void MainMenuModule::onOpen()
 {
 }
 
-/** @brief onUnload
-  *
-  * @todo: Unload Event
-  */
 void MainMenuModule::onUnload()
 {
 
 }
 
-/** @brief onLoad
-  *
-  * @todo: Load Event
-  */
 void MainMenuModule::onLoad(CGE::PropertyList& inList)
 {
     // MapEditorModule Button
@@ -136,16 +84,45 @@ void MainMenuModule::onLoad(CGE::PropertyList& inList)
     label->setPosition(0.0f, 2.5f);
     mUI.addWidget(label);
 
-    CGE::TextBox* textBox = new CGE::TextBox(mFont);
-    textBox->setText("Hello, World!");
+    // Text box test
+    CGE::TextBox* textBox = new CGE::TextBox();
+    textBox->setText(mFont, "Top");
+    textBox->setPosition(-3.0f, -2.0f, CGE::TextBox::Top, CGE::TextBox::Center);
+    mUI.addWidget(textBox);
+
+    textBox = new CGE::TextBox();
+    textBox->setText(mFont, "Middle");
+    textBox->setPosition(0.0f, -2.0f, CGE::TextBox::Middle,
+        CGE::TextBox::Center);
+    mUI.addWidget(textBox);
+
+    textBox = new CGE::TextBox();
+    textBox->setText(mFont, "Bottom");
+    textBox->setPosition(3.0f, -2.0f, CGE::TextBox::Bottom,
+        CGE::TextBox::Center);
+    mUI.addWidget(textBox);
+
+    textBox = new CGE::TextBox();
+    textBox->setText(mFont, "Left");
+    textBox->setPosition(3.0f, 0.0f, CGE::TextBox::Middle,
+        CGE::TextBox::Left);
+    mUI.addWidget(textBox);
+
+    textBox = new CGE::TextBox();
+    textBox->setText(mFont, "Center");
+    textBox->setPosition(3.0f, 0.6f, CGE::TextBox::Middle,
+        CGE::TextBox::Center);
+    mUI.addWidget(textBox);
+
+    textBox = new CGE::TextBox();
+    textBox->setText(mFont, "Right");
+    textBox->setPosition(3.0f, 1.2f, CGE::TextBox::Middle,
+        CGE::TextBox::Right);
     mUI.addWidget(textBox);
 }
 
-/** @brief mapEditorButtonCallBack
-  *
-  * @todo: Click Listener Function for NewGameButton
-  */
-void MainMenuModule::mapEditorButtonCallBack(CGE::Widget* inWidget, void* inData)
+void MainMenuModule::mapEditorButtonCallBack(CGE::Widget* inWidget,
+    void* inData)
 {
     MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
     m->mNextModule = new MapEditorModule;
@@ -153,10 +130,6 @@ void MainMenuModule::mapEditorButtonCallBack(CGE::Widget* inWidget, void* inData
     m->mDead = false;
 }
 
-/** @brief newGameButtonCallBack
-  *
-  * @todo: Click Listener Function for NewGameButton
-  */
 void MainMenuModule::newGameButtonCallBack(CGE::Widget* inWidget, void* inData)
 {
     MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
