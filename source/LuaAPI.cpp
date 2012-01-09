@@ -101,25 +101,6 @@ void LuaAPI::update(const mat4f& inProjection)
         if (!e.isNull()) e->update();
     }
 
-//    if (mDeadEntities.size() > 0)
-//    {
-//
-//        for (size_t i = 0; i < mDeadEntities.size(); ++i)
-//        {
-//            DeadEntity& de = mDeadEntities[i];
-//            if (de.entity)
-//            {
-//                mCollisionEntities.remove(de.entity);
-//                delete de.entity;
-//                mEntities[de.index] = NULL;
-//                mHoles.push_back(de.index);
-//            }
-//        }
-//
-//        mDeadEntities.clear();
-    //mDebug = true;
-    //}
-
     mCamera.update();
 
     mCameraAnglesNode.matrix() = mCamera.getAngleMatrix();
@@ -138,30 +119,9 @@ void LuaAPI::removeEntity(size_t inIndex)
     EntityRef e = getEntity(inIndex);
     if (!e.isNull())
     {
-        // We have to check to see if we are in the middle of a collision.
-        // Removing an entity from mCollisionEntities will invalidate the
-        // iterator and cause a crash. So, instead, we store all the dead
-        // entities to be destroyed after the collisions are done.
-        cerr << "remove entity..";
         e->setIsBeingDeleted();
         mEntities[inIndex] = NULL;
         mHoles.push_back(inIndex);
-        cerr << "done." << endl;
-
-//        if (mBusyColliding)
-//        {
-//            DeadEntity de;
-//            de.entity = e;
-//            de.index = inIndex;
-//            mDeadEntities.push_back(de);
-//        }
-//        else
-//        {
-//            mCollisionEntities.remove(e);
-//            delete e;
-//            mEntities[inIndex] = NULL;
-//            mHoles.push_back(inIndex);
-//        }
     }
 
 }
@@ -191,7 +151,7 @@ void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
 }
 
 void LuaAPI::setEntityActorRotation(size_t inEntity, size_t inActor, double inX,
-                                    double inY, double inZ)
+    double inY, double inZ)
 {
     if (inEntity < mEntities.size() && !mEntities[inEntity].isNull())
     {
@@ -218,7 +178,7 @@ void LuaAPI::resetEntityActorMatrix(size_t inEntity, size_t inActor)
 }
 
 void LuaAPI::setEntityPosition(size_t inIndex, double inX, double inY,
-                               double inZ)
+    double inZ)
 {
     if (inIndex < mEntities.size() && !mEntities[inIndex].isNull())
     {
@@ -256,12 +216,7 @@ int LuaAPI::luaAddEntity(lua_State* inState)
         }
 
         outIndex = index;
-
-        assert(!entity->getIsBeingDeleted());
-
     }
-
-    assert(luaThis->mCollisionEntities.size() == (luaThis->mEntities.size() - luaThis->mHoles.size()));
 
     lua_pushinteger(inState, outIndex);
     return 1;
@@ -599,10 +554,7 @@ void LuaAPI::checkForCollisions()
         {
             *i = NULL;
             e1 = NULL;
-            cerr << "deleting entity...";
             i = mCollisionEntities.erase(i);
-            cerr << "done." << endl;
-            assert(mCollisionEntities.size() == (mEntities.size() - mHoles.size()));
         }
         else
         {
@@ -616,10 +568,7 @@ void LuaAPI::checkForCollisions()
                 {
                     *j = NULL;
                     e2 = NULL;
-                    cerr << "deleting entity...";
                     j = mCollisionEntities.erase(j);
-                    cerr << "done." << endl;
-                    assert(mCollisionEntities.size() == (mEntities.size() - mHoles.size()));
                 }
                 else
                 {

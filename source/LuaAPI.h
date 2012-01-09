@@ -74,8 +74,6 @@ class LuaAPI
         CGE::Actor mGridActor;
         GeneralBin mBin;
         SkyBoxBin mSkyBoxBin;
-        //bool mBusyColliding;
-        //bool mDebug;
 
         CGE::LuaMachine mLua;
         CGE::LuaReference mLuaUpdateCallback;
