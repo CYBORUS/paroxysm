@@ -731,7 +731,7 @@ int LuaAPI::luaCameraFollow(lua_State* inState)
     {
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->getEntity(index);
-        if (!e.isNull()) luaThis->mCamera.follow(e);
+        if (!e.isNull()) luaThis->mCamera.follow(e->getTranslation());
     }
 
     return 0;
@@ -791,11 +791,11 @@ int LuaAPI::luaCameraUnfollow(lua_State* inState)
             if (argc > 1 && lua_isboolean(inState, 2))
             {
                 bool flag = lua_toboolean(inState, 2);
-                luaThis->mCamera.unfollow(e, flag);
+                luaThis->mCamera.unfollow(e->getTranslation(), flag);
             }
             else
             {
-                luaThis->mCamera.unfollow(e);
+                luaThis->mCamera.unfollow(e->getTranslation());
             }
         }
     }
