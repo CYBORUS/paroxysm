@@ -95,11 +95,8 @@ void LuaAPI::update(const mat4f& inProjection)
 
     checkForCollisions();
 
-    for (size_t i = 0; i < mEntities.size(); ++i)
-    {
-        EntityRef e = mEntities[i];
-        if (!e.isNull()) e->update();
-    }
+    for (EntityRef i = mEntities.first(); !i.isNull(); i = mEntities.next())
+        i->update();
 
     mCamera.update();
 
@@ -109,30 +106,15 @@ void LuaAPI::update(const mat4f& inProjection)
     mCameraAnglesNode.updateMatrices(inProjection);
 }
 
-EntityRef LuaAPI::getEntity(size_t inIndex)
-{
-    return inIndex < mEntities.size() ? mEntities[inIndex] : NULL;
-}
-
-void LuaAPI::removeEntity(size_t inIndex)
-{
-    EntityRef e = getEntity(inIndex);
-    if (!e.isNull())
-    {
-        e->setIsBeingDeleted();
-        mEntities[inIndex] = NULL;
-        mHoles.push_back(inIndex);
-    }
-
-}
-
 void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
 {
-    if (inIndex < mEntities.size() && !mEntities[inIndex].isNull())
+    EntityRef e = mEntities.get(inIndex);
+
+    if (!e.isNull())
     {
         CGE::ModelFromFile* mff = mModels.load(inModel);
         CGE::Actor* actor = new CGE::Actor(mff);
-        mEntities[inIndex]->addActor(actor);
+        e->addActor(actor);
         mBin.addActor(actor);
     }
 }
@@ -140,54 +122,46 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
 void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
                                       double inZ)
 {
-    if (inIndex < mEntities.size() && !mEntities[inIndex].isNull())
+    EntityRef e = mEntities.get(inIndex);
+    if (!e.isNull())
     {
         vec3d v;
         v[0] = inX;
         v[1] = inY;
         v[2] = inZ;
-        mEntities[inIndex]->setDefaultRotation(v);
+        e->setDefaultRotation(v);
     }
 }
 
 void LuaAPI::setEntityActorRotation(size_t inEntity, size_t inActor, double inX,
     double inY, double inZ)
 {
-    if (inEntity < mEntities.size() && !mEntities[inEntity].isNull())
-    {
-        EntityRef which = mEntities[inEntity];
+    EntityRef e = mEntities.get(inEntity);
 
-        if (inActor < which->numActors())
-        {
-            which->rotateActor(inActor, inX, inY, inZ);
-        }
-    }
+    if (!e.isNull() && inActor < e->numActors())
+        e->rotateActor(inActor, inX, inY, inZ);
 }
 
 void LuaAPI::resetEntityActorMatrix(size_t inEntity, size_t inActor)
 {
-    if (inEntity < mEntities.size() && !mEntities[inEntity].isNull())
-    {
-        EntityRef which = mEntities[inEntity];
+    EntityRef e = mEntities.get(inEntity);
 
-        if (inActor < which->numActors())
-        {
-            which->resetActorMatrix(inActor);
-        }
-    }
+    if (!e.isNull() && inActor < e->numActors())
+        e->resetActorMatrix(inActor);
 }
 
 void LuaAPI::setEntityPosition(size_t inIndex, double inX, double inY,
     double inZ)
 {
-    if (inIndex < mEntities.size() && !mEntities[inIndex].isNull())
+    EntityRef e = mEntities.get(inIndex);
+    if (!e.isNull())
     {
         vec3d v;
         v[0] = inX;
         v[1] = inY;
         v[2] = inZ;
 
-        mEntities[inIndex]->setPosition(v);
+        e->setPosition(v);
     }
 }
 
@@ -202,18 +176,8 @@ int LuaAPI::luaAddEntity(lua_State* inState)
         EntityRef entity = new CGE::Entity(inState);
         luaThis->mCollisionEntities.push_back(entity);
         luaThis->mGridActor.addChildNode(entity);
-        size_t index = luaThis->mEntities.size();
 
-        if (luaThis->mHoles.size() > 0)
-        {
-            index = luaThis->mHoles.back();
-            luaThis->mHoles.pop_back();
-            luaThis->mEntities[index] = entity;
-        }
-        else
-        {
-            luaThis->mEntities.push_back(entity);
-        }
+        size_t index = luaThis->mEntities.add(entity);
 
         outIndex = index;
     }
@@ -230,7 +194,8 @@ int LuaAPI::luaRemoveEntity(lua_State* inState)
     if (argc > 0 && lua_isnumber(inState, 1))
     {
         size_t index = lua_tointeger(inState, 1);
-        luaThis->removeEntity(index);
+        EntityRef e = luaThis->mEntities.remove(index);
+        if (!e.isNull()) e->setIsBeingDeleted();
     }
 
     return 0;
@@ -323,7 +288,8 @@ int LuaAPI::luaGetEntityPosition(lua_State* inState)
     if (argc > 0 && lua_isnumber(inState, 1))
     {
         size_t index = lua_tointeger(inState, 1);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
+
         if (!e.isNull())
         {
             const vec3d& v = e->getPosition();
@@ -372,7 +338,7 @@ int LuaAPI::luaGetEntityMass(lua_State* inState)
     if (argc > 0 && lua_isnumber(inState, 1))
     {
         size_t index = lua_tointeger(inState, 1);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
         if (!e.isNull()) mass = e->getMass();
     }
 
@@ -389,7 +355,7 @@ int LuaAPI::luaSetEntityMass(lua_State* inState)
     {
         size_t index = lua_tointeger(inState, 1);
         lua_Number mass = lua_tonumber(inState, 2);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
         if (!e.isNull()) e->setMass(mass);
     }
 
@@ -405,7 +371,8 @@ int LuaAPI::luaGetEntityRadius(lua_State* inState)
     if (argc > 0 && lua_isnumber(inState, 1))
     {
         size_t index = lua_tointeger(inState, 1);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
+
         if (!e.isNull()) radius = e->getMass();
     }
 
@@ -422,7 +389,8 @@ int LuaAPI::luaSetEntityRadius(lua_State* inState)
     {
         size_t index = lua_tointeger(inState, 1);
         lua_Number radius = lua_tonumber(inState, 2);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
+
         if (!e.isNull()) e->setRadius(radius);
     }
 
@@ -441,7 +409,7 @@ int LuaAPI::luaGetEntityVelocity(lua_State* inState)
     if (argc > 0 && lua_isnumber(inState, 1))
     {
         size_t index = lua_tointeger(inState, 1);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
         if (!e.isNull())
         {
             const vec3d& v = e->getVelocity();
@@ -478,7 +446,8 @@ int LuaAPI::luaSetEntityVelocity(lua_State* inState)
     v[1] = lua_tonumber(inState, 3);
     v[2] = lua_tonumber(inState, 4);
 
-    EntityRef e = luaThis->getEntity(index);
+    EntityRef e = luaThis->mEntities.get(index);
+
     if (!e.isNull()) e->setVelocity(v);
 
     return 0;
@@ -494,7 +463,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         size_t length = 0;
         const char* model = lua_tolstring(inState, 2, &length);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
 
         if (!e.isNull() && model && length)
         {
@@ -506,12 +475,11 @@ int LuaAPI::luaAddActor(lua_State* inState)
             {
                 size_t parentActor = lua_tointeger(inState, 3);
 
-                actorIndex = luaThis->mEntities[index]->addActor(actor,
-                             parentActor);
+                actorIndex = e->addActor(actor, parentActor);
             }
             else
             {
-                actorIndex = luaThis->mEntities[index]->addActor(actor);
+                actorIndex = e->addActor(actor);
             }
 
             luaThis->mBin.addActor(actor);
@@ -536,7 +504,7 @@ int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
         if (argc > 2) lua_pop(inState, argc - 2);
 
         size_t index = lua_tointeger(inState, 1);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
 
         if (!e.isNull()) e->setCollisionCallback(inState);
     }
@@ -640,17 +608,20 @@ int LuaAPI::luaCreateCommand(lua_State* inState)
                 lua_pop(inState, argc - 3);
                 lua_Integer keyNum = lua_tointeger(inState, 3);
                 lua_pop(inState, argc - 2);
-                luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState,
-                                                     keyNum));
+                luaThis->mLuaInputCommands.push_back(
+                    new LuaInputCommand(inState, keyNum));
             }
             else
             {
                 lua_pop(inState, argc - 2);
-                luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
+                luaThis->mLuaInputCommands.push_back(
+                    new LuaInputCommand(inState));
             }
         }
         else
+        {
             luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
+        }
     }
 
     return 0;
@@ -679,7 +650,7 @@ int LuaAPI::luaCameraFollow(lua_State* inState)
     if (argc > 0 && lua_isnumber(inState, 1))
     {
         size_t index = lua_tointeger(inState, 1);
-        EntityRef e = luaThis->getEntity(index);
+        EntityRef e = luaThis->mEntities.get(index);
         if (!e.isNull()) luaThis->mCamera.follow(e->getTranslation());
     }
 
@@ -735,7 +706,7 @@ int LuaAPI::luaCameraUnfollow(lua_State* inState)
         else if (lua_isnumber(inState, 1))
         {
             size_t index = lua_tointeger(inState, 1);
-            EntityRef e = luaThis->getEntity(index);
+            EntityRef e = luaThis->mEntities.get(index);
 
             if (argc > 1 && lua_isboolean(inState, 2))
             {
@@ -755,12 +726,6 @@ int LuaAPI::luaCameraUnfollow(lua_State* inState)
 int LuaAPI::luaDebugOutput(lua_State* inState)
 {
     assert(luaThis != NULL);
-    //int argc = lua_gettop(inState);
-
-    cerr << "collision entities -- " << luaThis->mCollisionEntities.size()
-        << "\nnormal entities -- " << luaThis->mEntities.size()
-        << "\nholes -- " << luaThis->mHoles.size()
-        << "\n";
 
     return 0;
 }

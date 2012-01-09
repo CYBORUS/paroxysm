@@ -32,6 +32,7 @@
 #include "SkyBox.h"
 #include "TerrainGrid.h"
 #include "LuaInputCommand.h"
+#include "LuaIndexedResource.h"
 
 #include <vector>
 #include <string>
@@ -56,9 +57,7 @@ class LuaAPI
 
     protected:
     private:
-        EntityRef getEntity(size_t inIndex);
         void checkForCollisions();
-        void removeEntity(size_t inIndex);
         void addActor(size_t inIndex, const std::string& inModel);
         void setEntityDefaultRotation(size_t inIndex, double inX, double inY,
             double inZ);
@@ -84,10 +83,9 @@ class LuaAPI
         CGE::SoundBuffer mSoundTest;
         CGE::SoundSource mSourceTest;
 
-        std::vector<size_t> mHoles;
-        std::vector<EntityRef> mEntities;
         std::vector<LuaInputCommand*> mLuaInputCommands;
         std::list<EntityRef> mCollisionEntities;
+        LuaIndexedResource<CGE::Entity> mEntities;
 
         static LuaAPI* luaThis;
 
