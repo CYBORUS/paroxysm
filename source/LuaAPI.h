@@ -31,10 +31,10 @@
 #include "SkyBoxBin.h"
 #include "SkyBox.h"
 #include "TerrainGrid.h"
-#include "LuaInputCommand.h"
 #include "LuaIndexedResource.h"
 
 #include <vector>
+#include <map>
 #include <string>
 
 typedef CGE::Reference<CGE::Entity> EntityRef;
@@ -49,11 +49,7 @@ class LuaAPI
 
         void display();
         void update(const mat4f& inProjection);
-
-        inline const vector<LuaInputCommand*>& getLuaInputCommands() const
-        {
-            return mLuaInputCommands;
-        }
+        void onKey(SDLKey inKey, double inIntensity);
 
     protected:
     private:
@@ -83,7 +79,8 @@ class LuaAPI
         CGE::SoundBuffer mSoundTest;
         CGE::SoundSource mSourceTest;
 
-        std::vector<LuaInputCommand*> mLuaInputCommands;
+        CGE::LuaReference mKeyCallbacks[SDLK_LAST];
+        std::map<std::string, CGE::LuaReference*> mKeysByName;
         std::list<EntityRef> mCollisionEntities;
         LuaIndexedResource<CGE::Entity> mEntities;
 

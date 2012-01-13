@@ -6,8 +6,6 @@ using namespace std;
 GameModule::GameModule() : mXPan(0.0f), mYPan(0.0f)
 {
     CGE::Download d; // only here for testing curl linking
-    memset(mKeyCommands, 0, sizeof(mKeyCommands));
-    loadKeyCommands();
 }
 
 GameModule::~GameModule()
@@ -143,7 +141,7 @@ void GameModule::onRButtonUp(int inX, int inY)
 
 void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    issueLuaCommand(inSym, 1.0);
+    mLuaAPI.onKey(inSym, 1.0);
 
     switch (inSym)
     {
@@ -159,28 +157,10 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
 void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
-    issueLuaCommand(inSym, 0.0);
+    mLuaAPI.onKey(inSym, 0.0);
 
     switch (inSym)
     {
         default: {}
     }
-}
-
-void GameModule::loadKeyCommands()
-{
-    const vector<LuaInputCommand*>& inputCommands =
-        mLuaAPI.getLuaInputCommands();
-
-    for (size_t i = 0; i < inputCommands.size(); i++)
-    {
-        lua_Integer keyNum = inputCommands[i]->getKeyNum();
-        mKeyCommands[keyNum] = inputCommands[i];
-    }
-}
-
-void GameModule::issueLuaCommand(SDLKey inKey, double inIntensity)
-{
-    const LuaInputCommand* lic = mKeyCommands[inKey];
-    if (lic) lic->issueCommand(inIntensity);
 }

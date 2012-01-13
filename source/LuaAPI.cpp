@@ -106,6 +106,15 @@ void LuaAPI::update(const mat4f& inProjection)
     mCameraAnglesNode.updateMatrices(inProjection);
 }
 
+void LuaAPI::onKey(SDLKey inKey, double inIntensity)
+{
+    if (mKeyCallbacks[inKey].get())
+    {
+        lua_pushnumber(mLua.getState(), inIntensity);
+        lua_call(mLua.getState(), 1, 0);
+    }
+}
+
 void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
 {
     EntityRef e = mEntities.get(inIndex);
@@ -599,28 +608,17 @@ int LuaAPI::luaCreateCommand(lua_State* inState)
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
 
-    if (argc > 1 && lua_isstring(inState, 1) && lua_isfunction(inState, 2))
+    if (argc > 2 && lua_isstring(inState, 1) && lua_isfunction(inState, 2)
+        && lua_isnumber(inState, 3))
     {
-        if ( argc > 2)
+        lua_Integer keyNum = lua_tointeger(inState, 3);
+
+        if (keyNum >= 0 && keyNum < SDLK_LAST)
         {
-            if (lua_isnumber(inState, 3))
-            {
-                lua_pop(inState, argc - 3);
-                lua_Integer keyNum = lua_tointeger(inState, 3);
-                lua_pop(inState, argc - 2);
-                luaThis->mLuaInputCommands.push_back(
-                    new LuaInputCommand(inState, keyNum));
-            }
-            else
-            {
-                lua_pop(inState, argc - 2);
-                luaThis->mLuaInputCommands.push_back(
-                    new LuaInputCommand(inState));
-            }
-        }
-        else
-        {
-            luaThis->mLuaInputCommands.push_back(new LuaInputCommand(inState));
+            lua_pop(inState, argc - 2);
+            luaThis->mKeyCallbacks[keyNum].set(inState);
+            const std::string id(lua_tostring(inState, 1));
+            luaThis->mKeysByName[id] = luaThis->mKeyCallbacks + keyNum;
         }
     }
 

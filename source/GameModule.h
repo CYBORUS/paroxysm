@@ -6,7 +6,6 @@
 #include "ParoxysmModule.h"
 #include "TerrainGrid.h"
 #include "LuaAPI.h"
-#include "LuaInputCommand.h"
 
 #include <iostream>
 #include <fstream>
@@ -47,9 +46,6 @@ class GameModule : public ParoxysmModule
 
     protected:
     private:
-        void loadKeyCommands();
-        void issueLuaCommand(SDLKey inKey, double inIntensity);
-
         LuaAPI mLuaAPI;
         MouseState mMouseState;
 
@@ -58,8 +54,6 @@ class GameModule : public ParoxysmModule
 
         float mXPan;
         float mYPan;
-
-        const LuaInputCommand* mKeyCommands[SDLK_LAST];
 };
 
 #endif
