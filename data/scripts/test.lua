@@ -7,96 +7,96 @@ terrainSizeY = 16
 
 Entity = {}
 
-function Entity:setCollisionCallback(callback)
-    setEntityCollisionCR(self.index, callback)
+function Entity:SetCollisionCallback(callback)
+    EngineSetEntityCollisionCR(self.index, callback)
 end
 
-function Entity:getPosition()
-    return getEntityPosition(self.index)
+function Entity:GetPosition()
+    return EngineGetEntityPosition(self.index)
 end
 
-function Entity:setPosition(x, y, z)
-    setEntityPosition(self.index, x, y, z)
+function Entity:SetPosition(x, y, z)
+    EngineSetEntityPosition(self.index, x, y, z)
 end
 
-function Entity:getVelocity()
-    return getEntityVelocity(self.index)
+function Entity:GetVelocity()
+    return EngineGetEntityVelocity(self.index)
 end
 
-function Entity:setVelocity(x, y, z)
-    return setEntityVelocity(self.index, x, y, z)
+function Entity:SetVelocity(x, y, z)
+    return EngineSetEntityVelocity(self.index, x, y, z)
 end
 	
 --Something is wrong with this function, needs looking at
-function Entity:addVelocity(x1, y1, z1)
-	local x2, y2, z2 = self:getVelocity()
+function Entity:AddVelocity(x1, y1, z1)
+	local x2, y2, z2 = self:GetVelocity()
 	local x = x1 + x2
 	local y = y1 + y2
 	local z = z1 + z2
-	self:setVelocity(x, y, z)
+	self:SetVelocity(x, y, z)
 end
 
-function Entity:getMass()
-    return getEntityMass(self.index)
+function Entity:GetMass()
+    return EngineGetEntityMass(self.index)
 end
 
-function Entity:setMass(mass)
-    setEntityMass(self.index, mass)
+function Entity:SetMass(mass)
+    EngineSetEntityMass(self.index, mass)
 end
 
-function Entity:getRadius()
-    return getEntityRadius(self.index)
+function Entity:GetRadius()
+    return EngineGetEntityRadius(self.index)
 end
 
-function Entity:setRadius(radius)
-    setEntityRadius(self.index, radius)
+function Entity:SetRadius(radius)
+    EngineSetEntityRadius(self.index, radius)
 end
 
-function Entity:delete()
-    removeEntity(self.index)
+function Entity:Delete()
+    EngineRemoveEntity(self.index)
 end
 
-function Entity:new()
+function Entity:New()
     local newEntity = {
-        setCollisionCallback = Entity.setCollisionCallback,
-        getPosition = Entity.getPosition,
-        setPosition = Entity.setPosition,
-        getVelocity = Entity.getVelocity,
-        setVelocity = Entity.setVelocity,
-		addVelocity = Entity.addVelocity,
-        getMass = Entity.getMass,
-        setMass = Entity.setMass,
-        getRadius = Entity.getRadius,
-        setRadius = Entity.setRadius,
-        delete = Entity.delete
+        SetCollisionCallback = Entity.SetCollisionCallback,
+        GetPosition = Entity.GetPosition,
+        SetPosition = Entity.SetPosition,
+        GetVelocity = Entity.GetVelocity,
+        SetVelocity = Entity.SetVelocity,
+		AddVelocity = Entity.AddVelocity,
+        GetMass = Entity.GetMass,
+        SetMass = Entity.SetMass,
+        GetRadius = Entity.GetRadius,
+        SetRadius = Entity.SetRadius,
+        Delete = Entity.Delete
         }
     
-    newEntity.index = addEntity(newEntity)
+    newEntity.index = EngineAddEntity(newEntity)
         
     return newEntity
 end
 
 Tank = {}
 
-function Tank:update()
-    local px, py, pz = self:getPosition()    
-    local vx, vy, vz = self:getVelocity()
+function Tank:Update()
+    local px, py, pz = self:GetPosition()    
+    local vx, vy, vz = self:GetVelocity()
     
-    resetEntityActorMatrix(self.index, self.actors.body)
-    --setEntityPosition(self.index, px, py, pz)
-    setEntityActorRotation(self.index, self.actors.body, 0, px * 10, 0)
+    EngineResetEntityActorMatrix(self.index, self.actors.body)
+    --EngineSetEntityPosition(self.index, px, py, pz)
+    EngineSetEntityActorRotation(self.index, self.actors.body, 0, px * 10, 0)
     
-    if px < 0.5 and vx < 0 then self:setVelocity(-vx, vy, vz) end
-    if px > terrainSizeX - 1.5 and vx > 0 then self:setVelocity(-vx, vy, vz) end
-    if py < 0.5 and vy < 0 then self:setVelocity(vx, -vy, vz) end
-    if py > terrainSizeY - 1.5 and vy > 0 then self:setVelocity(vx, -vy, vz) end
+    if px < 0.5 and vx < 0 then self:SetVelocity(-vx, vy, vz) end
+    if px > terrainSizeX - 1.5 and vx > 0 then self:SetVelocity(-vx, vy, vz) end
+    if py < 0.5 and vy < 0 then self:SetVelocity(vx, -vy, vz) end
+    if py > terrainSizeY - 1.5 and vy > 0 then self:SetVelocity(vx, -vy, vz) end
 end
 
-function Tank:onCollision(entity)
-    local px, py, pz = self:getPosition()    
-    local vx, vy, vz = self:getVelocity()    
-    local px2, py2, pz2 = entity:getPosition()    
-    local vx2, vy2, vz2 = entity:getVelocity()
+function Tank:OnCollision(entity)
+    local px, py, pz = self:GetPosition()    
+    local vx, vy, vz = self:GetVelocity()    
+    local px2, py2, pz2 = entity:GetPosition()    
+    local vx2, vy2, vz2 = entity:GetVelocity()
     
     if px < px2 and vx > 0 then vx = -vx end
     if px > px2 and vx < 0 then vx = -vx end
@@ -106,95 +106,95 @@ function Tank:onCollision(entity)
     
 	if self.isPlayerTank then 
 		--self:setVelocity(0, 0, 0)
-        entity:delete()
+        entity:Delete()
 	else
-		self:setVelocity(vx, vy, vz)
+		self:SetVelocity(vx, vy, vz)
 	end
 end
 
-function Tank:new()
-    local newTank = Entity:new()
-    newTank.update = Tank.update
-    newTank.onCollision = Tank.onCollision
+function Tank:New()
+    local newTank = Entity:New()
+    newTank.Update = Tank.Update
+    newTank.OnCollision = Tank.OnCollision
     
-    setEntityDefaultRotation(newTank.index, 90, 0, 0)
-    newTank:setRadius(0.5)
+    EngineSetEntityDefaultRotation(newTank.index, 90, 0, 0)
+    newTank:SetRadius(0.5)
     
     newTank.actors = {}
-    newTank.actors.body = addActor(newTank.index,
+    newTank.actors.body = EngineAddActor(newTank.index,
         "data/models/bradley_body.c3m")
-    newTank.actors.head = addActor(newTank.index,
+    newTank.actors.head = EngineAddActor(newTank.index,
         "data/models/bradley_head.c3m")
-    newTank.actors.turret = addActor(newTank.index,
+    newTank.actors.turret = EngineAddActor(newTank.index,
         "data/models/bradley_turret.c3m", newTank.actors.head)
     
-    local collisionCallback = function(entity) newTank:onCollision(entity) end
-    newTank:setCollisionCallback(collisionCallback)
+    local collisionCallback = function(entity) newTank:OnCollision(entity) end
+    newTank:SetCollisionCallback(collisionCallback)
     
     return newTank
 end
 
-function randomLocation()
+function RandomLocation()
     return math.random() * terrainSizeX
 end
 
-function randomDirection()
+function RandomDirection()
     return (math.random() - 0.5) * 0.05
 end
 
-function update()
+function Update()
     for i = 1, NumberOfTanks do
         local t = allTheTanks[i]
-        if t and t.index then t:update() end
+        if t and t.index then t:Update() end
         
         local chance = math.random()
         if false then
-            t:setVelocity(randomDirection(), randomDirection(), 0)
+            t:SetVelocity(RandomDirection(), RandomDirection(), 0)
         end
     end
 end
 
-function onMoveForward(intensity)
+function OnMoveForward(intensity)
     if intensity > 0 then
         playerTank.velocity.y = 0.05 * intensity
     elseif playerTank.velocity.y > 0 then
         playerTank.velocity.y = 0
     end
     
-    playerTank:updateVelocity()
+    playerTank:UpdateVelocity()
 end
 
-function onMoveBackward(intensity)
+function OnMoveBackward(intensity)
     if intensity > 0 then
         playerTank.velocity.y = -0.05 * intensity
     elseif playerTank.velocity.y < 0 then
         playerTank.velocity.y = 0
     end
     
-    playerTank:updateVelocity()
+    playerTank:UpdateVelocity()
 end
 
-function onMoveLeft(intensity)
+function OnMoveLeft(intensity)
     if intensity > 0 then
         playerTank.velocity.x = -0.05 * intensity
     elseif playerTank.velocity.x < 0 then
         playerTank.velocity.x = 0
     end
     
-    playerTank:updateVelocity()
+    playerTank:UpdateVelocity()
 end
 
-function onMoveRight(intensity)
+function OnMoveRight(intensity)
     if intensity > 0 then
         playerTank.velocity.x = 0.05 * intensity
     elseif playerTank.velocity.x > 0 then
         playerTank.velocity.x = 0
     end
 
-    playerTank:updateVelocity()
+    playerTank:UpdateVelocity()
 end
 
-function onSpace(intensity)
+function OnSpace(intensity)
     if intensity < 1 then return end
     
     if playerTank.isBeingFollowed then
@@ -207,36 +207,36 @@ function onSpace(intensity)
 end
 
 function allTheThings()
-	setTerrainSize(terrainSizeX, terrainSizeY)
+	EngineSetTerrainSize(terrainSizeX, terrainSizeY)
 	
-	createCommand("Move Forward", onMoveForward, 119)
-	createCommand("Move Backward", onMoveBackward, 115)
-	createCommand("Move Left", onMoveLeft, 97)
-	createCommand("Move Right", onMoveRight, 100)
-	createCommand("Space", onSpace, 32)
-	createCommand("Debug Output", debugOutput, 92)
+	EngineCreateCommand("Move Forward", OnMoveForward, 119)
+	EngineCreateCommand("Move Backward", OnMoveBackward, 115)
+	EngineCreateCommand("Move Left", OnMoveLeft, 97)
+	EngineCreateCommand("Move Right", OnMoveRight, 100)
+	EngineCreateCommand("Space", OnSpace, 32)
+	EngineCreateCommand("Debug Output", DebugOutput, 92)
 	
     for i = 1, NumberOfTanks do
-        local t = Tank:new()
-        t:setPosition(randomLocation(), randomLocation(), 0)
-        t:setVelocity(randomDirection(), randomDirection(), 0)
+        local t = Tank:New()
+        t:SetPosition(RandomLocation(), RandomLocation(), 0)
+        t:SetVelocity(RandomDirection(), RandomDirection(), 0)
         allTheTanks[i] = t
     end
     
-	playerTank = Tank:new()
-	playerTank:setPosition(5, 5, 0)
-    playerTank:setVelocity(0, 0, 0)
+	playerTank = Tank:New()
+	playerTank:SetPosition(5, 5, 0)
+    playerTank:SetVelocity(0, 0, 0)
 	playerTank.isPlayerTank = true
 	playerTank.isBeingFollowed = true
 	playerTank.velocity = { x = 0, y = 0, z = 0 }
 	
-	function playerTank:updateVelocity()
-	    self:setVelocity(self.velocity.x, self.velocity.y, self.velocity.z)
+	function playerTank:UpdateVelocity()
+	    self:SetVelocity(self.velocity.x, self.velocity.y, self.velocity.z)
 	end
 	
-	cameraFollow(playerTank.index)
+	EngineCameraFollow(playerTank.index)
     
-    setUpdateCallback(update)
+    EngineSetUpdateCallback(Update)
 end
 
 allTheThings()

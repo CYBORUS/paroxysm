@@ -45,34 +45,39 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mCameraAnglesNode.addChildNode(&mCameraTranslationNode);
     mCameraTranslationNode.addChildNode(&mGridActor);
 
-    mLua.addFunction("addEntity", luaAddEntity);
-    mLua.addFunction("removeEntity", luaRemoveEntity);
-    mLua.addFunction("addActor", luaAddActor);
-    mLua.addFunction("setEntityDefaultRotation", luaSetEntityDefaultRotation);
-    mLua.addFunction("setEntityActorRotation", luaSetEntityActorRotation);
-    mLua.addFunction("resetEntityActorMatrix", luaResetEntityActorMatrix);
-    mLua.addFunction("getEntityPosition", luaGetEntityPosition);
-    mLua.addFunction("setEntityPosition", luaSetEntityPosition);
-    mLua.addFunction("getEntityMass", luaGetEntityMass);
-    mLua.addFunction("setEntityMass", luaSetEntityMass);
-    mLua.addFunction("getEntityRadius", luaGetEntityRadius);
-    mLua.addFunction("setEntityRadius", luaSetEntityRadius);
-    mLua.addFunction("getEntityVelocity", luaGetEntityVelocity);
-    mLua.addFunction("setEntityVelocity", luaSetEntityVelocity);
-    mLua.addFunction("setEntityCollisionCR", luaSetEntityCollisionCR);
-    mLua.addFunction("setTerrainSize", luaSetTerrainSize);
-    mLua.addFunction("setUpdateCallback", luaSetUpdateCallback);
-    mLua.addFunction("sendBoth", luaSendBoth);
-    mLua.addFunction("createCommand", luaCreateCommand);
-    mLua.addFunction("moveCamera", luaMoveCamera);
-    mLua.addFunction("setCameraPosition", luaSetCameraPosition);
-    mLua.addFunction("cameraFollow", luaCameraFollow);
-    mLua.addFunction("cameraUnfollow", luaCameraUnfollow);
-    mLua.addFunction("debugOutput", luaDebugOutput);
     mLua.addFunction("EngineAddEntityLocalMomentum", luaAddEntityLocalMomentum);
-    mLua.addFunction("EngineAddEntityGlobalMomentum", luaAddEntityGlobalMomentum);
+    mLua.addFunction("EngineAddEntityGlobalMomentum",
+        luaAddEntityGlobalMomentum);
     mLua.addFunction("EngineAddEntityLocalVelocity", luaAddEntityLocalVelocity);
-    mLua.addFunction("EngineAddEntityGlobalVelocity", luaAddEntityGlobalVelocity);
+    mLua.addFunction("EngineAddEntityGlobalVelocity",
+        luaAddEntityGlobalVelocity);
+    mLua.addFunction("EngineAddEntityGlobalMomentum",
+        luaAddEntityGlobalMomentum);
+    mLua.addFunction("EngineAddEntity", luaAddEntity);
+    mLua.addFunction("EngineRemoveEntity", luaRemoveEntity);
+    mLua.addFunction("EngineAddActor", luaAddActor);
+    mLua.addFunction("EngineSetEntityDefaultRotation",
+        luaSetEntityDefaultRotation);
+    mLua.addFunction("EngineSetEntityActorRotation", luaSetEntityActorRotation);
+    mLua.addFunction("EngineResetEntityActorMatrix", luaResetEntityActorMatrix);
+    mLua.addFunction("EngineGetEntityPosition", luaGetEntityPosition);
+    mLua.addFunction("EngineSetEntityPosition", luaSetEntityPosition);
+    mLua.addFunction("EngineGetEntityMass", luaGetEntityMass);
+    mLua.addFunction("EngineSetEntityMass", luaSetEntityMass);
+    mLua.addFunction("EngineGetEntityRadius", luaGetEntityRadius);
+    mLua.addFunction("EngineSetEntityRadius", luaSetEntityRadius);
+    mLua.addFunction("EngineGetEntityVelocity", luaGetEntityVelocity);
+    mLua.addFunction("EngineSetEntityVelocity", luaSetEntityVelocity);
+    mLua.addFunction("EngineSetEntityCollisionCR", luaSetEntityCollisionCR);
+    mLua.addFunction("EngineSetTerrainSize", luaSetTerrainSize);
+    mLua.addFunction("EngineSetUpdateCallback", luaSetUpdateCallback);
+    mLua.addFunction("EngineSendBoth", luaSendBoth);
+    mLua.addFunction("EngineCreateCommand", luaCreateCommand);
+    mLua.addFunction("EngineMoveCamera", luaMoveCamera);
+    mLua.addFunction("EngineSetCameraPosition", luaSetCameraPosition);
+    mLua.addFunction("EngineCameraFollow", luaCameraFollow);
+    mLua.addFunction("EngineCameraUnfollow", luaCameraUnfollow);
+    mLua.addFunction("EngineDebugOutput", luaDebugOutput);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
@@ -231,6 +236,8 @@ int LuaAPI::luaAddEntityLocalMomentum(lua_State* inState)
         v[2] = z;
         e->addLocalMomentumVector(v);
     }
+
+    return 0;
 }
 
 
@@ -263,6 +270,8 @@ int LuaAPI::luaAddEntityGlobalMomentum(lua_State* inState)
         v[2] = z;
         e->addGlobalMomentumVector(v);
     }
+
+    return 0;
 }
 
 int LuaAPI::luaAddEntityLocalVelocity(lua_State* inState)
@@ -294,6 +303,8 @@ int LuaAPI::luaAddEntityLocalVelocity(lua_State* inState)
         v[2] = z;
         e->addLocalVelocityVector(v);
     }
+
+    return 0;
 }
 
 int LuaAPI::luaAddEntityGlobalVelocity(lua_State* inState)
@@ -325,6 +336,8 @@ int LuaAPI::luaAddEntityGlobalVelocity(lua_State* inState)
         v[2] = z;
         e->addGlobalVelocityVector(v);
     }
+
+    return 0;
 }
 
 int LuaAPI::luaRemoveEntity(lua_State* inState)
