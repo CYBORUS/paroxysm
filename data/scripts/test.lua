@@ -155,22 +155,42 @@ function update()
 end
 
 function onMoveForward(intensity)
-    playerTank.velocity.y = 0.05 * intensity
+    if intensity > 0 then
+        playerTank.velocity.y = 0.05 * intensity
+    elseif playerTank.velocity.y > 0 then
+        playerTank.velocity.y = 0
+    end
+    
     playerTank:updateVelocity()
 end
 
 function onMoveBackward(intensity)
-    playerTank.velocity.y = -0.05 * intensity
+    if intensity > 0 then
+        playerTank.velocity.y = -0.05 * intensity
+    elseif playerTank.velocity.y < 0 then
+        playerTank.velocity.y = 0
+    end
+    
     playerTank:updateVelocity()
 end
 
 function onMoveLeft(intensity)
-	playerTank.velocity.x = -0.05 * intensity
+    if intensity > 0 then
+        playerTank.velocity.x = -0.05 * intensity
+    elseif playerTank.velocity.x < 0 then
+        playerTank.velocity.x = 0
+    end
+    
     playerTank:updateVelocity()
 end
 
 function onMoveRight(intensity)
-    playerTank.velocity.x = 0.05 * intensity
+    if intensity > 0 then
+        playerTank.velocity.x = 0.05 * intensity
+    elseif playerTank.velocity.x > 0 then
+        playerTank.velocity.x = 0
+    end
+
     playerTank:updateVelocity()
 end
 
