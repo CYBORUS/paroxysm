@@ -69,6 +69,10 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("cameraFollow", luaCameraFollow);
     mLua.addFunction("cameraUnfollow", luaCameraUnfollow);
     mLua.addFunction("debugOutput", luaDebugOutput);
+    mLua.addFunction("EngineAddEntityLocalMomentum", luaAddEntityLocalMomentum);
+    mLua.addFunction("EngineAddEntityGlobalMomentum", luaAddEntityGlobalMomentum);
+    mLua.addFunction("EngineAddEntityLocalVelocity", luaAddEntityLocalVelocity);
+    mLua.addFunction("EngineAddEntityGlobalMomentum", luaAddEntityGlobalMomentum);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
