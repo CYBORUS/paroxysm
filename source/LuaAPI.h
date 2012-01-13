@@ -105,7 +105,7 @@ class LuaAPI
         static int luaSetEntityVelocity(lua_State* inState);
         static int luaSetTerrainSize(lua_State* inState);
         static int luaAddActor(lua_State* inState);
-        static int luaSetEntityCollisionCR(lua_State* inState);
+        static int luaSetEntityCollisionCallback(lua_State* inState);
         static int luaAddEntityLocalMomentum(lua_State* inState);
         static int luaAddEntityGlobalMomentum(lua_State* inState);
         static int luaAddEntityLocalVelocity(lua_State* inState);

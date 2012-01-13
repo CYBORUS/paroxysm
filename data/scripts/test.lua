@@ -8,7 +8,7 @@ terrainSizeY = 16
 Entity = {}
 
 function Entity:SetCollisionCallback(callback)
-    EngineSetEntityCollisionCR(self.index, callback)
+    EngineSetEntityCollisionCallback(self.index, callback)
 end
 
 function Entity:GetPosition()
@@ -63,7 +63,7 @@ function Entity:New()
         SetPosition = Entity.SetPosition,
         GetVelocity = Entity.GetVelocity,
         SetVelocity = Entity.SetVelocity,
-		AddVelocity = Entity.AddVelocity,
+        AddVelocity = Entity.AddVelocity,
         GetMass = Entity.GetMass,
         SetMass = Entity.SetMass,
         GetRadius = Entity.GetRadius,

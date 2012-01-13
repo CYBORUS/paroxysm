@@ -68,7 +68,8 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("EngineSetEntityRadius", luaSetEntityRadius);
     mLua.addFunction("EngineGetEntityVelocity", luaGetEntityVelocity);
     mLua.addFunction("EngineSetEntityVelocity", luaSetEntityVelocity);
-    mLua.addFunction("EngineSetEntityCollisionCR", luaSetEntityCollisionCR);
+    mLua.addFunction("EngineSetEntityCollisionCallback",
+        luaSetEntityCollisionCallback);
     mLua.addFunction("EngineSetTerrainSize", luaSetTerrainSize);
     mLua.addFunction("EngineSetUpdateCallback", luaSetUpdateCallback);
     mLua.addFunction("EngineSendBoth", luaSendBoth);
@@ -648,7 +649,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
     return 1;
 }
 
-int LuaAPI::luaSetEntityCollisionCR(lua_State* inState)
+int LuaAPI::luaSetEntityCollisionCallback(lua_State* inState)
 {
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
