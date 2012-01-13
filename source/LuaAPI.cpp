@@ -128,6 +128,8 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
     }
 }
 
+
+
 void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
                                       double inZ)
 {
@@ -193,6 +195,132 @@ int LuaAPI::luaAddEntity(lua_State* inState)
 
     lua_pushinteger(inState, outIndex);
     return 1;
+}
+
+
+int LuaAPI::luaAddEntityLocalMomentum(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc < 4) return 0;
+
+    for (int i = 1; i <= 4; ++i)
+    {
+        if (!lua_isnumber(inState, i))
+        {
+            return 0;
+        }
+    }
+
+    size_t index = lua_tointeger(inState, 1);
+    double x = lua_tonumber(inState, 2);
+    double y = lua_tonumber(inState, 3);
+    double z = lua_tonumber(inState, 4);
+
+    EntityRef e = luaThis->mEntities.get(index);
+    if (!e.isNull())
+    {
+        vec3d v;
+        v[0] = x;
+        v[1] = y;
+        v[2] = z;
+        e->addLocalMomentumVector(v);
+    }
+}
+
+
+int LuaAPI::luaAddEntityGlobalMomentum(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc < 4) return 0;
+
+    for (int i = 1; i <= 4; ++i)
+    {
+        if (!lua_isnumber(inState, i))
+        {
+            return 0;
+        }
+    }
+
+    size_t index = lua_tointeger(inState, 1);
+    double x = lua_tonumber(inState, 2);
+    double y = lua_tonumber(inState, 3);
+    double z = lua_tonumber(inState, 4);
+
+    EntityRef e = luaThis->mEntities.get(index);
+    if (!e.isNull())
+    {
+        vec3d v;
+        v[0] = x;
+        v[1] = y;
+        v[2] = z;
+        e->addGlobalMomentumVector(v);
+    }
+}
+
+int LuaAPI::luaAddEntityLocalVelocity(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc < 4) return 0;
+
+    for (int i = 1; i <= 4; ++i)
+    {
+        if (!lua_isnumber(inState, i))
+        {
+            return 0;
+        }
+    }
+
+    size_t index = lua_tointeger(inState, 1);
+    double x = lua_tonumber(inState, 2);
+    double y = lua_tonumber(inState, 3);
+    double z = lua_tonumber(inState, 4);
+
+    EntityRef e = luaThis->mEntities.get(index);
+    if (!e.isNull())
+    {
+        vec3d v;
+        v[0] = x;
+        v[1] = y;
+        v[2] = z;
+        e->addLocalVelocityVector(v);
+    }
+}
+
+int LuaAPI::luaAddEntityGlobalVelocity(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc < 5) return 0;
+
+    for (int i = 1; i <= 5; ++i)
+    {
+        if (!lua_isnumber(inState, i))
+        {
+            return 0;
+        }
+    }
+
+    size_t index = lua_tointeger(inState, 1);
+    double x = lua_tonumber(inState, 2);
+    double y = lua_tonumber(inState, 3);
+    double z = lua_tonumber(inState, 4);
+
+    EntityRef e = luaThis->mEntities.get(index);
+    if (!e.isNull())
+    {
+        vec3d v;
+        v[0] = x;
+        v[1] = y;
+        v[2] = z;
+        e->addGlobalVelocityVector(v);
+    }
 }
 
 int LuaAPI::luaRemoveEntity(lua_State* inState)
