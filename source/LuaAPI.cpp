@@ -72,7 +72,7 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("EngineAddEntityLocalMomentum", luaAddEntityLocalMomentum);
     mLua.addFunction("EngineAddEntityGlobalMomentum", luaAddEntityGlobalMomentum);
     mLua.addFunction("EngineAddEntityLocalVelocity", luaAddEntityLocalVelocity);
-    mLua.addFunction("EngineAddEntityGlobalMomentum", luaAddEntityGlobalMomentum);
+    mLua.addFunction("EngineAddEntityGlobalVelocity", luaAddEntityGlobalVelocity);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
 }
