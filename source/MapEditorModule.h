@@ -76,8 +76,6 @@ class MapEditorModule : public ParoxysmModule
 
         float mXPan;
         float mYPan;
-
-        static void uiLoadMap(CGE::Widget* inWidget, void* inData);
 };
 
 #endif

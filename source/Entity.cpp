@@ -152,11 +152,9 @@ void Entity::rotateActor(size_t inIndex, double inXRotation,
     double inYRotation, double inZRotation)
 {
     CGE::Actor* a = getActor(inIndex);
+
     if (a)
     {
-        //a->matrix().rotateX(inXRotation);
-        //a->matrix().rotateY(inYRotation);
-        //a->matrix().rotateZ(inZRotation);
         a->rotateY(inYRotation);
         a->rotateX(inXRotation);
         a->rotateZ(inZRotation);

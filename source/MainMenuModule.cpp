@@ -69,13 +69,13 @@ void MainMenuModule::onLoad(CGE::PropertyList& inList)
     // MapEditorModule Button
     CGE::Button* button = new CGE::Button("data/images/hud/map_editor.png",
         4.0f, 1.0f);
-    button->setClickListener(mapEditorButtonCallBack, this);
+    button->setCallback(CGE::Widget::MouseClick, mapEditorButtonCallBack, this);
     button->setPosition(0.0f, -0.5f);
     mUI.addWidget(button);
 
     // NewGameModule Button
     button = new CGE::Button("data/images/hud/new_game.png", 4.0f, 1.0f);
-    button->setClickListener(newGameButtonCallBack, this);
+    button->setCallback(CGE::Widget::MouseClick, newGameButtonCallBack, this);
     button->setPosition(0.0f, 0.5f);
     mUI.addWidget(button);
 

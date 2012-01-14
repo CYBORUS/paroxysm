@@ -35,12 +35,6 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
     mGrid.buildVBO();
     fin.close();
 
-    CGE::Button* button = new CGE::Button("data/images/hud/load_map.png", 2.0f,
-        1.0f);
-    button->setClickListener(uiLoadMap, this);
-    button->setPosition(3.0f, -2.0f);
-
-    mUI.addWidget(button);
     mUI.update();
 }
 
@@ -321,12 +315,4 @@ void MapEditorModule::onMouseWheel(bool inUp)
     {
         mViewNode.changeDistance(0.5f);
     }
-}
-
-
-void MapEditorModule::uiLoadMap(CGE::Widget* inWidget, void* inData)
-{
-    //inWidget->enable(false);
-    //MapEditorModule* m = reinterpret_cast<MapEditorModule*>(inData);
-    cerr << "Button pressed!\n";
 }
