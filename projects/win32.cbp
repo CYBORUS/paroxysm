@@ -61,6 +61,8 @@
 			<Add library="wldap32" />
 			<Add directory="..\..\cyborus-game-engine" />
 		</Linker>
+		<Unit filename="..\source\Entity.cpp" />
+		<Unit filename="..\source\Entity.h" />
 		<Unit filename="..\source\GameModule.cpp" />
 		<Unit filename="..\source\GameModule.h" />
 		<Unit filename="..\source\GeneralBin.cpp" />
@@ -74,8 +76,6 @@
 		<Unit filename="..\source\MapEditorModule.h" />
 		<Unit filename="..\source\ParoxysmModule.cpp" />
 		<Unit filename="..\source\ParoxysmModule.h" />
-		<Unit filename="..\source\PlayerControl.cpp" />
-		<Unit filename="..\source\PlayerControl.h" />
 		<Unit filename="..\source\SkyBox.cpp" />
 		<Unit filename="..\source\SkyBox.h" />
 		<Unit filename="..\source\SkyBoxBin.cpp" />

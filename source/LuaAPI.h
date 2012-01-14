@@ -22,11 +22,11 @@
 #include <CGE/PublicMatrixNode.h>
 #include <CGE/LuaMachine.h>
 #include <CGE/LuaReference.h>
-#include <CGE/Entity.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/ModelFromFile.h>
 #include <CGE/Reference.h>
 
+#include "Entity.h"
 #include "GeneralBin.h"
 #include "SkyBoxBin.h"
 #include "SkyBox.h"
@@ -37,7 +37,7 @@
 #include <map>
 #include <string>
 
-typedef CGE::Reference<CGE::Entity> EntityRef;
+typedef CGE::Reference<Entity> EntityRef;
 
 class LuaAPI
 {
@@ -82,7 +82,7 @@ class LuaAPI
         CGE::LuaReference mKeyCallbacks[SDLK_LAST];
         std::map<std::string, CGE::LuaReference*> mKeysByName;
         std::list<EntityRef> mCollisionEntities;
-        LuaIndexedResource<CGE::Entity> mEntities;
+        LuaIndexedResource<Entity> mEntities;
 
         static LuaAPI* luaThis;
 

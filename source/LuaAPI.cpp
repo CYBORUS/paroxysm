@@ -194,7 +194,7 @@ int LuaAPI::luaAddEntity(lua_State* inState)
 
     if (argc > 0 && lua_istable(inState, 1))
     {
-        EntityRef entity = new CGE::Entity(inState);
+        EntityRef entity = new Entity(inState);
         luaThis->mCollisionEntities.push_back(entity);
         luaThis->mGridActor.addChildNode(entity);
 
