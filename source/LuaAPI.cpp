@@ -105,7 +105,7 @@ void LuaAPI::update(const mat4f& inProjection)
 
     checkForCollisions();
 
-    for (EntityRef i = mEntities.first(); !i.isNull(); i = mEntities.next())
+    for (EntityRef i = mEntities.first(); i; i = mEntities.next())
         i->update();
 
     mCamera.update();
@@ -129,7 +129,7 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
 {
     EntityRef e = mEntities.get(inIndex);
 
-    if (!e.isNull())
+    if (e)
     {
         CGE::ModelFromFile* mff = mModels.load(inModel);
         CGE::Actor* actor = new CGE::Actor(mff);
@@ -144,7 +144,8 @@ void LuaAPI::setEntityDefaultRotation(size_t inIndex, double inX, double inY,
                                       double inZ)
 {
     EntityRef e = mEntities.get(inIndex);
-    if (!e.isNull())
+
+    if (e)
     {
         vec3d v;
         v[0] = inX;
@@ -159,7 +160,7 @@ void LuaAPI::setEntityActorRotation(size_t inEntity, size_t inActor, double inX,
 {
     EntityRef e = mEntities.get(inEntity);
 
-    if (!e.isNull() && inActor < e->numActors())
+    if (e && inActor < e->numActors())
         e->rotateActor(inActor, inX, inY, inZ);
 }
 
@@ -167,7 +168,7 @@ void LuaAPI::resetEntityActorMatrix(size_t inEntity, size_t inActor)
 {
     EntityRef e = mEntities.get(inEntity);
 
-    if (!e.isNull() && inActor < e->numActors())
+    if (e && inActor < e->numActors())
         e->resetActorMatrix(inActor);
 }
 
@@ -175,7 +176,8 @@ void LuaAPI::setEntityPosition(size_t inIndex, double inX, double inY,
     double inZ)
 {
     EntityRef e = mEntities.get(inIndex);
-    if (!e.isNull())
+
+    if (e)
     {
         vec3d v;
         v[0] = inX;
@@ -229,7 +231,8 @@ int LuaAPI::luaAddEntityLocalMomentum(lua_State* inState)
     double z = lua_tonumber(inState, 4);
 
     EntityRef e = luaThis->mEntities.get(index);
-    if (!e.isNull())
+
+    if (e)
     {
         vec3d v;
         v[0] = x;
@@ -263,7 +266,8 @@ int LuaAPI::luaAddEntityGlobalMomentum(lua_State* inState)
     double z = lua_tonumber(inState, 4);
 
     EntityRef e = luaThis->mEntities.get(index);
-    if (!e.isNull())
+
+    if (e)
     {
         vec3d v;
         v[0] = x;
@@ -296,7 +300,8 @@ int LuaAPI::luaAddEntityLocalVelocity(lua_State* inState)
     double z = lua_tonumber(inState, 4);
 
     EntityRef e = luaThis->mEntities.get(index);
-    if (!e.isNull())
+
+    if (e)
     {
         vec3d v;
         v[0] = x;
@@ -329,7 +334,8 @@ int LuaAPI::luaAddEntityGlobalVelocity(lua_State* inState)
     double z = lua_tonumber(inState, 4);
 
     EntityRef e = luaThis->mEntities.get(index);
-    if (!e.isNull())
+
+    if (e)
     {
         vec3d v;
         v[0] = x;
@@ -350,7 +356,8 @@ int LuaAPI::luaRemoveEntity(lua_State* inState)
     {
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->mEntities.remove(index);
-        if (!e.isNull()) e->setIsBeingDeleted();
+
+        if (e) e->setIsBeingDeleted();
     }
 
     return 0;
@@ -445,7 +452,7 @@ int LuaAPI::luaGetEntityPosition(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->mEntities.get(index);
 
-        if (!e.isNull())
+        if (e)
         {
             const vec3d& v = e->getPosition();
             x = v[0];
@@ -494,7 +501,8 @@ int LuaAPI::luaGetEntityMass(lua_State* inState)
     {
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->mEntities.get(index);
-        if (!e.isNull()) mass = e->getMass();
+
+        if (e) mass = e->getMass();
     }
 
     lua_pushnumber(inState, mass);
@@ -511,7 +519,8 @@ int LuaAPI::luaSetEntityMass(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         lua_Number mass = lua_tonumber(inState, 2);
         EntityRef e = luaThis->mEntities.get(index);
-        if (!e.isNull()) e->setMass(mass);
+
+        if (e) e->setMass(mass);
     }
 
     return 0;
@@ -528,7 +537,7 @@ int LuaAPI::luaGetEntityRadius(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->mEntities.get(index);
 
-        if (!e.isNull()) radius = e->getMass();
+        if (e) radius = e->getMass();
     }
 
     lua_pushnumber(inState, radius);
@@ -546,7 +555,7 @@ int LuaAPI::luaSetEntityRadius(lua_State* inState)
         lua_Number radius = lua_tonumber(inState, 2);
         EntityRef e = luaThis->mEntities.get(index);
 
-        if (!e.isNull()) e->setRadius(radius);
+        if (e) e->setRadius(radius);
     }
 
     return 0;
@@ -565,7 +574,8 @@ int LuaAPI::luaGetEntityVelocity(lua_State* inState)
     {
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->mEntities.get(index);
-        if (!e.isNull())
+
+        if (e)
         {
             const vec3d& v = e->getVelocity();
             x = v[0];
@@ -603,7 +613,7 @@ int LuaAPI::luaSetEntityVelocity(lua_State* inState)
 
     EntityRef e = luaThis->mEntities.get(index);
 
-    if (!e.isNull()) e->setVelocity(v);
+    if (e) e->setVelocity(v);
 
     return 0;
 }
@@ -620,7 +630,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
         const char* model = lua_tolstring(inState, 2, &length);
         EntityRef e = luaThis->mEntities.get(index);
 
-        if (!e.isNull() && model && length)
+        if (e && model && length)
         {
             CGE::ModelFromFile* mff = luaThis->mModels.load(model);
             CGE::Actor* actor = new CGE::Actor(mff);
@@ -661,7 +671,7 @@ int LuaAPI::luaSetEntityCollisionCallback(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->mEntities.get(index);
 
-        if (!e.isNull()) e->setCollisionCallback(inState);
+        if (e) e->setCollisionCallback(inState);
     }
 
     return 0;
@@ -683,6 +693,7 @@ void LuaAPI::checkForCollisions()
         {
             std::list<EntityRef>::iterator j = i;
             ++j;
+
             while (j != mCollisionEntities.end())
             {
                 EntityRef e2 = *j;
@@ -704,6 +715,7 @@ void LuaAPI::checkForCollisions()
                 }
 
             }
+
             ++i;
         }
     }
@@ -736,8 +748,8 @@ int LuaAPI::luaSetTerrainSize(lua_State* inState)
 
     if (argc > 1 && lua_isnumber(inState, 1) && lua_isnumber(inState, 2))
     {
-        LUA_INTEGER height = lua_tointeger(inState, 1);
-        LUA_INTEGER width = lua_tointeger(inState, 2);
+        lua_Integer height = lua_tointeger(inState, 1);
+        lua_Integer width = lua_tointeger(inState, 2);
 
         if (height > 0 && height < 1000 && width > 0 && width < 1000)
         {
@@ -795,7 +807,8 @@ int LuaAPI::luaCameraFollow(lua_State* inState)
     {
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->mEntities.get(index);
-        if (!e.isNull()) luaThis->mCamera.follow(e->getTranslation());
+
+        if (e) luaThis->mCamera.follow(e->getTranslation());
     }
 
     return 0;
