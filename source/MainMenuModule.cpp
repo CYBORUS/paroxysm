@@ -7,7 +7,10 @@
 #include <fstream>
 using namespace std;
 
-MainMenuModule::MainMenuModule() : mFont("data/fonts/DejaVuSans.ttf", 24)
+static const float SpinStep = 3.1415926535898f / 40.0f;
+
+MainMenuModule::MainMenuModule() : mFont("data/fonts/DejaVuSans.ttf", 24),
+    mTextBox(NULL), mCount(0.0f)
 {
 }
 
@@ -42,6 +45,19 @@ void MainMenuModule::onLButtonDown(int inX, int inY)
 
 void MainMenuModule::onPulse()
 {
+    if (mTextBox)
+    {
+        mCount += 1.0f;
+
+        if (mCount >= 80.0f) mCount -= 80.0f;
+
+        float n = mCount * SpinStep;
+        float s = (sin(n) + 1.0f) / 2.0f;
+        float c = (cos(n) + 1.0f) / 2.0f;
+
+        mTextBox->setPosition(0.0f, -2.0f, s, c);
+    }
+
     mUI.update();
 }
 
@@ -94,6 +110,7 @@ void MainMenuModule::onLoad(CGE::PropertyList& inList)
     textBox->setText(mFont, "Middle");
     textBox->setPosition(0.0f, -2.0f, CGE::TextBox::Middle,
         CGE::TextBox::Center);
+    textBox->setCallback(CGE::Widget::MouseClick, logoSpinCallback, this);
     mUI.addWidget(textBox);
 
     textBox = new CGE::TextBox();
@@ -124,7 +141,7 @@ void MainMenuModule::onLoad(CGE::PropertyList& inList)
 void MainMenuModule::mapEditorButtonCallBack(CGE::Widget* inWidget,
     void* inData)
 {
-    MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
+    MainMenuModule* m = static_cast<MainMenuModule*>(inData);
     m->mNextModule = new MapEditorModule;
     m->mRunning = false;
     m->mDead = false;
@@ -132,8 +149,14 @@ void MainMenuModule::mapEditorButtonCallBack(CGE::Widget* inWidget,
 
 void MainMenuModule::newGameButtonCallBack(CGE::Widget* inWidget, void* inData)
 {
-    MainMenuModule* m = reinterpret_cast<MainMenuModule*>(inData);
+    MainMenuModule* m = static_cast<MainMenuModule*>(inData);
     m->mNextModule = new GameModule;
     m->mRunning = false;
     m->mDead = false;
+}
+
+void MainMenuModule::logoSpinCallback(CGE::Widget* inWidget, void* inData)
+{
+    MainMenuModule* m = static_cast<MainMenuModule*>(inData);
+    m->mTextBox = static_cast<CGE::TextBox*>(inWidget);
 }

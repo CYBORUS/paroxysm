@@ -46,10 +46,13 @@ class MainMenuModule : public ParoxysmModule
         float mYPan;
 
         CGE::Font mFont;
+        CGE::TextBox* mTextBox;
+        float mCount;
 
         static void mapEditorButtonCallBack(CGE::Widget* inWidget,
             void* inData);
         static void newGameButtonCallBack(CGE::Widget* inWidget, void* inData);
+        static void logoSpinCallback(CGE::Widget* inWidget, void* inData);
 };
 
 #endif
