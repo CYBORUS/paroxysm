@@ -206,7 +206,7 @@ function OnSpace(intensity)
     end
 end
 
-function allTheThings()
+function AllTheThings()
 	EngineSetTerrainSize(terrainSizeX, terrainSizeY)
 	
 	EngineCreateCommand("Move Forward", OnMoveForward, 119)
@@ -239,5 +239,5 @@ function allTheThings()
     EngineSetUpdateCallback(Update)
 end
 
-allTheThings()
+AllTheThings()
 

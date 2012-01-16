@@ -16,7 +16,6 @@ MainMenuModule::MainMenuModule() : mFont("data/fonts/DejaVuSans.ttf", 24),
 
  MainMenuModule::~MainMenuModule()
 {
-
 }
 
 void MainMenuModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
@@ -158,5 +157,5 @@ void MainMenuModule::newGameButtonCallBack(CGE::Widget* inWidget, void* inData)
 void MainMenuModule::logoSpinCallback(CGE::Widget* inWidget, void* inData)
 {
     MainMenuModule* m = static_cast<MainMenuModule*>(inData);
-    m->mTextBox = static_cast<CGE::TextBox*>(inWidget);
+    m->mTextBox = m->mTextBox ? NULL : static_cast<CGE::TextBox*>(inWidget);
 }
