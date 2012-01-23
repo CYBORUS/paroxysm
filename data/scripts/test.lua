@@ -199,10 +199,10 @@ function OnSpace(intensity)
     
     if playerTank.isBeingFollowed then
         playerTank.isBeingFollowed = false
-        cameraUnfollow(true)
+        EngineCameraUnfollow(true)
     else
         playerTank.isBeingFollowed = true
-        cameraFollow(playerTank.index)
+        EngineCameraFollow(playerTank.index)
     end
 end
 
