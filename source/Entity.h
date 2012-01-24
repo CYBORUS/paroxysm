@@ -31,10 +31,10 @@ class Entity : public CGE::SceneGraphNode
         inline void setMass(double inMass)      { mMass = inMass;       }
         inline void setIsBeingDeleted()         { mIsBeingDeleted = true; }
 
-        void addLocalMomentumVector(vec3d inMomentum);
-        void addGlobalMomentumVector(const vec3d& inMomentum);
-        void addLocalVelocityVector(vec3d inVelocity);
-        void addGlobalVelocityVector(const vec3d& inVelocity);
+        void addLocalMomentumVector(vec3d inMomentum, bool isSelfPropelled = false);
+        void addGlobalMomentumVector(const vec3d& inMomentum, bool isSelfPropelled = false);
+        void addLocalVelocityVector(vec3d inVelocity, bool isSelfPropelled = false);
+        void addGlobalVelocityVector(const vec3d& inVelocity, bool isSelfPropelled = false);
 
         inline const vec3f& getTranslation() const
         {

@@ -59,7 +59,7 @@ void Entity::update()
 *   Moves the entity based on it's local orientation, taking into
 *   account mass and friction.
 **/
-void Entity::addLocalMomentumVector(vec3d inMomentum)
+void Entity::addLocalMomentumVector(vec3d inMomentum, bool isSelfPropelled)
 {
     calculateLocalOrientation(inMomentum);
     addGlobalMomentumVector(inMomentum);
@@ -69,7 +69,7 @@ void Entity::addLocalMomentumVector(vec3d inMomentum)
 *   Moves the entity ignoring it's local orientation, taking into
 *   account mass and friction
 **/
-void Entity::addGlobalMomentumVector(const vec3d& inMomentum)
+void Entity::addGlobalMomentumVector(const vec3d& inMomentum, bool isSelfPropelled)
 {
     const vec3d& vec = getMomentum();
     mVelocity[0] = (vec[0] + inMomentum[0]) / getMass();
@@ -82,7 +82,7 @@ void Entity::addGlobalMomentumVector(const vec3d& inMomentum)
 *   Moves the entity based on it's local orientation, ignoring
 *   mass and friction
 **/
-void Entity::addLocalVelocityVector(vec3d inVelocity)
+void Entity::addLocalVelocityVector(vec3d inVelocity, bool isSelfPropelled)
 {
     calculateLocalOrientation(inVelocity);
     addGlobalVelocityVector(inVelocity);
@@ -92,7 +92,7 @@ void Entity::addLocalVelocityVector(vec3d inVelocity)
 *   Moves the entity ignoring on it's local orientation, ignoring
 *   mass and friction
 **/
-void Entity::addGlobalVelocityVector(const vec3d& inVelocity)
+void Entity::addGlobalVelocityVector(const vec3d& inVelocity, bool isSelfPropelled)
 {
     const vec3d& vec = getMomentum();
     mVelocity[0] = (vec[0] + inVelocity[0]);

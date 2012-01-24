@@ -238,7 +238,16 @@ int LuaAPI::luaAddEntityLocalMomentum(lua_State* inState)
         v[0] = x;
         v[1] = y;
         v[2] = z;
-        e->addLocalMomentumVector(v);
+
+        if (argc >= 5)
+        {
+            bool isSelfPropelled = lua_toboolean(inState, 5);
+            e->addLocalMomentumVector(v, isSelfPropelled);
+        }
+        else
+        {
+            e->addLocalMomentumVector(v);
+        }
     }
 
     return 0;
@@ -273,7 +282,16 @@ int LuaAPI::luaAddEntityGlobalMomentum(lua_State* inState)
         v[0] = x;
         v[1] = y;
         v[2] = z;
-        e->addGlobalMomentumVector(v);
+
+        if (argc >= 5)
+        {
+            bool isSelfPropelled = lua_toboolean(inState, 5);
+            e->addGlobalMomentumVector(v, isSelfPropelled);
+        }
+        else
+        {
+            e->addGlobalMomentumVector(v);
+        }
     }
 
     return 0;
@@ -307,7 +325,16 @@ int LuaAPI::luaAddEntityLocalVelocity(lua_State* inState)
         v[0] = x;
         v[1] = y;
         v[2] = z;
-        e->addLocalVelocityVector(v);
+
+        if (argc >= 5)
+        {
+            bool isSelfPropelled = lua_toboolean(inState, 5);
+            e->addLocalVelocityVector(v, isSelfPropelled);
+        }
+        else
+        {
+            e->addLocalVelocityVector(v);
+        }
     }
 
     return 0;
@@ -341,7 +368,16 @@ int LuaAPI::luaAddEntityGlobalVelocity(lua_State* inState)
         v[0] = x;
         v[1] = y;
         v[2] = z;
-        e->addGlobalVelocityVector(v);
+
+        if (argc >= 5)
+        {
+            bool isSelfPropelled = lua_toboolean(inState, 5);
+            e->addGlobalVelocityVector(v, isSelfPropelled);
+        }
+        else
+        {
+            e->addGlobalVelocityVector(v);
+        }
     }
 
     return 0;
