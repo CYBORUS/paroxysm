@@ -51,7 +51,6 @@ SkyBox::SkyBox()
 
     mCubeMap.loadImages(mImages[2], mImages[3], mImages[4], mImages[5],
         mImages[0], mImages[1]);
-
 }
 
 void SkyBox::display()
@@ -62,5 +61,4 @@ void SkyBox::display()
 
 SkyBox::~SkyBox()
 {
-    //dtor
 }

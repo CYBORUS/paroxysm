@@ -1,7 +1,8 @@
 #include "MainMenuModule.h"
-#include <CGE/Exception.h>
 #include "MapEditorModule.h"
 #include "GameModule.h"
+
+#include <CGE/Exception.h>
 
 #include <iostream>
 #include <fstream>

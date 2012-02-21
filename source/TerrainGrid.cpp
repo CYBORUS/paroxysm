@@ -1,4 +1,5 @@
 #include "TerrainGrid.h"
+
 #include <CGE/Exception.h>
 
 using namespace CGE;

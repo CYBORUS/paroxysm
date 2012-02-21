@@ -14,7 +14,9 @@
 /// along with "Paroxysm".  If not, see <http://www.gnu.org/licenses/>.
 
 #include "LuaAPI.h"
+
 #include <CGE/LuaReference.h>
+
 #include <cassert>
 #include <iostream>
 

@@ -1,5 +1,6 @@
 #include "GameModule.h"
 #include <CGE/Download.h>
+#include <CGE/Memory.h>
 
 using namespace std;
 
@@ -148,6 +149,12 @@ void GameModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         case SDLK_ESCAPE:
         {
             mRunning = false;
+            break;
+        }
+
+        case SDLK_BACKSLASH:
+        {
+            CGE::memoryDump();
             break;
         }
 
