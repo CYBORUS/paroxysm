@@ -12,4 +12,3 @@ void main(void)
     vec4 p = vec4(iPosition, 1.0);
     gl_Position = uMVPM * p;
 }
-
