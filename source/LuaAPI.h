@@ -121,6 +121,7 @@ class LuaAPI
         static int luaCameraUnfollow(lua_State* inState);
         static int luaMoveCamera(lua_State* inState);
         static int luaSetCameraPosition(lua_State* inState);
+        static int luaShakeCamera(lua_State* inState);
 };
 
 #endif

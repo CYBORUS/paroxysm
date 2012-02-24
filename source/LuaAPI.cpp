@@ -80,6 +80,7 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("EngineSetCameraPosition", luaSetCameraPosition);
     mLua.addFunction("EngineCameraFollow", luaCameraFollow);
     mLua.addFunction("EngineCameraUnfollow", luaCameraUnfollow);
+    mLua.addFunction("EngineShakeCamera", luaShakeCamera);
     mLua.addFunction("EngineDebugOutput", luaDebugOutput);
     mLua.loadFile("data/scripts/api.lua");
     mLua.loadFile("data/scripts/test.lua");
@@ -916,6 +917,26 @@ int LuaAPI::luaCameraUnfollow(lua_State* inState)
     }
 
     return 0;
+}
+
+int LuaAPI::luaShakeCamera(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 2)
+    {
+        float shakeValues[3] = {0};
+        for (int i = 1; i <= 3; ++i)
+        {
+            if (lua_isnumber(inState, i))
+            {
+                shakeValues[i - 1] = lua_tonumber(inState, i);
+            }
+        }
+
+        luaThis->mCamera.shakeCamera(shakeValues[0], shakeValues[1], shakeValues[2]);
+    }
 }
 
 int LuaAPI::luaDebugOutput(lua_State* inState)

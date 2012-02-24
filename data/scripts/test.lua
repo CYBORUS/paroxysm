@@ -206,6 +206,12 @@ function OnSpace(intensity)
     end
 end
 
+function ShakeCamera(intensity)
+    if intensity < 1 then return end
+    
+    EngineShakeCamera(2, 45, 0.01)
+end
+
 function AllTheThings()
 	EngineSetTerrainSize(terrainSizeX, terrainSizeY)
 	
@@ -215,6 +221,7 @@ function AllTheThings()
 	EngineCreateCommand("Move Right", OnMoveRight, 100)
 	EngineCreateCommand("Space", OnSpace, 32)
 	EngineCreateCommand("Debug Output", DebugOutput, 92)
+    EngineCreateCommand("Shake!", ShakeCamera, 98)
 	
     for i = 1, NumberOfTanks do
         local t = Tank:New()
