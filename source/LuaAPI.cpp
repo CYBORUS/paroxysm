@@ -946,6 +946,8 @@ int LuaAPI::luaShakeCamera(lua_State* inState)
         }
         luaThis->mCamera.shakeCamera(shakeValues[0], shakeValues[1], shakeValues[2]);
     }
+
+    return 0;
 }
 
 int LuaAPI::luaStopCameraShaking(lua_State* inState)
@@ -953,6 +955,8 @@ int LuaAPI::luaStopCameraShaking(lua_State* inState)
     assert(luaThis != NULL);
 
     luaThis->mCamera.stopCameraShake();
+
+    return 0;
 }
 
 int LuaAPI::luaDebugOutput(lua_State* inState)
