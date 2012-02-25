@@ -155,6 +155,7 @@ function Update()
 end
 
 function OnMoveForward(intensity)
+    print("moving: " .. intensity)
     if intensity > 0 then
         playerTank.velocity.y = 0.05 * intensity
     elseif playerTank.velocity.y > 0 then
@@ -162,6 +163,11 @@ function OnMoveForward(intensity)
     end
     
     playerTank:UpdateVelocity()
+end
+
+function OnJoystickMove(whichJoystick, intensity)
+    print("moving"..intensity)
+
 end
 
 function OnMoveBackward(intensity)
@@ -229,6 +235,7 @@ function AllTheThings()
 	EngineCreateCommand("Debug Output", DebugOutput, 92)
     EngineCreateCommand("Shake!", ShakeCamera, 98)
     EngineCreateCommand("Stop Shaking", StopCameraShake, 99)
+    EngineCreateJoystickAxisCommand("Joystick Move Forward", OnJoystickMove, 0)
 	
     for i = 1, NumberOfTanks do
         local t = Tank:New()
