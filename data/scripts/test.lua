@@ -209,7 +209,13 @@ end
 function ShakeCamera(intensity)
     if intensity < 1 then return end
     
-    EngineShakeCamera(2, 45, 0.01)
+    EngineShakeCamera(0.5, 45, 0.02)
+end
+
+function StopCameraShake(intensity)
+    if intensity < 1 then return end
+    
+    EngineStopCameraShaking()
 end
 
 function AllTheThings()
@@ -222,6 +228,7 @@ function AllTheThings()
 	EngineCreateCommand("Space", OnSpace, 32)
 	EngineCreateCommand("Debug Output", DebugOutput, 92)
     EngineCreateCommand("Shake!", ShakeCamera, 98)
+    EngineCreateCommand("Stop Shaking", StopCameraShake, 99)
 	
     for i = 1, NumberOfTanks do
         local t = Tank:New()
