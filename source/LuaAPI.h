@@ -52,6 +52,9 @@ class LuaAPI
         void display();
         void update(const mat4f& inProjection);
         void onKey(SDLKey inKey, double inIntensity);
+        void onJoystickAxis(Uint8 inWhichJoystick, Uint8 inAxisNum, double inIntensity);
+        void onJoystickButton(Uint8 inWhichJoystick, Uint8 inWhichButton, double inIntensity);
+        void onJoystickHat(Uint8 inWhichJoystick, Uint8 inWhichHat, double inIntensity);
 
     protected:
     private:
@@ -83,6 +86,12 @@ class LuaAPI
 
         CGE::LuaReference mKeyCallbacks[SDLK_LAST];
         std::map<std::string, CGE::LuaReference*> mKeysByName;
+        CGE::LuaReference mJoystickAxisCallbacks[256];
+        std::map<std::string, CGE::LuaReference*> mJoystickAxesByName;
+        CGE::LuaReference mJoystickButtonCallbacks[256];
+        std::map<std::string, CGE::LuaReference*> mJoystickButtonsByName;
+        CGE::LuaReference mJoystickHatCallbacks[256];
+        std::map<std::string, CGE::LuaReference*> mJoystickHatsByName;
         std::list<EntityRef> mCollisionEntities;
         CGE::LuaIndexedResource<EntityRef> mEntities;
 
@@ -116,6 +125,13 @@ class LuaAPI
         /// General game state management
         static int luaSetUpdateCallback(lua_State* inState);
         static int luaCreateCommand(lua_State* inState);
+        static int luaRemoveCommand(lua_State* inState);
+        static int luaCreateJoystickAxisCommand(lua_State* inState);
+        static int luaRemoveJoystickAxisCommand(lua_State* inState);
+        static int luaCreateJoystickButtonCommand(lua_State* inState);
+        static int luaRemoveJoystickButtonCommand(lua_State* inState);
+        static int luaCreateJoystickHatCommand(lua_State* inState);
+        static int luaRemoveJoystickHatCommand(lua_State* inState);
         static int luaSendBoth(lua_State* inState);
 
         /// Camera control

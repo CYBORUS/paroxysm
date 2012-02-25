@@ -40,6 +40,10 @@ class GameModule : public ParoxysmModule
             Uint16 inUnicode);
         virtual void onKeyUp(SDLKey inSym, SDLMod inMod,
             Uint16 inUnicode);
+        virtual void onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue);
+        virtual void onJoyButtonDown(Uint8 inWhich, Uint8 inButton);
+        virtual void onJoyButtonUp(Uint8 inWhich, Uint8 inButton);
+        virtual void onJoyHat(Uint8 inWhich, Uint8 inHat, Uint8 inValue);
 
         virtual void onMouseWheel(bool inUp);
 

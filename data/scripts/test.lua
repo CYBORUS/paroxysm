@@ -209,7 +209,7 @@ end
 function ShakeCamera(intensity)
     if intensity < 1 then return end
     
-    EngineShakeCamera(5, 45, 0.5)
+    EngineShakeCamera(0.5, 60, 0.5)
 end
 
 function StopCameraShake(intensity)

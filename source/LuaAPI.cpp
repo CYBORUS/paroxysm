@@ -76,6 +76,13 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mLua.addFunction("EngineSetUpdateCallback", luaSetUpdateCallback);
     mLua.addFunction("EngineSendBoth", luaSendBoth);
     mLua.addFunction("EngineCreateCommand", luaCreateCommand);
+    mLua.addFunction("EngineRemoveCommand", luaRemoveCommand);
+    mLua.addFunction("EngineCreateJoystickAxisCommand", luaCreateJoystickAxisCommand);
+    mLua.addFunction("EngineRemoveJoystickAxisCommand", luaRemoveJoystickAxisCommand);
+    mLua.addFunction("EngineCreateJoystickButtonCommand", luaCreateJoystickButtonCommand);
+    mLua.addFunction("EngineRemoveJoystickButtonCommand", luaRemoveJoystickButtonCommand);
+    mLua.addFunction("EngineCreateJoystickHatCommand", luaCreateJoystickHatCommand);
+    mLua.addFunction("EngineRemoveJoystickHatCommand", luaRemoveJoystickHatCommand);
     mLua.addFunction("EngineMoveCamera", luaMoveCamera);
     mLua.addFunction("EngineSetCameraPosition", luaSetCameraPosition);
     mLua.addFunction("EngineCameraFollow", luaCameraFollow);
@@ -126,6 +133,37 @@ void LuaAPI::onKey(SDLKey inKey, double inIntensity)
     {
         lua_pushnumber(mLua.getState(), inIntensity);
         lua_call(mLua.getState(), 1, 0);
+    }
+}
+
+void LuaAPI::onJoystickAxis(Uint8 inWhichJoystick, Uint8 inAxisNum, double inIntensity)
+{
+    if (mJoystickAxisCallbacks[inAxisNum].get())
+    {
+        lua_pushinteger(mLua.getState(), inWhichJoystick);
+        lua_pushnumber(mLua.getState(), inIntensity);
+        lua_call(mLua.getState(), 2, 0);
+    }
+}
+
+
+void LuaAPI::onJoystickButton(Uint8 inWhichJoystick, Uint8 inWhichButton, double inIntensity)
+{
+    if (mJoystickButtonCallbacks[inWhichButton].get())
+    {
+        lua_pushinteger(mLua.getState(), inWhichJoystick);
+        lua_pushnumber(mLua.getState(), inIntensity);
+        lua_call(mLua.getState(), 2, 0);
+    }
+}
+
+void LuaAPI::onJoystickHat(Uint8 inWhichJoystick, Uint8 inWhichHat, double inIntensity)
+{
+    if (mJoystickHatCallbacks[inWhichHat].get())
+    {
+        lua_pushinteger(mLua.getState(), inWhichJoystick);
+        lua_pushnumber(mLua.getState(), inIntensity);
+        lua_call(mLua.getState(), 2, 0);
     }
 }
 
@@ -817,6 +855,147 @@ int LuaAPI::luaCreateCommand(lua_State* inState)
             luaThis->mKeyCallbacks[keyNum].set(inState);
             const std::string id(lua_tostring(inState, 1));
             luaThis->mKeysByName[id] = luaThis->mKeyCallbacks + keyNum;
+        }
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaRemoveCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isstring(inState, 1))
+    {
+        const std::string id(lua_tostring(inState, 1));
+
+        std::map<std::string, CGE::LuaReference*>::iterator it = luaThis->mKeysByName.find(id);
+
+        if (it != luaThis->mKeysByName.end())
+        {
+            it->second->unset();
+            luaThis->mKeysByName.erase(it);
+        }
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCreateJoystickAxisCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 2 && lua_isstring(inState, 1) && lua_isfunction(inState, 2)
+        && lua_isnumber(inState, 3))
+    {
+        lua_Integer joystickAxisNum = lua_tointeger(inState, 3);
+
+        lua_pop(inState, argc - 2);
+        luaThis->mJoystickAxisCallbacks[joystickAxisNum].set(inState);
+        const std::string id(lua_tostring(inState, 1));
+        luaThis->mJoystickAxesByName[id] = luaThis->mJoystickAxisCallbacks + joystickAxisNum;
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaRemoveJoystickAxisCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isstring(inState, 1))
+    {
+        const std::string id(lua_tostring(inState, 1));
+
+        std::map<std::string, CGE::LuaReference*>::iterator it = luaThis->mJoystickAxesByName.find(id);
+
+        if (it != luaThis->mJoystickAxesByName.end())
+        {
+            it->second->unset();
+            luaThis->mJoystickAxesByName.erase(it);
+        }
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCreateJoystickButtonCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 2 && lua_isstring(inState, 1) && lua_isfunction(inState, 2)
+        && lua_isnumber(inState, 3))
+    {
+        lua_Integer joystickButtonNum = lua_tointeger(inState, 3);
+
+        lua_pop(inState, argc - 2);
+        luaThis->mJoystickButtonCallbacks[joystickButtonNum].set(inState);
+        const std::string id(lua_tostring(inState, 1));
+        luaThis->mJoystickButtonsByName[id] = luaThis->mJoystickButtonCallbacks + joystickButtonNum;
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaRemoveJoystickButtonCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isstring(inState, 1))
+    {
+        const std::string id(lua_tostring(inState, 1));
+
+        std::map<std::string, CGE::LuaReference*>::iterator it = luaThis->mJoystickButtonsByName.find(id);
+
+        if (it != luaThis->mJoystickButtonsByName.end())
+        {
+            it->second->unset();
+            luaThis->mJoystickButtonsByName.erase(it);
+        }
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaCreateJoystickHatCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 2 && lua_isstring(inState, 1) && lua_isfunction(inState, 2)
+        && lua_isnumber(inState, 3))
+    {
+        lua_Integer joystickHatNum = lua_tointeger(inState, 3);
+
+        lua_pop(inState, argc - 2);
+        luaThis->mJoystickHatCallbacks[joystickHatNum].set(inState);
+        const std::string id(lua_tostring(inState, 1));
+        luaThis->mJoystickHatsByName[id] = luaThis->mJoystickHatCallbacks + joystickHatNum;
+    }
+
+    return 0;
+}
+
+int LuaAPI::luaRemoveJoystickHatCommand(lua_State* inState)
+{
+    assert(luaThis != NULL);
+    int argc = lua_gettop(inState);
+
+    if (argc > 0 && lua_isstring(inState, 1))
+    {
+        const std::string id(lua_tostring(inState, 1));
+
+        std::map<std::string, CGE::LuaReference*>::iterator it = luaThis->mJoystickHatsByName.find(id);
+
+        if (it != luaThis->mJoystickHatsByName.end())
+        {
+            it->second->unset();
+            luaThis->mJoystickHatsByName.erase(luaThis->mJoystickHatsByName.find(id));
         }
     }
 

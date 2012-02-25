@@ -171,3 +171,23 @@ void GameModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         default: {}
     }
 }
+
+void GameModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
+{
+    mLuaAPI.onJoystickAxis(inWhich, inAxis, (double)32768 / (double)inValue);
+}
+
+void GameModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)
+{
+    mLuaAPI.onJoystickButton(inWhich, inButton, 1);
+}
+
+void GameModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
+{
+    mLuaAPI.onJoystickButton(inWhich, inButton, -1);
+}
+
+void GameModule::onJoyHat(Uint8 inWhich, Uint8 inHat, Uint8 inValue)
+{
+    mLuaAPI.onJoystickHat(inWhich, inHat, (double)32768 / (double)inValue);
+}
