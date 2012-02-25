@@ -141,8 +141,9 @@ void LuaAPI::onJoystickAxis(Uint8 inWhichJoystick, Uint8 inAxisNum, double inInt
     if (mJoystickAxisCallbacks[inAxisNum].get())
     {
         lua_pushinteger(mLua.getState(), inWhichJoystick);
+        lua_pushinteger(mLua.getState(), inAxisNum);
         lua_pushnumber(mLua.getState(), inIntensity);
-        lua_call(mLua.getState(), 2, 0);
+        lua_call(mLua.getState(), 3, 0);
     }
 }
 

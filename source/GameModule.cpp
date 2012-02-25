@@ -184,7 +184,7 @@ void GameModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
         value = (double)inValue / (double)32768;
     }
 
-    mLuaAPI.onJoystickAxis(inWhich, inAxis,  value);
+    mLuaAPI.onJoystickAxis(inWhich, inAxis, value);
 }
 
 void GameModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)

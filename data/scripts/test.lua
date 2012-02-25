@@ -155,7 +155,6 @@ function Update()
 end
 
 function OnMoveForward(intensity)
-    print("moving: " .. intensity)
     if intensity > 0 then
         playerTank.velocity.y = 0.05 * intensity
     elseif playerTank.velocity.y > 0 then
@@ -165,9 +164,10 @@ function OnMoveForward(intensity)
     playerTank:UpdateVelocity()
 end
 
-function OnJoystickMove(whichJoystick, intensity)
-    print("moving"..intensity)
-
+function OnJoystickMove(inWhichJoystick, inWhichAxis, intensity)
+    playerTank.velocity.y = 0.05 * intensity
+    playerTank:UpdateVelocity()
+    print("intensity "..intensity)
 end
 
 function OnMoveBackward(intensity)
