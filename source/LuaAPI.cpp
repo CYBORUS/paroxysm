@@ -927,7 +927,7 @@ int LuaAPI::luaShakeCamera(lua_State* inState)
 
     if (argc > 2)
     {
-        float shakeValues[3] = {0};
+        double shakeValues[3] = {0};
         for (int i = 1; i <= 3; ++i)
         {
             if (lua_isnumber(inState, i))
@@ -936,6 +936,14 @@ int LuaAPI::luaShakeCamera(lua_State* inState)
             }
         }
 
+        if (shakeValues[2] < 0.0f)
+            shakeValues[2] = 0.0f; //negative seconds are bad
+
+        //change seconds to rate of decay, if they enter 0 then it will shake forever
+        if (shakeValues[2] != 0.0f)
+        {
+            shakeValues[2] =  shakeValues[0] / ((shakeValues[2] * 1000) / MillisecondsPerFrame);
+        }
         luaThis->mCamera.shakeCamera(shakeValues[0], shakeValues[1], shakeValues[2]);
     }
 }

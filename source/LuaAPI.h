@@ -39,6 +39,8 @@
 
 typedef CGE::Reference<Entity> EntityRef;
 
+const int MillisecondsPerFrame = 25;
+
 class LuaAPI
 {
     public:
