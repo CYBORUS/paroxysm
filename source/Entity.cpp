@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include <CGE/Memory.h>
 #include <cassert>
 
 Entity::Entity(const CGE::LuaReference& inLuaTable) : mMass(1.0), mRadius(1.0),
@@ -159,4 +160,16 @@ void Entity::rotateActor(size_t inIndex, double inXRotation,
         a->rotateX(inXRotation);
         a->rotateZ(inZRotation);
     }
+}
+
+static CGE::Heap EntityHeap("Entity");
+
+void* Entity::operator new(size_t inSize)
+{
+    return CGE::allocate(inSize, EntityHeap);
+}
+
+void Entity::operator delete(void* inData)
+{
+    CGE::release(inData);
 }

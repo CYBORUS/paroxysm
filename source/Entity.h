@@ -182,6 +182,9 @@ class Entity : public CGE::SceneGraphNode
         size_t addActor(CGE::Actor* inActor);
         size_t addActor(CGE::Actor* inActor, size_t inIndex);
 
+        static void* operator new(size_t inSize);
+        static void operator delete(void* inData);
+
     protected:
         vec3d mVelocity;
         vec3d mMomentum;

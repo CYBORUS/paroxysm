@@ -1,6 +1,6 @@
 #include <CGE/Engine.h>
 #include <CGE/Exception.h>
-#include <CGE/Memory.h>
+#include <CGE/Heap.h>
 #include "MainMenuModule.h"
 #include "LuaAPI.h"
 #include <string>
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
         }
     }
 
-    CGE::memoryDump();
+    CGE::Heap::dump();
 
     return 0;
 }
