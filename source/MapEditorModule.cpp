@@ -13,15 +13,17 @@ MapEditorModule::MapEditorModule() : mLeftClickDown(false), mXPan(0.0f),
 
 MapEditorModule::~MapEditorModule()
 {
+    delete mSphere;
+    delete mGridActor;
 }
 
 void MapEditorModule::onLoad(CGE::PropertyList& inList)
 {
-    CGE::Actor* a = new CGE::Actor(&mGrid);
+    mGridActor = new CGE::Actor(&mGrid);
 
-    mViewNode.addChildNode(a);
-    mBin.addActor(a);
-    mActors.push_back(a);
+    mViewNode.addChildNode(mGridActor);
+    mBin.addActor(mGridActor);
+    mActors.push_back(mGridActor);
 
     mViewNode.addChildNode(mSphere);
     mBin.addActor(mSphere);
@@ -40,6 +42,7 @@ void MapEditorModule::onLoad(CGE::PropertyList& inList)
 
 void MapEditorModule::onUnload()
 {
+
 }
 
 void MapEditorModule::onOpen()
