@@ -162,6 +162,41 @@ void Entity::rotateActor(size_t inIndex, double inXRotation,
     }
 }
 
+void Entity::calculateLocalOrientation()
+{
+    // For now, the first actor added is assumed to be the
+    // base direction actor.
+
+    vec3d rotation = mActors[0]->getRotation();
+
+    CGE::Matrix4x4<double> transformation;
+    transformation.rotateY(rotation[1]);
+    transformation.rotateX(rotation[0]);
+    transformation.rotateZ(rotation[2]);
+
+    vec3d initialForward;
+    initialForward[2] = -1.0;
+
+    vec3d initialUp;
+    initialUp[1] = 1.0; //not really sure this is correct, but testing it
+
+    transformation.transform(initialForward, mForwardDirection);
+    transformation.transform(initialUp, mUpDirection);
+}
+
+void Entity::calculateLocalOrientation(vec3d& inMomentum)
+{
+    vec3d rotation = mActors[0]->getRotation();
+
+    CGE::Matrix4x4<double> transformation;
+    transformation.rotateY(rotation[1]);
+    transformation.rotateX(rotation[0]);
+    transformation.rotateZ(rotation[2]);
+
+    vec3d initial = inMomentum;
+    transformation.transform(initial, inMomentum);
+}
+
 static CGE::Heap EntityHeap("Entity");
 
 void* Entity::operator new(size_t inSize)

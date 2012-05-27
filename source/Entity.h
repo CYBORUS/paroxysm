@@ -41,57 +41,8 @@ class Entity : public CGE::SceneGraphNode
             return mTranslation;
         }
 
-        void calculateLocalOrientation()
-        {
-            // For now, the first actor added is assumed to be the
-            // base direction actor.
-
-            vec3d rotation = mActors[0]->getRotation();
-
-            CGE::Matrix4x4<double> transformation;
-            transformation.rotateY(rotation[1]);
-            transformation.rotateX(rotation[0]);
-            transformation.rotateZ(rotation[2]);
-
-            vec4d initialForward;
-            initialForward[2] = -1.0;
-            initialForward[3] = 1.0;
-
-            vec4d initialUp;
-            initialUp[1] = 1.0; //not really sure this is correct, but testing it
-            initialUp[3] = 1.0;
-
-            vec4d result;
-            transformation.transform(initialForward, result);
-            mForwardDirection = result;
-            transformation.transform(initialUp, result);
-            mUpDirection = result;
-        }
-
-
-        void calculateLocalOrientation(vec3d& inMomentum)
-        {
-            vec3d rotation = mActors[0]->getRotation();
-
-            CGE::Matrix4x4<double> transformation;
-            transformation.rotateY(rotation[1]);
-            transformation.rotateX(rotation[0]);
-            transformation.rotateZ(rotation[2]);
-
-            vec4d initial;
-            initial[0] = inMomentum[0];
-            initial[1] = inMomentum[1];
-            initial[2] = inMomentum[2];
-            initial[3] = 1.0;
-            vec4d result;
-
-            transformation.transform(initial, result);
-
-            inMomentum[0] = result[0];
-            inMomentum[1] = result[1];
-            inMomentum[2] = result[2];
-        }
-
+        void calculateLocalOrientation();
+        void calculateLocalOrientation(vec3d& inMomentum);
 
         inline CGE::Actor* getActor(size_t inIndex)
         {
@@ -99,7 +50,6 @@ class Entity : public CGE::SceneGraphNode
         }
 
         void setCollisionCallback(lua_State* inState);
-
         void onCollision(lua_State* inState, Entity* inEntity);
 
         inline void setVelocity(const vec3d& inVelocity)
@@ -117,11 +67,9 @@ class Entity : public CGE::SceneGraphNode
         void rotateActor(size_t inIndex, double inXRotation,
             double inYRotation, double inZRotation);
 
-        inline void resetActorMatrix(int inActor)
+        inline void resetActorMatrix(size_t inActor)
         {
-            //mActors[inActor]->matrix().loadIdentity();
             mActors[inActor]->resetMatrix();
-            //std::cerr << "actor: " << inActor << std::endl;
         }
 
         inline size_t numActors()
