@@ -428,6 +428,7 @@ int LuaAPI::luaAddEntityGlobalVelocity(lua_State* inState)
 
 int LuaAPI::luaRemoveEntity(lua_State* inState)
 {
+    return 0;
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
 

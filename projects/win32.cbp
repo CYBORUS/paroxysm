@@ -65,24 +65,28 @@
 		<Unit filename="..\source\Entity.h" />
 		<Unit filename="..\source\GameModule.cpp" />
 		<Unit filename="..\source\GameModule.h" />
+		<Unit filename="..\source\GeneralActor.cpp" />
+		<Unit filename="..\source\GeneralActor.h" />
 		<Unit filename="..\source\GeneralBin.cpp" />
 		<Unit filename="..\source\GeneralBin.h" />
 		<Unit filename="..\source\LuaAPI.cpp" />
 		<Unit filename="..\source\LuaAPI.h" />
 		<Unit filename="..\source\MainMenuModule.cpp" />
 		<Unit filename="..\source\MainMenuModule.h" />
-		<Unit filename="..\source\MapEditorModule.cpp" />
-		<Unit filename="..\source\MapEditorModule.h" />
+		<Unit filename="..\source\ModelActor.cpp" />
+		<Unit filename="..\source\ModelActor.h" />
 		<Unit filename="..\source\ParoxysmModule.cpp" />
 		<Unit filename="..\source\ParoxysmModule.h" />
+		<Unit filename="..\source\SimpleDisplayActor.cpp" />
+		<Unit filename="..\source\SimpleDisplayActor.h" />
 		<Unit filename="..\source\SkyBox.cpp" />
 		<Unit filename="..\source\SkyBox.h" />
+		<Unit filename="..\source\SkyBoxActor.cpp" />
+		<Unit filename="..\source\SkyBoxActor.h" />
 		<Unit filename="..\source\SkyBoxBin.cpp" />
 		<Unit filename="..\source\SkyBoxBin.h" />
 		<Unit filename="..\source\TerrainGrid.cpp" />
 		<Unit filename="..\source\TerrainGrid.h" />
-		<Unit filename="..\source\ViewNode.cpp" />
-		<Unit filename="..\source\ViewNode.h" />
 		<Unit filename="..\source\main.cpp" />
 		<Extensions>
 			<code_completion />
