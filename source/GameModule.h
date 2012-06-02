@@ -1,8 +1,6 @@
 #ifndef GAMEMODULE_H
 #define GAMEMODULE_H
 
-#include <CGE/Actor.h>
-#include <CGE/Model.h>
 #include "ParoxysmModule.h"
 #include "TerrainGrid.h"
 #include "LuaAPI.h"

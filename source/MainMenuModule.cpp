@@ -1,5 +1,4 @@
 #include "MainMenuModule.h"
-#include "MapEditorModule.h"
 #include "GameModule.h"
 
 #include <CGE/Exception.h>
@@ -142,9 +141,9 @@ void MainMenuModule::mapEditorButtonCallBack(CGE::Widget* inWidget,
     void* inData)
 {
     MainMenuModule* m = static_cast<MainMenuModule*>(inData);
-    m->mNextModule = new MapEditorModule;
-    m->mRunning = false;
-    m->mDead = false;
+    //m->mNextModule = new MapEditorModule;
+    //m->mRunning = false;
+    //m->mDead = false;
 }
 
 void MainMenuModule::newGameButtonCallBack(CGE::Widget* inWidget, void* inData)

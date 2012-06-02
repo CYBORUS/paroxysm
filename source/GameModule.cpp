@@ -25,13 +25,8 @@ void GameModule::onOpen()
 {
     mMouseState = NONE;
 
-    mViewNode.setAngle(-45.0f);
-    mViewNode.setDistance(8.0f);
-
     // Prevent the first-frame flicker.
     mLuaAPI.update(mProjection);
-    mViewNode.update();
-    mViewNode.updateAllMatrices();
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
@@ -54,16 +49,8 @@ void GameModule::onLoop()
 
 void GameModule::onPulse()
 {
-    //cerr << "start pulse" << endl;
-    mViewNode.smartPan(mXPan, mYPan);
-
-    mViewNode.update();
-    mViewNode.updateAllMatrices();
-
     mLuaAPI.update(mProjection);
-
     mUI.update();
-    //cerr << "end pulse" << endl;
 }
 
 void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
@@ -81,14 +68,11 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
         case PANNING:
         {
-            mViewNode.smartPan(-inRelX * 0.01f, inRelY * 0.01f);
             break;
         }
 
         case ROTATING:
         {
-            mViewNode.changeAngle(inRelY);
-            mViewNode.changeRotation(inRelX);
             break;
         }
 
@@ -98,14 +82,6 @@ void GameModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
 void GameModule::onMouseWheel(bool inUp)
 {
-    if (inUp)
-    {
-        mViewNode.changeDistance(-0.5f);
-    }
-    else
-    {
-        mViewNode.changeDistance(0.5f);
-    }
 }
 
 void GameModule::onLButtonDown(int inX, int inY)

@@ -8,13 +8,10 @@
 #include <CGE/UI/TextBox.h>
 #include <CGE/Matrix4x4.h>
 #include <CGE/Camera.h>
-#include <CGE/Model.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/Vectors.h>
-#include <CGE/Actor.h>
 
 #include "ParoxysmModule.h"
-#include "ViewNode.h"
 
 #include <list>
 

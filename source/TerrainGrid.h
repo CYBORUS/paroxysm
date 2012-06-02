@@ -8,13 +8,13 @@
 #include <CGE/Tools.h>
 #include <CGE/Matrix.h>
 #include <CGE/Vectors.h>
-
+#include <CGE/Displayable.h>
 #include <CGE/ModelFromFile.h>
 
 #include <iostream>
 #include <vector>
 
-class TerrainGrid : public CGE::Model
+class TerrainGrid : public CGE::Displayable
 {
     public:
         TerrainGrid();

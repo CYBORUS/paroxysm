@@ -27,7 +27,12 @@ SkyBoxBin::~SkyBoxBin()
 {
 }
 
-void SkyBoxBin::beforeRender()
+void SkyBoxBin::addActor(SkyBoxActor& inActor)
+{
+    mActors.insert(&inActor);
+}
+
+void SkyBoxBin::renderAll()
 {
     mProgram.use();
     glActiveTexture(GL_TEXTURE0);
@@ -35,16 +40,18 @@ void SkyBoxBin::beforeRender()
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
-}
 
-void SkyBoxBin::afterRender()
-{
+    for (std::set<SkyBoxActor*>::iterator i = mActors.begin();
+        i != mActors.end(); ++i)
+    {
+        SkyBoxActor* sba = *i;
+
+        glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE,
+            sba->modelViewProjectionNode().compositeMatrix());
+
+        sba->display();
+    }
+
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-}
-
-void SkyBoxBin::displayActor(CGE::Actor* inActor)
-{
-    glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, inActor->compositeMatrix());
-    inActor->display();
 }

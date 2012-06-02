@@ -1,20 +1,21 @@
 #ifndef SKYBOXBIN_H
 #define SKYBOXBIN_H
 
+#include "SkyBoxActor.h"
 #include <CGE/OpenGL/Program.h>
-#include <CGE/RenderBin.h>
+#include <set>
 
-class SkyBoxBin : public CGE::RenderBin
+class SkyBoxBin
 {
     public:
         SkyBoxBin();
-        virtual ~SkyBoxBin();
-    protected:
-        virtual void beforeRender();
-        virtual void afterRender();
-        virtual void displayActor(CGE::Actor* inActor);
+        ~SkyBoxBin();
+
+        void addActor(SkyBoxActor& inActor);
+        void renderAll();
 
     private:
+        std::set<SkyBoxActor*> mActors;
         CGE::Program<2> mProgram;
 
         GLuniform mUniMVPM;

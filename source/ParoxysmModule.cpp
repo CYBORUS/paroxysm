@@ -18,8 +18,6 @@ void ParoxysmModule::onResize(int inWidth, int inHeight)
 
     mProjection.loadIdentity();
     mProjection.perspective(30.0f, ratio, 1.0f, 1000.0f);
-    mViewNode.setProjection(mProjection);
-    mViewNode.updateAllMatrices();
 
     glViewport(0, 0, inWidth, inHeight);
     glGetIntegerv(GL_VIEWPORT, mViewport);

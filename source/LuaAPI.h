@@ -16,22 +16,22 @@
 #ifndef LUAAPI_H
 #define LUAAPI_H
 
+#include "Entity.h"
+#include "GeneralBin.h"
+#include "TerrainGrid.h"
+#include "SkyBoxBin.h"
+#include "SimpleDisplayActor.h"
+
 #include <CGE/OpenAL/SoundBuffer.h>
 #include <CGE/OpenAL/SoundSource.h>
+#include <CGE/MatrixNode.h>
 #include <CGE/Camera.h>
-#include <CGE/PublicMatrixNode.h>
 #include <CGE/LuaMachine.h>
 #include <CGE/LuaReference.h>
 #include <CGE/LuaIndexedResource.h>
 #include <CGE/ResourceManager.h>
 #include <CGE/ModelFromFile.h>
 #include <CGE/Reference.h>
-
-#include "Entity.h"
-#include "GeneralBin.h"
-#include "SkyBoxBin.h"
-#include "SkyBox.h"
-#include "TerrainGrid.h"
 
 #include <vector>
 #include <map>
@@ -69,9 +69,9 @@ class LuaAPI
             double inZ);
 
         SkyBox mSkyBox;
-        CGE::Actor mSkyBoxActor;
+        SkyBoxActor mSkyBoxActor;
         TerrainGrid mGrid;
-        CGE::Actor mGridActor;
+        SimpleDisplayActor mGridActor;
         GeneralBin mBin;
         SkyBoxBin mSkyBoxBin;
 
@@ -79,8 +79,8 @@ class LuaAPI
         CGE::LuaReference mLuaUpdateCallback;
         CGE::ResourceManager<CGE::ModelFromFile> mModels;
         CGE::Camera mCamera;
-        CGE::PublicMatrixNode mCameraAnglesNode;
-        CGE::PublicMatrixNode mCameraTranslationNode;
+        CGE::MatrixNode<float> mCameraAnglesNode;
+        CGE::MatrixNode<float> mCameraTranslationNode;
         CGE::SoundBuffer mSoundTest;
         CGE::SoundSource mSourceTest;
 

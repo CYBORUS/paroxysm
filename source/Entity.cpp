@@ -4,7 +4,7 @@
 
 Entity::Entity(const CGE::LuaReference& inLuaTable) : mMass(1.0), mRadius(1.0),
     mMaxSpeed(0.0), mCurrentSpeed(0.0), mLuaTable(inLuaTable),
-    mIsBeingDeleted(false)
+    mIsBeingDeleted(false), mModelViewProjection(mMatrix)
 {
     assert(inLuaTable.isSet());
 }
@@ -13,7 +13,7 @@ Entity::~Entity()
 {
     for (size_t i = 0; i < mActors.size(); ++i)
     {
-        CGE::Actor* a = mActors[i];
+        ModelActor* a = mActors[i];
         delete a;
     }
 }
@@ -46,14 +46,14 @@ void Entity::update()
     calculateLocalOrientation();
 
 
-    mTransform.loadIdentity();
+    mMatrix.loadIdentity();
 
-    mTransform.translate(float(mPosition[0]), float(mPosition[1]),
+    mMatrix.translate(float(mPosition[0]), float(mPosition[1]),
         float(mPosition[2]));
 
-    mTransform.rotateY(mDefaultRotation[1]);
-    mTransform.rotateX(mDefaultRotation[0]);
-    mTransform.rotateZ(mDefaultRotation[2]);
+    mMatrix.rotateY(mDefaultRotation[1]);
+    mMatrix.rotateX(mDefaultRotation[0]);
+    mMatrix.rotateZ(mDefaultRotation[2]);
 }
 
 /**
@@ -128,23 +128,27 @@ void Entity::onCollision(lua_State* inState, Entity* inEntity)
     }
 }
 
-size_t Entity::addActor(CGE::Actor* inActor)
+size_t Entity::addActor(ModelActor* inActor)
 {
     assert(inActor != NULL);
     mActors.push_back(inActor);
-    addChildNode(inActor);
+    mModelViewProjection.addChildNode(inActor->modelViewProjectionNode());
     return mActors.size() - 1;
 }
 
-size_t Entity::addActor(CGE::Actor* inActor, size_t inIndex)
+size_t Entity::addActor(ModelActor* inActor, size_t inIndex)
 {
     assert(inActor != NULL);
     mActors.push_back(inActor);
 
+    CGE::MatrixNode<float>* node = &mModelViewProjection;
+
     if (inIndex < mActors.size())
-        mActors[inIndex]->addChildNode(inActor);
-    else
-        addChildNode(inActor);
+    {
+        node = &(mActors[inIndex]->modelViewProjectionNode());
+    }
+
+    node->addChildNode(inActor->modelViewProjectionNode());
 
     return mActors.size() - 1;
 }
@@ -152,7 +156,7 @@ size_t Entity::addActor(CGE::Actor* inActor, size_t inIndex)
 void Entity::rotateActor(size_t inIndex, double inXRotation,
     double inYRotation, double inZRotation)
 {
-    CGE::Actor* a = getActor(inIndex);
+    ModelActor* a = getActor(inIndex);
 
     if (a)
     {

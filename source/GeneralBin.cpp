@@ -27,13 +27,12 @@ GeneralBin::~GeneralBin()
 {
 }
 
-void GeneralBin::displayActor(CGE::Actor* inActor)
+void GeneralBin::addActor(GeneralActor& inActor)
 {
-    glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE, inActor->compositeMatrix());
-    inActor->display();
+    mActors.insert(&inActor);
 }
 
-void GeneralBin::beforeRender()
+void GeneralBin::renderAll()
 {
     mProgram.use();
     glActiveTexture(GL_TEXTURE0);
@@ -41,10 +40,18 @@ void GeneralBin::beforeRender()
     //glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
-}
 
-void GeneralBin::afterRender()
-{
+    for (std::set<GeneralActor*>::iterator i = mActors.begin();
+        i != mActors.end(); ++i)
+    {
+        GeneralActor* ga = *i;
+
+        glUniformMatrix4fv(mUniMVPM, 1, GL_FALSE,
+            ga->modelViewProjectionNode().compositeMatrix());
+
+        ga->display();
+    }
+
     //glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
 }

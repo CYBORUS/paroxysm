@@ -1,13 +1,12 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
-#include <CGE/Model.h>
 #include <CGE/OpenGL/InterleavedVBO.h>
 #include <CGE/OpenGL/IndexVBO.h>
 #include <CGE/OpenGL/CubeMap.h>
 #include <CGE/Image.h>
 
-class SkyBox : public CGE::Model
+class SkyBox
 {
     public:
         SkyBox();
@@ -21,4 +20,4 @@ class SkyBox : public CGE::Model
         CGE::Image mImages[6];
 };
 
-#endif // SKYBOX_H
+#endif

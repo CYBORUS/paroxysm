@@ -1,14 +1,15 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <CGE/Actor.h>
+#include "ModelActor.h"
+#include <CGE/MatrixNode.h>
 #include <CGE/Vectors.h>
 #include <CGE/LuaReference.h>
 #include <lua.hpp>
 #include <vector>
-
 #include <iostream>
-class Entity : public CGE::SceneGraphNode
+
+class Entity
 {
     public:
         Entity(const CGE::LuaReference& inLuaTable);
@@ -44,7 +45,7 @@ class Entity : public CGE::SceneGraphNode
         void calculateLocalOrientation();
         void calculateLocalOrientation(vec3d& inMomentum);
 
-        inline CGE::Actor* getActor(size_t inIndex)
+        inline ModelActor* getActor(size_t inIndex)
         {
             return inIndex < mActors.size() ? mActors[inIndex] : NULL;
         }
@@ -127,8 +128,13 @@ class Entity : public CGE::SceneGraphNode
             for (size_t i = 0; i < 3; ++i) mTranslation[i] = mPosition[i];
         }
 
-        size_t addActor(CGE::Actor* inActor);
-        size_t addActor(CGE::Actor* inActor, size_t inIndex);
+        size_t addActor(ModelActor* inActor);
+        size_t addActor(ModelActor* inActor, size_t inIndex);
+
+        CGE::MatrixNode<float>& node()
+        {
+            return mModelViewProjection;
+        }
 
         static void* operator new(size_t inSize);
         static void operator delete(void* inData);
@@ -154,13 +160,16 @@ class Entity : public CGE::SceneGraphNode
         // rotate a percentage of mMaxTurnSpeed.
         vec3d mTurn;
 
-        std::vector<CGE::Actor*> mActors;
+        std::vector<ModelActor*> mActors;
 
         //used to determine the entities local orientation
         vec3d mForwardDirection;
         vec3d mUpDirection;
 
         bool mIsBeingDeleted;
+
+        CGE::Matrix4x4<float> mMatrix;
+        CGE::MatrixNode<float> mModelViewProjection;
 };
 
 #endif

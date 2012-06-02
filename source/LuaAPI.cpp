@@ -24,7 +24,9 @@ using namespace std;
 
 LuaAPI* LuaAPI::luaThis = NULL;
 
-LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
+LuaAPI::LuaAPI() : mSkyBoxActor(mSkyBox), mGridActor(mGrid),
+    mCameraAnglesNode(mCamera.getAngleMatrix()),
+    mCameraTranslationNode(mCamera.getTranslateMatrix()),
     mSourceTest(mSoundTest)
 {
     activate();
@@ -37,15 +39,15 @@ LuaAPI::LuaAPI() : mSkyBoxActor(&mSkyBox), mGridActor(&mGrid),
     mGrid.buildVBO();
 
     mSoundTest.loadFile("data/audio/pew.wav");
-    mBin.addActor(&mGridActor);
+    mBin.addActor(mGridActor);
 
-    mSkyBoxBin.addActor(&mSkyBoxActor);
-    mSkyBoxActor.translate(10.0f, 10.0f, 0.0f);
-    mSkyBoxActor.scale(100.0f);
+    mSkyBoxBin.addActor(mSkyBoxActor);
+    mSkyBoxActor.matrix().translate(10.0f, 10.0f, 0.0f);
+    mSkyBoxActor.matrix().scale(100.0f);
 
-    mCameraAnglesNode.addChildNode(&mSkyBoxActor);
-    mCameraAnglesNode.addChildNode(&mCameraTranslationNode);
-    mCameraTranslationNode.addChildNode(&mGridActor);
+    mCameraAnglesNode.addChildNode(mSkyBoxActor.modelViewProjectionNode());
+    mCameraAnglesNode.addChildNode(mCameraTranslationNode);
+    mCameraTranslationNode.addChildNode(mGridActor.modelViewProjectionNode());
 
     mLua.addFunction("EngineAddEntityLocalMomentum", luaAddEntityLocalMomentum);
     mLua.addFunction("EngineAddEntityGlobalMomentum",
@@ -121,10 +123,7 @@ void LuaAPI::update(const mat4f& inProjection)
 
     mCamera.update();
 
-    mCameraAnglesNode.matrix() = mCamera.getAngleMatrix();
-    mCameraTranslationNode.matrix() = mCamera.getTranslateMatrix();
-
-    mCameraAnglesNode.updateMatrices(inProjection);
+    mCameraAnglesNode.multiplyAll(inProjection);
 }
 
 void LuaAPI::onKey(SDLKey inKey, double inIntensity)
@@ -175,9 +174,9 @@ void LuaAPI::addActor(size_t inIndex, const std::string& inModel)
     if (e)
     {
         CGE::ModelFromFile* mff = mModels.load(inModel);
-        CGE::Actor* actor = new CGE::Actor(mff);
+        ModelActor* actor = new ModelActor(*mff);
         e->addActor(actor);
-        mBin.addActor(actor);
+        mBin.addActor(*actor);
     }
 }
 
@@ -241,7 +240,8 @@ int LuaAPI::luaAddEntity(lua_State* inState)
     {
         EntityRef entity = new Entity(inState);
         luaThis->mCollisionEntities.push_back(entity);
-        luaThis->mGridActor.addChildNode(entity);
+        luaThis->mGridActor.modelViewProjectionNode()
+            .addChildNode(entity->node());
 
         size_t index = luaThis->mEntities.add(entity);
 
@@ -712,7 +712,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
         if (e && model && length)
         {
             CGE::ModelFromFile* mff = luaThis->mModels.load(model);
-            CGE::Actor* actor = new CGE::Actor(mff);
+            ModelActor* actor = new ModelActor(*mff);
             size_t actorIndex = 0;
 
             if (argc > 2 && lua_isnumber(inState, 3))
@@ -726,7 +726,7 @@ int LuaAPI::luaAddActor(lua_State* inState)
                 actorIndex = e->addActor(actor);
             }
 
-            luaThis->mBin.addActor(actor);
+            luaThis->mBin.addActor(*actor);
 
             lua_Integer outIndex = actorIndex;
             lua_pushinteger(inState, outIndex);

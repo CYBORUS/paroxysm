@@ -1,21 +1,21 @@
 #ifndef GENERALBIN_H
 #define GENERALBIN_H
 
+#include "GeneralActor.h"
 #include <CGE/OpenGL/Program.h>
-#include <CGE/RenderBin.h>
+#include <set>
 
-class GeneralBin : public CGE::RenderBin
+class GeneralBin
 {
     public:
         GeneralBin();
-        virtual ~GeneralBin();
+        ~GeneralBin();
 
-    protected:
-        virtual void beforeRender();
-        virtual void afterRender();
-        virtual void displayActor(CGE::Actor* inActor);
+        void addActor(GeneralActor& inActor);
+        void renderAll();
 
     private:
+        std::set<GeneralActor*> mActors;
         CGE::Program<2> mProgram;
 
         GLuniform mUniMVPM;
