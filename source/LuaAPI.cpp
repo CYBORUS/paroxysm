@@ -428,7 +428,6 @@ int LuaAPI::luaAddEntityGlobalVelocity(lua_State* inState)
 
 int LuaAPI::luaRemoveEntity(lua_State* inState)
 {
-    return 0;
     assert(luaThis != NULL);
     int argc = lua_gettop(inState);
 
@@ -437,7 +436,16 @@ int LuaAPI::luaRemoveEntity(lua_State* inState)
         size_t index = lua_tointeger(inState, 1);
         EntityRef e = luaThis->mEntities.remove(index);
 
-        if (e) e->setIsBeingDeleted();
+        if (e)
+        {
+            e->setIsBeingDeleted();
+
+            ModelActor* actor;
+            while (actor = e->popActor())
+            {
+                luaThis->mBin.removeActor(*actor);
+            }
+        }
     }
 
     return 0;

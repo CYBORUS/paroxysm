@@ -12,6 +12,7 @@ class GeneralBin
         ~GeneralBin();
 
         void addActor(GeneralActor& inActor);
+        void removeActor(GeneralActor& inActor);
         void renderAll();
 
     private:

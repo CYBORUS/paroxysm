@@ -136,6 +136,8 @@ class Entity
             return mModelViewProjection;
         }
 
+        ModelActor* popActor();
+
         static void* operator new(size_t inSize);
         static void operator delete(void* inData);
 

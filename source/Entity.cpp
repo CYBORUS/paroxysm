@@ -212,3 +212,16 @@ void Entity::operator delete(void* inData)
 {
     CGE::release(inData);
 }
+
+ModelActor* Entity::popActor()
+{
+    ModelActor* outActor = NULL;
+
+    if (mActors.size() > 0)
+    {
+        outActor = mActors.back();
+        mActors.pop_back();
+    }
+
+    return outActor;
+}

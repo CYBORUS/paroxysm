@@ -32,6 +32,11 @@ void GeneralBin::addActor(GeneralActor& inActor)
     mActors.insert(&inActor);
 }
 
+void GeneralBin::removeActor(GeneralActor& inActor)
+{
+    mActors.erase(&inActor);
+}
+
 void GeneralBin::renderAll()
 {
     mProgram.use();
