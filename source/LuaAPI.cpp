@@ -440,10 +440,10 @@ int LuaAPI::luaRemoveEntity(lua_State* inState)
         {
             e->setIsBeingDeleted();
 
-            ModelActor* actor;
-            while (actor = e->popActor())
+            while (ModelActor* actor = e->popActor())
             {
                 luaThis->mBin.removeActor(*actor);
+                delete actor;
             }
         }
     }
